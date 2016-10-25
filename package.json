@@ -17,6 +17,7 @@
     "express-session": "^1.14.1",
     "formidable": "^1.0.17",
     "less": "^2.7.1",
+    "less-loader": "^2.2.3",
     "moment": "^2.15.1",
     "mysql": "^2.11.1",
     "sequelize": "^3.24.3",
