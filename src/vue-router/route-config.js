@@ -1,8 +1,15 @@
 export function configRouter(router) {
     router.map({
         '/': {
-            component: require('../components/Master.vue'),
-            subRoutes: {}
+            component: require('../components/WapMain.vue'),
+            subRoutes: {
+                'index': {
+                    component: require('../components/example1.vue')
+                },
+                'example2': {
+                    component: require('../components/example2.vue')
+                }
+            }
         },
         '/admin': {
             component: require('../components/Master.vue'),
@@ -23,5 +30,9 @@ export function configRouter(router) {
                 }
             }
         }
+    })
+
+    router.redirect({
+        '/': '/index'
     })
 }
