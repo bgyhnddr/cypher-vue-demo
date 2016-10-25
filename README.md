@@ -24,3 +24,11 @@ npm install sqlite3 安装sqlite(windows环境下请保证安装了framework2.0�
 如果不使用sqlite 请在程序中更改src/db/sequelize.js
 
 ui默认使用vux
+
+首次打开系统请使用localhost:8080/init初始化数据库
+
+管理员账号admin默认密码admin
+
+管理地址localhost:8080/#!/admin
+
+系统默认只有RBAC管理
