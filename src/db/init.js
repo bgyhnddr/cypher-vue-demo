@@ -7,7 +7,17 @@ module.exports = function(req, res, next) {
         require('./models/user_role'),
         require('./models/role_permission'),
         require('./models/attachment'),
-        require('./models/file')
+        require('./models/file'),
+        require('./models/brand'),
+        require('./models/brand_detail'),
+        require('./models/agent'),
+        require('./models/agent_detail'),
+        require('./models/employment'),
+        require('./models/employment_detail'),
+        require('./models/brand_employment_meta'),
+        require('./models/agent_brand_roles'),
+        require('./models/brand_role'),
+        require('./models/employable_rules')
     ].map((o) => o.sync({ force: true }))).then(function() {
         return require('./init_data')()
     }).then(function() {

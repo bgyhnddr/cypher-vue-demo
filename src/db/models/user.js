@@ -7,7 +7,7 @@ var user = sequelize.define(
         account: { type: Sequelize.STRING, primaryKey: true },
         password: Sequelize.STRING
     }, {
-        underscored: true
+        underscored: true  
     })
 
 
