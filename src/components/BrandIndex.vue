@@ -1,57 +1,92 @@
 <template>
     <div>
+        <p>用户账号： {{user.account}}<p>
+        <p>用户角色： {{user.brand_role_name}}<p>
 		<group>
 			<cell title="新代理加盟" value=">" inline-desc="查看或生成申请下级代理的分享链接"
-                 @click="showChooseBrandRoleModel">
-               <span class="demo-icon" slot="icon" style="color:#F70968">&#xe633;
+                 @click="chooseBrandRole">
+               <span class="demo-icon" slot="icon" style="color:#F70968">
                    <img src="../../static/TestIMG/店铺1头像.jpg"/>
                </span>
 			</cell>
 		</group>
-        <modal :show.sync="showChooseBrandRoleModel" effect="fade" width="400">
-            <div slot="modal-header" class="modal-header">
-                <h4 class="modal-title">
-                    选择新代理级别
-                </h4>
-            </div>
-            <div slot="modal-body" class="modal-body">
-                <bs-input v-if="!edit" :value.sync="submitData.good_code" label="商品唯一编码" required  readonly="readonly"></bs-input>
-                <bs-input v-else :value.sync="submitData.good_code" label="編碼" readonly readonly="readonly"></bs-input>
-                <bs-input :value.sync="submitData.name" label="* 商品名称" required></bs-input>
-            </div>
-            <div slot="modal-footer" class="modal-footer">
-                <button type="button" class="btn btn-default" @click="showAddGoodModel=false">关闭</button>
-            </div>
-        </modal>
+        <div>
+            <dialog :show.sync="showChooseBrandRoleModel" class="dialog-demo">
+                <p class="dialog-title">选择新代理级别</p>
+                <group>
+                    <cell title="总代理" link="" ></cell>
+                    <cell title="一级代理" link="" ></cell>
+                    <cell title="二级代理" link="" ></cell>
+                    <cell title="分销" link="" ></cell>
+                </group>
+                 <cell title="关闭" @click="showChooseBrandRoleModel=false" ></cell>
+            </dialog>
+        </div>
 	</div>
 </template>
 
 <script>
     import {
         Cell,
-        Group
+        Group,
+        Dialog
     } from 'vux'
-    import {
-        modal,
-    } from 'vue-strap'
+    import agentInfo from '../api/agentInfo'
+
+
     export default {
+        props: {
+            dialogTransition: {
+                type: String,
+                default: 'vux-dialog'
+            },
+        },
         components: {
             Cell,
-            Group
+            Group,
+            Dialog
         },
         data() {
             return {
-                showChooseBrandRoleModel:false,
+                user: {
+                    account: "",
+                    headIMG: "",
+                    brand_role_name:"",
+                },
+                showChooseBrandRoleModel:  false,
             }
-        },
-        computed:{
-
         },
         methods:{
-            showChooseBrandRoleModel() {
-                console.log("打开选择代理弹出层")
+            getAccount(){
+                this.user.account = "bili"
+            },
+            chooseBrandRole() {
+                brand_role
 
-            }
+                this.showChooseBrandRoleModel = true
+            },
+            getPersonalInfo(){
+                var that = this
+                this.user.account = "bili"
+                console.log("获取用户账号")
+                agentInfo.getBrandInfo({user_account:this.user.account}).then(function(result) {
+                    console.log(JSON.stringify(result))
+                    that.user.brand_role_name = result.name
+                }).catch(function(err) {
+                    alert(err)
+                    //回到上一页
+                })
+            },
+        },
+        ready() {
+            //TODO： 通过Session 拿到登录时的账号
+            this.getPersonalInfo()
         }
     }
 </script>
+<style lang="less">
+    img{
+        width:50px;
+        height:50px;
+    }
+</style>

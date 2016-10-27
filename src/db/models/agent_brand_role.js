@@ -1,8 +1,8 @@
 var Sequelize = require('sequelize')
 var sequelize = require('../sequelize')
 
-var agent_brand_roles = sequelize.define(
-    'agent_brand_roles', {
+var agent_brand_role = sequelize.define(
+    'agent_brand_role', {
         id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true, unique: true },
         agent_guid: Sequelize.STRING,
         brand_role_code: Sequelize.STRING
@@ -11,4 +11,4 @@ var agent_brand_roles = sequelize.define(
     })
 
 
-module.exports = agent_brand_roles
+module.exports = agent_brand_role

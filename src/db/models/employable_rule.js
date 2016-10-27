@@ -1,8 +1,8 @@
 var Sequelize = require('sequelize')
 var sequelize = require('../sequelize')
 
-var employable_rules = sequelize.define(
-    'employable_rules', {
+var employable_rule = sequelize.define(
+    'employable_rule', {
         id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true, unique: true },
         employer_brand_role_code: Sequelize.STRING,
         employable_brand_role_code: Sequelize.STRING,
@@ -11,4 +11,4 @@ var employable_rules = sequelize.define(
     })
 
 
-module.exports = employable_rules
+module.exports = employable_rule
