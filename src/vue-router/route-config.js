@@ -8,6 +8,9 @@ export function configRouter(router) {
                 },
                 'example2': {
                     component: require('../components/example2.vue')
+                },
+                'brand': {
+                    component: require('../components/BrandIndex.vue')
                 }
             }
         },
