@@ -4,7 +4,7 @@ var sequelize = require('../sequelize')
 var agent_detail = sequelize.define(
     'agent_detail', {
         id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true, unique: true },
-        agent_user_account: Sequelize.STRING, 
+        agent_guid: Sequelize.STRING, 
         key: Sequelize.STRING,
         value: Sequelize.STRING,
         type: Sequelize.STRING
