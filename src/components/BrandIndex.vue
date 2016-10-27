@@ -3,7 +3,9 @@
 		<group>
 			<cell title="新代理加盟" value=">" inline-desc="查看或生成申请下级代理的分享链接"
                  @click="showModel">
-               <span class="demo-icon" slot="icon" style="color:#F70968">&#xe633;</span>
+               <span class="demo-icon" slot="icon" style="color:#F70968">&#xe633;
+                   <!--<img src="../../static/TestIMG/店铺1头像.jpg"/>-->
+               </span>
 			</cell>
 		</group>
 	</div>
