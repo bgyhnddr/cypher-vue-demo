@@ -87,12 +87,7 @@ var exec = {
 module.exports = (req, res, next) => {
     var action = req.params.action
     Promise.resolve(action).then(function(result) {
-        try {
-            return exec[result](req, res, next)
-        } catch (e) {
-            console.log(e)
-            res.send(e)
-        }
+        return exec[result](req, res, next)
     }).then(function(result) {
         if (req.params.action != "getAttachment") {
             res.send(result)
