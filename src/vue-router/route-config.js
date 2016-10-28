@@ -8,15 +8,6 @@ export function configRouter(router) {
                 },
                 'example2': {
                     component: require('../components/example2.vue')
-                },
-                'login': {
-                    component: require('../components/LoginPage.vue')
-                },
-                'regist': {
-                    component: require('../components/RegistPage.vue')
-                },
-                'changepwd': {
-                    component: require('../components/ChangeUserPassword.vue')
                 }
             }
         },
@@ -36,6 +27,23 @@ export function configRouter(router) {
                             component: require('../components/PermissionSetting.vue')
                         }
                     }
+                }
+            }
+        },
+        '/auth': {
+            component: require('../components/WapMain.vue'),
+            subRoutes: {
+                'login': {
+                    component: require('../components/LoginPage.vue')
+                },
+                'regist': {
+                    component: require('../components/RegistPage.vue')
+                },
+                'changepwd': {
+                    component: require('../components/ChangeUserPassword.vue')
+                },
+                'test': {
+                    component: require('../components/testPage.vue')
                 }
             }
         }

@@ -12,7 +12,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-success" @click="submitLogin">登陆</button>
-                <a class="btn btn-success" v-link="{ path: '/regist' }">账户注册</a>
+                <a class="btn btn-success" v-link="{ path: '/auth/regist' }">账户注册</a>
 			</div>           
 	</div>
 </template>
@@ -69,7 +69,7 @@
                 if (that.valid()) {
                     authAPI.login(that.loginInfo).then(function(result) {
                         const router = new VueRouter()
-                        // router.go('index')
+                        router.go('test')
                         that.state.userInfo = result
                         console.log(that.state.userInfo)
                     }).catch(function(err) {

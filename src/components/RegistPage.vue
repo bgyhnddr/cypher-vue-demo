@@ -13,26 +13,14 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-success" @click="UserRegist">注册</button>
-                <a class="btn btn-success" v-link="{ path: '/login' }">返回登录</a>
+                <a class="btn btn-success" v-link="{ path: '/auth/login' }">返回登录</a>
 			</div>
-            <!--<div>
-                <confirm :show.sync="show" title="confirm deleting the item" @on-cancel="onCancel" @on-confirm="onConfirm" @on-show="onShow"
-                    @on-hide="onHide">
-                    <p style="text-align:center;">Are you sure?</p>
-                </confirm>
-            </div>-->
-            <!--<div class="weui_mask vux-fade-transition" style=""></div>-->
             <modal :show.sync="show" effect="fade" width="400" class="vux-center">
                 <div slot="modal-body" class="modal-body">注册成功</div>
                 <div slot="modal-footer" class="modal-footer">
-                    <a class="btn btn-success" v-link="{ path: '/login' }">确定</a>
+                    <a class="btn btn-success" v-link="{ path: '/auth/login' }">确定</a>
                 </div>
-            </modal>
-            <!--<alert :show.sync="show" class="weui_dialog vux-dialog-transition">
-                <div>Message is sent successfully~</div>
-                <div><a class="btn btn-success" v-link="{ path: '/login' }">确定</a></div>
-            </alert>-->
-                
+            </modal>               
 	</div>
 </template>
 
