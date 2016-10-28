@@ -28,9 +28,15 @@ export function configRouter(router) {
                         }
                     }
                 },
-                'employment': {
-                    component: require('../components/BrandIndex.vue')
+                'employManagement': {
+                    component: require('../components/EmploymentIndex.vue')
                 },
+                'chooseEmployableRoles': {
+                    component: require('../components/ChooseEmployableRoles.vue')
+                },
+                'brandAuthorization':{
+                    component: require('../components/BrandAuthorization.vue')
+                }
             }
         }
     })

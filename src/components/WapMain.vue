@@ -42,8 +42,8 @@
                     return 'Home'
                 if (this.$route.path === '/example2')
                     return 'example2'
-                if (this.$route.path === '/brand')
-                return '品牌商首页'
+                if (this.$route.path === '/employment')
+                return '成员招募'
             }
         },
         methods: {

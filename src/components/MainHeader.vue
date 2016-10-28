@@ -6,7 +6,7 @@
         </a>
 		<li v-if="checkPermission()">
 			<a v-link="{ path: '/admin/RBACManagement' }">RBAC</a>
-            <a v-link="{ path: '/admin/employment' }">发起招募</a>
+            <a v-link="{ path: '/admin/employManagement' }">发起招募</a>
 		</li>
 		<dropdown slot="right" v-if="state.userInfo.name" :text="state.userInfo.name">
 			<li><a @click="changePassword=true">change password</a></li>
