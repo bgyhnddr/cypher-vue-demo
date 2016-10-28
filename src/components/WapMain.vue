@@ -50,6 +50,8 @@
                     return '修改密码'
                 if (this.$route.path === '/auth/test')
                     return '测试页面'
+                if (this.$route.path === '/brand')
+                    return '品牌商首页'
             }
         },
         methods: {
