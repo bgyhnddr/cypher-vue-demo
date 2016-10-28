@@ -4,7 +4,7 @@ export function configRouter(router) {
             component: require('../components/WapMain.vue'),
             subRoutes: {
                 'index': {
-                    component: require('../components/example1.vue')
+                    component: require('../components/LoginPage.vue')
                 },
                 'example2': {
                     component: require('../components/example2.vue')
@@ -36,6 +36,23 @@ export function configRouter(router) {
                 },
                 'brandAuthorization':{
                     component: require('../components/BrandAuthorization.vue')
+                }
+            }
+        },
+        '/auth': {
+            component: require('../components/WapMain.vue'),
+            subRoutes: {
+                'login': {
+                    component: require('../components/LoginPage.vue')
+                },
+                'regist': {
+                    component: require('../components/RegistPage.vue')
+                },
+                'changepwd': {
+                    component: require('../components/ChangeUserPassword.vue')
+                },
+                'test': {
+                    component: require('../components/testPage.vue')
                 }
             }
         }

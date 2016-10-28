@@ -1,15 +1,15 @@
 <template>
-	<div style="overflow-x: hidden;">
-		<loading :show="isLoading" position="absolute"></loading>
-		<view-box v-ref:view-box>
-			<!--header slot-->
-			<div class="vux-demo-header-box" slot="header">
-				<x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
-			</div>
-			<!--default slot-->
-			<router-view class="view" transition="fate" transition-mode="out-in"></router-view>
-		</view-box>
-	</div>
+    <div style="overflow-x: hidden;">
+        <loading :show="isLoading" position="absolute"></loading>
+        <view-box v-ref:view-box>
+            <!--header slot-->
+            <div class="vux-demo-header-box" slot="header">
+                <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
+            </div>
+            <!--default slot-->
+            <router-view class="view" transition="fate" transition-mode="out-in"></router-view>
+        </view-box>
+    </div>
 </template>
 <script>
     import {
@@ -43,7 +43,15 @@
                 if (this.$route.path === '/example2')
                     return 'example2'
                 if (this.$route.path === '/employment')
-                return '成员招募'
+                    return '成员招募'
+                if (this.$route.path === '/auth/login')
+                    return '登录'
+                if (this.$route.path === '/auth/regist')
+                    return '注册'
+                if (this.$route.path === '/auth/changepwd')
+                    return '修改密码'
+                if (this.$route.path === '/auth/test')
+                    return '测试页面'
             }
         },
         methods: {
