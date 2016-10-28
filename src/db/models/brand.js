@@ -3,7 +3,7 @@ var sequelize = require('../sequelize')
 
 var brand = sequelize.define(
     'brand', {
-        brand_guid: { type:Sequelize.STRING, primaryKey: true, unique: true },
+        guid: { type:Sequelize.STRING, primaryKey: true, unique: true },
         name: Sequelize.STRING,
         description: Sequelize.STRING,
         register_time: Sequelize.DATE

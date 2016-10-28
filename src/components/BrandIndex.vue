@@ -64,7 +64,8 @@
             chooseBrandRole() {
                 var that = this
                 console.log(that.userinfo.brand_role.code)
-                employment.getEmployableRoles("1").then(function(result) {
+                employment.getEmployableRoles({brand_role_code: that.userinfo.brand_role.code
+                }).then(function(result) {
                     console.log(result)
                 })
                 
@@ -73,10 +74,11 @@
             getPersonalInfo(){
                 var that = this
                 //TODO： 通过Session 拿到登录时的账号
-                var user_account = "bili"
-                console.log("获取用户账号")
+                var user_account = window.state.userInfo.name
+                // var user_account = "bili"
+                console.log("获取用户账号:" + user_account)
                 agentInfo.getBrandInfo({user_account:user_account}).then(function(result) {
-                    // console.log(JSON.stringify(result))
+                    console.log(JSON.stringify(result))
                     that.userinfo = result
                 }).catch(function(err) {
                     alert(err)

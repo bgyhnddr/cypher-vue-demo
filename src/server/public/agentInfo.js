@@ -7,18 +7,9 @@ var exec = {
         var brand_role = require('../../db/models/brand_role')
         var brand = require('../../db/models/brand')
 
-        brand.hasOne(brand_role,{
-            foreignKey: 'brand_guid',
-            constraints: false
-        })
-        brand_role.hasOne(agent_brand_role,{
-            foreignKey: 'brand_role_code',
-            constraints: false
-        })
-        agent_brand_role.belongsTo(agent,{
-            foreignKey: 'agent_guid',
-            constraints: false
-        })
+        brand.hasOne(brand_role)
+        brand_role.hasOne(agent_brand_role)
+        agent_brand_role.belongsTo(agent)
 
         return brand.findOne({
                 include: [{

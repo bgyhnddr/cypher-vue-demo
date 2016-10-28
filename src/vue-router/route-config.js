@@ -9,9 +9,6 @@ export function configRouter(router) {
                 'example2': {
                     component: require('../components/example2.vue')
                 },
-                'brand': {
-                    component: require('../components/BrandIndex.vue')
-                }
             }
         },
         '/admin': {
@@ -30,7 +27,10 @@ export function configRouter(router) {
                             component: require('../components/PermissionSetting.vue')
                         }
                     }
-                }
+                },
+                'employment': {
+                    component: require('../components/BrandIndex.vue')
+                },
             }
         }
     })
