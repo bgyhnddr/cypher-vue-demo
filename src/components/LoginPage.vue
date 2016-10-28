@@ -22,6 +22,7 @@
         alert,
         input as bsInput
     } from 'vue-strap'
+    require('bootstrap3/dist/css/bootstrap.css')
     import authAPI from '../api/auth'
     import VueRouter from 'vue-router'
     export default {
@@ -69,7 +70,7 @@
                 if (that.valid()) {
                     authAPI.login(that.loginInfo).then(function(result) {
                         const router = new VueRouter()
-                        router.go('admin/EmploymentIndex')
+                        router.go('admin/employManagement')
                         that.state.userInfo = result
                         console.log(that.state.userInfo)
                     }).catch(function(err) {
