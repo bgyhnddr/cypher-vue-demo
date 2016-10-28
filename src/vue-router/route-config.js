@@ -8,6 +8,15 @@ export function configRouter(router) {
                 },
                 'example2': {
                     component: require('../components/example2.vue')
+                },
+                'login': {
+                    component: require('../components/LoginPage.vue')
+                },
+                'regist': {
+                    component: require('../components/RegistPage.vue')
+                },
+                'changepwd': {
+                    component: require('../components/ChangeUserPassword.vue')
                 }
             }
         },

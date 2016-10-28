@@ -42,6 +42,12 @@
                     return 'Home'
                 if (this.$route.path === '/example2')
                     return 'example2'
+                if (this.$route.path === '/login')
+                    return '登录'
+                if (this.$route.path === '/regist')
+                    return '注册'
+                if (this.$route.path === '/changepwd')
+                    return '修改密码'
             }
         },
         methods: {
