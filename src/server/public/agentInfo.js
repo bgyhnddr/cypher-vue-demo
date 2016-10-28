@@ -3,35 +3,43 @@ var exec = {
         var user_account = req.body.user_account
 
         var agent = require('../../db/models/agent')
+        var agent_brand_role = require('../../db/models/agent_brand_role')
+        var brand_role = require('../../db/models/brand_role')
+        var brand = require('../../db/models/brand')
 
-        return agent.findOne({
-            attributes: ['agent_guid'],
-            where:{
-                user_account: user_account
-            }
-        }).then(function(result){
-            var agent_brand_role = require('../../db/models/agent_brand_role')
-            var brand_role = require('../../db/models/brand_role')
-
-            brand_role.hasOne(agent_brand_role, {
-                foreignKey: 'brand_role_code',
-                constraints: false
-            })
-            return brand_role.findOne({
-                include: [{
-                    model: agent_brand_role,
-                    where: {
-                        agent_guid: result.agent_guid
-                    }
-                }]
-            })
-        }).then(function(result){
-            if(result == null){
-                return Promise.reject("找不到你的品牌商信息")
-            } else {
-                return result
-            }
+        brand.hasOne(brand_role,{
+            foreignKey: 'brand_guid',
+            constraints: false
         })
+        brand_role.hasOne(agent_brand_role,{
+            foreignKey: 'brand_role_code',
+            constraints: false
+        })
+        agent_brand_role.belongsTo(agent,{
+            foreignKey: 'agent_guid',
+            constraints: false
+        })
+
+        return brand.findOne({
+                include: [{
+                    model: brand_role, 
+                    include:[{
+                        model: agent_brand_role,
+                        include:[{
+                            model: agent,
+                             where: {
+                                user_account: user_account
+                            },
+                        }],
+                    }],
+                }]
+            }).then(function(result) {
+                if (result == null) {
+                    return Promise.reject("找不到您的品牌商角色")
+                } else {
+                    return result
+                }
+            })
     },
 }
 

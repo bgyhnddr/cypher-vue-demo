@@ -1,7 +1,8 @@
 <template>
     <div>
-        <p>用户账号： {{user.account}}<p>
-        <p>用户角色： {{user.brand_role_name}}<p>
+        <p>用户账号： {{userinfo.brand_role.agent_brand_role.agent.user_account}}<p>
+        <p>品牌名称： {{userinfo.name}}<p>
+        <p>用户品牌角色： {{userinfo.brand_role.name}}<p>
 		<group>
 			<cell title="新代理加盟" value=">" inline-desc="查看或生成申请下级代理的分享链接"
                  @click="chooseBrandRole">
@@ -32,6 +33,7 @@
         Dialog
     } from 'vux'
     import agentInfo from '../api/agentInfo'
+    import employment from '../api/employment'
 
 
     export default {
@@ -48,38 +50,41 @@
         },
         data() {
             return {
-                user: {
-                    account: "",
-                    headIMG: "",
-                    brand_role_name:"",
+                userinfo:{
+                    brand_role:{
+                        agent_brand_role:{
+                            agent:{}
+                        }
+                    }
                 },
                 showChooseBrandRoleModel:  false,
             }
         },
         methods:{
-            getAccount(){
-                this.user.account = "bili"
-            },
             chooseBrandRole() {
-                brand_role
-
+                var that = this
+                console.log(that.userinfo.brand_role.code)
+                employment.getEmployableRoles("1").then(function(result) {
+                    console.log(result)
+                })
+                
                 this.showChooseBrandRoleModel = true
             },
             getPersonalInfo(){
                 var that = this
-                this.user.account = "bili"
+                //TODO： 通过Session 拿到登录时的账号
+                var user_account = "bili"
                 console.log("获取用户账号")
-                agentInfo.getBrandInfo({user_account:this.user.account}).then(function(result) {
-                    console.log(JSON.stringify(result))
-                    that.user.brand_role_name = result.name
+                agentInfo.getBrandInfo({user_account:user_account}).then(function(result) {
+                    // console.log(JSON.stringify(result))
+                    that.userinfo = result
                 }).catch(function(err) {
                     alert(err)
-                    //回到上一页
+                    //TODO: 回到上一页
                 })
             },
         },
         ready() {
-            //TODO： 通过Session 拿到登录时的账号
             this.getPersonalInfo()
         }
     }

@@ -15,8 +15,10 @@ module.exports = function() {
         user_role.create({ user_account: "admin", role_code: "admin" }),
         user_role.create({ user_account: "bili", role_code: "user" }),
         role_permission.create({ role_code: "admin", permission_code: "admin" }),
-        role_permission.create({ role_code: "admin", permission_code: "personalInfo" }),
+        role_permission.create({ role_code: "admin", permission_code: "agentInfo" }),
+        role_permission.create({ role_code: "admin", permission_code: "employment" }),
         permission.create({ code: "admin", name: "admin" }),
-        permission.create({ code: "personalInfo", name: "personalInfo" }),
+        permission.create({ code: "agentInfo", name: "agentInfo" }),
+        permission.create({ code: "employment", name: "employment" }),
     ])
 }
