@@ -76,7 +76,16 @@ export function configRouter(router) {
         },
         '/test': {
             component: require('../components/Test.vue')
+        },
+        '/BrandManagement': {
+            component: require('../components/WapMain.vue'),
+            subRoutes: {
+                'audit': {
+                    component: require('../components/AuditList.vue')
+                }
+            }
         }
+        
     })
 
     router.redirect({
