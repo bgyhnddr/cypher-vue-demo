@@ -1,26 +1,26 @@
 <template>
 	<div @keyup.enter="UserRegist">
-			<div class="modal-body">
-				<p>
-					{{alertText}}
-				</p>
-				<div class="form-group">
-					<label class="control-label">账号</label>
-					<input v-el:account v-model="loginInfo.account" class="form-control"  type="text">
-                </div>
-                <div class="form-group">
-					<label class="control-label">密码</label>
-					<input v-el:account v-model="loginInfo.password" class="form-control"  type="password">
-                </div>
-                <div class="form-group">
-					<label class="control-label">再次输入密码</label>
-					<input v-el:password v-model="loginInfo.insurepwd" class="form-control"  type="password">
-                </div>
+			<div>
+                <group>
+                    <x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入姓名" is-type="china-name"></x-input>
+                </group>
+                <group>
+                    <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
+                    <x-input title="密码" :value.sync="loginInfo.password" type="password" placeholder="请输入密码" :equal-with="password"></x-input>
+                </group>
+                <group>
+                    <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
+                    <x-input title="再次输入密码" :value.sync="loginInfo.insurepwd" type="password" placeholder="请再次输入密码" :equal-with="password"></x-input>
+                </group>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success" @click="UserRegist">注册</button>
-                <a class="btn btn-success" v-link="{ path: '/auth/login' }">返回登录</a>
-			</div>
+            <flexbox style="margin-top:20px">
+                <flexbox-item>
+                    <x-button type="primary" @click="UserRegist">注册</x-button>
+                </flexbox-item>
+                <flexbox-item>
+                    <x-button type="warn" v-link="{ path: '/auth/login' }">返回登录</x-button>
+                </flexbox-item>
+            </flexbox> 
             <div>
                 <toast :show.sync="show" :time="1000" @on-hide="onHide">注册成功</toast>     
             </div>             
@@ -30,7 +30,7 @@
 <script>
     import authAPI from '../api/auth'
     import VueRouter from 'vue-router'
-    import { Toast, Group } from 'vux'
+    import { Toast,XInput, Group, XButton,Flexbox,FlexboxItem } from 'vux'
     export default {
         data() {
             return {
@@ -46,27 +46,12 @@
         },
         components: {
             Toast,
-            Group
-        },
-        computed: {
-            alertText() {
-                if (this.serverMsg) {
-                    return this.serverMsg;
-                }
-                let returnText = "注册";
-                if (!this.loginInfo.account && !this.loginInfo.password) {
-                    returnText = "请输入账号密码"
-                } else if (!this.loginInfo.account) {
-                    returnText = "请输入账号"
-                } else if (!this.loginInfo.password && !this.loginInfo.insurepwd) {
-                    returnText = "请输入密码"
-                } else if (this.loginInfo.password != this.loginInfo.insurepwd) {
-                    returnText = "密码不一致"
-                } else {
-                    return "注册"
-                }
-                return returnText
-            }
+            Group,
+            XInput,
+            Group,
+            XButton,
+            Flexbox,
+            FlexboxItem
         },
         methods: {
             valid() {

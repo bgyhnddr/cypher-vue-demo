@@ -1,25 +1,23 @@
 <template>
 	<div @keyup.enter="ChangePwd">
-			<div class="modal-body">
-				<p :type="alertType">
-					{{alertText}}
-				</p>
-                <div class="form-group">
-					<label class="control-label">旧密码</label>
-					<input v-el:pwd v-model="pwd.old_password" class="form-control"  type="password">
-                </div>
-                <div class="form-group">
-					<label class="control-label">新密码</label>
-					<input v-el:pwd v-model="pwd.new_password" class="form-control"  type="password">
-                </div>  
-                <div class="form-group">
-					<label class="control-label">再次输入新密码</label>
-					<input v-el:pwd v-model="pwd.insure_password" class="form-control"  type="password">
-                </div>                 
+			<div>
+                <group>
+                    <x-input title="旧密码" :value.sync="pwd.old_password" type="password" name="username" placeholder="请输入旧密码" is-type="china-name"></x-input>
+                </group>
+                <group>
+                    <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
+                    <x-input title="新密码" :value.sync="pwd.new_password" type="password" placeholder="请输入新密码" :equal-with="password"></x-input>
+                </group>
+                <group>
+                    <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
+                    <x-input title="再次确认新密码" :value.sync="pwd.insure_password" type="password" placeholder="再次确认新密码" :equal-with="password"></x-input>
+                </group>               
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success" @click="ChangePwd">确认修改</button>
-			</div>
+            <flexbox style="margin-top:20px">
+                <flexbox-item>
+                    <x-button type="primary" @click="ChangePwd">确认修改</x-button>
+                </flexbox-item>
+            </flexbox> 
             <div>
                 <toast :show.sync="show" :time="1000" @on-hide="onHide">修改成功</toast>     
             </div>  
@@ -29,7 +27,7 @@
 <script>
     import authAPI from '../api/auth'
     import VueRouter from 'vue-router'
-    import { Toast, Group } from 'vux'
+    import { Toast,XInput, Group, XButton,Flexbox,FlexboxItem } from 'vux'
     export default {
         data() {
             return {
@@ -45,32 +43,11 @@
         },
         components: {
             Toast,
-            Group
-        },
-        computed: {
-            alertType() {
-                return this.valid() ? "success" : "warning"
-            },
-            alertText() {
-                if (this.serverMsg) {
-                    return this.serverMsg;
-                }
-                let returnText = "确认修改";
-                if (!this.pwd.old_password && !this.pwd.new_password && !this.pwd.insure_password) {
-                    returnText = "请输入账号密码"
-                } else if (!this.pwd.old_password) {
-                    returnText = "请输入账号"
-                } else if (!this.pwd.new_password) {
-                    returnText = "请输入密码"
-                } else if (!this.pwd.insure_password) {
-                    returnText = "密码不一致"
-                } else if (this.pwd.new_password != this.pwd.insure_password) {
-                    returnText = "密码不一致"
-                } else {
-                    return "确认修改"
-                }
-                return returnText
-            }
+            Group,
+            XInput,
+            XButton,
+            Flexbox,
+            FlexboxItem
         },
         methods: {
             valid() {
@@ -93,7 +70,7 @@
             }
         },
         ready() {
-            this.$els.pwd.focus()
+            //this.$els.pwd.focus()
         }
     }
 </script>

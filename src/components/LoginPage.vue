@@ -1,28 +1,29 @@
 <template>
 	<div @keyup.enter="submitLogin">
-			<div class="modal-body">
-				<p>
-					{{alertText}}
-				</p>
-				<div class="form-group">
-					<label class="control-label">账号</label>
-					<input v-el:account v-model="loginInfo.account" class="form-control"  type="text">
-                </div>
-                <div class="form-group">
-					<label class="control-label">密码</label>
-					<input v-el:password v-model="loginInfo.password" class="form-control"  type="password">
-                </div>
+			<div>
+                <group>
+                    <x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入姓名" is-type="china-name"></x-input>
+                </group>
+                <group>
+                    <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
+                    <x-input title="密码" :value.sync="loginInfo.password" type="password" placeholder="请输入密码" :equal-with="password"></x-input>
+                </group>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success" @click="submitLogin">登陆</button>
-                <a class="btn btn-success" v-link="{ path: '/auth/regist' }">账户注册</a>
-			</div>           
+            <flexbox style="margin-top:20px">
+                <flexbox-item>
+                    <x-button type="primary" @click="submitLogin">登陆</x-button>
+                </flexbox-item>
+                <flexbox-item>
+                    <x-button type="warn" v-link="{ path: '/auth/regist' }">账户注册</x-button>
+                </flexbox-item>
+            </flexbox>         
 	</div>
 </template>
 
 <script>
     import authAPI from '../api/auth'
     import VueRouter from 'vue-router'
+    import { XInput, Group, XButton,Flexbox,FlexboxItem } from 'vux'
     export default {
         data() {
             return {
@@ -35,24 +36,11 @@
             }
         },
         components: {
-        },
-        computed: {
-            alertText() {
-                if (this.serverMsg) {
-                    return this.serverMsg;
-                }
-                let returnText = "请登陆";
-                if (!this.loginInfo.account && !this.loginInfo.password) {
-                    returnText = "请输入账号密码"
-                } else if (!this.loginInfo.account) {
-                    returnText = "请输入账号"
-                } else if (!this.loginInfo.password) {
-                    returnText = "请输入密码"
-                } else {
-                    return "请登录"
-                }
-                return returnText
-            }
+            XInput,
+            Group,
+            XButton,
+            Flexbox,
+            FlexboxItem
         },
         methods: {
             valid() {
@@ -74,7 +62,7 @@
             }
         },
         ready() {
-            this.$els.account.focus()
+            //this.$els.account.focus()
         }
     }
 </script>
