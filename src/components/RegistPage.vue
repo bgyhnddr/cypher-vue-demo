@@ -2,7 +2,7 @@
 	<div @keyup.enter="UserRegist">
 			<div>
                 <group>
-                    <x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入姓名" is-type="china-name"></x-input>
+                    <x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入账号" is-type="china-name"></x-input>
                 </group>
                 <group>
                     <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
@@ -22,7 +22,8 @@
                 </flexbox-item>
             </flexbox> 
             <div>
-                <toast :show.sync="show" :time="1000" @on-hide="onHide">注册成功</toast>     
+                <toast :show.sync="show1" :time="1000" @on-hide="onHide">注册成功</toast>
+                <toast :show.sync="show2" :time="1000" type="warn">{{errmsg}}</toast>       
             </div>             
 	</div>
 </template>
@@ -34,9 +35,11 @@
     export default {
         data() {
             return {
-                show: false,
+                show1: false,
+                show2: false,
                 state: window.state,
                 serverMsg: "",
+                errmsg:"",
                 loginInfo: {
                     account: "",
                     password: "",
@@ -55,7 +58,7 @@
         },
         methods: {
             valid() {
-                return this.loginInfo.account && this.loginInfo.password == this.loginInfo.insurepwd
+                return this.loginInfo.account && this.loginInfo.password && this.loginInfo.insurepwd
             },
             onHide() {
                 const router = new VueRouter()
@@ -64,12 +67,20 @@
             UserRegist(){
                 var that = this
                 if(that.valid()){
-                    authAPI.regist(that.loginInfo).then(function(result){                   
-                        that.show = true                      
-                    }).catch(function(err){
-                        console.log(err)
-                        that.serverMsg = err
-                    })
+                    if(this.loginInfo.password != this.loginInfo.insurepwd){
+                        that.errmsg = "密码不一致"
+                        that.show2 = true
+                    }else
+                    {
+                        authAPI.regist(that.loginInfo).then(function(result){                   
+                            that.show1 = true                      
+                        }).catch(function(err){
+                            that.errmsg = err
+                            that.show2 = true
+                            console.log(err)
+                            that.serverMsg = err
+                        })
+                    }
                 }
             }
          },

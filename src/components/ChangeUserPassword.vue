@@ -19,7 +19,8 @@
                 </flexbox-item>
             </flexbox> 
             <div>
-                <toast :show.sync="show" :time="1000" @on-hide="onHide">修改成功</toast>     
+                <toast :show.sync="show1" :time="1000" @on-hide="onHide">修改成功</toast>
+                <toast :show.sync="show2" :time="1000" @on-hide="onHide" type="warn">{{errmsg}}</toast>      
             </div>  
 	</div>
 </template>
@@ -31,7 +32,9 @@
     export default {
         data() {
             return {
-                show: false,
+                show1: false,
+                show2: false,
+                errmsg:"",
                 state: window.state,
                 serverMsg: "",
                 pwd: {
@@ -51,21 +54,31 @@
         },
         methods: {
             valid() {
-                 return this.pwd.old_password && this.pwd.new_password == this.pwd.insure_password
+                 return this.pwd.old_password && this.pwd.new_password && this.pwd.insure_password
             },
             onHide() {
-
+                if(this.errmsg =="请先登录"){
+                    const router = new VueRouter()
+                    router.go('login')
+                }
             },
             ChangePwd(){
                 var that = this
                 if(that.valid()){
-                    authAPI.changeuserpwd(that.pwd).then(function(result){
-                        that.show = true
-                        console.log("success")
-                    }).catch(function(err){
-                        console.log(err)
-                        that.serverMsg = err
-                    })
+                    if(this.pwd.new_password != this.pwd.insure_password){
+                        that.errmsg = "密码不一致"
+                        that.show2 = true
+                    }else{
+                        authAPI.changeuserpwd(that.pwd).then(function(result){
+                            that.show1 = true
+                            console.log("success")
+                        }).catch(function(err){
+                            that.errmsg = err
+                            that.show2 = true
+                            console.log(err)
+                            that.serverMsg = err
+                        })
+                    }
                 }
             }
         },

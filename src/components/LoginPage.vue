@@ -2,7 +2,7 @@
 	<div @keyup.enter="submitLogin">
 			<div>
                 <group>
-                    <x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入姓名" is-type="china-name"></x-input>
+                    <x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入账号" is-type="china-name"></x-input>
                 </group>
                 <group>
                     <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
@@ -16,17 +16,22 @@
                 <flexbox-item>
                     <x-button type="warn" v-link="{ path: '/auth/regist' }">账户注册</x-button>
                 </flexbox-item>
-            </flexbox>         
+            </flexbox>
+            <div>
+                <toast :show.sync="show" :time="1000" type="warn">{{errmsg}}</toast>       
+            </div>           
 	</div>
 </template>
 
 <script>
     import authAPI from '../api/auth'
     import VueRouter from 'vue-router'
-    import { XInput, Group, XButton,Flexbox,FlexboxItem } from 'vux'
+    import { Toast,XInput, Group, XButton,Flexbox,FlexboxItem } from 'vux'
     export default {
         data() {
             return {
+                show:false,
+                errmsg:"",
                 state: window.state,
                 serverMsg: "",
                 loginInfo: {
@@ -40,7 +45,8 @@
             Group,
             XButton,
             Flexbox,
-            FlexboxItem
+            FlexboxItem,
+            Toast
         },
         methods: {
             valid() {
@@ -55,6 +61,8 @@
                         that.state.userInfo = result
                         console.log(that.state.userInfo)
                     }).catch(function(err) {
+                        that.errmsg = err
+                        that.show = true
                         console.log(err)
                         that.serverMsg = err
                     })
