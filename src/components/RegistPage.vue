@@ -1,43 +1,45 @@
 <template>
 	<div @keyup.enter="UserRegist">
-			<div class="modal-body">
-				<alert :type="alertType">
-					{{alertText}}
-				</alert>
-				<div class="form-group">
-					<label class="control-label">账号</label>
-					<input v-el:account v-model="loginInfo.account" class="form-control"  type="text">
-                </div>
-				<bs-input :value.sync="loginInfo.password" label="密码" type="password"></bs-input>
-                <bs-input :value.sync="loginInfo.insurepwd" label="再次输入密码" type="password"></bs-input>
+			<div>
+                <group>
+                    <x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入账号" is-type="china-name"></x-input>
+                </group>
+                <group>
+                    <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
+                    <x-input title="密码" :value.sync="loginInfo.password" type="password" placeholder="请输入密码" :equal-with="password"></x-input>
+                </group>
+                <group>
+                    <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
+                    <x-input title="再次输入密码" :value.sync="loginInfo.insurepwd" type="password" placeholder="请再次输入密码" :equal-with="password"></x-input>
+                </group>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success" @click="UserRegist">注册</button>
-                <a class="btn btn-success" v-link="{ path: '/auth/login' }">返回登录</a>
-			</div>
-            <modal :show.sync="show" effect="fade" width="400" class="vux-center">
-                <div slot="modal-body" class="modal-body">注册成功</div>
-                <div slot="modal-footer" class="modal-footer">
-                    <a class="btn btn-success" v-link="{ path: '/auth/login' }">确定</a>
-                </div>
-            </modal>               
+            <flexbox style="margin-top:20px">
+                <flexbox-item>
+                    <x-button type="primary" @click="UserRegist">注册</x-button>
+                </flexbox-item>
+                <flexbox-item>
+                    <x-button type="warn" v-link="{ path: '/auth/login' }">返回登录</x-button>
+                </flexbox-item>
+            </flexbox> 
+            <div>
+                <toast :show.sync="show1" :time="1000" @on-hide="onHide">注册成功</toast>
+                <toast :show.sync="show2" :time="1000" type="warn">{{errmsg}}</toast>       
+            </div>             
 	</div>
 </template>
 
 <script>
-    import {
-        modal,
-        alert,
-        input as bsInput
-    } from 'vue-strap'
     import authAPI from '../api/auth'
     import VueRouter from 'vue-router'
+    import { Toast,XInput, Group, XButton,Flexbox,FlexboxItem } from 'vux'
     export default {
         data() {
             return {
-                show: false,
+                show1: false,
+                show2: false,
                 state: window.state,
                 serverMsg: "",
+                errmsg:"",
                 loginInfo: {
                     account: "",
                     password: "",
@@ -46,49 +48,39 @@
             }
         },
         components: {
-            bsInput,
-            alert,
-            modal
-        },
-        computed: {
-            alertType() {
-                return this.valid() ? "success" : "warning"
-            },
-            alertText() {
-                if (this.serverMsg) {
-                    return this.serverMsg;
-                }
-                let returnText = "注册";
-                if (!this.loginInfo.account && !this.loginInfo.password) {
-                    returnText = "请输入账号密码"
-                } else if (!this.loginInfo.account) {
-                    returnText = "请输入账号"
-                } else if (!this.loginInfo.password && !this.loginInfo.insurepwd) {
-                    returnText = "请输入密码"
-                } else if (this.loginInfo.password != this.loginInfo.insurepwd) {
-                    returnText = "密码不一致"
-                } else {
-                    return "注册"
-                }
-                return returnText
-            }
+            Toast,
+            Group,
+            XInput,
+            Group,
+            XButton,
+            Flexbox,
+            FlexboxItem
         },
         methods: {
             valid() {
-                return this.loginInfo.account && this.loginInfo.password == this.loginInfo.insurepwd
+                return this.loginInfo.account && this.loginInfo.password && this.loginInfo.insurepwd
+            },
+            onHide() {
+                const router = new VueRouter()
+                router.go('login')
             },
             UserRegist(){
                 var that = this
                 if(that.valid()){
-                    authAPI.regist(that.loginInfo).then(function(result){
-                        //that.$vux.vux_alert.show({ content: '注册成功！' })
-                        const router = new VueRouter()
-                        that.show = true
-                        //router.go('login')                        
-                    }).catch(function(err){
-                        console.log(err)
-                        that.serverMsg = err
-                    })
+                    if(this.loginInfo.password != this.loginInfo.insurepwd){
+                        that.errmsg = "密码不一致"
+                        that.show2 = true
+                    }else
+                    {
+                        authAPI.regist(that.loginInfo).then(function(result){                   
+                            that.show1 = true                      
+                        }).catch(function(err){
+                            that.errmsg = err
+                            that.show2 = true
+                            console.log(err)
+                            that.serverMsg = err
+                        })
+                    }
                 }
             }
          },

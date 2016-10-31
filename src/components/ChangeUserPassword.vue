@@ -1,43 +1,40 @@
 <template>
 	<div @keyup.enter="ChangePwd">
-			<div class="modal-body">
-				<alert :type="alertType">
-					{{alertText}}
-				</alert>
-                <div class="form-group">
-					<label class="control-label">旧密码</label>
-					<input v-el:pwd v-model="pwd.old_password" class="form-control"  type="password">
-                </div>               
-                <!--<bs-input v-el:pwd :value.sync="pwd.old_password" label="旧密码" type="password"></bs-input>-->
-				<bs-input :value.sync="pwd.new_password" label="新密码" type="password"></bs-input>
-                <bs-input :value.sync="pwd.insure_password" label="再次输入新密码" type="password"></bs-input>
+			<div>
+                <group>
+                    <x-input title="旧密码" :value.sync="pwd.old_password" type="password" name="username" placeholder="请输入旧密码" is-type="china-name"></x-input>
+                </group>
+                <group>
+                    <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
+                    <x-input title="新密码" :value.sync="pwd.new_password" type="password" placeholder="请输入新密码" :equal-with="password"></x-input>
+                </group>
+                <group>
+                    <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
+                    <x-input title="再次确认新密码" :value.sync="pwd.insure_password" type="password" placeholder="再次确认新密码" :equal-with="password"></x-input>
+                </group>               
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success" @click="ChangePwd">确认修改</button>
-                <!--<a class="btn btn-success" v-link="{ path: '/index' }">返回</a>-->
-			</div>
-            <modal :show.sync="show" effect="fade" width="400" class="vux-center">
-                <div slot="modal-body" class="modal-body">修改成功</div>
-                <div slot="modal-footer" class="modal-footer">
-                    <button type="button" class="btn btn-success" @click="show=false">确定</button>
-                    <!--<a class="btn btn-success" v-link="{ path: '/login' }">确定</a>-->
-                </div>
-            </modal>
+            <flexbox style="margin-top:20px">
+                <flexbox-item>
+                    <x-button type="primary" @click="ChangePwd">确认修改</x-button>
+                </flexbox-item>
+            </flexbox> 
+            <div>
+                <toast :show.sync="show1" :time="1000" @on-hide="onHide">修改成功</toast>
+                <toast :show.sync="show2" :time="1000" @on-hide="onHide" type="warn">{{errmsg}}</toast>      
+            </div>  
 	</div>
 </template>
 
 <script>
-    import {
-        modal,
-        alert,
-        input as bsInput
-    } from 'vue-strap'
     import authAPI from '../api/auth'
     import VueRouter from 'vue-router'
+    import { Toast,XInput, Group, XButton,Flexbox,FlexboxItem } from 'vux'
     export default {
         data() {
             return {
-                show: false,
+                show1: false,
+                show2: false,
+                errmsg:"",
                 state: window.state,
                 serverMsg: "",
                 pwd: {
@@ -48,67 +45,45 @@
             }
         },
         components: {
-            bsInput,
-            alert,
-            modal
-        },
-        computed: {
-            alertType() {
-                return this.valid() ? "success" : "warning"
-            },
-            alertText() {
-                if (this.serverMsg) {
-                    return this.serverMsg;
-                }
-                let returnText = "注册";
-                if (!this.pwd.old_password && !this.pwd.new_password && !this.pwd.insure_password) {
-                    returnText = "请输入账号密码"
-                } else if (!this.pwd.old_password) {
-                    returnText = "请输入账号"
-                } else if (!this.pwd.new_password) {
-                    returnText = "请输入密码"
-                } else if (!this.pwd.insure_password) {
-                    returnText = "密码不一致"
-                } else if (this.pwd.new_password != this.pwd.insure_password) {
-                    returnText = "密码不一致"
-                } else {
-                    return "注册"
-                }
-                return returnText
-            }
+            Toast,
+            Group,
+            XInput,
+            XButton,
+            Flexbox,
+            FlexboxItem
         },
         methods: {
             valid() {
-                 return this.pwd.old_password && this.pwd.new_password == this.pwd.insure_password
+                 return this.pwd.old_password && this.pwd.new_password && this.pwd.insure_password
+            },
+            onHide() {
+                if(this.errmsg =="请先登录"){
+                    const router = new VueRouter()
+                    router.go('login')
+                }
             },
             ChangePwd(){
                 var that = this
                 if(that.valid()){
-                    authAPI.changeuserpwd(that.pwd).then(function(result){
-                        that.show = true
-                        console.log("success")
-                    }).catch(function(err){
-                        console.log(err)
-                        that.serverMsg = err
-                    })
+                    if(this.pwd.new_password != this.pwd.insure_password){
+                        that.errmsg = "密码不一致"
+                        that.show2 = true
+                    }else{
+                        authAPI.changeuserpwd(that.pwd).then(function(result){
+                            that.show1 = true
+                            console.log("success")
+                        }).catch(function(err){
+                            that.errmsg = err
+                            that.show2 = true
+                            console.log(err)
+                            that.serverMsg = err
+                        })
+                    }
                 }
             }
-            // UserRegist(){
-            //     var that = this
-            //     if(that.valid()){
-            //         authAPI.regist(that.loginInfo).then(function(result){
-            //             //that.$vux.vux_alert.show({ content: '注册成功！' })
-            //             const router = new VueRouter()
-            //             router.go('login')                        
-            //         }).catch(function(err){
-            //             console.log(err)
-            //             that.serverMsg = err
-            //         })
-            //     }
-            // }
         },
         ready() {
-            this.$els.pwd.focus()
+            //this.$els.pwd.focus()
         }
     }
 </script>

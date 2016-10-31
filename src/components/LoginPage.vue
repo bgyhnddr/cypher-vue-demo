@@ -1,33 +1,37 @@
 <template>
 	<div @keyup.enter="submitLogin">
-			<div class="modal-body">
-				<alert :type="alertType">
-					{{alertText}}
-				</alert>
-				<div class="form-group">
-					<label class="control-label">账号</label>
-					<input v-el:account v-model="loginInfo.account" class="form-control"  type="text">
-                </div>
-				<bs-input :value.sync="loginInfo.password" label="密码" type="password"></bs-input>
+			<div>
+                <group>
+                    <x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入账号" is-type="china-name"></x-input>
+                </group>
+                <group>
+                    <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
+                    <x-input title="密码" :value.sync="loginInfo.password" type="password" placeholder="请输入密码" :equal-with="password"></x-input>
+                </group>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success" @click="submitLogin">登陆</button>
-                <a class="btn btn-success" v-link="{ path: '/auth/regist' }">账户注册</a>
-			</div>           
+            <flexbox style="margin-top:20px">
+                <flexbox-item>
+                    <x-button type="primary" @click="submitLogin">登陆</x-button>
+                </flexbox-item>
+                <flexbox-item>
+                    <x-button type="warn" v-link="{ path: '/auth/regist' }">账户注册</x-button>
+                </flexbox-item>
+            </flexbox>
+            <div>
+                <toast :show.sync="show" :time="1000" type="warn">{{errmsg}}</toast>       
+            </div>           
 	</div>
 </template>
 
 <script>
-    import {
-        alert,
-        input as bsInput
-    } from 'vue-strap'
-    require('bootstrap3/dist/css/bootstrap.css')
     import authAPI from '../api/auth'
     import VueRouter from 'vue-router'
+    import { Toast,XInput, Group, XButton,Flexbox,FlexboxItem } from 'vux'
     export default {
         data() {
             return {
+                show:false,
+                errmsg:"",
                 state: window.state,
                 serverMsg: "",
                 loginInfo: {
@@ -37,29 +41,12 @@
             }
         },
         components: {
-            bsInput,
-            alert
-        },
-        computed: {
-            alertType() {
-                return this.valid() ? "success" : "warning"
-            },
-            alertText() {
-                if (this.serverMsg) {
-                    return this.serverMsg;
-                }
-                let returnText = "请登陆";
-                if (!this.loginInfo.account && !this.loginInfo.password) {
-                    returnText = "请输入账号密码"
-                } else if (!this.loginInfo.account) {
-                    returnText = "请输入账号"
-                } else if (!this.loginInfo.password) {
-                    returnText = "请输入密码"
-                } else {
-                    return "请登录"
-                }
-                return returnText
-            }
+            XInput,
+            Group,
+            XButton,
+            Flexbox,
+            FlexboxItem,
+            Toast
         },
         methods: {
             valid() {
@@ -73,6 +60,8 @@
                         that.$route.router.go('/employManagement')
                         console.log(that.state.userInfo)
                     }).catch(function(err) {
+                        that.errmsg = err
+                        that.show = true
                         console.log(err)
                         that.serverMsg = err
                     })
@@ -80,7 +69,7 @@
             }
         },
         ready() {
-            this.$els.account.focus()
+            //this.$els.account.focus()
         }
     }
 </script>
