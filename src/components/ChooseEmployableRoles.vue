@@ -1,28 +1,24 @@
 <template>
     <div>
-        <group v-else>
-            <cell v-for="role in employableRolesList" :title="role.brand_role.name" v-link="{path: './brandAuthorization',query: { 
-            employerAccount: userinfo.brand_role.agent_brand_role.agent.user_account,
-            employeeRole: role.brand_role.name
-            }}"></cell>
-        </group>
+        <button class="weui_btn weui_btn_primary" :class="classes" v-for="role in employableRolesList" 
+            v-link="{
+                path: './brandAuthorization',
+                query: { 
+                    employerAccount: userinfo.brand_role.agent_brand_role.agent.user_account,
+                    employeeRole: role.brand_role.name
+                    }
+        }">
+            {{role.brand_role.name}}
+        </button>
     </div>
 </template>
 
 <script>
-    import {
-        Cell,
-        Group
-    } from 'vux'
     import agentInfo from '../api/agentInfo'
     import employment from '../api/employment'
 
 
     export default {
-        components: {
-            Cell,
-            Group,
-        },
         data() {
             return {
                 userinfo:{
@@ -56,9 +52,6 @@
                 console.log("获取用户账号:" + user_account)
                 agentInfo.getBrandInfo({user_account:user_account}).then(function(result) {
                     that.userinfo = result
-                    // console.log("用户账号=" + that.userinfo.brand_role.agent_brand_role.agent.user_account +
-                    //             "品牌名称=" + that.userinfo.name +
-                    //             "用户品牌角色=" + that.userinfo.brand_role.name)
                     that.chooseBrandRole()
                 }).catch(function(err) {
                     window.alert(err)

@@ -32,7 +32,8 @@
         data() {
             return {
                 leftOptions: {
-                    showBack: false
+                    showBack: true,
+                    backText: '返回',
                 }
             }
         },
@@ -42,8 +43,6 @@
                     return 'Home'
                 if (this.$route.path === '/example2')
                     return 'example2'
-                if (this.$route.path === '/employment')
-                    return '成员招募'
                 if (this.$route.path === '/auth/login')
                     return '登录'
                 if (this.$route.path === '/auth/regist')
@@ -52,11 +51,24 @@
                     return '修改密码'
                 if (this.$route.path === '/auth/test')
                     return '测试页面'
+                if (this.$route.path === '/employManagement/index')
+                    return '成员招募'
+                if (this.$route.path === '/employManagement/chooseEmployableRoles')
+                    return '选择招募代理级别'
+                if (this.$route.name === 'BrandAuthorization')
+                    return '品牌商名称'
             }
         },
         methods: {
             scrollTop() {
                 this.$refs.viewBox.$els.viewBoxBody.scrollTop = 0
+            },
+            onClickBack () {
+                if (this.leftOptions.preventGoBack) {
+                    this.$emit('on-click-back')
+                } else {
+                    history.back()
+                }
             }
         }
     }
