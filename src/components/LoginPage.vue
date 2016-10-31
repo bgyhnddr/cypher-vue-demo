@@ -1,14 +1,17 @@
 <template>
 	<div @keyup.enter="submitLogin">
 			<div class="modal-body">
-				<alert :type="alertType">
+				<p>
 					{{alertText}}
-				</alert>
+				</p>
 				<div class="form-group">
 					<label class="control-label">账号</label>
 					<input v-el:account v-model="loginInfo.account" class="form-control"  type="text">
                 </div>
-				<bs-input :value.sync="loginInfo.password" label="密码" type="password"></bs-input>
+                <div class="form-group">
+					<label class="control-label">密码</label>
+					<input v-el:password v-model="loginInfo.password" class="form-control"  type="password">
+                </div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-success" @click="submitLogin">登陆</button>
@@ -18,10 +21,6 @@
 </template>
 
 <script>
-    import {
-        alert,
-        input as bsInput
-    } from 'vue-strap'
     import authAPI from '../api/auth'
     import VueRouter from 'vue-router'
     export default {
@@ -36,13 +35,8 @@
             }
         },
         components: {
-            bsInput,
-            alert
         },
         computed: {
-            alertType() {
-                return this.valid() ? "success" : "warning"
-            },
             alertText() {
                 if (this.serverMsg) {
                     return this.serverMsg;

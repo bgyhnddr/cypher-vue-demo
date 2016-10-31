@@ -1,37 +1,36 @@
 <template>
 	<div @keyup.enter="UserRegist">
 			<div class="modal-body">
-				<alert :type="alertType">
+				<p>
 					{{alertText}}
-				</alert>
+				</p>
 				<div class="form-group">
 					<label class="control-label">账号</label>
 					<input v-el:account v-model="loginInfo.account" class="form-control"  type="text">
                 </div>
-				<bs-input :value.sync="loginInfo.password" label="密码" type="password"></bs-input>
-                <bs-input :value.sync="loginInfo.insurepwd" label="再次输入密码" type="password"></bs-input>
+                <div class="form-group">
+					<label class="control-label">密码</label>
+					<input v-el:account v-model="loginInfo.password" class="form-control"  type="password">
+                </div>
+                <div class="form-group">
+					<label class="control-label">再次输入密码</label>
+					<input v-el:password v-model="loginInfo.insurepwd" class="form-control"  type="password">
+                </div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-success" @click="UserRegist">注册</button>
                 <a class="btn btn-success" v-link="{ path: '/auth/login' }">返回登录</a>
 			</div>
-            <modal :show.sync="show" effect="fade" width="400" class="vux-center">
-                <div slot="modal-body" class="modal-body">注册成功</div>
-                <div slot="modal-footer" class="modal-footer">
-                    <a class="btn btn-success" v-link="{ path: '/auth/login' }">确定</a>
-                </div>
-            </modal>               
+            <div>
+                <toast :show.sync="show" :time="1000" @on-hide="onHide">注册成功</toast>     
+            </div>             
 	</div>
 </template>
 
 <script>
-    import {
-        modal,
-        alert,
-        input as bsInput
-    } from 'vue-strap'
     import authAPI from '../api/auth'
     import VueRouter from 'vue-router'
+    import { Toast, Group } from 'vux'
     export default {
         data() {
             return {
@@ -46,14 +45,10 @@
             }
         },
         components: {
-            bsInput,
-            alert,
-            modal
+            Toast,
+            Group
         },
         computed: {
-            alertType() {
-                return this.valid() ? "success" : "warning"
-            },
             alertText() {
                 if (this.serverMsg) {
                     return this.serverMsg;
@@ -77,14 +72,15 @@
             valid() {
                 return this.loginInfo.account && this.loginInfo.password == this.loginInfo.insurepwd
             },
+            onHide() {
+                const router = new VueRouter()
+                router.go('login')
+            },
             UserRegist(){
                 var that = this
                 if(that.valid()){
-                    authAPI.regist(that.loginInfo).then(function(result){
-                        //that.$vux.vux_alert.show({ content: '注册成功！' })
-                        const router = new VueRouter()
-                        that.show = true
-                        //router.go('login')                        
+                    authAPI.regist(that.loginInfo).then(function(result){                   
+                        that.show = true                      
                     }).catch(function(err){
                         console.log(err)
                         that.serverMsg = err
