@@ -69,7 +69,7 @@
                 if (that.valid()) {
                     authAPI.login(that.loginInfo).then(function(result) {
                         const router = new VueRouter()
-                        router.go('test')
+                        router.go('admin/EmploymentIndex')
                         that.state.userInfo = result
                         console.log(that.state.userInfo)
                     }).catch(function(err) {

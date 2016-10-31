@@ -3,7 +3,7 @@ var sequelize = require('../sequelize')
 
 var employment = sequelize.define(
     'employment', {
-        employment_guid: { type: Sequelize.STRING, primaryKey: true, unique: true },
+        guid: { type: Sequelize.STRING, primaryKey: true, unique: true },
         brand_guid: Sequelize.STRING, 
         employer_user_account: Sequelize.STRING,
         employer_time: Sequelize.DATE,

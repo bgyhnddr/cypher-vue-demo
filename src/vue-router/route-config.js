@@ -4,11 +4,11 @@ export function configRouter(router) {
             component: require('../components/WapMain.vue'),
             subRoutes: {
                 'index': {
-                    component: require('../components/example1.vue')
+                    component: require('../components/LoginPage.vue')
                 },
                 'example2': {
                     component: require('../components/example2.vue')
-                }
+                },
             }
         },
         '/admin': {
@@ -27,6 +27,15 @@ export function configRouter(router) {
                             component: require('../components/PermissionSetting.vue')
                         }
                     }
+                },
+                'employManagement': {
+                    component: require('../components/EmploymentIndex.vue')
+                },
+                'chooseEmployableRoles': {
+                    component: require('../components/ChooseEmployableRoles.vue')
+                },
+                'brandAuthorization':{
+                    component: require('../components/BrandAuthorization.vue')
                 }
             }
         },

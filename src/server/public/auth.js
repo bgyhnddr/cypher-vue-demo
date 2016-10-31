@@ -14,6 +14,7 @@ var exec = {
             if (result == null) {
                 return Promise.reject("账号不存在")
             } else {
+                console.log(result.password)
                 if (result.password != password) {
                     return Promise.reject("密码错误")
                 } else {
