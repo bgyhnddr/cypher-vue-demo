@@ -73,6 +73,9 @@ export function configRouter(router) {
                     component: require('../components/BrandAuthorization.vue')
                 }
             }
+        },
+        '/test': {
+            component: require('../components/Test.vue')
         }
     })
 
