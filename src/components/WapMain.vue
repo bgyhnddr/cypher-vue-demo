@@ -54,6 +54,8 @@
                     return '测试页面'
                 if (this.$route.path === '/brand')
                     return '品牌商首页'
+                if (this.$route.path === '/BrandManagement/audit')
+                    return '审核页'
             }
         },
         methods: {

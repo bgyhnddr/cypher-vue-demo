@@ -7,5 +7,8 @@ export default {
     },
     getBrandInfo(params){
         return httpRequest.post(path + 'getBrandInfo', params)
+    },
+    getAuditList(){
+        return httpRequest.get(path + 'getAuditList')
     }
 }
