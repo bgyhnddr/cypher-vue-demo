@@ -8,9 +8,9 @@ var port = process.env.PORT || config.dev.port
 
 var app = express()
 serverEntry(app)
-app.use(express.static('./dist'))
+app.use("/", express.static('./dist'))
 
-module.exports = app.listen(port, function(err) {
+module.exports = app.listen(port, function (err) {
     if (err) {
         console.log(err)
         return

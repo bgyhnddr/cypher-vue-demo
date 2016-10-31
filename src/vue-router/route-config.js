@@ -34,7 +34,7 @@ export function configRouter(router) {
                 'chooseEmployableRoles': {
                     component: require('../components/ChooseEmployableRoles.vue')
                 },
-                'brandAuthorization':{
+                'brandAuthorization': {
                     component: require('../components/BrandAuthorization.vue')
                 }
             }
@@ -53,6 +53,24 @@ export function configRouter(router) {
                 },
                 'test': {
                     component: require('../components/testPage.vue')
+                },
+            }
+        },
+        '/employManagement': {
+            component: require('../components/WapMain.vue'),
+            subRoutes: {
+                '': {
+                    component: require('../components/EmploymentIndex.vue')
+                },
+                'index': {
+                    component: require('../components/EmploymentIndex.vue')
+                },
+                'chooseEmployableRoles': {
+                    component: require('../components/ChooseEmployableRoles.vue')
+                },
+                'brandAuthorization': {
+                    name: 'BrandAuthorization',
+                    component: require('../components/BrandAuthorization.vue')
                 }
             }
         },

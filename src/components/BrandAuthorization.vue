@@ -1,10 +1,10 @@
 <template>
-    <p>*点击右上方分享，发送代理授权申请表</p>
     <div>
-        <img alt="logo"/>
+        <p>*点击右上方分享，发送代理授权申请表</p>
+        <img class="vux-x-img ximg-demo" alt="logo"/>
         <p>授权证书 <p>
         <div>
-            <img alt="头像"/></p>
+            <img class="vux-x-img ximg-demo" alt="头像"/></p>
             <p>兹授权</p>
             <p>姓名<label>张三</label></p>
             <p>>微信<label>AA</label></p>
@@ -15,6 +15,7 @@
             <p>授权编号<label>{{employmentData.guid}}</label></p>
             <p>授权期限<label>{{date.start}}</label>至<label>{{date.deadline}}</label></p>
             <p>授权单位<label>{{employmentData.company_name}}</label></p>
+            <button class="weui_btn weui_btn_primary" :class="classes" @click="goNext">回到招募首页</button>
         </div>
 	</div>
 </template>
@@ -45,12 +46,20 @@
                     var todayDate = new Date(Date.parse(new Date().toLocaleDateString()));
                     that.date.start =  new Date().toLocaleDateString()
                     that.date.deadline = new Date(todayDate.getTime() + 30 * 24 * 3600 * 1000).toLocaleDateString()
-                    console.log(JSON.stringify(that.date))
                 }).catch(function(err) {
                     alert(err)
                 })
+            },
+            goNext(){
+                var that = this
+                that.$route.router.go('/employManagement/index')
             }
         },
+        // event:{
+        //     title(){
+        //         return this.employmentData.company_name
+        //     }
+        // },
         ready() {
             console.log(JSON.stringify(this.$route.matched.queryParams));
             this.employer.user_account = this.$route.matched.queryParams.employerAccount
