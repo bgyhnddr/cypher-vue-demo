@@ -56,15 +56,20 @@ export function configRouter(router) {
                 },
             }
         },
-        'employManagement': {
-            component: require('../components/EmploymentIndex.vue')
-        },
-        'chooseEmployableRoles': {
-            component: require('../components/ChooseEmployableRoles.vue')
-        },
-        'brandAuthorization/:account/:employableRole': {
-            name: 'BrandAuthorization',
-            component: require('../components/BrandAuthorization.vue')
+        '/employManagement': {
+            component: require('../components/WapMain.vue'),
+            subRoutes: {
+                '': {
+                    component: require('../components/EmploymentIndex.vue')
+                },
+                'chooseEmployableRoles': {
+                    component: require('../components/ChooseEmployableRoles.vue')
+                },
+                'brandAuthorization/:account/:employableRole': {
+                    name: 'BrandAuthorization',
+                    component: require('../components/BrandAuthorization.vue')
+                }
+            }
         }
     })
 
