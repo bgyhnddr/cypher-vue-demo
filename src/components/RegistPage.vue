@@ -31,7 +31,14 @@
 <script>
     import authAPI from '../api/auth'
     import VueRouter from 'vue-router'
-    import { Toast,XInput, Group, XButton,Flexbox,FlexboxItem } from 'vux'
+    import {
+        Toast,
+        XInput,
+        Group,
+        XButton,
+        Flexbox,
+        FlexboxItem
+    } from 'vux'
     export default {
         data() {
             return {
@@ -39,11 +46,11 @@
                 show2: false,
                 state: window.state,
                 serverMsg: "",
-                errmsg:"",
+                errmsg: "",
                 loginInfo: {
                     account: "",
                     password: "",
-                    insurepwd:""
+                    insurepwd: ""
                 }
             }
         },
@@ -62,19 +69,18 @@
             },
             onHide() {
                 const router = new VueRouter()
-                router.go('login')
+                this.$router.go('login')
             },
-            UserRegist(){
+            UserRegist() {
                 var that = this
-                if(that.valid()){
-                    if(this.loginInfo.password != this.loginInfo.insurepwd){
+                if (that.valid()) {
+                    if (this.loginInfo.password != this.loginInfo.insurepwd) {
                         that.errmsg = "密码不一致"
                         that.show2 = true
-                    }else
-                    {
-                        authAPI.regist(that.loginInfo).then(function(result){                   
-                            that.show1 = true                      
-                        }).catch(function(err){
+                    } else {
+                        authAPI.regist(that.loginInfo).then(function(result) {
+                            that.show1 = true
+                        }).catch(function(err) {
                             that.errmsg = err
                             that.show2 = true
                             console.log(err)
@@ -83,7 +89,7 @@
                     }
                 }
             }
-         },
+        },
         ready() {
             // this.$els.account.focus()
         }
