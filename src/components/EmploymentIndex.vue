@@ -1,6 +1,5 @@
 <template>
     <div>
-        <div class="weui_cells_title">&nbsp</div>
         <a class="weui_cell"  v-link="{path: 'employManagement/chooseEmployableRoles'}" >
             <div class="weui_cell_hd">
                 <img  alt="头像" >
