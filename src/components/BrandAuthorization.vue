@@ -15,56 +15,61 @@
             <p>授权编号<label>{{employmentData.guid}}</label></p>
             <p>授权期限<label>{{date.start}}</label>至<label>{{date.deadline}}</label></p>
             <p>授权单位<label>{{employmentData.company_name}}</label></p>
-            <button class="weui_btn weui_btn_primary" :class="classes" @click="goNext">回到招募首页</button>
+            <button class="weui_btn weui_btn_primary" :class="classes" @click="goBackToEmploymentIndex">回到招募首页</button>
         </div>
-	</div>
+    </div>
 </template>
 <script>
+    import authAPI from '../api/auth'
     import employment from '../api/employment'
 
     export default {
         data() {
             return {
-                employer:{
-                    user_account:"",
-                    employee_role:"",
+                employer: {
+                    user_account: "",
+                    employee_role: "",
                 },
-                employmentData:{},
-                date:{
-                    start:"",
-                    deadline:""
+                employmentData: {},
+                date: {
+                    start: "",
+                    deadline: ""
                 }
             }
         },
-        methods:{
-            getEmploymentInfo(){
+        methods: {
+            getEmploymentInfo() {
                 var that = this
                 console.log("正在获取品牌资料")
-                employment.getBrandInfo({user_account:this.employer.user_account}).then(function(result) {
+                employment.getBrandInfo({
+                    user_account: this.employer.user_account
+                }).then(function(result) {
                     console.log(JSON.stringify(result))
                     that.employmentData = result
                     var todayDate = new Date(Date.parse(new Date().toLocaleDateString()));
-                    that.date.start =  new Date().toLocaleDateString()
+                    that.date.start = new Date().toLocaleDateString()
                     that.date.deadline = new Date(todayDate.getTime() + 30 * 24 * 3600 * 1000).toLocaleDateString()
                 }).catch(function(err) {
                     alert(err)
                 })
             },
-            goNext(){
-                var that = this
-                that.$route.router.go('/employManagement/index')
+            goBackToEmploymentIndex() {
+                this.$route.router.go('/employManagement')
             }
         },
-        // event:{
-        //     title(){
-        //         return this.employmentData.company_name
-        //     }
-        // },
         ready() {
-            console.log(JSON.stringify(this.$route.matched.queryParams));
-            this.employer.user_account = this.$route.matched.queryParams.employerAccount
-            this.employer.employee_role = this.$route.matched.queryParams.employeeRole
-            this.getEmploymentInfo()
+            var that = this
+
+            this.employer.user_account = this.$route.params.account
+            this.employer.employee_role = this.$route.params.employableRole
+            authAPI.getUser().then(function(result) {
+                if (result.name == that.employer.user_account) {
+                    that.getEmploymentInfo()
+                } else {
+                    window.alert("跳转到用户填写界面")
+                }
+            })
+
         }
     }
 </script>
