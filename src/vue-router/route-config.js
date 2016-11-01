@@ -88,6 +88,9 @@ export function configRouter(router) {
             subRoutes: {
                 'audit': {
                     component: require('../components/AuditList.vue')
+                },
+                'auditInfo': {
+                    component: require('../components/AuditInfo.vue')
                 }
             }
         }
