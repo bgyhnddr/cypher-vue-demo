@@ -4,6 +4,7 @@ var agent_brand_role = require('./models/agent_brand_role')
 var brand_role = require('./models/brand_role')
 var employable_rule = require('./models/employable_rule')
 var brand_detail = require('./models/brand_detail')
+var brand_employment_meta = require('./models/brand_employment_meta')
 
 module.exports = function() {
     return Promise.all([
@@ -19,5 +20,13 @@ module.exports = function() {
         employable_rule.create({ employer_brand_role_code: "brand_role1", employable_brand_role_code: "brand_role4" }),
         employable_rule.create({ employer_brand_role_code: "brand_role1", employable_brand_role_code: "brand_role5" }),
         agent.create({ user_account: "admin", guid: "agent1" }),
+        brand_employment_meta.create({ brand_guid: "brand1", key: "申请人头像", type: "Object", required: true }),
+        brand_employment_meta.create({ brand_guid: "brand1", key: "申请人", type: "String", required: true }),
+        brand_employment_meta.create({ brand_guid: "brand1", key: "微信号", type: "String", required: true }),
+        brand_employment_meta.create({ brand_guid: "brand1", key: "证件类型", type: "List", required: true }),
+        brand_employment_meta.create({ brand_guid: "brand1", key: "证件号", type: "String", required: true }),
+        brand_employment_meta.create({ brand_guid: "brand1", key: "通讯地址", type: "String", required: true }),
+        brand_employment_meta.create({ brand_guid: "brand1", key: "详细地址", type: "String", required: true }),
+
     ])
 }
