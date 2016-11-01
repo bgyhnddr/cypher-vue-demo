@@ -13,7 +13,7 @@
             <div slot="icon">申请人：{{item.employment_details[2].value}}</div>
             <!--{{$index}}-->
             <div slot="icon">申请级别：{{item.employment_details[1].value}}</div>
-            <div slot="icon">申请时间：{{item.employer_time}}</div>
+            <div slot="icon">申请时间：{{new Date(item.employer_time).Format('yyyy-MM-dd hh:mm:ss')}}</div>
             <x-button mini v-link="{path: '/employManagement/auditInfo?employmentID='+item.guid+'&brandID='+item.brand_guid}">审核</x-button>
         </cell>
     </group>
@@ -33,13 +33,13 @@
             return {
                 items: [],
                 List: [{
-                    key: "timeasc",
+                    key: "timedesc",
                     value: "时间由近到远"
                 }, {
-                    key: "timedesc",
+                    key: "timeasc",
                     value: "时间由远到近"
                 }],
-                value: "timeasc"
+                value: "timedesc"
             }
         },
         components: {
@@ -55,7 +55,7 @@
                     key: e
                 }).then(function(result) {
                     that.items = result
-                    console.log(result[0].employer_time.toLocaleString())
+                    console.log()
                 }).catch(function(err) {
                     console.log(err)
                     that.serveMsg = err

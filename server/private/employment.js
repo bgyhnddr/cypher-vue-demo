@@ -89,7 +89,7 @@ var exec = {
         var employment = require('../../db/models/employment')
         var employment_detail = require('../../db/models/employment_detail')
         var selectMsg = req.body.key
-        var select = "employer_time asc"
+        var select = "employer_time desc"
 
         if (selectMsg != null) {
             switch (selectMsg) {
