@@ -6,6 +6,8 @@ var employable_rule = require('./models/employable_rule')
 var brand_detail = require('./models/brand_detail')
 var employment = require('./models/employment')
 var employment_detail = require('./models/employment_detail')
+var brand_employment_meta = require('./models/brand_employment_meta')
+
 module.exports = function() {
     return Promise.all([
         brand.create({ guid: "brand1", name: "adminbrand", register_time: new Date(), company_name: "A公司" }),
@@ -41,6 +43,13 @@ module.exports = function() {
         employment_detail.create({ employment_guid: "ep3", key: "level", value: "一级代理" }),
         employment_detail.create({ employment_guid: "ep3", key: "wx", value: "wxC" }),
         employment_detail.create({ employment_guid: "ep3", key: "phone", value: "333" }),
-        employment_detail.create({ employment_guid: "ep3", key: "address", value: "地球" })
+        employment_detail.create({ employment_guid: "ep3", key: "address", value: "地球" }),
+        brand_employment_meta.create({ brand_guid: "brand1", key: "申请人头像", type: "Object", required: true }),
+        brand_employment_meta.create({ brand_guid: "brand1", key: "申请人", type: "String", required: true }),
+        brand_employment_meta.create({ brand_guid: "brand1", key: "微信号", type: "String", required: true }),
+        brand_employment_meta.create({ brand_guid: "brand1", key: "证件类型", type: "List", required: true }),
+        brand_employment_meta.create({ brand_guid: "brand1", key: "证件号", type: "String", required: true }),
+        brand_employment_meta.create({ brand_guid: "brand1", key: "通讯地址", type: "String", required: true }),
+        brand_employment_meta.create({ brand_guid: "brand1", key: "详细地址", type: "String", required: true })
     ])
 }
