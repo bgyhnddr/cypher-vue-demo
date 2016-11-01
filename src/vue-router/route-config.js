@@ -12,7 +12,9 @@ export function configRouter(router) {
             }
         },
         '/admin': {
-            component: require('../components/Master.vue'),
+            component: function(reslove) {
+                return require(['../components/Master.vue'], reslove)
+            },
             subRoutes: {
                 'RBACManagement': {
                     component: require('../components/RBACManagement.vue'),
@@ -57,7 +59,9 @@ export function configRouter(router) {
             }
         },
         '/employManagement': {
-            component: require('../components/WapMain.vue'),
+            component: function(reslove) {
+                return require(['../components/WapMain.vue'], reslove)
+            },
             subRoutes: {
                 '': {
                     component: require('../components/EmploymentIndex.vue')
@@ -75,7 +79,9 @@ export function configRouter(router) {
             component: require('../components/Test.vue')
         },
         '/BrandManagement': {
-            component: require('../components/WapMain.vue'),
+            component: function(reslove) {
+                return require(['../components/WapMain.vue'], reslove)
+            },
             subRoutes: {
                 'audit': {
                     component: require('../components/AuditList.vue')
