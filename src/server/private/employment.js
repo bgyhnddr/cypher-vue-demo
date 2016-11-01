@@ -88,6 +88,19 @@ var exec = {
         var userinfo = req.session.userInfo
         var employment = require('../../db/models/employment')
         var employment_detail = require('../../db/models/employment_detail')
+        var selectMsg = req.body.key
+        var select = "employer_time asc"
+
+        if (selectMsg != null) {
+            switch (selectMsg) {
+                case "timeasc":
+                    select = "employer_time asc"
+                    break
+                case "timedesc":
+                    select = "employer_time desc"
+                    break
+            }
+        }
 
         employment_detail.belongsTo(employment)
         employment.hasMany(employment_detail)
@@ -95,36 +108,73 @@ var exec = {
 
         if (userinfo) {
             var account = userinfo.name
-            return employment_detail.findAll({
-                    include: {
-                        model: employment,
-                        where: {
-                            audit_user_account: account
-                        }
-                    }
-                })
-                // return employment.findAll({
-                //     where: {
-                //         audit_user_account:account
-                //     }
-                // }).then(function(result){
-                //     if(result!=null){
-                //         AuditList.list = result
-                //         return AuditList
-                //     }
-                //     return employment_detail.findAll({
-                //         include: [{
-                //             model: employment,
-                //             where: {
-                //                 guid:result[0].guid
-                //             }
-                //         }]
-                //     })
-
-            // })
+            return employment.findAll({
+                where: {
+                    audit_user_account: account,
+                    status: "未通过"
+                },
+                include: {
+                    model: employment_detail
+                },
+                order: select
+            })
         } else {
             return Promise.reject("请先登录")
         }
+    },
+    getAuditInfo(req, res, next) {
+        var auditID = req.body.auditID
+        var brandID = req.body.brandID
+        var employment = require('../../db/models/employment')
+        var employment_detail = require('../../db/models/employment_detail')
+        var brand = require('../../db/models/brand')
+        employment_detail.belongsTo(employment)
+        employment.belongsTo(brand)
+        return employment_detail.findAll({
+            include: {
+                model: employment,
+                where: {
+                    guid: auditID
+                },
+                include: {
+                    model: brand,
+                    where: {
+                        guid: brandID
+                    }
+                }
+            },
+        })
+    },
+    passAudit(req, res, next) {
+        var auditID = req.body.auditID
+        var employment = require('../../db/models/employment')
+        return employment.findOne({
+            where: {
+                guid: auditID
+            }
+        }).then(function(result) {
+            result.status = "已通过"
+            return result.save()
+        }).then(function() {
+            return "success"
+        })
+
+    },
+    rejectAudit(req, res, next) {
+        var auditID = req.body.auditID
+        var reason = req.body.reason
+        var employment = require('../../db/models/employment')
+        return employment.findOne({
+            where: {
+                guid: auditID
+            }
+        }).then(function(result) {
+            result.status = "已拒绝"
+            result.reject_reason = reason
+            return result.save()
+        }).then(function() {
+            return "success"
+        })
     }
 }
 

@@ -57,13 +57,17 @@
                     return '选择招募代理级别'
                 if (this.$route.name === 'BrandAuthorization')
                     return '品牌商名称'
+                if (this.$route.name === '/employManagement/audit')
+                    return '资料审核'
+                if (this.$route.name === '/employManagement/auditInfo')
+                    return '审核详情'
             }
         },
         methods: {
             scrollTop() {
                 this.$refs.viewBox.$els.viewBoxBody.scrollTop = 0
             },
-            onClickBack () {
+            onClickBack() {
                 if (this.leftOptions.preventGoBack) {
                     this.$emit('on-click-back')
                 } else {

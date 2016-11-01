@@ -71,18 +71,16 @@ export function configRouter(router) {
                 'brandAuthorization': {
                     name: 'BrandAuthorization',
                     component: require('../components/BrandAuthorization.vue')
-                }
-            }
-        },
-        '/BrandManagement': {
-            component: require('../components/WapMain.vue'),
-            subRoutes: {
+                },
                 'audit': {
                     component: require('../components/AuditList.vue')
+                },
+                'auditInfo': {
+                    component: require('../components/AuditInfo.vue')
                 }
             }
         }
-        
+
     })
 
     router.redirect({
