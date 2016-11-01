@@ -72,19 +72,12 @@ export function configRouter(router) {
                 'brandAuthorization/:account/:employableRole': {
                     name: 'BrandAuthorization',
                     component: require('../components/BrandAuthorization.vue')
-                }
-            }
-        },
-        '/test': {
-            component: require('../components/Test.vue')
-        },
-        '/BrandManagement': {
-            component: function(reslove) {
-                return require(['../components/WapMain.vue'], reslove)
-            },
-            subRoutes: {
+                },
                 'audit': {
                     component: require('../components/AuditList.vue')
+                },
+                'auditInfo': {
+                    component: require('../components/AuditInfo.vue')
                 }
             }
         }

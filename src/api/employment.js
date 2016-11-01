@@ -5,10 +5,19 @@ export default {
     getEmployableRoles(params) {
         return httpRequest.post(path + 'getEmployableRoles', params)
     },
-    getBrandInfo(params){
+    getBrandInfo(params) {
         return httpRequest.post(path + 'getBrandInfo', params)
     },
-    getAuditList(){
-        return httpRequest.get(path + 'getAuditList')
+    getAuditList(params) {
+        return httpRequest.post(path + 'getAuditList', params)
+    },
+    getAuditInfo(params) {
+        return httpRequest.post(path + 'getAuditInfo', params)
+    },
+    passAudit(params) {
+        return httpRequest.post(path + 'passAudit', params)
+    },
+    rejectAudit(params) {
+        return httpRequest.post(path + 'rejectAudit', params)
     }
 }
