@@ -62,13 +62,10 @@ export function configRouter(router) {
                 '': {
                     component: require('../components/EmploymentIndex.vue')
                 },
-                'index': {
-                    component: require('../components/EmploymentIndex.vue')
-                },
                 'chooseEmployableRoles': {
                     component: require('../components/ChooseEmployableRoles.vue')
                 },
-                'brandAuthorization': {
+                'brandAuthorization/:account/:employableRole': {
                     name: 'BrandAuthorization',
                     component: require('../components/BrandAuthorization.vue')
                 }
@@ -85,7 +82,7 @@ export function configRouter(router) {
                 }
             }
         }
-        
+
     })
 
     router.redirect({

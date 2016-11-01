@@ -60,8 +60,8 @@
         ready() {
             var that = this
 
-            this.employer.user_account = this.$route.params.employerAccount
-            this.employer.employee_role = this.$route.params.employeeRole
+            this.employer.user_account = this.$route.params.account
+            this.employer.employee_role = this.$route.params.employableRole
             authAPI.getUser().then(function(result) {
                 if (result.name == that.employer.user_account) {
                     that.getEmploymentInfo()
