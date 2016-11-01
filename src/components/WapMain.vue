@@ -51,7 +51,7 @@
                     return '修改密码'
                 if (this.$route.path === '/auth/test')
                     return '测试页面'
-                if (this.$route.path === '/employManagement/index')
+                if (this.$route.path === '/employManagement')
                     return '成员招募'
                 if (this.$route.path === '/employManagement/chooseEmployableRoles')
                     return '选择招募代理级别'
@@ -63,7 +63,7 @@
             scrollTop() {
                 this.$refs.viewBox.$els.viewBoxBody.scrollTop = 0
             },
-            onClickBack () {
+            onClickBack() {
                 if (this.leftOptions.preventGoBack) {
                     this.$emit('on-click-back')
                 } else {
