@@ -1,7 +1,8 @@
 <template>
     <div>
         <button class="weui_btn weui_btn_primary" :class="classes" v-for="role in employableRolesList"  
-         v-link="{path: '/employManagement/brandAuthorization/'+userinfo.brand_role.agent_brand_role.agent.user_account+'/'+role.brand_role.name}">
+         v-link="{path: '/employManagement/brandAuthorization/'+userinfo.brand_role.agent_brand_role.agent.user_account
+                    +'/'+role.brand_role.name + '/' + startTime}">
             {{role.brand_role.name}}
         </button>
     </div>
@@ -22,7 +23,7 @@
                     }
                 },
                 employableRolesList: [],
-                link: ""
+                startTime: ""
             }
         },
         methods: {
@@ -51,10 +52,15 @@
                 }).catch(function(err) {
                     window.alert(err)
                 })
+            },
+            createDealine() {
+                this.startTime = new Date().getTime()
+                console.log(new Date(this.startTime))
             }
         },
         ready() {
             this.getPersonalInfo()
+            this.createDealine()
         }
     }
 </script>

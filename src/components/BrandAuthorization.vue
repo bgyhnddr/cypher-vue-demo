@@ -45,9 +45,8 @@
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
                     that.employmentData = result
-                    var todayDate = new Date(Date.parse(new Date().toLocaleDateString()));
-                    that.date.start = new Date().toLocaleDateString()
-                    that.date.deadline = new Date(todayDate.getTime() + 30 * 24 * 3600 * 1000).toLocaleDateString()
+                    var startDate = new Date(that.date.start)
+                    that.date.deadline = new Date(startDate.getTime() + 30 * 24 * 3600 * 1000).Format('yyyy-MM-dd')
                 }).catch(function(err) {
                     alert(err)
                 })
@@ -60,11 +59,13 @@
             var that = this
             this.employer.user_account = this.$route.params.account
             this.employer.employee_role = this.$route.params.employableRole
+            var startTime = this.$route.params.startTime
+            this.date.start = new Date(parseInt(startTime)).Format('yyyy-MM-dd')
             authAPI.getUser().then(function(result) {
                 if (result.name == that.employer.user_account) {
                     that.getEmploymentInfo()
                 } else {
-                    that.$route.router.go('/employManagement/fillInEmployment/' + that.employer.user_account + '/' + that.employer.employee_role)
+                    that.$route.router.go('/employManagement/fillInEmployment/' + that.employer.user_account + '/' + that.employer.employee_role + '/' + parseInt(startTime))
                 }
             })
 
