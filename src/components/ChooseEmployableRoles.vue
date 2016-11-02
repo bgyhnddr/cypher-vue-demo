@@ -2,7 +2,7 @@
     <div>
         <button class="weui_btn weui_btn_primary" :class="classes" v-for="role in employableRolesList"  
          v-link="{path: '/employManagement/brandAuthorization/'+userinfo.brand_role.agent_brand_role.agent.user_account
-                    +'/'+role.brand_role.name + '/' + startTime}">
+                    +'/'+role.employable_brand_role_code + '/' + startTime}">
             {{role.brand_role.name}}
         </button>
     </div>
@@ -36,6 +36,7 @@
                     if (result.roleCount == 0) {
                         console.log("找不到你可以招募的级别")
                     } else {
+                        console.log(JSON.stringify(result))
                         that.employableRolesList = result.employableRoles
                     }
                 })

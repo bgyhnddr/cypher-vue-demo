@@ -75,7 +75,11 @@ export function configRouter(router) {
                 },
                 'fillInEmployment/:account/:employableRole/:startTime': {
                     component: require('../components/FillInEmployment.vue')
+                },
+                'employmentSubmission': {
+                    component: require('../components/EmploymentSubmission.vue')
                 }
+
             }
         },
         '/test': {
