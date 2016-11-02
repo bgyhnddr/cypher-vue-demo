@@ -25,8 +25,8 @@
     </flexbox>
     <div style="height: 1000px">
         <dialog :show.sync="show" class="dialog-demo">
-            <group title="textarea">
-                <x-textarea :value.sync="reason" placeholder="请填写详细信息" :show-counter="false"></x-textarea>
+            <group title="打回理由">
+                <x-textarea :value.sync="reason" placeholder="填写打回理由" :show-counter="false"></x-textarea>
             </group>
             <flexbox>
                 <flexbox-item>
@@ -67,7 +67,7 @@
                 showAlert: false,
                 show: false,
                 reason: "",
-                List: ['1', '2','3','4','5','6'],
+                List: ['1', '2', '3', '4', '5', '6'],
                 auditInfo: {
                     account: "",
                     brand: "",

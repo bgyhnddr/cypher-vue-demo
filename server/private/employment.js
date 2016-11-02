@@ -118,7 +118,7 @@ var exec = {
             return employment.findAll({
                 where: {
                     audit_user_account: account,
-                    status: "未通过"
+                    status: "未审核"
                 },
                 include: [
                     { model: employment_detail },
@@ -161,7 +161,9 @@ var exec = {
                 guid: auditID
             }
         }).then(function(result) {
-            result.status = "已通过"
+            result.status = "已审核"
+            result.audit_time = new Date()
+            result.audit_result = "已通过"
             return result.save()
         }).then(function() {
             return "success"
@@ -177,7 +179,9 @@ var exec = {
                 guid: auditID
             }
         }).then(function(result) {
-            result.status = "已拒绝"
+            result.status = "已审核"
+            result.audit_time = new Date()
+            result.audit_result = "已拒绝"
             result.reject_reason = reason
             return result.save()
         }).then(function() {
