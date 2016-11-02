@@ -6,6 +6,7 @@ var employable_rule = require('./models/employable_rule')
 var brand_detail = require('./models/brand_detail')
 var employment = require('./models/employment')
 var employment_detail = require('./models/employment_detail')
+var employment_term = require('./models/employment_term')
 module.exports = function() {
     return Promise.all([
         brand.create({ guid: "brand1", name: "adminbrand", register_time: new Date(), company_name: "A公司" }),

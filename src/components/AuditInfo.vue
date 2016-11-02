@@ -7,7 +7,10 @@
         <div>      
             <cell><div slot="icon">用户名：{{auditInfo.account}}</div></cell>
             <cell><div slot="icon">授权品牌：{{auditInfo.brand}}</div></cell>
-            <cell><div slot="icon">授权上级：{{auditInfo.employer}}</div></cell>
+            <cell>
+                <div slot="icon">授权上级：{{auditInfo.employer}}</div>
+                <x-button type="default">查看授权证书</x-button>
+            </cell>
             <cell><div slot="icon">姓名：{{auditInfo.name}}</div></cell>
             <cell><div slot="icon">微信号：{{auditInfo.wx}}</div></cell>
             <cell><div slot="icon">手机号：{{auditInfo.phone}}</div></cell>

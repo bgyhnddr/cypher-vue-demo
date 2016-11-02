@@ -156,18 +156,42 @@ var exec = {
     passAudit(req, res, next) {
         var auditID = req.body.auditID
         var employment = require('../../db/models/employment')
-        return employment.findOne({
-            where: {
-                guid: auditID
-            }
-        }).then(function(result) {
-            result.status = "已审核"
-            result.audit_time = new Date()
-            result.audit_result = "已通过"
-            return result.save()
+        var employment_term = require('../../db/models/employment_term')
+
+        return Promise.all([
+            employment.findOne({
+                where: {
+                    guid: auditID
+                }
+            }),
+            employment_term.create({
+                employment_guid: auditID,
+                term_from: new Date(),
+                term_to: new Date()
+            })
+        ]).then(function(result) {
+            result[0].status = "已审核"
+            result[0].audit_time = new Date()
+            result[0].audit_result = "已通过"
+            return result[0].save()
         }).then(function() {
             return "success"
         })
+
+        // return employment.findOne({
+        //     where: {
+        //         guid: auditID
+        //     }
+        // }).then(function(result) {
+        //     result.status = "已审核"
+        //     result.audit_time = new Date()
+        //     result.audit_result = "已通过"
+        //     return result.save()
+        // }).then(function(result) {
+        //     return 
+        // }).then(function(result) {
+        //     return "success"
+        // })
 
     },
     rejectAudit(req, res, next) {
