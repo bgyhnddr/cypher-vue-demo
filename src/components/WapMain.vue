@@ -55,12 +55,14 @@
                     return '成员招募'
                 if (this.$route.path === '/employManagement/chooseEmployableRoles')
                     return '选择招募代理级别'
-                if (this.$route.name === 'BrandAuthorization')
+                if (this.$route.path === 'BrandAuthorization')
                     return '品牌商名称'
-                if (this.$route.name === '/employManagement/audit')
+                if (this.$route.path === '/employManagement/audit')
                     return '资料审核'
-                if (this.$route.name === '/employManagement/auditInfo')
+                if (this.$route.path === '/employManagement/auditInfo')
                     return '审核详情'
+                if (this.$route.path === '/employManagement/employmentHistory')
+                    return '招募历史'
             }
         },
         methods: {
