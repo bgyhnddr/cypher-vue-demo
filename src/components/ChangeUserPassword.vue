@@ -2,15 +2,15 @@
 	<div @keyup.enter="ChangePwd">
 			<div>
                 <group>
-                    <x-input title="旧密码" :value.sync="pwd.old_password" type="password" name="username" placeholder="请输入旧密码" is-type="china-name"></x-input>
+                    <x-input title="旧密码" :value.sync="pwd.old_password" type="password" name="username" placeholder="请输入旧密码"></x-input>
                 </group>
                 <group>
                     <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
-                    <x-input title="新密码" :value.sync="pwd.new_password" type="password" placeholder="请输入新密码" :equal-with="password"></x-input>
+                    <x-input title="新密码" :value.sync="pwd.new_password" type="password" placeholder="请输入新密码"></x-input>
                 </group>
                 <group>
                     <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
-                    <x-input title="再次确认新密码" :value.sync="pwd.insure_password" type="password" placeholder="再次确认新密码" :equal-with="password"></x-input>
+                    <x-input title="再次确认新密码" :value.sync="pwd.insure_password" type="password" placeholder="再次确认新密码" :equal-with="pwd.new_password"></x-input>
                 </group>               
 			</div>
             <flexbox style="margin-top:20px">

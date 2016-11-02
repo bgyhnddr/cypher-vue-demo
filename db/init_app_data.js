@@ -6,6 +6,7 @@ var employable_rule = require('./models/employable_rule')
 var brand_detail = require('./models/brand_detail')
 var employment = require('./models/employment')
 var employment_detail = require('./models/employment_detail')
+var employment_term = require('./models/employment_term')
 module.exports = function() {
     return Promise.all([
         brand.create({ guid: "brand1", name: "adminbrand", register_time: new Date(), company_name: "A公司" }),
@@ -21,9 +22,9 @@ module.exports = function() {
         employable_rule.create({ employer_brand_role_code: "brand_role1", employable_brand_role_code: "brand_role5" }),
         agent.create({ user_account: "admin", guid: "agent1" }),
 
-        employment.create({ guid: "ep1", brand_guid: "brand1", brand_role_code: "brand_role2", employer_user_account: "admin", employer_time: new Date(), employee_user_account: "tester1", status: "未通过", audit_user_account: "admin" }),
-        employment.create({ guid: "ep2", brand_guid: "brand1", brand_role_code: "brand_role3", employer_user_account: "admin", employer_time: new Date(), employee_user_account: "tester2", status: "未通过", audit_user_account: "admin" }),
-        employment.create({ guid: "ep3", brand_guid: "brand1", brand_role_code: "brand_role2", employer_user_account: "admin", employer_time: new Date(), employee_user_account: "tester3", status: "未通过", audit_user_account: "admin" }),
+        employment.create({ guid: "ep1", brand_guid: "brand1", brand_role_code: "brand_role2", employer_user_account: "admin", employer_time: new Date(), employee_user_account: "tester1", status: "未审核", audit_user_account: "admin" }),
+        employment.create({ guid: "ep2", brand_guid: "brand1", brand_role_code: "brand_role3", employer_user_account: "admin", employer_time: new Date(), employee_user_account: "tester2", status: "未审核", audit_user_account: "admin" }),
+        employment.create({ guid: "ep3", brand_guid: "brand1", brand_role_code: "brand_role2", employer_user_account: "admin", employer_time: new Date(), employee_user_account: "tester3", status: "未审核", audit_user_account: "admin" }),
 
         employment_detail.create({ employment_guid: "ep1", key: "name", value: "boe" }),
         employment_detail.create({ employment_guid: "ep1", key: "wx", value: "wxA" }),

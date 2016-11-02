@@ -118,7 +118,7 @@ var exec = {
             return employment.findAll({
                 where: {
                     audit_user_account: account,
-                    status: "未通过"
+                    status: "未审核"
                 },
                 include: [
                     { model: employment_detail },
@@ -155,14 +155,26 @@ var exec = {
     },
     passAudit(req, res, next) {
         var auditID = req.body.auditID
+        var term = req.body.term
         var employment = require('../../db/models/employment')
-        return employment.findOne({
-            where: {
-                guid: auditID
-            }
-        }).then(function(result) {
-            result.status = "已通过"
-            return result.save()
+        var employment_term = require('../../db/models/employment_term')
+
+        return Promise.all([
+            employment.findOne({
+                where: {
+                    guid: auditID
+                }
+            }),
+            employment_term.create({
+                employment_guid: auditID,
+                term_from: new Date(),
+                term_to: term
+            })
+        ]).then(function(result) {
+            result[0].status = "已审核"
+            result[0].audit_time = new Date()
+            result[0].audit_result = "已通过"
+            return result[0].save()
         }).then(function() {
             return "success"
         })
@@ -177,7 +189,9 @@ var exec = {
                 guid: auditID
             }
         }).then(function(result) {
-            result.status = "已拒绝"
+            result.status = "已审核"
+            result.audit_time = new Date()
+            result.audit_result = "已拒绝"
             result.reject_reason = reason
             return result.save()
         }).then(function() {

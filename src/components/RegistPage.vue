@@ -2,15 +2,16 @@
 	<div @keyup.enter="UserRegist">
 			<div>
                 <group>
-                    <x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入账号" is-type="china-name"></x-input>
+                    <x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入账号"></x-input>
                 </group>
                 <group>
                     <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
-                    <x-input title="密码" :value.sync="loginInfo.password" type="password" placeholder="请输入密码" :equal-with="password"></x-input>
+                    <x-input title="密码" :value.sync="loginInfo.password" type="password" placeholder="请输入密码"></x-input>
                 </group>
                 <group>
                     <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
-                    <x-input title="再次输入密码" :value.sync="loginInfo.insurepwd" type="password" placeholder="请再次输入密码" :equal-with="password"></x-input>
+                    <x-input title="再次输入密码" :value.sync="loginInfo.insurepwd" type="password" placeholder="请再次输入密码" :equal-with="loginInfo.password"></x-input>
+                    <!--<x-input title="再次输入密码" :value.sync="loginInfo.insurepwd" type="password" placeholder="请再次输入密码" :equal-with="password"></x-input>-->
                 </group>
 			</div>
             <flexbox style="margin-top:20px">

@@ -17,7 +17,8 @@ module.exports = function(req, res, next) {
         require('./models/brand_employment_meta'),
         require('./models/agent_brand_role'),
         require('./models/brand_role'),
-        require('./models/employable_rule')
+        require('./models/employable_rule'),
+        require('./models/employment_term')
     ].map((o) => o.sync({ force: true }))).then(function() {
         return require('./init_data')()
     }).then(() => {
