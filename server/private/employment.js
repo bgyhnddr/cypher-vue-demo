@@ -88,6 +88,7 @@ var exec = {
         var userinfo = req.session.userInfo
         var employment = require('../../db/models/employment')
         var employment_detail = require('../../db/models/employment_detail')
+        var brand_role = require('../../db/models/brand_role')
         var selectMsg = req.body.key
         var select = "employer_time desc"
 
@@ -99,12 +100,18 @@ var exec = {
                 case "timedesc":
                     select = "employer_time desc"
                     break
+                case "leveldesc":
+                    select = "brand_role_code asc"
+                    break
+                case "levelasc":
+                    select = "brand_role_code desc"
             }
         }
 
         employment_detail.belongsTo(employment)
         employment.hasMany(employment_detail)
         employment.hasOne(employment_detail)
+        employment.belongsTo(brand_role)
 
         if (userinfo) {
             var account = userinfo.name
@@ -113,9 +120,10 @@ var exec = {
                     audit_user_account: account,
                     status: "未通过"
                 },
-                include: {
-                    model: employment_detail
-                },
+                include: [
+                    { model: employment_detail },
+                    { model: brand_role }
+                ],
                 order: select
             })
         } else {

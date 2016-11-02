@@ -75,17 +75,7 @@ export function configRouter(router) {
                 },
                 'fillInEmployment/:account/:employableRole/:startTime': {
                     component: require('../components/FillInEmployment.vue')
-                }
-            }
-        },
-        '/test': {
-            component: require('../components/Test.vue')
-        },
-        '/BrandManagement': {
-            component: function(reslove) {
-                return require(['../components/WapMain.vue'], reslove)
-            },
-            subRoutes: {
+                },
                 'audit': {
                     component: require('../components/AuditList.vue')
                 },
@@ -93,6 +83,9 @@ export function configRouter(router) {
                     component: require('../components/AuditInfo.vue')
                 }
             }
+        },
+        '/test': {
+            component: require('../components/Test.vue')
         }
 
     })

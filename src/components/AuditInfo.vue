@@ -99,9 +99,9 @@
                     that.auditInfo.brand = result[0].employment.brand.name
                     that.auditInfo.employer = result[0].employment.employer_user_account
                     that.auditInfo.name = result[0].value
-                    that.auditInfo.wx = result[2].value
-                    that.auditInfo.phone = result[3].value
-                    that.auditInfo.address = result[4].value
+                    that.auditInfo.wx = result[1].value
+                    that.auditInfo.phone = result[2].value
+                    that.auditInfo.address = result[3].value
                 }).catch(function(err) {
                     console.log(err)
                     that.serveMsg = err

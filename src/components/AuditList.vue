@@ -10,9 +10,9 @@
     <!--v-link="{path: '/test='+this.items[itemIndex].employment_guid}"-->
     <group>
         <cell v-for="item in items">
-            <div slot="icon">申请人：{{item.employment_details[2].value}}</div>
+            <div slot="icon">申请人：{{item.employment_details[1].value}}</div>
             <!--{{$index}}-->
-            <div slot="icon">申请级别：{{item.employment_details[1].value}}</div>
+            <div slot="icon">申请级别：{{item.brand_role.name}}</div>
             <div slot="icon">申请时间：{{new Date(item.employer_time).Format('yyyy-MM-dd hh:mm:ss')}}</div>
             <x-button mini v-link="{path: '/employManagement/auditInfo?employmentID='+item.guid+'&brandID='+item.brand_guid}">审核</x-button>
         </cell>
@@ -38,6 +38,12 @@
                 }, {
                     key: "timeasc",
                     value: "时间由远到近"
+                }, {
+                    key: "leveldesc",
+                    value: "等级由高到低"
+                }, {
+                    key: "levelasc",
+                    value: "等级由低到高"
                 }],
                 value: "timedesc"
             }
