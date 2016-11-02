@@ -12,7 +12,7 @@
             <cell><div slot="icon">微信号：{{auditInfo.wx}}</div></cell>
             <cell><div slot="icon">手机号：{{auditInfo.phone}}</div></cell>
             <cell><div slot="icon">地址：{{auditInfo.address}}</div></cell>
-            <cell><div slot="icon">授权期：</div></cell>
+            <selector :value.sync="value" title="授权期限" :options="List" @on-change="onChange" placeholder="请选择期限"></selector>
         </div>
     </group>
     <flexbox>
@@ -54,7 +54,8 @@
         Dialog,
         XTextarea,
         XInput,
-        Toast
+        Toast,
+        Selector
     } from 'vux'
     import employAPI from '../api/employment'
     export default {
@@ -62,9 +63,11 @@
             return {
                 alertMsg: "",
                 auditID: "",
+                value: "",
                 showAlert: false,
                 show: false,
                 reason: "",
+                List: ['1', '2','3','4','5','6'],
                 auditInfo: {
                     account: "",
                     brand: "",
@@ -86,7 +89,8 @@
             Dialog,
             XTextarea,
             XInput,
-            Toast
+            Toast,
+            Selector
         },
         methods: {
             getInfo() {
@@ -143,8 +147,10 @@
             },
             onHide() {
                 this.$router.go('audit')
+            },
+            onChange(val) {
+                console.log(val)
             }
-
         },
         ready() {
             this.auditID = this.GetQueryString('employmentID')
