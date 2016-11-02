@@ -47,7 +47,7 @@
         },
         computed: {
             href() {
-                return "/service/private/upload/getAttachment?id=" + this.fileId
+                return "/service/public/upload/getAttachment?id=" + this.fileId
             }
         },
         methods: {
@@ -59,7 +59,7 @@
                 var formData = new FormData();
                 formData.append('ufile', this.$els.uploadinput.files[0])
                 that.uploading = true
-                Vue.http.post('/service/private/upload/file', formData, {
+                Vue.http.post('/service/public/upload/file', formData, {
                     progress: function(event) {
                         that.percent = Math.round((event.loaded / event.total) * 100)
                     },
