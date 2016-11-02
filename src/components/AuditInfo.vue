@@ -42,7 +42,7 @@
         </dialog>
     </div>
     <div>
-        <toast :show.sync="showAlert" :time="1000" @on-hide="onHide">{{alertMsg}}</toast>       
+        <toast :show.sync="showAlert" :time="1000" @on-hide="onHide" type="text">{{alertMsg}}</toast>       
     </div> 
   </div>
 </template>
@@ -71,6 +71,7 @@
                 show: false,
                 reason: "",
                 List: ['1', '2', '3', '4', '5', '6'],
+                term: "",
                 auditInfo: {
                     account: "",
                     brand: "",
@@ -96,6 +97,9 @@
             Selector
         },
         methods: {
+            valid() {
+                return this.value
+            },
             getInfo() {
                 var that = this
                 employAPI.getAuditInfo({
@@ -122,16 +126,22 @@
             },
             PassAudit() {
                 var that = this
-                employAPI.passAudit({
-                    auditID: that.auditID
-                }).then(function(result) {
-                    that.alertMsg = "已通过"
+                if (that.valid()) {
+                    employAPI.passAudit({
+                        auditID: that.auditID,
+                        term: that.term
+                    }).then(function(result) {
+                        that.alertMsg = "已通过"
+                        that.showAlert = true
+                        console.log(result)
+                    }).catch(function(err) {
+                        console.log(err)
+                        that.serveMsg = err
+                    })
+                } else {
+                    that.alertMsg = "请选择授权期限"
                     that.showAlert = true
-                    console.log(result)
-                }).catch(function(err) {
-                    console.log(err)
-                    that.serveMsg = err
-                })
+                }
             },
             rejectAudit() {
                 var that = this
@@ -149,10 +159,24 @@
                 })
             },
             onHide() {
-                this.$router.go('audit')
+                if (this.valid()) {
+                    this.$router.go('audit')
+                }
             },
             onChange(val) {
-                console.log(val)
+                var date = new Date()
+                var year = parseInt(date.getFullYear())
+                var month = parseInt(date.getMonth() + 1)
+                var day = parseInt(date.getDate())
+
+                val = parseInt(val)
+
+                if (month + val > 12) {
+                    this.term = new Date((year + 1) + '-' + (month + val - 12) + '-' + day)
+                } else {
+                    this.term = new Date(year + '-' + (month + val) + '-' + day)
+                }
+
             }
         },
         ready() {
