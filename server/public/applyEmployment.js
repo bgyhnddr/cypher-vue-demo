@@ -82,14 +82,21 @@ var exec = {
 
         employment.hasMany(employment_detail)
 
-        return employment.findOne({
-            where: {
-                brand_guid: employmentData.guid,
-                employer_user_account: data.account
-            }
-        }).then(function(result) {
-            if (result != null) {
-                return Promise.reject("您已经提交该品牌商的代理申请，请等待回复")
+        return Promise.all([
+            employment.findOne({
+                where: {
+                    brand_guid: employmentData.guid,
+                    employer_user_account: data.account
+                }
+            }),
+            user.findOne({
+                where: {
+                    account: data.account
+                }
+            })
+        ]).then(function(result) {
+            if (result[0] != null || result[1] != null) {
+                return Promise.reject("提交代理申请异常")
             } else {
                 var createList = []
                 for (var item in meta) {
@@ -112,9 +119,9 @@ var exec = {
                 return Promise.all([
                     employment.create({
                         guid: guid,
-                        brand_guid: employmentData.brandInfo.guid,
                         employer_user_account: data.account,
                         brand_role_code: employmentData.brand_role_code,
+                        brand_guid: employmentData.brandInfo.guid,
                         employer_time: new Date(employmentData.date.start),
                         deadline: new Date(employmentData.date.deadline),
                         employee_user_account: employmentData.user_account,

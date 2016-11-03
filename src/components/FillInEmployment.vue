@@ -8,23 +8,24 @@
                 <vue-strap-upload :file-id.sync="data.headimg" ></vue-strap-upload>
                 <group>
                     <x-input class="weui_cell_primary" title="申请人" :name.sync="meta.name" :value.sync="data.name"  
-                        placeholder="申请人姓名" is-type="china-name" ></x-input>
+                        placeholder="申请人姓名" is-type="china-name" v-ref:name ></x-input>
                 </group>
                 <p>*姓名一经审批将不得修改，请慎重填写</p>
                 <group>
-                    <x-input class="weui_cell_primary" type="text" title="微信号" :name.sync="meta.name" :value.sync="data.wechat"
-                        placeholder="6-20个字母，数字，下划线或减号" :min="6" :max="20" @on-change="wechatValidation"></x-input>
+                    <x-input class="weui_cell_primary" type="text" title="微信号" :name.sync="meta.wechat" :value.sync="data.wechat"
+                        placeholder="6-20个字母，数字，下划线或减号" :min="6" :max="20" 
+                        v-ref:wechat ></x-input>
                 </group>
                 <group>
                     <x-input class="weui_cell_primary" keyboard="number" title="手机号" :value.sync="data.account"  
-                        placeholder="请输入手机号码"  is-type="china-mobile"></x-input>
+                        placeholder="请输入手机号码"  is-type="china-mobile" v-ref:account></x-input>
                 </group>
                 <button class="weui_btn weui_btn_primary" :class="classes" @click="goFillEmployment2">下一步</button>
         </div>
         <div v-else>
             <group>
                 <selector placeholder="-证件类型-" :options="personalIdentityTypeList" :value.sync="data.typeOfPersonalIdentity"></selector>
-                <x-input class="weui_cell_primary" keyboard="number" placeholder="输入证件号" :value.sync="data.valueOfPersonalIdentity"></x-input>
+                <x-input class="weui_cell_primary" keyboard="number" placeholder="输入证件号" :value.sync="data.valueOfPersonalIdentity" v-ref:valueOfPersonalIdentity></x-input>
             </group>
             <group title="通讯地址">
                 <address title="" :value.sync="data.provinceAndRegionTemp" :list="addressData"></address>
@@ -45,7 +46,8 @@
         Selector,
         Address,
         AddressChinaData,
-        XTextarea
+        XTextarea,
+        Cell
     } from 'vux'
     import authAPI from '../api/auth'
     import applyEmploymentAPI from '../api/applyEmployment'
@@ -60,7 +62,8 @@
             Selector,
             Address,
             XTextarea,
-            VueStrapUpload
+            VueStrapUpload,
+            Cell
         },
         data() {
             return {
@@ -85,6 +88,16 @@
                     provinceAndRegion: "",
                     addressDetail: ""
                 },
+                valid: {
+                    headimg: null,
+                    name: null,
+                    wechat: null,
+                    account: null,
+                    typeOfPersonalIdentity: null,
+                    valueOfPersonalIdentity: null,
+                    provinceAndRegion: null,
+                    addressDetail: null
+                },
                 employmentData: {
                     user_account: "",
                     brand_role_code: "",
@@ -97,7 +110,7 @@
                 },
                 showNextFillModel: false,
                 personalIdentityTypeList: ['身份证', '回乡证', '护照'],
-                addressData: AddressChinaData,
+                addressData: AddressChinaData
 
             }
         },
@@ -142,12 +155,18 @@
             },
             goFillEmployment2() {
                 console.log("打开第二部分表格")
+                var reg = /^[a-z]+[a-zA-Z0-9_]*$/
 
-                if (this.data.headimg != null && this.data.name != "" && this.data.wechat != "" && this.data.account != "") {
-                    this.showNextFillModel = true
+                if (!this.$refs.name.valid) {
+                    window.alert("申请人填写错误，请填写完整，再跳转到下一页")
+                } else if (!this.$refs.wechat.valid || !reg.test(this.data.wechat)) {
+                    window.alert("微信号填写错误，请填写完整，再跳转到下一页")
+                } else if (!this.$refs.account.valid) {
+                    window.alert("手机号填写错误，请填写完整，再跳转到下一页")
+                } else if (this.data.headimg == null) {
+                    window.alert("头像还未上传，请填写完整，再跳转到下一页")
                 } else {
-                    window.alert("您还有未填写的项，请填写完整，再跳转到下一页")
-                    return
+                    this.showNextFillModel = true
                 }
             },
             goFillEmployment1() {
@@ -160,29 +179,26 @@
                 this.data.provinceAndRegion = filterAddress(this.data.provinceAndRegionTemp, AddressChinaData)
                 console.log(JSON.stringify(this.data))
 
-                if (this.data.typeOfPersonalIdentity != "" && this.data.valueOfPersonalIdentity != "" &&
-                    this.data.provinceAndRegion != "" && this.data.addressDetail) {
-                    this.showNextFillModel = true
+                //检查未填写完整的值
+                if (this.data.typeOfPersonalIdentity == "") {
+                    window.alert("证件类型未填写，请填写完整，再跳转到下一页")
+                } else if (!this.$refs.valueofpersonalidentity.valid) {
+                    window.alert("证件号填写错误，请填写完整，再跳转到下一页")
+                } else if (this.data.provinceAndRegion == "") {
+                    window.alert("通讯地址填写错误，请填写完整，再跳转到下一页")
+                } else if (this.data.addressDetail == "") {
+                    window.alert("通讯地址填写错误，请填写完整，再跳转到下一页")
                 } else {
-                    window.alert("您还有未填写的项，请填写完整，再提交申请")
-                    return
-                }
-
-                applyEmploymentAPI.submitApplication({
-                    meta: this.meta,
-                    data: this.data,
-                    employmentData: this.employmentData
-                }).then(function(result) {
-                    console.log("提交成功")
-                    that.$route.router.go('/employManagement/employmentSubmission')
-                }).catch(function(err) {
-                    window.alert(err)
-                })
-            },
-            wechatValidation(val) {
-                var reg = /^\w+$/
-                if (!reg.test(val)) {
-                    console.log("输入错误")
+                    applyEmploymentAPI.submitApplication({
+                        meta: this.meta,
+                        data: this.data,
+                        employmentData: this.employmentData
+                    }).then(function(result) {
+                        console.log("提交成功")
+                        that.$route.router.go('/employManagement/employmentSubmission')
+                    }).catch(function(err) {
+                        window.alert(err)
+                    })
                 }
             }
         },

@@ -2,7 +2,7 @@
     <div>
         <a class="weui_cell"  v-link="{path: 'employManagement/chooseEmployableRoles'}" >
             <div class="weui_cell_hd">
-                <img  alt="头像" >
+                <img  alt="图标LOGO" >
             </div>
             <div class="weui_cell_bd weui_cell_primary">
                 <p>发起招募</p>
@@ -17,34 +17,41 @@
 </template>
 
 <script>
-    import agentInfo from '../api/agentInfo'
-    import employment from '../api/employment'
+    import authAPI from '../api/auth'
+    import agentInfoAPI from '../api/agentInfo'
 
     export default {
         data() {
             return {
-                userinfo: {
-                    brand_role: {
-                        agent_brand_role: {
-                            agent: {}
+                user: {
+                    user_info: {},
+                    brand_info: {
+                        brand_role: {
+                            agent_brand_role: {
+                                agent: {}
+                            }
                         }
                     }
-                },
-                employableRolesList: []
+                }
             }
         },
         methods: {
             getPersonalInfo() {
                 var that = this
-                var user_account = window.state.userInfo.name
-                console.log("获取用户账号:" + user_account)
-                agentInfo.getBrandInfo({
-                    user_account: user_account
-                }).then(function(result) {
-                    that.userinfo = result
-                }).catch(function(err) {
-                    window.alert(err)
+                authAPI.getUser().then(function(result) {
+                    that.user.user_info = result
+                    console.log("获取用户账号:" + that.user.user_info.name)
+
+                    agentInfoAPI.getBrandInfo({
+                        user_account: that.user.user_info.name
+                    }).then(function(result) {
+                        that.user.brand_info = result
+                    }).catch(function(err) {
+                        window.alert(err)
+                    })
                 })
+
+
             }
         },
         ready() {

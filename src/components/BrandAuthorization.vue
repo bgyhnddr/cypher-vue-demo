@@ -8,7 +8,7 @@
             <p>微信<label>AA</label></p>
             <p>身份证<label>4404xxxxxxxxxxxxx</label></p>
             <img class="vux-x-img ximg-demo" alt="头像"/></p>
-            <p>为<label>{{employmentData.name}}</label><label>{{employer.employee_role}}</label></p>
+            <p>为<label>{{employmentData.name}}</label><label>{{employer.brand_role_name}}</label></p>
             <p>允许其在网络上销售<label>{{employmentData.company_name}}</label><label>旗下产品</label></p>
             <p>授权编号<label>{{employmentData.guid}}</label></p>
             <p>授权期限<label>{{date.start}}</label>至<label>{{date.deadline}}</label></p>
@@ -20,14 +20,15 @@
 </template>
 <script>
     import authAPI from '../api/auth'
-    import employment from '../api/employment'
+    import employmentAPI from '../api/employment'
 
     export default {
         data() {
             return {
                 employer: {
                     user_account: "",
-                    employee_role: "",
+                    brand_role_code: "",
+                    brand_role_name: ""
                 },
                 employmentData: {},
                 date: {
@@ -40,7 +41,8 @@
             getEmploymentInfo() {
                 var that = this
                 console.log("正在获取品牌资料")
-                employment.getBrandInfo({
+
+                employmentAPI.getBrandInfo({
                     user_account: this.employer.user_account
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
@@ -58,15 +60,26 @@
         ready() {
             var that = this
             this.employer.user_account = this.$route.params.account
-            this.employer.employee_role = this.$route.params.employableRole
+            this.employer.brand_role_code = this.$route.params.employableRole
             var startTime = this.$route.params.startTime
             this.date.start = new Date(parseInt(startTime)).Format('yyyy-MM-dd')
+
             authAPI.getUser().then(function(result) {
                 if (result.name == that.employer.user_account) {
                     that.getEmploymentInfo()
                 } else {
-                    that.$route.router.go('/employManagement/fillInEmployment/' + that.employer.user_account + '/' + that.employer.employee_role + '/' + parseInt(startTime))
+                    that.$route.router.go('/employManagement/fillInEmployment/' + that.employer.user_account +
+                        '/' + that.employer.brand_role_code + '/' + parseInt(startTime))
                 }
+            })
+
+            employmentAPI.getRoleName({
+                brand_role_code: that.employer.brand_role_code
+            }).then(function(result) {
+                console.log(JSON.stringify(result))
+                that.employer.brand_role_name = result.name
+            }).catch(function(err) {
+                window.alert(err)
             })
 
         }

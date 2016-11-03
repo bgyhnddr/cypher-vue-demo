@@ -8,6 +8,9 @@ export default {
     getBrandInfo(params) {
         return httpRequest.post(path + 'getBrandInfo', params)
     },
+    getRoleName(params) {
+        return httpRequest.post(path + 'getRoleName', params)
+    },
     getAuditList(params) {
         return httpRequest.post(path + 'getAuditList', params)
     },

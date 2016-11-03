@@ -19,8 +19,10 @@
             getPwd() {
                 var that = this
                 applyEmploymentAPI.getPwd().then(function(result) {
-                    console.log(result)
                     that.pwd = result
+                    if (typeof(result) == 'object') {
+                        that.$route.router.go('/auth/login')
+                    }
                 })
             }
         },
