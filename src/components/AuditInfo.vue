@@ -7,15 +7,18 @@
         <div>      
             <cell><div slot="icon">用户名：{{auditInfo.account}}</div></cell>
             <cell><div slot="icon">授权品牌：{{auditInfo.brand}}</div></cell>
-            <cell><div slot="icon">授权上级：{{auditInfo.employer}}</div></cell>
+            <cell>
+                <div slot="icon">授权上级：{{auditInfo.employer}}</div>
+                <x-button type="default">查看授权证书</x-button>
+            </cell>
             <cell><div slot="icon">姓名：{{auditInfo.name}}</div></cell>
             <cell><div slot="icon">微信号：{{auditInfo.wx}}</div></cell>
             <cell><div slot="icon">手机号：{{auditInfo.phone}}</div></cell>
             <cell><div slot="icon">地址：{{auditInfo.address}}</div></cell>
-            <cell><div slot="icon">授权期：</div></cell>
+            <selector v-if="Toggle" :value.sync="value" title="授权期限" :options="List" @on-change="onChange" placeholder="请选择期限"></selector>
         </div>
     </group>
-    <flexbox>
+    <flexbox v-if="Toggle">
         <flexbox-item>
             <x-button type="primary" @click="PassAudit">通过审核</x-button>
         </flexbox-item>
@@ -25,8 +28,8 @@
     </flexbox>
     <div style="height: 1000px">
         <dialog :show.sync="show" class="dialog-demo">
-            <group title="textarea">
-                <x-textarea :value.sync="reason" placeholder="请填写详细信息" :show-counter="false"></x-textarea>
+            <group title="打回理由">
+                <x-textarea :value.sync="reason" placeholder="填写打回理由" :show-counter="false"></x-textarea>
             </group>
             <flexbox>
                 <flexbox-item>
@@ -39,7 +42,7 @@
         </dialog>
     </div>
     <div>
-        <toast :show.sync="showAlert" :time="1000" @on-hide="onHide">{{alertMsg}}</toast>       
+        <toast :show.sync="showAlert" :time="1000" @on-hide="onHide" type="text">{{alertMsg}}</toast>       
     </div> 
   </div>
 </template>
@@ -54,7 +57,8 @@
         Dialog,
         XTextarea,
         XInput,
-        Toast
+        Toast,
+        Selector
     } from 'vux'
     import employAPI from '../api/employment'
     export default {
@@ -62,9 +66,13 @@
             return {
                 alertMsg: "",
                 auditID: "",
+                value: "",
+                Toggle: false,
                 showAlert: false,
                 show: false,
                 reason: "",
+                List: ['1', '2', '3', '4', '5', '6'],
+                term: "",
                 auditInfo: {
                     account: "",
                     brand: "",
@@ -86,9 +94,13 @@
             Dialog,
             XTextarea,
             XInput,
-            Toast
+            Toast,
+            Selector
         },
         methods: {
+            valid() {
+                return this.value
+            },
             getInfo() {
                 var that = this
                 employAPI.getAuditInfo({
@@ -115,16 +127,22 @@
             },
             PassAudit() {
                 var that = this
-                employAPI.passAudit({
-                    auditID: that.auditID
-                }).then(function(result) {
-                    that.alertMsg = "已通过"
+                if (that.valid()) {
+                    employAPI.passAudit({
+                        auditID: that.auditID,
+                        term: that.term
+                    }).then(function(result) {
+                        that.alertMsg = "已通过"
+                        that.showAlert = true
+                        console.log(result)
+                    }).catch(function(err) {
+                        console.log(err)
+                        that.serveMsg = err
+                    })
+                } else {
+                    that.alertMsg = "请选择授权期限"
                     that.showAlert = true
-                    console.log(result)
-                }).catch(function(err) {
-                    console.log(err)
-                    that.serveMsg = err
-                })
+                }
             },
             rejectAudit() {
                 var that = this
@@ -135,18 +153,36 @@
                 }).then(function(result) {
                     that.alertMsg = "已拒绝"
                     that.showAlert = true
-                    console.log(result)
                 }).catch(function(err) {
                     console.log(err)
                     that.serveMsg = err
                 })
             },
             onHide() {
-                this.$router.go('audit')
-            }
+                if (this.valid() || this.alertMsg == "已拒绝") {
+                    this.$router.go('audit')
+                }
+            },
+            onChange(val) {
+                var date = new Date()
+                var year = parseInt(date.getFullYear())
+                var month = parseInt(date.getMonth() + 1)
+                var day = parseInt(date.getDate())
 
+                val = parseInt(val)
+
+                if (month + val > 12) {
+                    this.term = new Date((year + 1) + '-' + (month + val - 12) + '-' + day)
+                } else {
+                    this.term = new Date(year + '-' + (month + val) + '-' + day)
+                }
+
+            }
         },
         ready() {
+            if (this.GetQueryString('from') == 'audit') {
+                this.Toggle = true
+            }
             this.auditID = this.GetQueryString('employmentID')
             this.getInfo()
         }

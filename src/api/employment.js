@@ -25,5 +25,8 @@ export default {
     },
     rejectAudit(params) {
         return httpRequest.post(path + 'rejectAudit', params)
+    },
+    getAuditHistory(params) {
+        return httpRequest.post(path + 'getAuditHistory',params)
     }
 }

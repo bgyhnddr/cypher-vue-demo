@@ -153,7 +153,7 @@ var exec = {
             return employment.findAll({
                 where: {
                     audit_user_account: account,
-                    status: "未通过"
+                    status: "未审核"
                 },
                 include: [
                     { model: employment_detail },
@@ -190,14 +190,26 @@ var exec = {
     },
     passAudit(req, res, next) {
         var auditID = req.body.auditID
+        var term = req.body.term
         var employment = require('../../db/models/employment')
-        return employment.findOne({
-            where: {
-                guid: auditID
-            }
-        }).then(function(result) {
-            result.status = "已通过"
-            return result.save()
+        var employment_term = require('../../db/models/employment_term')
+
+        return Promise.all([
+            employment.findOne({
+                where: {
+                    guid: auditID
+                }
+            }),
+            employment_term.create({
+                employment_guid: auditID,
+                term_from: new Date(),
+                term_to: term
+            })
+        ]).then(function(result) {
+            result[0].status = "已审核"
+            result[0].audit_time = new Date()
+            result[0].audit_result = "已通过"
+            return result[0].save()
         }).then(function() {
             return "success"
         })
@@ -212,12 +224,62 @@ var exec = {
                 guid: auditID
             }
         }).then(function(result) {
-            result.status = "已拒绝"
+            result.status = "已审核"
+            result.audit_time = new Date()
+            result.audit_result = "已拒绝"
             result.reject_reason = reason
             return result.save()
         }).then(function() {
             return "success"
         })
+    },
+    getAuditHistory(req, res, next) {
+        // return req.session.userInfo
+        var userinfo = req.session.userInfo
+        var employment = require('../../db/models/employment')
+        var employment_detail = require('../../db/models/employment_detail')
+        var brand_role = require('../../db/models/brand_role')
+
+        var level = req.body.level
+        var date_from = req.body.date_from
+        var date_to = req.body.date_to
+
+
+        // if (level) {
+        //     condition.brand_role_code = level
+        // }
+
+        employment_detail.belongsTo(employment)
+        employment.hasMany(employment_detail)
+        employment.hasOne(employment_detail)
+        employment.belongsTo(brand_role)
+
+        if (userinfo) {
+            var account = userinfo.name
+            var condition = {
+                audit_user_account: account,
+                status: "已审核",
+                audit_result: "已通过"
+            }
+            if (level && level != "all") {
+                condition.brand_role_code = level
+            }
+            if (date_from) {
+                condition.employer_time = {
+                    $gt: date_from,
+                    $lte: date_to
+                }
+            }
+            return employment.findAll({
+                where: condition,
+                include: [
+                    { model: employment_detail },
+                    { model: brand_role }
+                ]
+            })
+        } else {
+            return Promise.reject("请先登录")
+        }
     }
 }
 
