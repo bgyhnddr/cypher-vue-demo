@@ -136,12 +136,12 @@ var exec = {
                 return Promise.all([
                     employment.create({
                         guid: guid,
-                        employer_user_account: data.account,
+                        employer_user_account: employmentData.user_account,
                         brand_role_code: employmentData.brand_role_code,
                         brand_guid: employmentData.brandInfo.guid,
                         employer_time: new Date(employmentData.date.start),
                         deadline: new Date(employmentData.date.deadline),
-                        employee_user_account: employmentData.user_account,
+                        employee_user_account: data.account,
                         status: "未处理"
                     }),
                     createList,

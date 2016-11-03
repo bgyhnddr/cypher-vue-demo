@@ -1,13 +1,13 @@
 <template>
     <div>
-        <img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="logo"/>
+        <img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="品牌logo"/>
         <p>授权证书</p>
         <div>
             <p>兹授权</p>
             <p>姓名<label>张三</label></p>
             <p>微信<label>AA</label></p>
             <p>身份证<label>4404xxxxxxxxxxxxx</label></p>
-            <img class="vux-x-img ximg-demo" alt="代理头像"/></p>
+            <img class="vux-x-img ximg-demo" alt="授权者头像"/></p>
             <p>为<label>{{employmentData.name}}</label><label>{{employer.brand_role_name}}</label></p>
             <p>允许其在网络上销售<label>{{employmentData.company_name}}</label><label>旗下产品</label></p>
             <p>授权编号<label>{{employer.agent_guid}}</label></p>
@@ -49,8 +49,6 @@
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
                     that.employmentData = result
-                    var startDate = new Date(that.date.start)
-                    that.date.deadline = new Date(startDate.getTime() + 30 * 24 * 3600 * 1000).Format('yyyy-MM-dd')
 
                     for (var item in that.employmentData.brand_details) {
                         for (var meta in that.employmentData.brand_details[item]) {
@@ -97,6 +95,7 @@
             this.employer.brand_role_code = this.$route.params.employableRole
             var startTime = this.$route.params.startTime
             this.date.start = new Date(parseInt(startTime)).Format('yyyy-MM-dd')
+            this.date.deadline = new Date(parseInt(startTime) + 30 * 24 * 3600 * 1000).Format('yyyy-MM-dd')
 
             authAPI.getUser().then(function(result) {
                 if (result.name == that.employer.user_account) {
