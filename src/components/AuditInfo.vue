@@ -152,14 +152,13 @@
                 }).then(function(result) {
                     that.alertMsg = "已拒绝"
                     that.showAlert = true
-                    console.log(result)
                 }).catch(function(err) {
                     console.log(err)
                     that.serveMsg = err
                 })
             },
             onHide() {
-                if (this.valid()) {
+                if (this.valid() || this.alertMsg == "已拒绝") {
                     this.$router.go('audit')
                 }
             },

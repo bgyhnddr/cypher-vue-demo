@@ -197,6 +197,53 @@ var exec = {
         }).then(function() {
             return "success"
         })
+    },
+    getAuditHistory(req, res, next) {
+        // return req.session.userInfo
+        var userinfo = req.session.userInfo
+        var employment = require('../../db/models/employment')
+        var employment_detail = require('../../db/models/employment_detail')
+        var brand_role = require('../../db/models/brand_role')
+
+        var level = req.body.level
+        var date_from = req.body.date_from
+        var date_to = req.body.date_to
+
+
+        // if (level) {
+        //     condition.brand_role_code = level
+        // }
+
+        employment_detail.belongsTo(employment)
+        employment.hasMany(employment_detail)
+        employment.hasOne(employment_detail)
+        employment.belongsTo(brand_role)
+
+        if (userinfo) {
+            var account = userinfo.name
+            var condition = {
+                audit_user_account: account,
+                status: "已审核"
+            }
+            if (level && level != "all") {
+                condition.brand_role_code = level
+            }
+            if (date_from) {
+                condition.employer_time = {
+                    $gt: date_from,
+                    $lte: date_to
+                }
+            }
+            return employment.findAll({
+                where: condition,
+                include: [
+                    { model: employment_detail },
+                    { model: brand_role }
+                ]
+            })
+        } else {
+            return Promise.reject("请先登录")
+        }
     }
 }
 
