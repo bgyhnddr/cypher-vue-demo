@@ -133,6 +133,9 @@ var exec = {
                     pwd += Math.floor(Math.random() * 10);
                 }
 
+                var create_time = employmentData.publishEmploymentInfo.create_time
+                var deadline = new Date(new Date(create_time).getTime() + 2 * 3600 * 1000)
+
                 return Promise.all([
                     employment.create({
                         guid: guid,
@@ -141,6 +144,7 @@ var exec = {
                         brand_guid: employmentData.publishEmploymentInfo.brand_guid,
                         employee_user_account: data.account,
                         employer_time: employmentData.publishEmploymentInfo.create_time,
+                        deadline: deadline,
                         status: "未处理"
                     }),
                     createList,

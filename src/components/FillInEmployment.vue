@@ -120,10 +120,19 @@
                     employmentGuid: this.employmentData.employmentGuid
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
-                    that.employmentData.publishEmploymentInfo = result
 
-                    that.getEmploymentInfo(result.employer_user_account)
-                    that.getAgentGuid(result.employer_user_account)
+                    //TODO:招募失效
+                    var startDate = new Date(result.create_time)
+                    var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
+                    if (endDate <= new Date()) {
+                        window.alert("已招募失效")
+                        that.$route.router.go('/auth/login')
+                    } else {
+                        that.employmentData.publishEmploymentInfo = result
+
+                        that.getEmploymentInfo(result.employer_user_account)
+                        that.getAgentGuid(result.employer_user_account)
+                    }
                 }).catch(function(err) {
                     window.alert(err)
                 })
