@@ -223,7 +223,8 @@ var exec = {
             var account = userinfo.name
             var condition = {
                 audit_user_account: account,
-                status: "已审核"
+                status: "已审核",
+                audit_result: "已通过"
             }
             if (level && level != "all") {
                 condition.brand_role_code = level
