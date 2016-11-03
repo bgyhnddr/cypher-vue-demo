@@ -1,13 +1,13 @@
 <template>
     <div>
-        <img class="vux-x-img ximg-demo" alt="logo"/>
+        <img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="logo"/>
         <p>授权证书</p>
         <div>
             <p>兹授权</p>
             <p>姓名<label>张三</label></p>
             <p>微信<label>AA</label></p>
             <p>身份证<label>4404xxxxxxxxxxxxx</label></p>
-            <img class="vux-x-img ximg-demo" alt="头像"/></p>
+            <img class="vux-x-img ximg-demo" alt="代理头像"/></p>
             <p>为<label>{{employmentData.name}}</label><label>{{employer.brand_role_name}}</label></p>
             <p>允许其在网络上销售<label>{{employmentData.company_name}}</label><label>旗下产品</label></p>
             <p>授权编号<label>{{employmentData.guid}}</label></p>
@@ -34,7 +34,8 @@
                 date: {
                     start: "",
                     deadline: ""
-                }
+                },
+                brand_logo_href: ""
             }
         },
         methods: {
@@ -49,6 +50,16 @@
                     that.employmentData = result
                     var startDate = new Date(that.date.start)
                     that.date.deadline = new Date(startDate.getTime() + 30 * 24 * 3600 * 1000).Format('yyyy-MM-dd')
+
+                    for (var item in that.employmentData.brand_details) {
+                        for (var meta in that.employmentData.brand_details[item]) {
+                            if (meta == 'key' && that.employmentData.brand_details[item][meta] == 'headImg') {
+                                console.log(that.employmentData.brand_details[item]['value'])
+                                var brand_logo_href = parseInt(that.employmentData.brand_details[item]['value'])
+                                that.brand_logo_href = "/service/public/upload/getAttachment?id=" + brand_logo_href
+                            }
+                        }
+                    }
                 }).catch(function(err) {
                     alert(err)
                 })
