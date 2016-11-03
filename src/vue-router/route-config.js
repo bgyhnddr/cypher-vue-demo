@@ -95,6 +95,9 @@ export function configRouter(router) {
                 },
                 'auditInfo': {
                     component: require('../components/AuditInfo.vue')
+                },
+                'employmentHistory': {
+                    component: require('../components/EmploymentHistory.vue')
                 }
             }
         },

@@ -15,10 +15,10 @@
             <cell><div slot="icon">微信号：{{auditInfo.wx}}</div></cell>
             <cell><div slot="icon">手机号：{{auditInfo.phone}}</div></cell>
             <cell><div slot="icon">地址：{{auditInfo.address}}</div></cell>
-            <selector :value.sync="value" title="授权期限" :options="List" @on-change="onChange" placeholder="请选择期限"></selector>
+            <selector v-if="Toggle" :value.sync="value" title="授权期限" :options="List" @on-change="onChange" placeholder="请选择期限"></selector>
         </div>
     </group>
-    <flexbox>
+    <flexbox v-if="Toggle">
         <flexbox-item>
             <x-button type="primary" @click="PassAudit">通过审核</x-button>
         </flexbox-item>
@@ -67,6 +67,7 @@
                 alertMsg: "",
                 auditID: "",
                 value: "",
+                Toggle: false,
                 showAlert: false,
                 show: false,
                 reason: "",
@@ -152,14 +153,13 @@
                 }).then(function(result) {
                     that.alertMsg = "已拒绝"
                     that.showAlert = true
-                    console.log(result)
                 }).catch(function(err) {
                     console.log(err)
                     that.serveMsg = err
                 })
             },
             onHide() {
-                if (this.valid()) {
+                if (this.valid() || this.alertMsg == "已拒绝") {
                     this.$router.go('audit')
                 }
             },
@@ -180,6 +180,9 @@
             }
         },
         ready() {
+            if (this.GetQueryString('from') == 'audit') {
+                this.Toggle = true
+            }
             this.auditID = this.GetQueryString('employmentID')
             this.getInfo()
         }
