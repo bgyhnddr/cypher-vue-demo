@@ -2,7 +2,7 @@
     <div>
         <p>代理申请表</p>
         <div v-if="!showNextFillModel">
-                <p>上级代理:{{employmentData.brandInfo.company_name}}上级授权号{{employmentData.brandInfo.guid}}</p>
+                <p>上级代理:{{employmentData.brandInfo.company_name}}上级授权号{{employmentData.agent_guid}}</p>
                 <p>您当前代理级别为:{{employmentData.brand_role_name}}</p>
                 <img class="vux-x-img ximg-demo" :name.sync="meta.headimg" alt="上传头像" />
                 <vue-strap-upload :file-id.sync="data.headimg" ></vue-strap-upload>
@@ -13,7 +13,7 @@
                 <p>*姓名一经审批将不得修改，请慎重填写</p>
                 <group>
                     <x-input class="weui_cell_primary" type="text" title="微信号" :name.sync="meta.wechat" :value.sync="data.wechat"
-                        placeholder="6-20个字母，数字，下划线或减号" :min="6" :max="20" 
+                        placeholder="必须以字母开头，6-20个字母，数字，下划线或减号" :min="6" :max="20" 
                         v-ref:wechat ></x-input>
                 </group>
                 <group>
@@ -99,6 +99,7 @@
                     addressDetail: null
                 },
                 employmentData: {
+                    agent_guid: "",
                     user_account: "",
                     brand_role_code: "",
                     brand_role_name: "",
@@ -125,6 +126,7 @@
                 this.employmentData.date.deadline = new Date(startDate.getTime() + 30 * 24 * 3600 * 1000).Format('yyyy-MM-dd')
 
                 this.getEmploymentInfo()
+                this.getAgentGuid()
 
             },
             getEmploymentInfo() {
@@ -149,6 +151,17 @@
                 }).then(function(result) {
                     that.employmentData.brand_role_name = result.name
                     console.log(JSON.stringify(result))
+                }).catch(function(err) {
+                    window.alert(err)
+                })
+            },
+            getAgentGuid() {
+                var that = this
+                applyEmploymentAPI.getAgentInfo({
+                    user_account: that.employmentData.user_account
+                }).then(function(result) {
+                    console.log(JSON.stringify(result))
+                    that.employmentData.agent_guid = result.guid
                 }).catch(function(err) {
                     window.alert(err)
                 })

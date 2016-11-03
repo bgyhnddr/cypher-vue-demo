@@ -39,8 +39,14 @@
             getPersonalInfo() {
                 var that = this
                 authAPI.getUser().then(function(result) {
+                    if (typeof(result.name) == 'undefined') {
+                        window.alert("获取用户登录信息失败，请重新登录")
+                        that.$route.router.go('/auth/login')
+                        return
+                    }
+
                     that.user.user_info = result
-                    console.log("获取用户账号:" + that.user.user_info.name)
+                    console.log("用户账号:" + that.user.user_info.name)
 
                     agentInfoAPI.getBrandInfo({
                         user_account: that.user.user_info.name
@@ -50,8 +56,6 @@
                         window.alert(err)
                     })
                 })
-
-
             }
         },
         ready() {

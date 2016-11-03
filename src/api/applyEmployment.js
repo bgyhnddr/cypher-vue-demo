@@ -14,4 +14,7 @@ export default {
     getPwd() {
         return httpRequest.post(path + 'getPwd')
     },
+    getAgentInfo(params) {
+        return httpRequest.post(path + 'getAgentInfo', params)
+    },
 }

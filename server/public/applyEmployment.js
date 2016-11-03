@@ -67,6 +67,23 @@ var exec = {
         })
 
     },
+    getAgentInfo(req, res, next) {
+        var user_account = req.body.user_account
+
+        var agent = require('../../db/models/agent')
+
+        return agent.findOne({
+            where: {
+                user_account: user_account
+            }
+        }).then(function(result) {
+            if (result == null) {
+                return Promise.reject("上级授权角色资料读取出错")
+            } else {
+                return result
+            }
+        })
+    },
     submitApplication(req, res, next) {
         var meta = req.body.meta
         var data = req.body.data

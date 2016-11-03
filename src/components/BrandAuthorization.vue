@@ -10,7 +10,7 @@
             <img class="vux-x-img ximg-demo" alt="代理头像"/></p>
             <p>为<label>{{employmentData.name}}</label><label>{{employer.brand_role_name}}</label></p>
             <p>允许其在网络上销售<label>{{employmentData.company_name}}</label><label>旗下产品</label></p>
-            <p>授权编号<label>{{employmentData.guid}}</label></p>
+            <p>授权编号<label>{{employer.agent_guid}}</label></p>
             <p>授权期限<label>{{date.start}}</label>至<label>{{date.deadline}}</label></p>
             <p>备注：本授权书以正本为有效文本，不得影印，涂改，转让。{{employmentData.company_name}}有此授权书最终解释权。</p>
             <p>授权单位<label>{{employmentData.company_name}}</label></p>
@@ -26,6 +26,7 @@
         data() {
             return {
                 employer: {
+                    agent_guid: "",
                     user_account: "",
                     brand_role_code: "",
                     brand_role_name: ""
@@ -64,6 +65,28 @@
                     alert(err)
                 })
             },
+            getRoleName() {
+                var that = this
+                employmentAPI.getRoleName({
+                    brand_role_code: that.employer.brand_role_code
+                }).then(function(result) {
+                    console.log(JSON.stringify(result))
+                    that.employer.brand_role_name = result.name
+                }).catch(function(err) {
+                    window.alert(err)
+                })
+            },
+            getAgentGuid() {
+                var that = this
+                employmentAPI.getAgentInfo({
+                    user_account: that.employer.user_account
+                }).then(function(result) {
+                    console.log(JSON.stringify(result))
+                    that.employer.agent_guid = result.guid
+                }).catch(function(err) {
+                    window.alert(err)
+                })
+            },
             goBackToEmploymentIndex() {
                 this.$route.router.go('/employManagement')
             }
@@ -78,21 +101,14 @@
             authAPI.getUser().then(function(result) {
                 if (result.name == that.employer.user_account) {
                     that.getEmploymentInfo()
+                    that.getRoleName()
+                    that.getAgentGuid()
                 } else {
                     that.$route.router.go('/employManagement/fillInEmployment/' + that.employer.user_account +
                         '/' + that.employer.brand_role_code + '/' + parseInt(startTime))
+                    return
                 }
             })
-
-            employmentAPI.getRoleName({
-                brand_role_code: that.employer.brand_role_code
-            }).then(function(result) {
-                console.log(JSON.stringify(result))
-                that.employer.brand_role_name = result.name
-            }).catch(function(err) {
-                window.alert(err)
-            })
-
         }
     }
 </script>
