@@ -27,6 +27,9 @@ export default {
         return httpRequest.post(path + 'rejectAudit', params)
     },
     getAuditHistory(params) {
-        return httpRequest.post(path + 'getAuditHistory',params)
+        return httpRequest.post(path + 'getAuditHistory', params)
+    },
+    createEmployment(params) {
+        return httpRequest.post(path + 'createEmployment', params)
     }
 }

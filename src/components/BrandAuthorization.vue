@@ -36,10 +36,29 @@
                     start: "",
                     deadline: ""
                 },
-                brand_logo_href: ""
+                brand_logo_href: null
             }
         },
         methods: {
+            initData() {
+                var that = this
+                this.employer.user_account = this.$route.params.account
+                this.employer.brand_role_code = this.$route.params.employableRole
+                this.date.start = new Date().Format('yyyy-MM-dd')
+                this.date.deadline = new Date(new Date().getTime() + 30 * 24 * 3600 * 1000).Format('yyyy-MM-dd')
+
+                authAPI.getUser().then(function(result) {
+                    if (result.name == that.employer.user_account) {
+                        that.getEmploymentInfo()
+                        that.getRoleName()
+                        that.getAgentGuid()
+                        that.createEmployment()
+                    } else {
+                        that.$route.router.go('/auth/login')
+                        return
+                    }
+                })
+            },
             getEmploymentInfo() {
                 var that = this
                 console.log("正在获取品牌资料")
@@ -87,27 +106,26 @@
             },
             goBackToEmploymentIndex() {
                 this.$route.router.go('/employManagement')
+            },
+            createEmployment() {
+                var that = this
+                employmentAPI.createEmployment({
+                    employer: this.employer,
+                    employmentData: this.employmentData,
+                }).then(function(result) {
+                    console.log(JSON.stringify(result))
+                    that.showShareUrl(result)
+                }).catch(function(err) {
+                    window.alert(err)
+                })
+            },
+            showShareUrl(employmentGuid) {
+                console.log('/employManagement/fillInEmployment/' + employmentGuid)
             }
         },
         ready() {
-            var that = this
-            this.employer.user_account = this.$route.params.account
-            this.employer.brand_role_code = this.$route.params.employableRole
-            var startTime = this.$route.params.startTime
-            this.date.start = new Date(parseInt(startTime)).Format('yyyy-MM-dd')
-            this.date.deadline = new Date(parseInt(startTime) + 30 * 24 * 3600 * 1000).Format('yyyy-MM-dd')
+            this.initData()
 
-            authAPI.getUser().then(function(result) {
-                if (result.name == that.employer.user_account) {
-                    that.getEmploymentInfo()
-                    that.getRoleName()
-                    that.getAgentGuid()
-                } else {
-                    that.$route.router.go('/employManagement/fillInEmployment/' + that.employer.user_account +
-                        '/' + that.employer.brand_role_code + '/' + parseInt(startTime))
-                    return
-                }
-            })
         }
     }
 </script>

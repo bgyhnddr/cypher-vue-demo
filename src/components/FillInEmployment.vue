@@ -99,14 +99,10 @@
                     addressDetail: null
                 },
                 employmentData: {
+                    employmentGuid: null,
+                    publishEmploymentInfo: {},
                     agent_guid: "",
-                    user_account: "",
-                    brand_role_code: "",
                     brand_role_name: "",
-                    date: {
-                        start: "",
-                        deadline: ""
-                    },
                     brandInfo: {}
                 },
                 showNextFillModel: false,
@@ -117,26 +113,30 @@
         },
         methods: {
             initDate() {
-                this.employmentData.user_account = this.$route.params.account
-                this.employmentData.brand_role_code = this.$route.params.employableRole
-
-                var startTime = this.$route.params.startTime
-                this.employmentData.date.start = new Date(parseInt(startTime)).Format('yyyy-MM-dd')
-                var startDate = new Date(this.employmentData.date.start)
-                this.employmentData.date.deadline = new Date(startDate.getTime() + 30 * 24 * 3600 * 1000).Format('yyyy-MM-dd')
-
-                this.getEmploymentInfo()
-                this.getAgentGuid()
-
-            },
-            getEmploymentInfo() {
                 var that = this
-                console.log("正在获取品牌资料:" + this.employmentData.user_account)
+                this.employmentData.employmentGuid = this.$route.params.employmentGuid
+
+                applyEmploymentAPI.getPublishEmploymentInfo({
+                    employmentGuid: this.employmentData.employmentGuid
+                }).then(function(result) {
+                    console.log(JSON.stringify(result))
+                    that.employmentData.publishEmploymentInfo = result
+
+                    that.getEmploymentInfo(result.employer_user_account)
+                    that.getAgentGuid(result.employer_user_account)
+                }).catch(function(err) {
+                    window.alert(err)
+                })
+            },
+            getEmploymentInfo(user_account) {
+                var that = this
+                console.log("正在获取品牌资料:" + user_account)
                 applyEmploymentAPI.getBrandInfo({
-                    user_account: this.employmentData.user_account
+                    user_account: user_account
                 }).then(function(result) {
                     that.employmentData.brandInfo = result
                     console.log(JSON.stringify(that.employmentData))
+
                     that.getEmploymentBrandRole()
                 }).catch(function(err) {
                     window.alert(err)
@@ -147,7 +147,7 @@
                 console.log("正在获取申请等级")
                 applyEmploymentAPI.getRoleName({
                     brand_guid: this.employmentData.brandInfo.guid,
-                    brand_role_code: this.employmentData.brand_role_code
+                    brand_role_code: this.employmentData.publishEmploymentInfo.brand_role_code
                 }).then(function(result) {
                     that.employmentData.brand_role_name = result.name
                     console.log(JSON.stringify(result))
@@ -155,10 +155,10 @@
                     window.alert(err)
                 })
             },
-            getAgentGuid() {
+            getAgentGuid(user_account) {
                 var that = this
                 applyEmploymentAPI.getAgentInfo({
-                    user_account: that.employmentData.user_account
+                    user_account: user_account
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
                     that.employmentData.agent_guid = result.guid
