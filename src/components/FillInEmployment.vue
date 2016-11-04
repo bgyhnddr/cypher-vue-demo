@@ -2,8 +2,8 @@
     <div>
         <p>代理申请表</p>
         <div v-if="!showNextFillModel">
-                <p>上级代理:{{employmentData.brandInfo.company_name}}上级授权号{{employmentData.agent_guid}}</p>
-                <p>您当前代理级别为:{{employmentData.brand_role_name}}</p>
+                <p>上级代理:{{employmentData.employerName}}上级授权号{{employmentData.agentGuid}}</p>
+                <p>您当前代理级别为:{{employmentData.brandRoleName}}</p>
                 <img class="vux-x-img ximg-demo" :name.sync="meta.headimg" alt="上传头像" />
                 <vue-strap-upload :file-id.sync="data.headimg" ></vue-strap-upload>
                 <group>
@@ -101,9 +101,10 @@
                 employmentData: {
                     employmentGuid: null,
                     publishEmploymentInfo: {},
-                    agent_guid: "",
-                    brand_role_name: "",
-                    brandInfo: {}
+                    agentGuid: "",
+                    brandRoleName: "",
+                    brandInfo: {},
+                    employerName: {}
                 },
                 showNextFillModel: false,
                 personalIdentityTypeList: ['身份证', '回乡证', '护照'],
@@ -125,7 +126,7 @@
                     var startDate = new Date(result.create_time)
                     var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
                     if (endDate <= new Date()) {
-                        window.alert("已招募失效")
+                        window.alert("招募已失效")
                         that.$route.router.go('/auth/login')
                     } else {
                         that.employmentData.publishEmploymentInfo = result
@@ -158,7 +159,7 @@
                     brand_guid: this.employmentData.brandInfo.guid,
                     brand_role_code: this.employmentData.publishEmploymentInfo.brand_role_code
                 }).then(function(result) {
-                    that.employmentData.brand_role_name = result.name
+                    that.employmentData.brandRoleName = result.name
                     console.log(JSON.stringify(result))
                 }).catch(function(err) {
                     window.alert(err)
@@ -166,11 +167,21 @@
             },
             getAgentGuid(user_account) {
                 var that = this
+                console.log("获取招募者资料:" + user_account)
                 applyEmploymentAPI.getAgentInfo({
                     user_account: user_account
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
-                    that.employmentData.agent_guid = result.guid
+                    that.employmentData.agentGuid = result.guid
+
+                    for (var item in result.agent_details) {
+                        for (var meta in result.agent_details[item]) {
+                            if (meta == 'key' && result.agent_details[item][meta] == 'name') {
+                                console.log(result.agent_details[item]['value'])
+                                that.employmentData.employerName = result.agent_details[item]['value']
+                            }
+                        }
+                    }
                 }).catch(function(err) {
                     window.alert(err)
                 })
@@ -211,10 +222,15 @@
                 } else if (this.data.addressDetail == "") {
                     window.alert("通讯地址填写错误，请填写完整，再跳转到下一页")
                 } else {
+                    var create_time = this.employmentData.publishEmploymentInfo.create_time
+                    var deadline = new Date(new Date(create_time).getTime() + 2 * 3600 * 1000).Format('yyyy-MM-dd hh:mm:ss')
+                    console.log(deadline)
+
                     applyEmploymentAPI.submitApplication({
                         meta: this.meta,
                         data: this.data,
-                        employmentData: this.employmentData
+                        employmentData: this.employmentData,
+                        deadline: deadline
                     }).then(function(result) {
                         console.log("提交成功")
                         that.$route.router.go('/employManagement/employmentSubmission')

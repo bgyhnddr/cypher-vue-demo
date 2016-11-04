@@ -71,11 +71,17 @@ var exec = {
         var user_account = req.body.user_account
 
         var agent = require('../../db/models/agent')
+        var agent_detail = require('../../db/models/agent_detail')
+
+        agent.hasMany(agent_detail)
 
         return agent.findOne({
             where: {
                 user_account: user_account
-            }
+            },
+            include: [{
+                model: agent_detail
+            }]
         }).then(function(result) {
             if (result == null) {
                 return Promise.reject("上级授权角色资料读取出错")
@@ -88,6 +94,7 @@ var exec = {
         var meta = req.body.meta
         var data = req.body.data
         var employmentData = req.body.employmentData
+        var deadline = req.body.deadline
 
         var uuid = require('node-uuid')
         var guid = uuid.v1()
@@ -132,13 +139,11 @@ var exec = {
                 for (var i = 0; i < 6; i++) {
                     pwd += Math.floor(Math.random() * 10);
                 }
-
-                var create_time = employmentData.publishEmploymentInfo.create_time
-                var deadline = new Date(new Date(create_time).getTime() + 2 * 3600 * 1000)
-
+                
                 return Promise.all([
                     employment.create({
                         guid: guid,
+                        publish_employment_guid: employmentData.publishEmploymentInfo.guid,
                         employer_user_account: employmentData.publishEmploymentInfo.employer_user_account,
                         brand_role_code: employmentData.publishEmploymentInfo.brand_role_code,
                         brand_guid: employmentData.publishEmploymentInfo.brand_guid,
