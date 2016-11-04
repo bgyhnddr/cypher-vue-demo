@@ -39,7 +39,7 @@
                     <p>审核新代理申请表</p>
                 </div>
                 <div class="weui_cell_ft" :class="{'with_arrow': true}">
-                    <slot name="value"></slot>
+                    <slot name="value">{{auditListLength}}</slot>
                     <slot></slot>
                 </div>
             </a>
@@ -67,6 +67,7 @@
     } from 'vux'
     import authAPI from '../api/auth'
     import agentInfoAPI from '../api/agentInfo'
+    import employmentAPI from '../api/employment'
 
     export default {
         components: {
@@ -85,6 +86,7 @@
                     }
                 },
                 showAuditClick: false,
+                auditListLength: null
             }
         },
         methods: {
@@ -104,7 +106,12 @@
                         user_account: that.user.user_info.name
                     }).then(function(result) {
                         console.log(JSON.stringify(result))
-                        console.log(typeof(result.brand_role.level))
+
+                        employmentAPI.getAuditList().then(function(result) {
+                            console.log(result.length)
+                            that.auditListLength = result.length
+                        })
+
                         if (result.brand_role.level == "0") {
                             that.showAuditClick = true
                         }
