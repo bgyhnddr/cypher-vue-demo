@@ -33,9 +33,8 @@
             return {
                 leftOptions: {
                     showBack: true,
-                    backText: '返回',
+                    backText: '返回'
                 },
-                title: null
             }
         },
         computed: {
@@ -86,37 +85,7 @@
                 } else {
                     history.back()
                 }
-            },
-            // title() {
-            //     if (this.$route.path === '/index')
-            //         return 'Home'
-            //     if (this.$route.path === '/example2')
-            //         return 'example2'
-            //     if (this.$route.path === '/auth/login')
-            //         return '登录'
-            //     if (this.$route.path === '/auth/regist')
-            //         return '注册'
-            //     if (this.$route.path === '/auth/changepwd')
-            //         return '修改密码'
-            //     if (this.$route.path === '/auth/test')
-            //         return '测试页面'
-            //     if (this.$route.path === '/employManagement')
-            //         return '成员招募'
-            //     if (this.$route.path === '/employManagement/chooseEmployableRoles')
-            //         return '选择招募代理级别'
-            //     if (this.$route.path === 'BrandAuthorization') {
-            //         console.log(this.title)
-            //         return this.title
-            //     }
-            //     if (this.$route.path === '/employManagement/audit')
-            //         return '资料审核'
-            //     if (this.$route.path === '/employManagement/auditInfo')
-            //         return '审核详情'
-            //     if (this.$route.path === '/employManagement/employmentHistory')
-            //         return '招募历史'
-            //     if (this.$route.path === '/accountManagement')
-            //         return '我的账号'
-            // }
+            }
         }
     }
 </script>
