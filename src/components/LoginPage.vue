@@ -1,6 +1,9 @@
 <template>
 	<div @keyup.enter="submitLogin">
 			<div>
+                <div class="vux-center">
+                    <img class="vux-x-img ximg-demo vux-center" alt="头像" src="http://img2.imgtn.bdimg.com/it/u=1672707696,3957209627&fm=21&gp=0.jpg"/></p>
+                </div>
                 <group>
                     <x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入账号" is-type="china-name"></x-input>
                 </group>
@@ -26,12 +29,19 @@
 <script>
     import authAPI from '../api/auth'
     import VueRouter from 'vue-router'
-    import { Toast,XInput, Group, XButton,Flexbox,FlexboxItem } from 'vux'
+    import {
+        Toast,
+        XInput,
+        Group,
+        XButton,
+        Flexbox,
+        FlexboxItem
+    } from 'vux'
     export default {
         data() {
             return {
-                show:false,
-                errmsg:"",
+                show: false,
+                errmsg: "",
                 state: window.state,
                 serverMsg: "",
                 loginInfo: {
