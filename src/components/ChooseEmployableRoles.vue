@@ -2,7 +2,7 @@
     <div>
         <button class="weui_btn weui_btn_primary" :class="classes" v-for="role in employableRolesList"  
          v-link="{path: '/employManagement/brandAuthorization/'+userinfo.brand_role.agent_brand_role.agent.user_account
-                    +'/'+role.employable_brand_role_code + '/' + startTime}">
+                    +'/'+role.employable_brand_role_code }">
             {{role.brand_role.name}}
         </button>
     </div>

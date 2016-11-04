@@ -17,4 +17,7 @@ export default {
     getAgentInfo(params) {
         return httpRequest.post(path + 'getAgentInfo', params)
     },
+    getPublishEmploymentInfo(params) {
+        return httpRequest.post(path + 'getPublishEmploymentInfo', params)
+    },
 }

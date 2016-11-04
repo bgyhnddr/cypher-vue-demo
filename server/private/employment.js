@@ -105,11 +105,17 @@ var exec = {
         var user_account = req.body.user_account
 
         var agent = require('../../db/models/agent')
+        var agent_detail = require('../../db/models/agent_detail')
+
+        agent.hasMany(agent_detail)
 
         return agent.findOne({
             where: {
                 user_account: user_account
-            }
+            },
+            include: [{
+                model: agent_detail
+            }]
         }).then(function(result) {
             if (result == null) {
                 return Promise.reject("上级授权角色资料读取出错")
@@ -280,6 +286,27 @@ var exec = {
         } else {
             return Promise.reject("请先登录")
         }
+    },
+    createEmployment(req, res, next) {
+        var employer = req.body.employer
+        var employmentData = req.body.employmentData
+        var createTime = req.body.createTime
+
+        var uuid = require('node-uuid')
+        var guid = uuid.v1()
+
+        var publish_employment = require('../../db/models/publish_employment')
+
+        publish_employment.create({
+            guid: guid,
+            brand_guid: employmentData.guid,
+            brand_role_code: employer.brand_role_code,
+            employer_user_account: employer.user_account,
+            create_time: createTime,
+            status: true
+        })
+
+        return guid
     }
 }
 
