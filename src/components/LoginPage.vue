@@ -184,4 +184,9 @@ button.weui_btn.weui_btn_primary:active{
 
 
 }
+
+/*隐藏返回按钮*/
+a.vux-header-back.headerTransition-transition {
+    display: none;
+}
 </style>
