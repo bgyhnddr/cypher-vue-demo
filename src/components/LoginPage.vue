@@ -103,6 +103,7 @@
     }
 body {
     font-family: "微软雅黑";
+    background-color: #fff;
 }
 /*品牌商logo*/
     .login-header{
@@ -188,5 +189,8 @@ button.weui_btn.weui_btn_primary:active{
 /*隐藏返回按钮*/
 a.vux-header-back.headerTransition-transition {
     display: none;
+}
+/*顶栏*/
+.vux-header{
 }
 </style>
