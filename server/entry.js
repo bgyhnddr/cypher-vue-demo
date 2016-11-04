@@ -15,7 +15,11 @@ module.exports = (app) => {
     // parse application/json
     app.use(bodyParser.json())
 
-    app.use(session({ secret: '1234567890QWERTY' }))
+    app.use(session({
+        resave:false,//添加这行  
+        saveUninitialized: true,//添加这行   
+        secret: '1234567890QWERTY' 
+    }))
 
     app.use('/service/:permission/:type/:action', function(req, res, next) {
         console.log("request:" + req.originalUrl)
