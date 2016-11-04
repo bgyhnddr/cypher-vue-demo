@@ -2,15 +2,16 @@
     <div>
         <button class="weui_btn weui_btn_primary" :class="classes" v-for="role in employableRolesList"  
          v-link="{path: '/employManagement/brandAuthorization/'+userinfo.brand_role.agent_brand_role.agent.user_account
-                    +'/'+role.brand_role.name + '/' + startTime}">
+                    +'/'+role.employable_brand_role_code + '/' + startTime}">
             {{role.brand_role.name}}
         </button>
     </div>
 </template>
 
 <script>
-    import agentInfo from '../api/agentInfo'
-    import employment from '../api/employment'
+    import authAPI from '../api/auth'
+    import agentInfoAPI from '../api/agentInfo'
+    import employmentAPI from '../api/employment'
 
     export default {
         data() {
@@ -30,7 +31,7 @@
             chooseBrandRole() {
                 var that = this
                 console.log(that.userinfo.brand_role.code)
-                employment.getEmployableRoles({
+                employmentAPI.getEmployableRoles({
                     brand_role_code: that.userinfo.brand_role.code
                 }).then(function(result) {
                     if (result.roleCount == 0) {
@@ -42,25 +43,36 @@
             },
             getPersonalInfo() {
                 var that = this
-                var user_account = window.state.userInfo.name
-                console.log("获取用户账号:" + user_account)
-                agentInfo.getBrandInfo({
-                    user_account: user_account
-                }).then(function(result) {
-                    that.userinfo = result
-                    that.chooseBrandRole()
-                }).catch(function(err) {
-                    window.alert(err)
+                authAPI.getUser().then(function(result) {
+                    if (typeof(result.name) == 'undefined') {
+                        window.alert("获取用户登录信息失败，请重新登录")
+                        that.$route.router.go('/auth/login')
+                        return
+                    }
+
+                    var user_account = result.name
+                    console.log("获取用户账号:" + user_account)
+
+                    agentInfoAPI.getBrandInfo({
+                        user_account: user_account
+                    }).then(function(result) {
+                        that.userinfo = result
+                        that.chooseBrandRole()
+                    }).catch(function(err) {
+                        window.alert(err)
+                    })
                 })
+
+
             },
-            createDealine() {
+            createStartTime() {
                 this.startTime = new Date().getTime()
                 console.log(new Date(this.startTime))
             }
         },
         ready() {
             this.getPersonalInfo()
-            this.createDealine()
+            this.createStartTime()
         }
     }
 </script>

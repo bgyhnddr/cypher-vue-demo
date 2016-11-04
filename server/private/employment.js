@@ -83,6 +83,41 @@ var exec = {
         })
 
     },
+    getRoleName(req, res, next) {
+        var brand_role_code = req.body.brand_role_code
+
+        var brand_role = require('../../db/models/brand_role')
+
+        return brand_role.findOne({
+            where: {
+                code: brand_role_code
+            }
+        }).then(function(result) {
+            if (result == null) {
+                return Promise.reject("品牌商角色读取出错")
+            } else {
+                return result
+            }
+        })
+
+    },
+    getAgentInfo(req, res, next) {
+        var user_account = req.body.user_account
+
+        var agent = require('../../db/models/agent')
+
+        return agent.findOne({
+            where: {
+                user_account: user_account
+            }
+        }).then(function(result) {
+            if (result == null) {
+                return Promise.reject("上级授权角色资料读取出错")
+            } else {
+                return result
+            }
+        })
+    },
     getAuditList(req, res, next) {
         // return req.session.userInfo
         var userinfo = req.session.userInfo

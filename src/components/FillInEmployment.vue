@@ -2,31 +2,36 @@
     <div>
         <p>代理申请表</p>
         <div v-if="!showNextFillModel">
-                <p>上级代理:{{employmentData.company_name}}上级授权号{{employmentData.guid}}</p>
-                <p>您当前代理级别为:{{employer.employee_role}}</p>
-                <img class="vux-x-img ximg-demo" alt="上传头像" />
+                <p>上级代理:{{employmentData.brandInfo.company_name}}上级授权号{{employmentData.agent_guid}}</p>
+                <p>您当前代理级别为:{{employmentData.brand_role_name}}</p>
+                <img class="vux-x-img ximg-demo" :name.sync="meta.headimg" alt="上传头像" />
+                <vue-strap-upload :file-id.sync="data.headimg" ></vue-strap-upload>
                 <group>
-                    <x-input class="weui_cell_primary" :value.sync="data.name" type="text" placeholder="申请人姓名" title="申请人" ></x-input>
+                    <x-input class="weui_cell_primary" title="申请人" :name.sync="meta.name" :value.sync="data.name"  
+                        placeholder="申请人姓名" is-type="china-name" v-ref:name ></x-input>
                 </group>
                 <p>*姓名一经审批将不得修改，请慎重填写</p>
                 <group>
-                    <x-input class="weui_cell_primary" :value.sync="data.wechat" type="text" placeholder="6-20个字母，数字，下划线或减号" title="微信号"></x-input>
+                    <x-input class="weui_cell_primary" type="text" title="微信号" :name.sync="meta.wechat" :value.sync="data.wechat"
+                        placeholder="必须以字母开头，6-20个字母，数字，下划线或减号" :min="6" :max="20" 
+                        v-ref:wechat ></x-input>
                 </group>
                 <group>
-                    <x-input class="weui_cell_primary" :value.sync="data.account" type="number" placeholder="请输入手机号码" title="手机号"></x-input>
+                    <x-input class="weui_cell_primary" keyboard="number" title="手机号" :value.sync="data.account"  
+                        placeholder="请输入手机号码"  is-type="china-mobile" v-ref:account></x-input>
                 </group>
                 <button class="weui_btn weui_btn_primary" :class="classes" @click="goFillEmployment2">下一步</button>
         </div>
         <div v-else>
             <group>
                 <selector placeholder="-证件类型-" :options="personalIdentityTypeList" :value.sync="data.typeOfPersonalIdentity"></selector>
-                <x-input class="weui_cell_primary"  type="text" placeholder="输入证件号" :value.sync="data.valueOfPersonalIdentity"></x-input>
+                <x-input class="weui_cell_primary" keyboard="number" placeholder="输入证件号" :value.sync="data.valueOfPersonalIdentity" v-ref:valueOfPersonalIdentity></x-input>
             </group>
             <group title="通讯地址">
-                <address title=""  raw-value :list="addressData" :value.sync="data.provinceAndRegion"></address>
+                <address title="" :value.sync="data.provinceAndRegionTemp" :list="addressData"></address>
             </group>
             <group>
-                <x-textarea name="addressDetail" :max="50" placeholder="请填写详细地址" :value.sync="data.addressDetail"></x-textarea>
+                <x-textarea :name.sync="meta.addressDetail" :max="50" placeholder="请填写详细地址" :value.sync="data.addressDetail"></x-textarea>
             </group>
             <button class="weui_btn weui_btn_primary" :class="classes" @click="goFillEmployment1">返回</button>
             <button class="weui_btn weui_btn_primary" :class="classes" @click="submit">确认申请</button>
@@ -41,10 +46,13 @@
         Selector,
         Address,
         AddressChinaData,
-        XTextarea
+        XTextarea,
+        Cell
     } from 'vux'
     import authAPI from '../api/auth'
     import applyEmploymentAPI from '../api/applyEmployment'
+    import filterAddress from '../extend/filter-address'
+    import VueStrapUpload from './extend/vue-strap-upload'
 
     export default {
         components: {
@@ -53,7 +61,9 @@
             XNumber,
             Selector,
             Address,
-            XTextarea
+            XTextarea,
+            VueStrapUpload,
+            Cell
         },
         data() {
             return {
@@ -68,82 +78,141 @@
                     addressDetail: "详细地址"
                 },
                 data: {
-                    headimg: "",
+                    headimg: null,
                     name: "",
                     wechat: "",
                     account: "",
                     typeOfPersonalIdentity: "",
                     valueOfPersonalIdentity: "",
-                    provinceAndRegion: [],
+                    provinceAndRegionTemp: [],
+                    provinceAndRegion: "",
                     addressDetail: ""
                 },
-                employer: {
-                    user_account: "",
-                    employee_role: ""
+                valid: {
+                    headimg: null,
+                    name: null,
+                    wechat: null,
+                    account: null,
+                    typeOfPersonalIdentity: null,
+                    valueOfPersonalIdentity: null,
+                    provinceAndRegion: null,
+                    addressDetail: null
                 },
-                employmentData: {},
+                employmentData: {
+                    agent_guid: "",
+                    user_account: "",
+                    brand_role_code: "",
+                    brand_role_name: "",
+                    date: {
+                        start: "",
+                        deadline: ""
+                    },
+                    brandInfo: {}
+                },
                 showNextFillModel: false,
                 personalIdentityTypeList: ['身份证', '回乡证', '护照'],
-                addressData: AddressChinaData,
-                date: {
-                    start: "",
-                    deadline: ""
-                }
+                addressData: AddressChinaData
+
             }
         },
         methods: {
             initDate() {
-                this.employer.user_account = this.$route.params.account
-                this.employer.employee_role = this.$route.params.employableRole
+                this.employmentData.user_account = this.$route.params.account
+                this.employmentData.brand_role_code = this.$route.params.employableRole
 
                 var startTime = this.$route.params.startTime
-                this.date.start = new Date(parseInt(startTime)).Format('yyyy-MM-dd')
-                var startDate = new Date(this.date.start)
-                this.date.deadline = new Date(startDate.getTime() + 30 * 24 * 3600 * 1000).Format('yyyy-MM-dd')
+                this.employmentData.date.start = new Date(parseInt(startTime)).Format('yyyy-MM-dd')
+                var startDate = new Date(this.employmentData.date.start)
+                this.employmentData.date.deadline = new Date(startDate.getTime() + 30 * 24 * 3600 * 1000).Format('yyyy-MM-dd')
 
                 this.getEmploymentInfo()
+                this.getAgentGuid()
+
             },
             getEmploymentInfo() {
                 var that = this
-                console.log("正在获取品牌资料:" + this.employer.user_account)
+                console.log("正在获取品牌资料:" + this.employmentData.user_account)
                 applyEmploymentAPI.getBrandInfo({
-                    user_account: this.employer.user_account
+                    user_account: this.employmentData.user_account
                 }).then(function(result) {
-                    // console.log(JSON.stringify(result))
-                    that.employmentData = result
+                    that.employmentData.brandInfo = result
+                    console.log(JSON.stringify(that.employmentData))
+                    that.getEmploymentBrandRole()
+                }).catch(function(err) {
+                    window.alert(err)
+                })
+            },
+            getEmploymentBrandRole() {
+                var that = this
+                console.log("正在获取申请等级")
+                applyEmploymentAPI.getRoleName({
+                    brand_guid: this.employmentData.brandInfo.guid,
+                    brand_role_code: this.employmentData.brand_role_code
+                }).then(function(result) {
+                    that.employmentData.brand_role_name = result.name
+                    console.log(JSON.stringify(result))
+                }).catch(function(err) {
+                    window.alert(err)
+                })
+            },
+            getAgentGuid() {
+                var that = this
+                applyEmploymentAPI.getAgentInfo({
+                    user_account: that.employmentData.user_account
+                }).then(function(result) {
+                    console.log(JSON.stringify(result))
+                    that.employmentData.agent_guid = result.guid
                 }).catch(function(err) {
                     window.alert(err)
                 })
             },
             goFillEmployment2() {
                 console.log("打开第二部分表格")
-                this.showNextFillModel = true
+                var reg = /^[a-z]+[a-zA-Z0-9_]*$/
+
+                if (!this.$refs.name.valid) {
+                    window.alert("申请人填写错误，请填写完整，再跳转到下一页")
+                } else if (!this.$refs.wechat.valid || !reg.test(this.data.wechat)) {
+                    window.alert("微信号填写错误，请填写完整，再跳转到下一页")
+                } else if (!this.$refs.account.valid) {
+                    window.alert("手机号填写错误，请填写完整，再跳转到下一页")
+                } else if (this.data.headimg == null) {
+                    window.alert("头像还未上传，请填写完整，再跳转到下一页")
+                } else {
+                    this.showNextFillModel = true
+                }
             },
             goFillEmployment1() {
                 console.log("打开第一部分表格")
                 this.showNextFillModel = false
             },
             submit() {
-                // console.log(JSON.stringify(this.meta))
-                // console.log(JSON.stringify(this.data))
-                // console.log(JSON.stringify(this.date))
-                // console.log(JSON.stringify(this.employer))
-                // console.log(JSON.stringify(this.employmentData))
+                var that = this
+                    //将data.provinceAndRegion 转换成中文字符串
+                this.data.provinceAndRegion = filterAddress(this.data.provinceAndRegionTemp, AddressChinaData)
+                console.log(JSON.stringify(this.data))
 
-                applyEmploymentAPI.submitApplication({
-                    meta: this.meta,
-                    data: this.data,
-                    date: this.date,
-                    employer: this.employer,
-                    employmentData: this.employmentData
-                }).then(function(result) {
-                    console.log(JSON.stringify(result))
-                        // that.employmentData = result
-                }).catch(function(err) {
-                    window.alert(err)
-                })
-
-
+                //检查未填写完整的值
+                if (this.data.typeOfPersonalIdentity == "") {
+                    window.alert("证件类型未填写，请填写完整，再跳转到下一页")
+                } else if (!this.$refs.valueofpersonalidentity.valid) {
+                    window.alert("证件号填写错误，请填写完整，再跳转到下一页")
+                } else if (this.data.provinceAndRegion == "") {
+                    window.alert("通讯地址填写错误，请填写完整，再跳转到下一页")
+                } else if (this.data.addressDetail == "") {
+                    window.alert("通讯地址填写错误，请填写完整，再跳转到下一页")
+                } else {
+                    applyEmploymentAPI.submitApplication({
+                        meta: this.meta,
+                        data: this.data,
+                        employmentData: this.employmentData
+                    }).then(function(result) {
+                        console.log("提交成功")
+                        that.$route.router.go('/employManagement/employmentSubmission')
+                    }).catch(function(err) {
+                        window.alert(err)
+                    })
+                }
             }
         },
         ready() {
