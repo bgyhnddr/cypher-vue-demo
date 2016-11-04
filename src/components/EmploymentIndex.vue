@@ -1,26 +1,78 @@
 <template>
     <div>
-        <a class="weui_cell"  v-link="{path: 'employManagement/chooseEmployableRoles'}" >
-            <div class="weui_cell_hd">
-                <img  alt="图标LOGO" >
-            </div>
-            <div class="weui_cell_bd weui_cell_primary">
-                <p>发起招募</p>
-                <p>发起招募申请表</p>
-            </div>
-            <div class="weui_cell_ft" :class="{'with_arrow': true}">
-                <slot name="value"></slot>
-                <slot></slot>
-            </div>
-        </a>
+        <group>
+            <!--发起招募-->
+            <a class="weui_cell"  v-link="{path: 'employManagement/chooseEmployableRoles'}" >
+                <div class="weui_cell_hd">
+                    <img  alt="图标LOGO" >
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p>发起招募</p>
+                    <p>发起招募申请表</p>
+                </div>
+                <div class="weui_cell_ft" :class="{'with_arrow': true}">
+                    <slot name="value"></slot>
+                    <slot></slot>
+                </div>
+            </a>
+            <!--当前招募-->
+            <a class="weui_cell"  v-link="" >
+                <div class="weui_cell_hd">
+                    <img  alt="图标LOGO" >
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p>当前招募</p>
+                    <p>查看当前进行的招募状态</p>
+                </div>
+                <div class="weui_cell_ft" :class="{'with_arrow': true}">
+                    <slot name="value"></slot>
+                    <slot></slot>
+                </div>
+            </a>
+            <!--成员审核-->
+            <a class="weui_cell" v-if="showAuditClick" v-link="{path: 'BrandManagement/audit'}" >
+                <div class="weui_cell_hd">
+                    <img  alt="图标LOGO" >
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p>成员审核</p>
+                    <p>审核新代理申请表</p>
+                </div>
+                <div class="weui_cell_ft" :class="{'with_arrow': true}">
+                    <slot name="value">{{auditListLength}}</slot>
+                    <slot></slot>
+                </div>
+            </a>
+            <!--招募历史-->
+            <a class="weui_cell"  v-link="{path: 'BrandManagement/employmentHistory'}" >
+                <div class="weui_cell_hd">
+                    <img  alt="图标LOGO" >
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p>招募历史</p>
+                    <p>查看已成功招募信息</p>
+                </div>
+                <div class="weui_cell_ft" :class="{'with_arrow': true}">
+                    <slot name="value"></slot>
+                    <slot></slot>
+                </div>
+            </a>
+        </group>
 	</div>
 </template>
 
 <script>
+    import {
+        Group
+    } from 'vux'
     import authAPI from '../api/auth'
     import agentInfoAPI from '../api/agentInfo'
+    import employmentAPI from '../api/employment'
 
     export default {
+        components: {
+            Group
+        },
         data() {
             return {
                 user: {
@@ -32,7 +84,9 @@
                             }
                         }
                     }
-                }
+                },
+                showAuditClick: false,
+                auditListLength: null
             }
         },
         methods: {
@@ -51,6 +105,16 @@
                     agentInfoAPI.getBrandInfo({
                         user_account: that.user.user_info.name
                     }).then(function(result) {
+                        console.log(JSON.stringify(result))
+
+                        employmentAPI.getAuditList().then(function(result) {
+                            console.log(result.length)
+                            that.auditListLength = result.length
+                        })
+
+                        if (result.brand_role.level == "0") {
+                            that.showAuditClick = true
+                        }
                         that.user.brand_info = result
                     }).catch(function(err) {
                         window.alert(err)

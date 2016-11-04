@@ -71,11 +71,17 @@ var exec = {
         var user_account = req.body.user_account
 
         var agent = require('../../db/models/agent')
+        var agent_detail = require('../../db/models/agent_detail')
+
+        agent.hasMany(agent_detail)
 
         return agent.findOne({
             where: {
                 user_account: user_account
-            }
+            },
+            include: [{
+                model: agent_detail
+            }]
         }).then(function(result) {
             if (result == null) {
                 return Promise.reject("上级授权角色资料读取出错")
@@ -88,6 +94,7 @@ var exec = {
         var meta = req.body.meta
         var data = req.body.data
         var employmentData = req.body.employmentData
+        var deadline = req.body.deadline
 
         var uuid = require('node-uuid')
         var guid = uuid.v1()
@@ -102,8 +109,8 @@ var exec = {
         return Promise.all([
             employment.findOne({
                 where: {
-                    brand_guid: employmentData.guid,
-                    employer_user_account: data.account
+                    brand_guid: employmentData.publishEmploymentInfo.brand_guid,
+                    employee_user_account: data.account
                 }
             }),
             user.findOne({
@@ -113,7 +120,7 @@ var exec = {
             })
         ]).then(function(result) {
             if (result[0] != null || result[1] != null) {
-                return Promise.reject("提交代理申请异常")
+                return Promise.reject("您已提交过申请或者已成为该品牌成员，提交申请失败")
             } else {
                 var createList = []
                 for (var item in meta) {
@@ -132,16 +139,17 @@ var exec = {
                 for (var i = 0; i < 6; i++) {
                     pwd += Math.floor(Math.random() * 10);
                 }
-
+                
                 return Promise.all([
                     employment.create({
                         guid: guid,
-                        employer_user_account: data.account,
-                        brand_role_code: employmentData.brand_role_code,
-                        brand_guid: employmentData.brandInfo.guid,
-                        employer_time: new Date(employmentData.date.start),
-                        deadline: new Date(employmentData.date.deadline),
-                        employee_user_account: employmentData.user_account,
+                        publish_employment_guid: employmentData.publishEmploymentInfo.guid,
+                        employer_user_account: employmentData.publishEmploymentInfo.employer_user_account,
+                        brand_role_code: employmentData.publishEmploymentInfo.brand_role_code,
+                        brand_guid: employmentData.publishEmploymentInfo.brand_guid,
+                        employee_user_account: data.account,
+                        employer_time: employmentData.publishEmploymentInfo.create_time,
+                        deadline: deadline,
                         status: "未处理"
                     }),
                     createList,
@@ -155,7 +163,25 @@ var exec = {
     },
     getPwd(req, res, next) {
         return req.session.pwd
-    }
+    },
+    getPublishEmploymentInfo(req, res, next) {
+        var employmentGuid = req.body.employmentGuid
+
+        var publish_employment = require('../../db/models/publish_employment')
+
+        return publish_employment.findOne({
+            where: {
+                guid: employmentGuid
+            }
+        }).then(function(result) {
+            if (result == null) {
+                return Promise.reject("招募信息读取出错")
+            } else {
+                return result
+            }
+        })
+
+    },
 }
 
 module.exports = (req, res, next) => {
