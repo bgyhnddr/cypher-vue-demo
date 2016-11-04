@@ -93,12 +93,6 @@
             getPersonalInfo() {
                 var that = this
                 authAPI.getUser().then(function(result) {
-                    if (typeof(result.name) == 'undefined') {
-                        window.alert("获取用户登录信息失败，请重新登录")
-                        that.$route.router.go('/auth/login')
-                        return
-                    }
-
                     that.user.user_info = result
                     console.log("用户账号:" + that.user.user_info.name)
 
@@ -109,7 +103,11 @@
 
                         employmentAPI.getAuditList().then(function(result) {
                             console.log(result.length)
-                            that.auditListLength = result.length
+                            if (result.length == 0) {
+                                that.auditListLength = null
+                            } else {
+                                that.auditListLength = result.length
+                            }
                         })
 
                         if (result.brand_role.level == "0") {

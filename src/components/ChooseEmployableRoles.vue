@@ -44,11 +44,6 @@
             getPersonalInfo() {
                 var that = this
                 authAPI.getUser().then(function(result) {
-                    if (typeof(result.name) == 'undefined') {
-                        window.alert("获取用户登录信息失败，请重新登录")
-                        that.$route.router.go('/auth/login')
-                        return
-                    }
 
                     var user_account = result.name
                     console.log("获取用户账号:" + user_account)

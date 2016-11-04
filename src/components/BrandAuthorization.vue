@@ -14,7 +14,6 @@
             <p>授权期限<label>{{date.start}}</label>至<label>{{date.deadline}}</label></p>
             <p>备注：本授权书以正本为有效文本，不得影印，涂改，转让。{{company_name}}有此授权书最终解释权。</p>
             <p>授权单位<label>{{company_name}}</label></p>
-            <button class="weui_btn weui_btn_primary" :class="classes" @click="goBackToEmploymentIndex">回到招募首页</button>
         </div>
     </div>
 </template>
