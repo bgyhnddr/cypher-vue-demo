@@ -84,6 +84,16 @@ export function configRouter(router) {
 
             }
         },
+        '/accountManagement': {
+            component: function(reslove) {
+                return require(['../components/WapMain.vue'], reslove)
+            },
+            subRoutes: {
+                '': {
+                    component: require('../components/AccountIndex.vue')
+                }
+            }
+        },
         '/test': {
             component: require('../components/Test.vue')
         },
