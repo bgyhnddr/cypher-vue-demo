@@ -2,7 +2,7 @@
     <div>
         <button class="weui_btn weui_btn_primary" :class="classes" v-for="role in employableRolesList"  
          v-link="{path: '/employManagement/brandAuthorization/'+userinfo.brand_role.agent_brand_role.agent.user_account
-                    +'/'+role.employable_brand_role_code }">
+                    +'/'+role.employable_brand_role_code + '/' + brandName}">
             {{role.brand_role.name}}
         </button>
     </div>
@@ -24,7 +24,7 @@
                     }
                 },
                 employableRolesList: [],
-                startTime: ""
+                brandName: "",
             }
         },
         methods: {
@@ -56,23 +56,18 @@
                     agentInfoAPI.getBrandInfo({
                         user_account: user_account
                     }).then(function(result) {
+                        console.log(result.name)
+                        that.brandName = result.name
                         that.userinfo = result
                         that.chooseBrandRole()
                     }).catch(function(err) {
                         window.alert(err)
                     })
                 })
-
-
-            },
-            createStartTime() {
-                this.startTime = new Date().getTime()
-                console.log(new Date(this.startTime))
             }
         },
         ready() {
             this.getPersonalInfo()
-            this.createStartTime()
         }
     }
 </script>

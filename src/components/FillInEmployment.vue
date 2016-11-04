@@ -223,7 +223,7 @@
                         deadline: deadline
                     }).then(function(result) {
                         console.log("提交成功")
-                        that.$route.router.go('/employManagement/employmentSubmission')
+                        that.$route.router.go('/employManagement/employmentSubmission' + this.$route.params.brandName)
                     }).catch(function(err) {
                         window.alert(err)
                     })

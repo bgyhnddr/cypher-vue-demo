@@ -78,7 +78,7 @@
                                 var brand_logo_href = parseInt(result.brand_details[item]['value'])
                                 that.brand_logo_href = "/service/public/upload/getAttachment?id=" + brand_logo_href
                             }
-                            //key = "headImg"
+                            //key = "companyName"
                             if (meta == 'key' && result.brand_details[item][meta] == 'companyName') {
                                 console.log(result.brand_details[item]['value'])
                                 that.company_name = result.brand_details[item]['value']
@@ -129,7 +129,7 @@
                 })
             },
             showShareUrl(employmentGuid) {
-                console.log('/employManagement/fillInEmployment/' + employmentGuid)
+                console.log('/employManagement/fillInEmployment/' + employmentGuid + "/" + this.$route.params.brandName)
             }
         },
         ready() {
