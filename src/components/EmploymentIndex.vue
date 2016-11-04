@@ -30,7 +30,7 @@
                 </div>
             </a>
             <!--成员审核-->
-            <a class="weui_cell"  v-link="" >
+            <a class="weui_cell" v-if="showAuditClick" v-link="{path: 'BrandManagement/audit'}" >
                 <div class="weui_cell_hd">
                     <img  alt="图标LOGO" >
                 </div>
@@ -44,7 +44,7 @@
                 </div>
             </a>
             <!--招募历史-->
-            <a class="weui_cell"  v-link="" >
+            <a class="weui_cell"  v-link="{path: 'BrandManagement/employmentHistory'}" >
                 <div class="weui_cell_hd">
                     <img  alt="图标LOGO" >
                 </div>
@@ -83,7 +83,8 @@
                             }
                         }
                     }
-                }
+                },
+                showAuditClick: false,
             }
         },
         methods: {
@@ -102,6 +103,11 @@
                     agentInfoAPI.getBrandInfo({
                         user_account: that.user.user_info.name
                     }).then(function(result) {
+                        console.log(JSON.stringify(result))
+                        console.log(typeof(result.brand_role.level))
+                        if (result.brand_role.level == "0") {
+                            that.showAuditClick = true
+                        }
                         that.user.brand_info = result
                     }).catch(function(err) {
                         window.alert(err)

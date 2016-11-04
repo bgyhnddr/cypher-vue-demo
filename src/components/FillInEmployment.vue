@@ -88,16 +88,6 @@
                     provinceAndRegion: "",
                     addressDetail: ""
                 },
-                valid: {
-                    headimg: null,
-                    name: null,
-                    wechat: null,
-                    account: null,
-                    typeOfPersonalIdentity: null,
-                    valueOfPersonalIdentity: null,
-                    provinceAndRegion: null,
-                    addressDetail: null
-                },
                 employmentData: {
                     employmentGuid: null,
                     publishEmploymentInfo: {},
