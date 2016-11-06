@@ -53,7 +53,7 @@
                         that.getRoleName()
                         that.getAgentGuid()
                     } else {
-                        that.$route.router.go('/auth/login')
+                        window.alert("您暂没有权限查看他人创建的招募证书")
                         return
                     }
                 })

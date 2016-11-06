@@ -202,6 +202,15 @@
                 this.data.provinceAndRegion = filterAddress(this.data.provinceAndRegionTemp, AddressChinaData)
                 console.log(JSON.stringify(this.data))
 
+                //招募失效
+                var startDate = new Date(this.employmentData.publishEmploymentInfo.create_time)
+                var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
+                if (endDate <= new Date()) {
+                    window.alert("招募已失效")
+                    that.$route.router.go('/auth/login')
+                    return
+                }
+
                 //检查未填写完整的值
                 if (this.data.typeOfPersonalIdentity == "") {
                     window.alert("证件类型未填写，请填写完整，再跳转到下一页")
@@ -212,8 +221,7 @@
                 } else if (this.data.addressDetail == "") {
                     window.alert("通讯地址填写错误，请填写完整，再跳转到下一页")
                 } else {
-                    var create_time = this.employmentData.publishEmploymentInfo.create_time
-                    var deadline = new Date(new Date(create_time).getTime() + 2 * 3600 * 1000).Format('yyyy-MM-dd hh:mm:ss')
+                    var deadline = endDate.Format('yyyy-MM-dd hh:mm:ss')
                     console.log(deadline)
 
                     applyEmploymentAPI.submitApplication({
