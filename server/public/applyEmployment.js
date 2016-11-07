@@ -176,6 +176,8 @@ var exec = {
         }).then(function(result) {
             if (result == null) {
                 return Promise.reject("招募信息读取出错")
+            } else if (result.status == false) {
+                return Promise.reject("招募已关闭")
             } else {
                 return result
             }

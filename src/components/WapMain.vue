@@ -4,7 +4,7 @@
         <view-box v-ref:view-box>
             <!--header slot-->
             <div class="vux-demo-header-box" slot="header">
-                <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
+                <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop" @click="onClickBack"></x-header>
             </div>
             <!--default slot-->
             <router-view class="view" transition="fate" transition-mode="out-in"></router-view>
@@ -33,8 +33,9 @@
             return {
                 leftOptions: {
                     showBack: true,
-                    backText: '返回'
-                },
+                    backText: '返回',
+                    preventGoBack: false
+                }
             }
         },
         computed: {
@@ -60,9 +61,15 @@
                     return this.$route.params.brandName
                 }
                 if (this.$route.name === 'FillInEmployment') {
+                    this.leftOptions.showBack = false
+                    this.$on('fillInEmployment_goBack', function(flag) {
+                        console.log("event" + "==========" + flag)
+                        this.leftOptions.showBack = flag
+                    })
                     return this.$route.params.brandName + "——代理授权申请"
                 }
                 if (this.$route.name === 'EmploymentSubmission') {
+                    this.leftOptions.showBack = false
                     return this.$route.params.brandName + "——代理授权申请"
                 }
                 if (this.$route.path === '/employManagement/audit')
@@ -83,7 +90,33 @@
                 if (this.leftOptions.preventGoBack) {
                     this.$emit('on-click-back')
                 } else {
-                    history.back()
+                    if (this.$route.path === '/index') {
+                        this.leftOptions.showBack = false
+                        return
+                    }
+                    if (this.$route.path === '/auth/login') {
+                        this.leftOptions.showBack = false
+                        return
+                    }
+                    if (this.$route.path === '/employManagement') {
+                        history.back()
+                    }
+                    if (this.$route.path === '/employManagement/chooseEmployableRoles') {
+                        this.$route.router.go('/employManagement')
+                        return
+                    }
+                    if (this.$route.name === 'FillInEmployment') {
+                        this.$broadcast('goFillEmployment1')
+                        return
+                    }
+                    if (this.$route.name === 'BrandAuthorization') {
+                        this.$route.router.go('/employManagement/chooseEmployableRoles')
+                        return
+                    }
+                    if (this.$route.name === 'EmploymentSubmission') {
+                        this.leftOptions.showBack = false
+                        return
+                    }
                 }
             }
         }

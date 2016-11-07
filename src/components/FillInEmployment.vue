@@ -20,7 +20,7 @@
                     <x-input class="weui_cell_primary" keyboard="number" title="手机号" :value.sync="data.account"  
                         placeholder="请输入手机号码"  is-type="china-mobile" v-ref:account></x-input>
                 </group>
-                <button class="weui_btn weui_btn_primary" :class="classes" @click="goFillEmployment2">下一步</button>
+                <button class="weui_btn weui_btn_primary" :class="classes"  @click="goFillEmployment2">下一步</button>
         </div>
         <div v-else>
             <group>
@@ -33,7 +33,6 @@
             <group>
                 <x-textarea :name.sync="meta.addressDetail" :max="50" placeholder="请填写详细地址" :value.sync="data.addressDetail"></x-textarea>
             </group>
-            <button class="weui_btn weui_btn_primary" :class="classes" @click="goFillEmployment1">返回</button>
             <button class="weui_btn weui_btn_primary" :class="classes" @click="submit">确认申请</button>
         </div>
     </div>
@@ -189,12 +188,9 @@
                 } else if (this.data.headimg == null) {
                     window.alert("头像还未上传，请填写完整，再跳转到下一页")
                 } else {
+                    this.$dispatch('fillInEmployment_goBack', true)
                     this.showNextFillModel = true
                 }
-            },
-            goFillEmployment1() {
-                console.log("打开第一部分表格")
-                this.showNextFillModel = false
             },
             submit() {
                 var that = this
@@ -236,6 +232,13 @@
                         window.alert(err)
                     })
                 }
+            }
+        },
+        events: {
+            goFillEmployment1() {
+                console.log("打开第一部分表格")
+                this.$dispatch('fillInEmployment_goBack', false)
+                this.showNextFillModel = false
             }
         },
         ready() {
