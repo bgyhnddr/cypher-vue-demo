@@ -177,9 +177,10 @@
             },
             goFillEmployment2() {
                 console.log("打开第二部分表格")
-                var reg = /^[a-z]+[a-zA-Z0-9_]*$/
+                var reg = /^[a-z]+[a-zA-Z0-9_]*$/ //微信号
+                var reg2 = /[\u4e00-\u9fa5]/ //中文
 
-                if (!this.$refs.name.valid) {
+                if (!this.$refs.name.valid || !reg.test(this.data.name)) {
                     window.alert("申请人填写错误，请填写完整，再跳转到下一页")
                 } else if (!this.$refs.wechat.valid || !reg.test(this.data.wechat)) {
                     window.alert("微信号填写错误，请填写完整，再跳转到下一页")
