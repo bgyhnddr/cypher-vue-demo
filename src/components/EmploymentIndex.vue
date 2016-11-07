@@ -1,8 +1,9 @@
 ﻿<template>
-    <div>
+
+    <div class="employmentindex-bac">
 
         <group>
-         <a class="weui_cell"  v-link="{path: 'employManagement/chooseEmployableRoles'}" >
+         <a class="weui_cell a-li a-li-first"  v-link="{path: 'employManagement/chooseEmployableRoles'}" >
             <div class="weui_cell_hd">
                <img src="../icon/initiate.png" />
             </div>
@@ -16,9 +17,9 @@
             </div>
         </a>
             <!--当前招募-->
-            <a class="weui_cell"  v-link="" >
+            <a class="weui_cell a-li "  v-link="" >
                 <div class="weui_cell_hd">
-                    <img  alt="图标LOGO" >
+                      <img src="../icon/current.png" />
                 </div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <p>当前招募</p>
@@ -30,9 +31,9 @@
                 </div>
             </a>
             <!--成员审核-->
-            <a class="weui_cell" v-if="showAuditClick" v-link="{path: 'BrandManagement/audit'}" >
+            <a class="weui_cell a-li" v-if="showAuditClick" v-link="{path: 'BrandManagement/audit'}" >
                 <div class="weui_cell_hd">
-                    <img  alt="图标LOGO" >
+                     <img src="../icon/audit.png"/>
                 </div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <p>成员审核</p>
@@ -44,9 +45,9 @@
                 </div>
             </a>
             <!--招募历史-->
-            <a class="weui_cell"  v-link="{path: 'BrandManagement/employmentHistory'}" >
+            <a class="weui_cell a-li-last"  v-link="{path: 'BrandManagement/employmentHistory'}" >
                 <div class="weui_cell_hd">
-                    <img  alt="图标LOGO" >
+                     <img src="../icon/history.png" />
                 </div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <p>招募历史</p>
@@ -58,7 +59,7 @@
                 </div>
             </a>
         </group>
->>>>>>> origin/bili.ou
+
 	</div>
 </template>
 
@@ -130,7 +131,7 @@
 </script>
 <style lang="less">
 
-body {
+.employmentindex-bac {
     font-family: "微软雅黑";
     background-color: #f2f2f2;
 }
@@ -141,14 +142,31 @@ a.vux-header-back.headerTransition-transition {
     color: #fff;
     font-family: "微软雅黑";
 }
+/*背景*/
+.weui_cells{
+background: none;
+border: 0;
+}
 /*发起招募*/
-.weui_cell img {
+a.weui_cell.a-li.a-li-first {
+    margin-top: 11px;
+}
+.a-li{
+    padding: 1px 15px;
+    background: #fff;
+       margin-bottom: 3px;
+}
+.a-li-last{
+
+    padding: 1px 15px;
+    background: #fff;
+}
+
+.a-li img,.a-li-last img {
     width: 70%;
     margin: 6% 0 0 0;
 }
-.view.fate-transition {
-    margin-top: 10px;
-}
+
 .weui_cell_bd.weui_cell_primary p:first-child {
     font-size: 15px;
  font-family: "微软雅黑";
@@ -157,12 +175,9 @@ a.vux-header-back.headerTransition-transition {
     font-size: 12px;
     color: #999999;
     font-family: "微软雅黑";
-    margin-top: -2%;
+    margin-top: -1%;
 }
-.weui_cell {
-    padding: 1px 15px;
-    background: #fff;
-}
+
 .weui_cell_hd {
     width: 16%;
 }
@@ -176,7 +191,10 @@ a.vux-header-back.headerTransition-transition {
     border-color: #9a9fa4;
 top: -2px;
 right: 2px;
+height: 8px;
+    width: 8px;
 }
+
 
 
 </style>
