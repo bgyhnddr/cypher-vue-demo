@@ -1,4 +1,4 @@
-var user = require('./models/user')
+﻿var user = require('./models/user')
 var role = require('./models/role')
 var permission = require('./models/permission')
 var user_role = require('./models/user_role')
