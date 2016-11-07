@@ -108,8 +108,8 @@
                     auditID: that.auditID,
                     brandID: that.GetQueryString('brandID')
                 }).then(function(result) {
-                    if (result[0].employment.status == "已审核") {
-                        that.alertMsg = "已审核"
+                    if (result[0].employment.status == "已审核" && that.Toggle) {
+                        that.alertMsg = "该申请已经审核"
                         that.showAlert = true
                     } else {
                         that.auditInfo.account = result[0].employment.employee_user_account
@@ -168,8 +168,10 @@
             onHide() {
                 if (this.valid() || this.alertMsg == "已拒绝") {
                     this.$router.go('audit')
-                } else if (this.alertMsg == "已审核") {
-                    this.$router.go('audit')
+                } else if (this.alertMsg == "该申请已经审核") {
+                    this.$router.go({
+                        path: '/index'
+                    })
                 }
             },
             onChange(val) {
