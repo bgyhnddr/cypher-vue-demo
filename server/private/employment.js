@@ -209,6 +209,8 @@ var exec = {
         var uuid = require('node-uuid')
         var guid = uuid.v1()
 
+        var dater = new Date()
+
         employment_detail.belongsTo(employment)
 
         return employment.findOne({
@@ -268,7 +270,7 @@ var exec = {
                     brand_role_code: result.brand_role_code
                 }),
                 result.status = "已审核",
-                result.audit_time = new Date(),
+                result.audit_time = new Date().toLocaleString(),
                 result.audit_result = "已通过",
                 result.save()
             ])
@@ -287,7 +289,7 @@ var exec = {
             }
         }).then(function(result) {
             result.status = "已审核"
-            result.audit_time = new Date()
+            result.audit_time = new Date(dater).Format('yyyy-MM-dd')
             result.audit_result = "已拒绝"
             result.reject_reason = reason
             return result.save()
