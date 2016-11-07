@@ -108,14 +108,19 @@
                     auditID: that.auditID,
                     brandID: that.GetQueryString('brandID')
                 }).then(function(result) {
-                    that.auditInfo.account = result[0].employment.employee_user_account
-                    that.auditInfo.time = result[0].employment.employer_time
-                    that.auditInfo.brand = result[0].employment.brand.name
-                    that.auditInfo.employer = result[0].employment.employer_user_account
-                    that.auditInfo.name = result[0].value
-                    that.auditInfo.wx = result[1].value
-                    that.auditInfo.phone = result[2].value
-                    that.auditInfo.address = result[3].value
+                    if (result[0].employment.status == "已审核") {
+                        that.alertMsg = "已审核"
+                        that.showAlert = true
+                    } else {
+                        that.auditInfo.account = result[0].employment.employee_user_account
+                        that.auditInfo.time = result[0].employment.employer_time
+                        that.auditInfo.brand = result[0].employment.brand.name
+                        that.auditInfo.employer = result[0].employment.employer_user_account
+                        that.auditInfo.name = result[0].value
+                        that.auditInfo.wx = result[1].value
+                        that.auditInfo.phone = result[2].value
+                        that.auditInfo.address = result[3].value
+                    }
                 }).catch(function(err) {
                     console.log(err)
                     that.serveMsg = err
@@ -162,6 +167,8 @@
             },
             onHide() {
                 if (this.valid() || this.alertMsg == "已拒绝") {
+                    this.$router.go('audit')
+                } else if (this.alertMsg == "已审核") {
                     this.$router.go('audit')
                 }
             },
