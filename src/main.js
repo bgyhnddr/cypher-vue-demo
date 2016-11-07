@@ -38,6 +38,8 @@ configRouter(router)
 
 router.beforeEach((tran) => {
     var path = tran.to.path
+    var name = tran.to.name
+    console.log(path)
     authAPI.getUser().then(function(result) {
         window.state.userInfo = { name: result.name, permissions: result.permissions }
         if (result.name) {
@@ -47,13 +49,12 @@ router.beforeEach((tran) => {
                 case "/employManagement/auditInfo":
                 case "/employManagement/employmentHistory":
                 case "/employManagement/chooseEmployableRoles":
-                case "/employManagement/brandAuthorization/:account/:employableRole/:brandName":
                     if (checkPermission(['agentInfo', 'employment'])) {
                         authAPI.CheckUserBrand().then(function(result) {
                             if (result) {
                                 tran.next()
                             } else {
-                                window.alert('权限不足')
+                                window.alert('品牌权限不足')
                                 router.go({ path: path.replace(path, '/index') })
                             }
                         })
@@ -68,6 +69,22 @@ router.beforeEach((tran) => {
                     router.go('employManagement')
                     break
             }
+            if (name == "BrandAuthorization") {
+                if (checkPermission(['agentInfo', 'employment'])) {
+                    authAPI.CheckUserBrand().then(function(result) {
+                        if (result) {
+                            tran.next()
+                        } else {
+                            window.alert('品牌权限不足')
+                            router.go({ path: path.replace(path, '/index') })
+                        }
+                    })
+
+                } else {
+                    window.alert('权限不足')
+                    router.go({ path: path.replace(path, '/index') })
+                }
+            }
         } else {
             if (path == '/index' || path == '/auth/login') {
                 tran.next()
@@ -76,7 +93,7 @@ router.beforeEach((tran) => {
             }
         }
     })
-    if (path == "/employManagement/fillInEmployment/:employmentGuid/:brandName" || path == "/employManagement/employmentSubmission/:brandName") {
+    if (name == "FillInEmployment" || name == "EmploymentSubmission") {
         tran.next()
     }
 })
