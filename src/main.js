@@ -39,30 +39,37 @@ configRouter(router)
 router.beforeEach((tran) => {
     var path = tran.to.path
     var name = tran.to.name
+
+    function CheckInfo() {
+        if (checkPermission(['agentInfo', 'employment'])) {
+            authAPI.CheckUserBrand().then(function(result) {
+                if (result) {
+                    tran.next()
+                } else {
+                    window.alert('品牌权限不足')
+                    router.go({ path: path.replace(path, '/index') })
+                }
+            })
+
+        } else {
+            window.alert('权限不足')
+            router.go({ path: path.replace(path, '/index') })
+        }
+    }
+
     console.log(path)
     authAPI.getUser().then(function(result) {
         window.state.userInfo = { name: result.name, permissions: result.permissions }
         if (result.name) {
             switch (path.split('?')[0]) {
                 case "/employManagement":
+                case "/accountManagement":
+                case "/auth/changepwd":
                 case "/employManagement/audit":
                 case "/employManagement/auditInfo":
                 case "/employManagement/employmentHistory":
                 case "/employManagement/chooseEmployableRoles":
-                    if (checkPermission(['agentInfo', 'employment'])) {
-                        authAPI.CheckUserBrand().then(function(result) {
-                            if (result) {
-                                tran.next()
-                            } else {
-                                window.alert('品牌权限不足')
-                                router.go({ path: path.replace(path, '/index') })
-                            }
-                        })
-
-                    } else {
-                        window.alert('权限不足')
-                        router.go({ path: path.replace(path, '/index') })
-                    }
+                    CheckInfo()
                     break
                 case "/index":
                 case "/auth/login":
@@ -70,20 +77,7 @@ router.beforeEach((tran) => {
                     break
             }
             if (name == "BrandAuthorization") {
-                if (checkPermission(['agentInfo', 'employment'])) {
-                    authAPI.CheckUserBrand().then(function(result) {
-                        if (result) {
-                            tran.next()
-                        } else {
-                            window.alert('品牌权限不足')
-                            router.go({ path: path.replace(path, '/index') })
-                        }
-                    })
-
-                } else {
-                    window.alert('权限不足')
-                    router.go({ path: path.replace(path, '/index') })
-                }
+                CheckInfo()
             }
         } else {
             if (path == '/index' || path == '/auth/login') {
