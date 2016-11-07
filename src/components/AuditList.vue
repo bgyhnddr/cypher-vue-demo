@@ -8,7 +8,7 @@
             <div slot="icon">申请人：{{item.employment_details[1].value}}</div>
             <!--{{$index}}-->
             <div slot="icon">申请级别：{{item.brand_role.name}}</div>
-            <div slot="icon">申请时间：{{new Date(item.employer_time).Format('yyyy-MM-dd hh:mm:ss')}}</div>
+            <div slot="icon">申请时间：{{item.employer_time}}</div>
             <x-button mini v-link="{path: '/employManagement/auditInfo?employmentID='+item.guid+'&brandID='+item.brand_guid+'&from=audit'}">审核</x-button>
         </cell>
     </group>

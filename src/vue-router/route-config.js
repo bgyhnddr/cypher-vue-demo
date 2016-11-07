@@ -78,18 +78,7 @@ export function configRouter(router) {
                 },
                 'employmentSubmission': {
                     component: require('../components/EmploymentSubmission.vue')
-                }
-
-            }
-        },
-        '/test': {
-            component: require('../components/Test.vue')
-        },
-        '/BrandManagement': {
-            component: function(reslove) {
-                return require(['../components/WapMain.vue'], reslove)
-            },
-            subRoutes: {
+                },
                 'audit': {
                     component: require('../components/AuditList.vue')
                 },
@@ -99,10 +88,8 @@ export function configRouter(router) {
                 'employmentHistory': {
                     component: require('../components/EmploymentHistory.vue')
                 }
+
             }
-        },
-        '/test': {
-            component: require('../components/Test.vue')
         }
 
     })

@@ -9,6 +9,7 @@ import timei from './extend/vue-resource-timeout'
 import authCallback from './extend/auth-callback'
 
 import authAPI from './api/auth'
+import checkPermission from './extend/check-permission'
 
 Vue.use(require('vue-resource'))
 Vue.http.interceptors.push(timei)
@@ -38,28 +39,28 @@ configRouter(router)
 router.beforeEach((tran) => {
     var path = tran.to.path
     authAPI.getUser().then(function(result) {
-        function contains(obj) {
-            var i = result.permissions.length;
-            while (i--) {
-                if (result.permissions[i] === obj) {
-                    return true;
-                }
-            }
-            return false;
-        }
+        window.state.userInfo = { name: result.name, permissions: result.permissions }
         if (result.name) {
             switch (path.split('?')[0]) {
                 case "/employManagement":
-                    tran.next()
-                    break
                 case "/employManagement/audit":
                 case "/employManagement/auditInfo":
                 case "/employManagement/employmentHistory":
-                    if (contains("employment")) {
-                        tran.next()
+                case "/employManagement/chooseEmployableRoles":
+                case "/employManagement/brandAuthorization/:account/:employableRole/:brandName":
+                    if (checkPermission(['agentInfo', 'employment'])) {
+                        authAPI.CheckUserBrand().then(function(result) {
+                            if (result) {
+                                tran.next()
+                            } else {
+                                window.alert('权限不足')
+                                router.go({ path: path.replace(path, '/index') })
+                            }
+                        })
+
                     } else {
                         window.alert('权限不足')
-                        router.go({ path: path.replace(path, '/employManagement') })
+                        router.go({ path: path.replace(path, '/index') })
                     }
                     break
                 case "/index":
@@ -75,6 +76,9 @@ router.beforeEach((tran) => {
             }
         }
     })
+    if (path == "/employManagement/fillInEmployment/:employmentGuid/:brandName" || path == "/employManagement/employmentSubmission/:brandName") {
+        tran.next()
+    }
 })
 
 router.start(App, 'app');

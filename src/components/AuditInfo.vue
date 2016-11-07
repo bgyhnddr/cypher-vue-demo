@@ -75,6 +75,7 @@
                 term: "",
                 auditInfo: {
                     account: "",
+                    time: "",
                     brand: "",
                     employer: "",
                     name: "",
@@ -108,6 +109,7 @@
                     brandID: that.GetQueryString('brandID')
                 }).then(function(result) {
                     that.auditInfo.account = result[0].employment.employee_user_account
+                    that.auditInfo.time = result[0].employment.employer_time
                     that.auditInfo.brand = result[0].employment.brand.name
                     that.auditInfo.employer = result[0].employment.employer_user_account
                     that.auditInfo.name = result[0].value
@@ -164,19 +166,19 @@
                 }
             },
             onChange(val) {
-                var date = new Date()
+                var date = new Date(this.auditInfo.time)
                 var year = parseInt(date.getFullYear())
                 var month = parseInt(date.getMonth() + 1)
                 var day = parseInt(date.getDate())
+                var time = parseInt(date.getHours()) + ":" + parseInt(date.getMinutes()) + ":" + parseInt(date.getSeconds())
 
                 val = parseInt(val)
 
                 if (month + val > 12) {
-                    this.term = new Date((year + 1) + '-' + (month + val - 12) + '-' + day)
+                    this.term = (year + 1) + '-' + (month + val - 12) + '-' + day + " " + time
                 } else {
-                    this.term = new Date(year + '-' + (month + val) + '-' + day)
+                    this.term = year + '-' + (month + val) + '-' + day + " " + time
                 }
-
             }
         },
         ready() {
