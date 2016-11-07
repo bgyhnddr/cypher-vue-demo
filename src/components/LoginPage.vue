@@ -1,4 +1,5 @@
 ﻿<template>
+<div class="login-bac">
 	<div @keyup.enter="submitLogin">
 			<div>
                 <div class="vux-center login-header">
@@ -9,18 +10,20 @@
 <div class="user">
 <img src="../icon/user.png" />
 </div>
+<div class="input-boder">
                 <group>
                 
                     <x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入手机号/微信号" is-type="china-name"></x-input>
                 </group>
 <div class="password">
 <img src="../icon/password.png" />
-</div>
+</div></div>
+<div class="input-boder">
                 <group>
                     <!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
                     <x-input title="密码" :value.sync="loginInfo.password" type="password" placeholder="请输入密码" :equal-with="password"></x-input>
                 </group></div>
-			</div>
+			</div></div>
             <flexbox style="margin-top:20px">
                 <flexbox-item>
                     <x-button type="primary" @click="submitLogin">登陆</x-button>
@@ -32,7 +35,7 @@
             <div>
                 <toast :show.sync="show" :time="1000" type="warn">{{errmsg}}</toast>       
             </div>           
-	</div>
+	</div></div>
 </template>
 
 <script>
@@ -101,8 +104,9 @@
     .login_loading_zindex {
         z-index: 10000001 !important;
     }
-body {
+.login-bac {
     font-family: "微软雅黑";
+    background-color: #fff;
 }
 /*品牌商logo*/
     .login-header{
@@ -124,6 +128,12 @@ body {
     font-size: 18px;
 }
 /*登录框*/
+.input-boder{
+border: 1px solid #d3d1d1;
+    border-radius: 3px;
+    background: #fff;
+margin-bottom: 2%;
+}
 .login-message {
     width: 89%;
     margin: 20px auto 0 auto;
@@ -132,10 +142,9 @@ position: relative;
 .weui_cell {
     padding: 9px 15px;}
 .weui_cells {
-      margin-top: 0.3em;
-    font-size: 14px;
-    border: 1px solid #d3d1d1;
-    border-radius: 3px;
+    margin-top: 0;
+  
+  font-size: 14px;
     color: #aeaeae;
 font-family: "微软雅黑";
 }
@@ -183,5 +192,17 @@ button.weui_btn.weui_btn_primary:active{
  background: #21935a;
 
 
+}
+.weui_icon_warn:before {
+    font-size: 18px;
+    color: #f43530;
+}
+
+/*隐藏返回按钮*/
+a.vux-header-back.headerTransition-transition {
+    display: none;
+}
+/*顶栏*/
+.vux-header{
 }
 </style>
