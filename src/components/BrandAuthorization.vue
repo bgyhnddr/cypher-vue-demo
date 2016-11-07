@@ -22,7 +22,6 @@
             <p>授权期限<label>{{date.start}}</label>至<label>{{date.deadline}}</label></p>
             <p>备注：本授权书以正本为有效文本，不得影印，涂改，转让。{{company_name}}有此授权书最终解释权。</p>
             <p>授权单位<label>{{company_name}}</label></p>
-            
         </div>
     </div></div></div>
 </template>
@@ -62,7 +61,7 @@
                         that.getRoleName()
                         that.getAgentGuid()
                     } else {
-                        that.$route.router.go('/auth/login')
+                        window.alert("您暂没有权限查看他人创建的招募证书")
                         return
                     }
                 })
@@ -86,7 +85,7 @@
                                 var brand_logo_href = parseInt(result.brand_details[item]['value'])
                                 that.brand_logo_href = "/service/public/upload/getAttachment?id=" + brand_logo_href
                             }
-                            //key = "headImg"
+                            //key = "companyName"
                             if (meta == 'key' && result.brand_details[item][meta] == 'companyName') {
                                 console.log(result.brand_details[item]['value'])
                                 that.company_name = result.brand_details[item]['value']
@@ -137,7 +136,7 @@
                 })
             },
             showShareUrl(employmentGuid) {
-                console.log('/employManagement/fillInEmployment/' + employmentGuid)
+                console.log('/employManagement/fillInEmployment/' + employmentGuid + "/" + this.$route.params.brandName)
             }
         },
         ready() {
@@ -146,27 +145,27 @@
     }
 </script>
 <style>
-/*底部距离*/
-.weui_tab_bd{
-padding-bottom:0;}
-.brandauthorization-bac {
-    background: url(/static/TestIMG/PowerOfAttorney-bac.png) no-repeat;
+    /*底部距离*/
+    
+    .weui_tab_bd {
+        padding-bottom: 0;
+    }
+    
+    .brandauthorization-bac {
+        background: url(/static/TestIMG/PowerOfAttorney-bac.png) no-repeat;
         background-size: cover;
-}
-.brandauthorization {
-  
-       width: 69%;
-    margin: auto;
-    padding: 23% 13%;
-    font-size: 10px;
-}
-.brandauthorization-img {
-    text-align: center;
-}
-.personal-identity{
-
-
-
-}
-
+    }
+    
+    .brandauthorization {
+        width: 69%;
+        margin: auto;
+        padding: 23% 13%;
+        font-size: 10px;
+    }
+    
+    .brandauthorization-img {
+        text-align: center;
+    }
+    
+    .personal-identity {}
 </style>
