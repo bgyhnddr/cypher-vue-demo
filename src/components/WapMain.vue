@@ -116,7 +116,17 @@
                         return
                     }
                 }
+            },
+            initBGColor() {
+                if (this.$route.path === '/index') {
+                    document.body.style.background = 'green'
+                    console.log(document.body.style.background)
+                    return
+                }
             }
+        },
+        ready() {
+            this.initBGColor()
         }
     }
 </script>
