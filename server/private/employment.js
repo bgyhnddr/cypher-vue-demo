@@ -199,23 +199,81 @@ var exec = {
         var term = req.body.term
         var employment = require('../../db/models/employment')
         var employment_term = require('../../db/models/employment_term')
+        var employment_detail = require('../../db/models/employment_detail')
+        var user = require('../../db/models/user')
+        var user_role = require('../../db/models/user_role')
+        var agent = require('../../db/models/agent')
+        var agent_detail = require('../../db/models/agent_detail')
+        var agent_brand_role = require('../../db/models/agent_brand_role')
 
-        return Promise.all([
-            employment.findOne({
-                where: {
-                    guid: auditID
-                }
-            }),
-            employment_term.create({
-                employment_guid: auditID,
-                term_from: new Date(),
-                term_to: term
-            })
-        ]).then(function(result) {
-            result[0].status = "已审核"
-            result[0].audit_time = new Date()
-            result[0].audit_result = "已通过"
-            return result[0].save()
+        var uuid = require('node-uuid')
+        var guid = uuid.v1()
+
+        // var dater = new Date()
+
+        employment_detail.belongsTo(employment)
+
+        return employment.findOne({
+            where: {
+                guid: auditID
+            },
+            include: [{
+                model: employment_detail
+            }]
+        }).then(function(result) {
+            return Promise.all([
+                employment_term.create({
+                    employment_guid: auditID,
+                    term_from: result.employer_time,
+                    term_to: term
+                }),
+                user.create({
+                    account: result.employee_user_account,
+                    password: "123"
+                }),
+                user_role.create({
+                    user_account: result.employee_user_account,
+                    role_code: "user"
+                }),
+                agent.create({
+                    user_account: result.employee_user_account,
+                    //guid test
+                    guid: guid
+                }),
+                agent_detail.create({
+                    //guid test
+                    agent_guid: guid,
+                    key: "name",
+                    value: result.employment_details[0].value
+                }),
+                agent_detail.create({
+                    //guid test
+                    agent_guid: guid,
+                    key: "wx",
+                    value: result.employment_details[1].value
+                }),
+                agent_detail.create({
+                    //guid test
+                    agent_guid: guid,
+                    key: "phone",
+                    value: result.employment_details[2].value
+                }),
+                agent_detail.create({
+                    //guid test
+                    agent_guid: guid,
+                    key: "address",
+                    value: result.employment_details[3].value
+                }),
+                agent_brand_role.create({
+                    //guid test
+                    agent_guid: guid,
+                    brand_role_code: result.brand_role_code
+                }),
+                result.status = "已审核",
+                result.audit_time = new Date().toLocaleString(),
+                result.audit_result = "已通过",
+                result.save()
+            ])
         }).then(function() {
             return "success"
         })
@@ -231,7 +289,7 @@ var exec = {
             }
         }).then(function(result) {
             result.status = "已审核"
-            result.audit_time = new Date()
+            result.audit_time = new Date().toLocaleString()
             result.audit_result = "已拒绝"
             result.reject_reason = reason
             return result.save()

@@ -17,6 +17,7 @@
            <tr><td height="6px"></td><td></td></tr>
      </tbody>       
 </table>
+
             <div class="set-agent ">为{{employmentData.name}}<label>{{employer.brand_role_name}}</label></div>
           <div class="allow-agent"> 允许其在网络上销售{{employmentData.name}}<label>旗下产品</label></div>
            <div class="agent-message"> <p>授权编号:<label class="color-gray">A111</label></p>
@@ -24,6 +25,7 @@
            
             <p class="agent-unit ">授权单位:<label class="color-gray">{{company_name}}</label></p>
             
+
         </div>
     </div></div></div>
 </template>
@@ -63,7 +65,7 @@
                         that.getRoleName()
                         that.getAgentGuid()
                     } else {
-                        that.$route.router.go('/auth/login')
+                        window.alert("您暂没有权限查看他人创建的招募证书")
                         return
                     }
                 })
@@ -87,7 +89,7 @@
                                 var brand_logo_href = parseInt(result.brand_details[item]['value'])
                                 that.brand_logo_href = "/service/public/upload/getAttachment?id=" + brand_logo_href
                             }
-                            //key = "headImg"
+                            //key = "companyName"
                             if (meta == 'key' && result.brand_details[item][meta] == 'companyName') {
                                 console.log(result.brand_details[item]['value'])
                                 that.company_name = result.brand_details[item]['value']
@@ -138,7 +140,7 @@
                 })
             },
             showShareUrl(employmentGuid) {
-                console.log('/employManagement/fillInEmployment/' + employmentGuid)
+                console.log('/employManagement/fillInEmployment/' + employmentGuid + "/" + this.$route.params.brandName)
             }
         },
         ready() {
@@ -147,6 +149,7 @@
     }
 </script>
 <style>
+
 /*底部距离*/
 .weui_tab_bd{
 padding-bottom:0;}
@@ -211,4 +214,5 @@ text-align: right;
 margin-bottom: 14%;
 
 }
+
 </style>

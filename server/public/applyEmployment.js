@@ -136,10 +136,10 @@ var exec = {
                 }
 
                 var pwd = "";
-                for (var i = 0; i < 6; i++) {
+                for (var i = 0; i < 8; i++) {
                     pwd += Math.floor(Math.random() * 10);
                 }
-                
+
                 return Promise.all([
                     employment.create({
                         guid: guid,
@@ -176,6 +176,8 @@ var exec = {
         }).then(function(result) {
             if (result == null) {
                 return Promise.reject("招募信息读取出错")
+            } else if (result.status == false) {
+                return Promise.reject("招募已关闭")
             } else {
                 return result
             }

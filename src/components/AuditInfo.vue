@@ -75,6 +75,7 @@
                 term: "",
                 auditInfo: {
                     account: "",
+                    time: "",
                     brand: "",
                     employer: "",
                     name: "",
@@ -107,13 +108,19 @@
                     auditID: that.auditID,
                     brandID: that.GetQueryString('brandID')
                 }).then(function(result) {
-                    that.auditInfo.account = result[0].employment.employee_user_account
-                    that.auditInfo.brand = result[0].employment.brand.name
-                    that.auditInfo.employer = result[0].employment.employer_user_account
-                    that.auditInfo.name = result[0].value
-                    that.auditInfo.wx = result[1].value
-                    that.auditInfo.phone = result[2].value
-                    that.auditInfo.address = result[3].value
+                    if (result[0].employment.status == "已审核" && that.Toggle) {
+                        that.alertMsg = "该申请已经审核"
+                        that.showAlert = true
+                    } else {
+                        that.auditInfo.account = result[0].employment.employee_user_account
+                        that.auditInfo.time = result[0].employment.employer_time
+                        that.auditInfo.brand = result[0].employment.brand.name
+                        that.auditInfo.employer = result[0].employment.employer_user_account
+                        that.auditInfo.name = result[0].value
+                        that.auditInfo.wx = result[1].value
+                        that.auditInfo.phone = result[2].value
+                        that.auditInfo.address = result[3].value
+                    }
                 }).catch(function(err) {
                     console.log(err)
                     that.serveMsg = err
@@ -161,22 +168,26 @@
             onHide() {
                 if (this.valid() || this.alertMsg == "已拒绝") {
                     this.$router.go('audit')
+                } else if (this.alertMsg == "该申请已经审核") {
+                    this.$router.go({
+                        path: '/index'
+                    })
                 }
             },
             onChange(val) {
-                var date = new Date()
+                var date = new Date(this.auditInfo.time)
                 var year = parseInt(date.getFullYear())
                 var month = parseInt(date.getMonth() + 1)
                 var day = parseInt(date.getDate())
+                var time = parseInt(date.getHours()) + ":" + parseInt(date.getMinutes()) + ":" + parseInt(date.getSeconds())
 
                 val = parseInt(val)
 
                 if (month + val > 12) {
-                    this.term = new Date((year + 1) + '-' + (month + val - 12) + '-' + day)
+                    this.term = (year + 1) + '-' + (month + val - 12) + '-' + day + " " + time
                 } else {
-                    this.term = new Date(year + '-' + (month + val) + '-' + day)
+                    this.term = year + '-' + (month + val) + '-' + day + " " + time
                 }
-
             }
         },
         ready() {
