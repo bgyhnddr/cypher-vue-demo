@@ -1,11 +1,13 @@
-<template>
+﻿<template>
+
     <div>
+<div class="choose-bac">
         <button class="weui_btn weui_btn_primary" :class="classes" v-for="role in employableRolesList"  
          v-link="{path: '/employManagement/brandAuthorization/'+userinfo.brand_role.agent_brand_role.agent.user_account
                     +'/'+role.employable_brand_role_code }">
             {{role.brand_role.name}}
         </button>
-    </div>
+    </div></div>
 </template>
 
 <script>
@@ -76,3 +78,19 @@
         }
     }
 </script>
+<style lang="less">
+.choose-bac {
+    margin-top: 7%;
+}
+.choose-bac  .weui_btn+.weui_btn {
+    margin-top: 7px;
+}
+.choose-bac  button.weui_btn.weui_btn_primary {
+    width: 89%;
+    line-height: 2.2;
+    background: #3970aa;
+    font-size: 17px;
+    border-radius: 3px;
+    font-family: "微软雅黑";
+}
+</style>

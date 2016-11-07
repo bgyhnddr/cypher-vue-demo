@@ -1,24 +1,25 @@
-<template>
-    <div>
+﻿<template>
+
+    <div class="employmentindex-bac">
+
         <group>
-            <!--发起招募-->
-            <a class="weui_cell"  v-link="{path: 'employManagement/chooseEmployableRoles'}" >
-                <div class="weui_cell_hd">
-                    <img  alt="图标LOGO" >
-                </div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <p>发起招募</p>
-                    <p>发起招募申请表</p>
-                </div>
-                <div class="weui_cell_ft" :class="{'with_arrow': true}">
-                    <slot name="value"></slot>
-                    <slot></slot>
-                </div>
-            </a>
+         <a class="weui_cell a-li a-li-first"  v-link="{path: 'employManagement/chooseEmployableRoles'}" >
+            <div class="weui_cell_hd">
+               <img src="../icon/initiate.png" />
+            </div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>发起招募</p>
+                <p>发起招募申请表</p>
+            </div>
+            <div class="weui_cell_ft" :class="{'with_arrow': true}">
+                <slot name="value"></slot>
+                <slot></slot>
+            </div>
+        </a>
             <!--当前招募-->
-            <a class="weui_cell"  v-link="" >
+            <a class="weui_cell a-li "  v-link="" >
                 <div class="weui_cell_hd">
-                    <img  alt="图标LOGO" >
+                      <img src="../icon/current.png" />
                 </div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <p>当前招募</p>
@@ -30,9 +31,9 @@
                 </div>
             </a>
             <!--成员审核-->
-            <a class="weui_cell" v-if="showAuditClick" v-link="{path: 'BrandManagement/audit'}" >
+            <a class="weui_cell a-li" v-if="showAuditClick" v-link="{path: 'BrandManagement/audit'}" >
                 <div class="weui_cell_hd">
-                    <img  alt="图标LOGO" >
+                     <img src="../icon/audit.png"/>
                 </div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <p>成员审核</p>
@@ -44,9 +45,9 @@
                 </div>
             </a>
             <!--招募历史-->
-            <a class="weui_cell"  v-link="{path: 'BrandManagement/employmentHistory'}" >
+            <a class="weui_cell a-li-last"  v-link="{path: 'BrandManagement/employmentHistory'}" >
                 <div class="weui_cell_hd">
-                    <img  alt="图标LOGO" >
+                     <img src="../icon/history.png" />
                 </div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <p>招募历史</p>
@@ -58,6 +59,7 @@
                 </div>
             </a>
         </group>
+
 	</div>
 </template>
 
@@ -128,8 +130,71 @@
     }
 </script>
 <style lang="less">
-    img {
-        width: 50px;
-        height: 50px;
-    }
+
+.employmentindex-bac {
+    font-family: "微软雅黑";
+    background-color: #f2f2f2;
+}
+/*顶栏*/
+a.vux-header-back.headerTransition-transition {
+    display: block;
+    font-size: 14px;
+    color: #fff;
+    font-family: "微软雅黑";
+}
+/*背景*/
+.weui_cells{
+background: none;
+border: 0;
+}
+/*发起招募*/
+a.weui_cell.a-li.a-li-first {
+    margin-top: 11px;
+}
+.a-li{
+    padding: 1px 15px;
+    background: #fff;
+       margin-bottom: 3px;
+}
+.a-li-last{
+
+    padding: 1px 15px;
+    background: #fff;
+}
+
+.a-li img,.a-li-last img {
+    width: 70%;
+    margin: 6% 0 0 0;
+}
+
+.weui_cell_bd.weui_cell_primary p:first-child {
+    font-size: 15px;
+ font-family: "微软雅黑";
+}
+.weui_cell_bd.weui_cell_primary p:nth-child(2) {
+    font-size: 12px;
+    color: #999999;
+    font-family: "微软雅黑";
+    margin-top: -1%;
+}
+
+.weui_cell_hd {
+    width: 16%;
+}
+/*图标大小*/
+.vux-header .vux-header-left .vux-header-back:before {
+  
+    border: 1px solid #fff;
+    border-width: 2px 0 0 2px;}
+.weui_cell_ft.with_arrow:after {
+    border-width: 2px 2px 0 0;
+    border-color: #9a9fa4;
+top: -2px;
+right: 2px;
+height: 8px;
+    width: 8px;
+}
+
+
+
 </style>
