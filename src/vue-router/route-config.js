@@ -111,10 +111,8 @@ export function configRouter(router) {
                 'employmentHistory': {
                     component: require('../components/EmploymentHistory.vue')
                 }
+
             }
-        },
-        '/test': {
-            component: require('../components/Test.vue')
         }
 
     })
