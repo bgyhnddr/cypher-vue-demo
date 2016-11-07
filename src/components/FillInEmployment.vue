@@ -20,7 +20,7 @@
                     <x-input class="weui_cell_primary" keyboard="number" title="手机号" :value.sync="data.account"  
                         placeholder="请输入手机号码"  is-type="china-mobile" v-ref:account></x-input>
                 </group>
-                <button class="weui_btn weui_btn_primary" :class="classes" @click="goFillEmployment2">下一步</button>
+                <button class="weui_btn weui_btn_primary" :class="classes"  @click="goFillEmployment2">下一步</button>
         </div>
         <div v-else>
             <group>
@@ -33,7 +33,6 @@
             <group>
                 <x-textarea :name.sync="meta.addressDetail" :max="50" placeholder="请填写详细地址" :value.sync="data.addressDetail"></x-textarea>
             </group>
-            <button class="weui_btn weui_btn_primary" :class="classes" @click="goFillEmployment1">返回</button>
             <button class="weui_btn weui_btn_primary" :class="classes" @click="submit">确认申请</button>
         </div>
     </div>
@@ -178,9 +177,10 @@
             },
             goFillEmployment2() {
                 console.log("打开第二部分表格")
-                var reg = /^[a-z]+[a-zA-Z0-9_]*$/
+                var reg = /^[a-z]+[a-zA-Z0-9_]*$/ //微信号
+                var reg2 = /[\u4e00-\u9fa5]/ //中文
 
-                if (!this.$refs.name.valid) {
+                if (!this.$refs.name.valid || !reg.test(this.data.name)) {
                     window.alert("申请人填写错误，请填写完整，再跳转到下一页")
                 } else if (!this.$refs.wechat.valid || !reg.test(this.data.wechat)) {
                     window.alert("微信号填写错误，请填写完整，再跳转到下一页")
@@ -189,18 +189,24 @@
                 } else if (this.data.headimg == null) {
                     window.alert("头像还未上传，请填写完整，再跳转到下一页")
                 } else {
+                    this.$dispatch('fillInEmployment_goBack', true)
                     this.showNextFillModel = true
                 }
-            },
-            goFillEmployment1() {
-                console.log("打开第一部分表格")
-                this.showNextFillModel = false
             },
             submit() {
                 var that = this
                     //将data.provinceAndRegion 转换成中文字符串
                 this.data.provinceAndRegion = filterAddress(this.data.provinceAndRegionTemp, AddressChinaData)
                 console.log(JSON.stringify(this.data))
+
+                //招募失效
+                var startDate = new Date(this.employmentData.publishEmploymentInfo.create_time)
+                var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
+                if (endDate <= new Date()) {
+                    window.alert("招募已失效")
+                    that.$route.router.go('/auth/login')
+                    return
+                }
 
                 //检查未填写完整的值
                 if (this.data.typeOfPersonalIdentity == "") {
@@ -212,8 +218,7 @@
                 } else if (this.data.addressDetail == "") {
                     window.alert("通讯地址填写错误，请填写完整，再跳转到下一页")
                 } else {
-                    var create_time = this.employmentData.publishEmploymentInfo.create_time
-                    var deadline = new Date(new Date(create_time).getTime() + 2 * 3600 * 1000).Format('yyyy-MM-dd hh:mm:ss')
+                    var deadline = endDate.Format('yyyy-MM-dd hh:mm:ss')
                     console.log(deadline)
 
                     applyEmploymentAPI.submitApplication({
@@ -223,11 +228,18 @@
                         deadline: deadline
                     }).then(function(result) {
                         console.log("提交成功")
-                        that.$route.router.go('/employManagement/employmentSubmission')
+                        that.$route.router.go('/employManagement/employmentSubmission' + this.$route.params.brandName)
                     }).catch(function(err) {
                         window.alert(err)
                     })
                 }
+            }
+        },
+        events: {
+            goFillEmployment1() {
+                console.log("打开第一部分表格")
+                this.$dispatch('fillInEmployment_goBack', false)
+                this.showNextFillModel = false
             }
         },
         ready() {

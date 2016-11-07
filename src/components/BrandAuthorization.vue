@@ -1,22 +1,29 @@
-<template>
+﻿<template>
     <div>
+<div class="brandauthorization-bac">
+<div class="brandauthorization">
+<div class="brandauthorization-img">
         <img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="品牌logo"/>
         <p>授权证书</p>
+</div>
         <div>
             <p>兹授权</p>
-            <p>姓名<label>张三</label></p>
-            <p>微信<label>AA</label></p>
-            <p>身份证<label>4404xxxxxxxxxxxxx</label></p>
-            <img class="vux-x-img ximg-demo" alt="授权者头像"/></p>
+     <table boder=0 class="personal-identity">
+
+
+            <tr><th>姓名</th><th>张三</th><th rowspan="3"><img class="vux-x-img ximg-demo" alt="授权者头像"/></th></tr>
+           <tr><th> 微信</th><th>AA</th></tr>
+            <tr><th>身份证</th><th>4404xxxxxxxxxxxxx</th></tr>
+            
+</table>
             <p>为<label>{{employmentData.name}}</label><label>{{employer.brand_role_name}}</label></p>
             <p>允许其在网络上销售<label>{{employmentData.name}}</label><label>旗下产品</label></p>
             <p>授权编号<label>A111</label></p>
             <p>授权期限<label>{{date.start}}</label>至<label>{{date.deadline}}</label></p>
             <p>备注：本授权书以正本为有效文本，不得影印，涂改，转让。{{company_name}}有此授权书最终解释权。</p>
             <p>授权单位<label>{{company_name}}</label></p>
-            <button class="weui_btn weui_btn_primary" :class="classes" @click="goBackToEmploymentIndex">回到招募首页</button>
         </div>
-    </div>
+    </div></div></div>
 </template>
 <script>
     import authAPI from '../api/auth'
@@ -54,7 +61,7 @@
                         that.getRoleName()
                         that.getAgentGuid()
                     } else {
-                        that.$route.router.go('/auth/login')
+                        window.alert("您暂没有权限查看他人创建的招募证书")
                         return
                     }
                 })
@@ -78,7 +85,7 @@
                                 var brand_logo_href = parseInt(result.brand_details[item]['value'])
                                 that.brand_logo_href = "/service/public/upload/getAttachment?id=" + brand_logo_href
                             }
-                            //key = "headImg"
+                            //key = "companyName"
                             if (meta == 'key' && result.brand_details[item][meta] == 'companyName') {
                                 console.log(result.brand_details[item]['value'])
                                 that.company_name = result.brand_details[item]['value']
@@ -129,7 +136,7 @@
                 })
             },
             showShareUrl(employmentGuid) {
-                console.log('/employManagement/fillInEmployment/' + employmentGuid)
+                console.log('/employManagement/fillInEmployment/' + employmentGuid + "/" + this.$route.params.brandName)
             }
         },
         ready() {
@@ -137,3 +144,28 @@
         }
     }
 </script>
+<style>
+    /*底部距离*/
+    
+    .weui_tab_bd {
+        padding-bottom: 0;
+    }
+    
+    .brandauthorization-bac {
+        background: url(/static/TestIMG/PowerOfAttorney-bac.png) no-repeat;
+        background-size: cover;
+    }
+    
+    .brandauthorization {
+        width: 69%;
+        margin: auto;
+        padding: 23% 13%;
+        font-size: 10px;
+    }
+    
+    .brandauthorization-img {
+        text-align: center;
+    }
+    
+    .personal-identity {}
+</style>

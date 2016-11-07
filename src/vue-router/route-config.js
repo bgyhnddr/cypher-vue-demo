@@ -69,16 +69,39 @@ export function configRouter(router) {
                 'chooseEmployableRoles': {
                     component: require('../components/ChooseEmployableRoles.vue')
                 },
-                'brandAuthorization/:account/:employableRole': {
+                'brandAuthorization/:account/:employableRole/:brandName': {
                     name: 'BrandAuthorization',
                     component: require('../components/BrandAuthorization.vue')
                 },
-                'fillInEmployment/:employmentGuid': {
+                'fillInEmployment/:employmentGuid/:brandName': {
+                    name: 'FillInEmployment',
                     component: require('../components/FillInEmployment.vue')
                 },
-                'employmentSubmission': {
+                'employmentSubmission/:brandName': {
+                    name: 'EmploymentSubmission',
                     component: require('../components/EmploymentSubmission.vue')
-                },
+                }
+
+            }
+        },
+        '/accountManagement': {
+            component: function(reslove) {
+                return require(['../components/WapMain.vue'], reslove)
+            },
+            subRoutes: {
+                '': {
+                    component: require('../components/AccountIndex.vue')
+                }
+            }
+        },
+        '/test': {
+            component: require('../components/Test.vue')
+        },
+        '/BrandManagement': {
+            component: function(reslove) {
+                return require(['../components/WapMain.vue'], reslove)
+            },
+            subRoutes: {
                 'audit': {
                     component: require('../components/AuditList.vue')
                 },

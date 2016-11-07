@@ -9,12 +9,14 @@ var brand_role = require('./models/brand_role')
 module.exports = function() {
     return Promise.all([
         user.create({ account: 'admin', password: "admin" }),
-        user.create({ account: 'bili', password: "123" }),
+        user.create({ account: 'bili', password: "123" }), //品牌商
+        user.create({ account: 'bili2', password: "123" }), //一级代理
         user.create({ account: 'limt', password: '123' }),
         role.create({ code: "admin", name: "admin" }),
         role.create({ code: "user", name: "user" }),
         user_role.create({ user_account: "admin", role_code: "admin" }),
         user_role.create({ user_account: "bili", role_code: "user" }),
+        user_role.create({ user_account: "bili2", role_code: "user" }),
         user_role.create({ user_account: "limt", role_code: "user" }),
         role_permission.create({ role_code: "admin", permission_code: "admin" }),
         role_permission.create({ role_code: "user", permission_code: "agentInfo" }),

@@ -4,7 +4,7 @@
         <view-box v-ref:view-box>
             <!--header slot-->
             <div class="vux-demo-header-box" slot="header">
-                <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
+                <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop" @click="onClickBack"></x-header>
             </div>
             <!--default slot-->
             <router-view class="view" transition="fate" transition-mode="out-in"></router-view>
@@ -34,6 +34,7 @@
                 leftOptions: {
                     showBack: true,
                     backText: '返回',
+                    preventGoBack: false
                 }
             }
         },
@@ -55,14 +56,30 @@
                     return '成员招募'
                 if (this.$route.path === '/employManagement/chooseEmployableRoles')
                     return '选择招募代理级别'
-                if (this.$route.path === 'BrandAuthorization')
-                    return '品牌商名称'
+                if (this.$route.name === 'BrandAuthorization') {
+                    console.log(this.$route.params.account)
+                    return this.$route.params.brandName
+                }
+                if (this.$route.name === 'FillInEmployment') {
+                    this.leftOptions.showBack = false
+                    this.$on('fillInEmployment_goBack', function(flag) {
+                        console.log("event" + "==========" + flag)
+                        this.leftOptions.showBack = flag
+                    })
+                    return this.$route.params.brandName + "——代理授权申请"
+                }
+                if (this.$route.name === 'EmploymentSubmission') {
+                    this.leftOptions.showBack = false
+                    return this.$route.params.brandName + "——代理授权申请"
+                }
                 if (this.$route.path === '/employManagement/audit')
                     return '资料审核'
                 if (this.$route.path === '/employManagement/auditInfo')
                     return '审核详情'
                 if (this.$route.path === '/employManagement/employmentHistory')
                     return '招募历史'
+                if (this.$route.path === '/accountManagement')
+                    return '我的账号'
             }
         },
         methods: {
@@ -73,7 +90,33 @@
                 if (this.leftOptions.preventGoBack) {
                     this.$emit('on-click-back')
                 } else {
-                    history.back()
+                    if (this.$route.path === '/index') {
+                        this.leftOptions.showBack = false
+                        return
+                    }
+                    if (this.$route.path === '/auth/login') {
+                        this.leftOptions.showBack = false
+                        return
+                    }
+                    if (this.$route.path === '/employManagement') {
+                        history.back()
+                    }
+                    if (this.$route.path === '/employManagement/chooseEmployableRoles') {
+                        this.$route.router.go('/employManagement')
+                        return
+                    }
+                    if (this.$route.name === 'FillInEmployment') {
+                        this.$broadcast('goFillEmployment1')
+                        return
+                    }
+                    if (this.$route.name === 'BrandAuthorization') {
+                        this.$route.router.go('/employManagement/chooseEmployableRoles')
+                        return
+                    }
+                    if (this.$route.name === 'EmploymentSubmission') {
+                        this.leftOptions.showBack = false
+                        return
+                    }
                 }
             }
         }
