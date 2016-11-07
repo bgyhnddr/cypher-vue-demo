@@ -42,6 +42,8 @@ router.beforeEach((tran) => {
         window.state.userInfo = { name: result.name, permissions: result.permissions }
         if (result.name) {
             switch (path.split('?')[0]) {
+                case "/homePage":
+                case "/accountManagement":
                 case "/employManagement":
                 case "/employManagement/audit":
                 case "/employManagement/auditInfo":
