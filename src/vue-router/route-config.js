@@ -47,9 +47,6 @@ export function configRouter(router) {
                 'login': {
                     component: require('../components/LoginPage.vue')
                 },
-                'regist': {
-                    component: require('../components/RegistPage.vue')
-                },
                 'changepwd': {
                     component: require('../components/ChangeUserPassword.vue')
                 },
@@ -80,6 +77,15 @@ export function configRouter(router) {
                 'employmentSubmission/:brandName': {
                     name: 'EmploymentSubmission',
                     component: require('../components/EmploymentSubmission.vue')
+                },
+                'audit': {
+                    component: require('../components/AuditList.vue')
+                },
+                'auditInfo': {
+                    component: require('../components/AuditInfo.vue')
+                },
+                'employmentHistory': {
+                    component: require('../components/EmploymentHistory.vue')
                 }
 
             }
@@ -92,26 +98,6 @@ export function configRouter(router) {
                 '': {
                     component: require('../components/AccountIndex.vue')
                 }
-            }
-        },
-        '/test': {
-            component: require('../components/Test.vue')
-        },
-        '/BrandManagement': {
-            component: function(reslove) {
-                return require(['../components/WapMain.vue'], reslove)
-            },
-            subRoutes: {
-                'audit': {
-                    component: require('../components/AuditList.vue')
-                },
-                'auditInfo': {
-                    component: require('../components/AuditInfo.vue')
-                },
-                'employmentHistory': {
-                    component: require('../components/EmploymentHistory.vue')
-                }
-
             }
         }
 
