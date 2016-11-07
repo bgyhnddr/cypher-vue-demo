@@ -12,11 +12,8 @@
     "server": "node build/run_server.js"
   },
   "dependencies": {
-    "array-find": "^1.0.0",
-    "array-map": "0.0.0",
     "babel-runtime": "^6.0.0",
     "body-parser": "^1.15.2",
-    "bootstrap3": "^3.3.5",
     "express-session": "^1.14.1",
     "formidable": "^1.0.17",
     "less": "^2.7.1",
