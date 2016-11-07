@@ -46,8 +46,6 @@
                     return 'example2'
                 if (this.$route.path === '/auth/login')
                     return '登录'
-                if (this.$route.path === '/auth/regist')
-                    return '注册'
                 if (this.$route.path === '/auth/changepwd')
                     return '修改密码'
                 if (this.$route.path === '/auth/test')
