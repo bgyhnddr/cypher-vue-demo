@@ -100,8 +100,8 @@
                 } else if (!this.$refs.name.valid || !reg.test(this.keyword)) {
                     window.alert("填写格式错误，请填写中文")
                 } else {
-                    window.alert("填暂不开放")
-                        // this.$route.router.go('/homePage/search/' + this.keyword)
+                    // window.alert("填暂不开放")
+                    this.$route.router.go('/homePage/search/' + this.keyword)
                 }
             },
             getAgentInfo(user_account) {
@@ -118,7 +118,8 @@
                             if (meta == 'key' && result.agent_details[item][meta] == 'headImg') {
                                 console.log(result.agent_details[item]['value'])
                                 var user_headImg_href = parseInt(result.agent_details[item]['value'])
-                                that.user.user_headImg_href = "/service/public/upload/getAttachment?id=" + user_headImg_href
+                                console.log("/service/public/upload/getAttachment?id=" + user_headImg_href)
+                                that.user.userHeadimgHref = "/service/public/upload/getAttachment?id=" + user_headImg_href
                             }
                         }
                     }

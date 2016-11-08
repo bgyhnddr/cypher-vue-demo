@@ -77,17 +77,24 @@ router.beforeEach((tran) => {
                         tran.next()
                         break
                 }
+            } else if (path.split('/')[1] == "homePage") {
+                switch (path.split('/')[2]) {
+                    case undefined:
+                    case "search":
+                        CheckInfo()
+                        break
+                }
             } else if (path.split('/')[1] == "auth") {
                 switch (path.split('/')[2]) {
                     case "login":
-                        router.go('employManagement')
+                        router.go('homePage')
                         break
                     case "changepwd":
                         tran.next()
                         break
                 }
             } else if (path == '/index') {
-                router.go('employManagement')
+                router.go('homePage')
             }
         } else {
             if (path == '/index' || path == '/auth/login') {

@@ -40,16 +40,27 @@
         },
         computed: {
             title() {
-                if (this.$route.path === '/index')
+                if (this.$route.path === '/index') {
+                    this.leftOptions.showBack = false
                     return 'Home'
+                }
                 if (this.$route.path === '/example2')
                     return 'example2'
-                if (this.$route.path === '/auth/login')
+                if (this.$route.path === '/auth/login') {
+                    this.leftOptions.showBack = false
                     return '登录'
+                }
                 if (this.$route.path === '/auth/changepwd')
                     return '修改密码'
                 if (this.$route.path === '/auth/test')
                     return '测试页面'
+                if (this.$route.path === '/homePage') {
+                    this.leftOptions.showBack = false
+                    return
+                }
+                if (this.$route.name === 'HomePageSearch') {
+                    return
+                }
                 if (this.$route.path === '/employManagement')
                     return '成员招募'
                 if (this.$route.path === '/employManagement/chooseEmployableRoles')
@@ -88,16 +99,13 @@
                 if (this.leftOptions.preventGoBack) {
                     this.$emit('on-click-back')
                 } else {
-                    if (this.$route.path === '/index') {
-                        this.leftOptions.showBack = false
-                        return
-                    }
-                    if (this.$route.path === '/auth/login') {
-                        this.leftOptions.showBack = false
+                    if (this.$route.name === 'HomePageSearch') {
+                        this.$route.router.go('/homePage')
                         return
                     }
                     if (this.$route.path === '/employManagement') {
-                        history.back()
+                        this.$route.router.go('/homePage')
+                        return
                     }
                     if (this.$route.path === '/employManagement/chooseEmployableRoles') {
                         this.$route.router.go('/employManagement')
@@ -111,15 +119,15 @@
                         this.$route.router.go('/employManagement/chooseEmployableRoles')
                         return
                     }
-                    if (this.$route.name === 'EmploymentSubmission') {
-                        this.leftOptions.showBack = false
+                    if (this.$route.path === '/accountManagement') {
+                        this.$route.router.go('/homePage')
                         return
                     }
                 }
             },
             initBGColor() {
                 if (this.$route.path === '/index') {
-                    document.body.style.background = 'green'
+                    document.body.style.background = 'white'
                     console.log(document.body.style.background)
                     return
                 }

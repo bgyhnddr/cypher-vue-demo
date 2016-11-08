@@ -62,6 +62,7 @@ export function configRouter(router) {
                     component: require('../components/HomePage.vue')
                 },
                 'search/:keyword': {
+                    name: 'HomePageSearch',
                     component: require('../components/HomePageSearch.vue')
                 },
             }
