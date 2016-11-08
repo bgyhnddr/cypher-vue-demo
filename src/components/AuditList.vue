@@ -9,7 +9,7 @@
             <!--{{$index}}-->
             <div slot="icon">申请级别：{{item.brand_role.name}}</div>
             <div slot="icon">申请时间：{{item.employer_time}}</div>
-            <x-button mini v-link="{path: '/employManagement/auditInfo?employmentID='+item.guid+'&brandID='+item.brand_guid+'&from=audit'}">审核</x-button>
+            <x-button mini v-link="{path: '/employManagement/auditInfo/'+item.guid+'/'+item.brand_guid+'/audit'}">审核</x-button>
         </cell>
     </group>
     <alert :show.sync="show">无记录</alert>

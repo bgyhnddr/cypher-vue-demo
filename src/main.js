@@ -38,37 +38,56 @@ configRouter(router)
 
 router.beforeEach((tran) => {
     var path = tran.to.path
+    var name = tran.to.name
+
+    function CheckInfo() {
+        if (checkPermission(['agentInfo', 'employment'])) {
+            authAPI.CheckUserBrand().then(function(result) {
+                if (result) {
+                    tran.next()
+                } else {
+                    window.alert('品牌权限不足')
+                    router.go({ path: path.replace(path, '/index') })
+                }
+            })
+
+        } else {
+            window.alert('权限不足')
+            router.go({ path: path.replace(path, '/index') })
+        }
+    }
     authAPI.getUser().then(function(result) {
         window.state.userInfo = { name: result.name, permissions: result.permissions }
         if (result.name) {
-            switch (path.split('?')[0]) {
-                case "/homePage":
-                case "/accountManagement":
-                case "/employManagement":
-                case "/employManagement/audit":
-                case "/employManagement/auditInfo":
-                case "/employManagement/employmentHistory":
-                case "/employManagement/chooseEmployableRoles":
-                case "/employManagement/brandAuthorization/:account/:employableRole/:brandName":
-                    if (checkPermission(['agentInfo', 'employment'])) {
-                        authAPI.CheckUserBrand().then(function(result) {
-                            if (result) {
-                                tran.next()
-                            } else {
-                                window.alert('权限不足')
-                                router.go({ path: path.replace(path, '/index') })
-                            }
-                        })
-
-                    } else {
-                        window.alert('权限不足')
-                        router.go({ path: path.replace(path, '/index') })
-                    }
-                    break
-                case "/index":
-                case "/auth/login":
-                    router.go('employManagement')
-                    break
+            if (path.split('/')[1] == "employManagement") {
+                console.log(path.split('/')[2])
+                switch ((path.split('/')[2])) {
+                    case undefined:
+                    case "chooseEmployableRoles":
+                    case "brandAuthorization":
+                    case "audit":
+                    case "auditInfo":
+                    case "employmentHistory":
+                        CheckInfo()
+                        break
+                }
+            } else if (path.split('/')[1] == "accountManagement") {
+                switch (path.split('/')[2]) {
+                    case undefined:
+                        tran.next()
+                        break
+                }
+            } else if (path.split('/')[1] == "auth") {
+                switch (path.split('/')[2]) {
+                    case "login":
+                        router.go('employManagement')
+                        break
+                    case "changepwd":
+                        tran.next()
+                        break
+                }
+            } else if (path == '/index') {
+                router.go('employManagement')
             }
         } else {
             if (path == '/index' || path == '/auth/login') {
@@ -78,7 +97,7 @@ router.beforeEach((tran) => {
             }
         }
     })
-    if (path == "/employManagement/fillInEmployment/:employmentGuid/:brandName" || path == "/employManagement/employmentSubmission/:brandName") {
+    if (name == "FillInEmployment" || name == "EmploymentSubmission") {
         tran.next()
     }
 })
