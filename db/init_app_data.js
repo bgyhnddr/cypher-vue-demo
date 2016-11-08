@@ -1,3 +1,4 @@
+﻿
 var user = require('./models/user')
 var user_role = require('./models/user_role')
 var brand = require('./models/brand')
@@ -30,9 +31,11 @@ module.exports = function() {
         brand_role.create({ code: "brand_role5", brand_guid: "brand1", name: "销售员", level: "4" }),
 
         agent_brand_role.create({ agent_guid: "agent1", brand_role_code: "brand_role1" }),
+
         agent_brand_role.create({ agent_guid: "agent3", brand_role_code: "brand_role2" }),
         agent_brand_role.create({ agent_guid: "agent2", brand_role_code: "brand_role1" }),
         agent_brand_role.create({ agent_guid: "agent4", brand_role_code: "brand_role2" }),
+
 
         employable_rule.create({ employer_brand_role_code: "brand_role1", employable_brand_role_code: "brand_role2" }),
         employable_rule.create({ employer_brand_role_code: "brand_role1", employable_brand_role_code: "brand_role3" }),
@@ -43,7 +46,7 @@ module.exports = function() {
         employable_rule.create({ employer_brand_role_code: "brand_role2", employable_brand_role_code: "brand_role4" }),
         employable_rule.create({ employer_brand_role_code: "brand_role2", employable_brand_role_code: "brand_role5" }),
 
-        agent.create({ user_account: "limt", guid: "agent1" }),
+	agent.create({ user_account: "limt", guid: "agent1" }),
         agent.create({ user_account: "bili", guid: "agent2" }),
         agent.create({ user_account: "bili2", guid: "agent3" }),
         agent.create({ user_account: "admin", guid: "agent4" }),

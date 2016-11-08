@@ -1,15 +1,26 @@
-<template>
+﻿<template>
     <div>
         <group>
-            <img class="vux-x-img ximg-demo" :src.sync="user.userHeadimgHref" alt="用户头像"/>
-            <p>{{user.brandName}}</p>
-            <p>存款：金额数</p>
-            <p>存货：存货数量</p>
+<table border="0" class="platform-message" cellspacing=0 cellpadding=0> 
+<tbody>
+<tr>
+<td  width="22%"> <img class="vux-x-img ximg-demo" :src.sync="user.userHeadimgHref" alt="用户头像"/></td>
+<td >{{user.brandName}}</td>
+<td> </td>
+<td><p>存款&nbsp;:&nbsp;<label>金额数</label></p><p>存货&nbsp;:&nbsp;<label>存货数量</p></label></td>
+</tr>
+
+</tbody>
+</table>
+            
         </group>
+
         <group>
-            <x-input class="weui_cell_primary" title="" :value.sync="keyword"  
-                    placeholder="输入需要查看的功能名称" :show-clear=false ></x-input>
-            <button class="weui_btn weui_btn_primary" @click="search">搜索</button>
+<div class="search">
+            <x-input class="weui_cell_primary" title="" :value.sync="keyword"   placeholder="输入需要查看的功能名称" is-type="china-name" v-ref:name></x-input>
+            <div class="search-button"><button class="weui_btn weui_btn_primary" @click="search">.</button></div>
+</div>
+
         </group>
         <table>
             <td v-for="item in btn_list">
@@ -156,4 +167,61 @@
     div.icon_btn {
         width: 110px;
     }
+table.platform-message {
+       width: 94%;
+    margin: auto;
+    margin-top: 5%;
+    color: #292832;
+}
+table.platform-message img{
+
+width: 4em;
+    height: 4em;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+table.platform-message label {
+color:#646464
+
+}
+.search .weui_cell{
+    padding: 9px
+}
+.search .weui_cell_hd {
+    width: 0;
+}
+.search input.weui_input {
+    width: 97%;
+    background: #fff;
+    margin: auto;
+    padding-left: 2%;
+    height: 2.1em;
+    font-family: "微软雅黑";
+    font-size: 15px;
+    color: #9b9c9c;
+border: 1px solid #d3d1d1;
+}
+.search-button {
+      position: absolute;
+    z-index: 10000000;
+     right: 9%;
+    top: 23%;
+}
+.search-button button.weui_btn.weui_btn_primary {
+ width: 10%;
+        line-height: 2.0;
+    background: url(/static/TestIMG/search.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+
+}
+.search-button .weui_btn:after{
+border: 0;
+
+}
+.search .weui_icon_warn:before {
+    font-size: 14px;
+    color: #f43530;
+}
+
 </style>

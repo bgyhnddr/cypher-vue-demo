@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div style="overflow-x: hidden;">
         <loading :show="isLoading" position="absolute"></loading>
         <view-box v-ref:view-box>
@@ -11,6 +11,7 @@
         </view-box>
     </div>
 </template>
+
 <script>
     import {
         Tabbar,
@@ -140,8 +141,28 @@
                 }
             },
             initBGColor() {
-                if (this.$route.path === '/index') {
-                    document.body.style.background = 'white'
+                if (this.$route.path === '/auth/login') {
+                    document.body.style.background = '#fff'
+                    console.log(document.body.style.background)
+                    return
+                }
+             	if (this.$route.path === '/employManagement') {
+                    document.body.style.background = '#f2f2f2'
+                    console.log(document.body.style.background)
+                    return
+                }
+           	if (this.$route.path === '/employManagement/chooseEmployableRoles') {
+                    document.body.style.background = '#fff'
+                    console.log(document.body.style.background)
+                    return
+                }
+                 if (this.$route.name === 'FillInEmployment') {
+                    document.body.style.background = '#f2f2f2'
+                    console.log(document.body.style.background)
+                    return
+                }
+                 if (this.$route.path === '/homePage') {
+                    document.body.style.background = '#f2f2f2'
                     console.log(document.body.style.background)
                     return
                 }
