@@ -1,3 +1,5 @@
+var user = require('./models/user')
+var user_role = require('./models/user_role')
 var brand = require('./models/brand')
 var agent = require('./models/agent')
 var agent_brand_role = require('./models/agent_brand_role')
@@ -11,6 +13,14 @@ var agent_detail = require('./models/agent_detail')
 
 module.exports = function() {
     return Promise.all([
+        user.create({ account: 'bili', password: "123" }), //品牌商
+        user.create({ account: 'bili2', password: "123" }), //一级代理
+        user.create({ account: 'limt', password: '123' }),
+
+        user_role.create({ user_account: "bili", role_code: "user" }),
+        user_role.create({ user_account: "bili2", role_code: "user" }),
+        user_role.create({ user_account: "limt", role_code: "user" }),
+
         brand.create({ guid: "brand1", name: "adminbrand" }),
 
         brand_role.create({ code: "brand_role1", brand_guid: "brand1", name: "品牌商", level: "0" }),
@@ -20,7 +30,9 @@ module.exports = function() {
         brand_role.create({ code: "brand_role5", brand_guid: "brand1", name: "销售员", level: "4" }),
 
         agent_brand_role.create({ agent_guid: "agent1", brand_role_code: "brand_role1" }),
-        agent_brand_role.create({ agent_guid: "agent2", brand_role_code: "brand_role2" }),
+        agent_brand_role.create({ agent_guid: "agent3", brand_role_code: "brand_role2" }),
+        agent_brand_role.create({ agent_guid: "agent2", brand_role_code: "brand_role1" }),
+        agent_brand_role.create({ agent_guid: "agent4", brand_role_code: "brand_role2" }),
 
         employable_rule.create({ employer_brand_role_code: "brand_role1", employable_brand_role_code: "brand_role2" }),
         employable_rule.create({ employer_brand_role_code: "brand_role1", employable_brand_role_code: "brand_role3" }),
@@ -31,23 +43,27 @@ module.exports = function() {
         employable_rule.create({ employer_brand_role_code: "brand_role2", employable_brand_role_code: "brand_role4" }),
         employable_rule.create({ employer_brand_role_code: "brand_role2", employable_brand_role_code: "brand_role5" }),
 
-        agent.create({ user_account: "bili", guid: "agent1" }),
-        agent.create({ user_account: "bili2", guid: "agent2" }),
-
-        agent_detail.create({ agent_guid: "agent1", key: "name", value: "张代理" }),
-        agent.create({ user_account: "limt", guid: "agent3" }),
-        agent.create({ user_account: "admin", guid: "agent1" }),
-        //agent_detail.create({ agent_guid: "agent1", key: "name", value: "张代理" }),
+        agent.create({ user_account: "limt", guid: "agent1" }),
+        agent.create({ user_account: "bili", guid: "agent2" }),
+        agent.create({ user_account: "bili2", guid: "agent3" }),
+        agent.create({ user_account: "admin", guid: "agent4" }),
 
         brand_detail.create({ brand_guid: "brand1", key: "headImg", value: "1" }),
         brand_detail.create({ brand_guid: "brand1", key: "name", value: "2" }),
         brand_detail.create({ brand_guid: "brand1", key: "companyName", value: "A公司" }),
 
-        agent_detail.create({ agent_guid: "agent2", key: "name", value: "李xx" }),
+        agent_detail.create({ agent_guid: "agent1", key: "name", value: "张代理" }),
+        agent_detail.create({ agent_guid: "agent1", key: "headImg", value: "1" }),
 
-        // employment.create({ guid: "ep1", brand_guid: "brand1", brand_role_code: "brand_role2", employer_user_account: "admin", employer_time: new Date(), employee_user_account: "tester1", status: "未审核", audit_user_account: "admin" }),
-        // employment.create({ guid: "ep2", brand_guid: "brand1", brand_role_code: "brand_role3", employer_user_account: "admin", employer_time: new Date(), employee_user_account: "tester2", status: "未审核", audit_user_account: "admin" }),
-        // employment.create({ guid: "ep3", brand_guid: "brand1", brand_role_code: "brand_role2", employer_user_account: "admin", employer_time: new Date(), employee_user_account: "tester3", status: "未审核", audit_user_account: "admin" }),
+        agent_detail.create({ agent_guid: "agent2", key: "name", value: "李xx" }),
+        agent_detail.create({ agent_guid: "agent2", key: "headImg", value: "1" }),
+
+        agent_detail.create({ agent_guid: "agent3", key: "name", value: "limt" }),
+        agent_detail.create({ agent_guid: "agent3", key: "headImg", value: "1" }),
+
+        agent_detail.create({ agent_guid: "agent4", key: "name", value: "admin" }),
+        agent_detail.create({ agent_guid: "agent4", key: "headImg", value: "1" }),
+
         employment.create({ guid: "ep1", brand_guid: "brand1", brand_role_code: "brand_role2", employer_user_account: "limt", employer_time: '2016-09-11 12:30:46', employee_user_account: "tester1", status: "未审核", audit_user_account: "limt" }),
         employment.create({ guid: "ep2", brand_guid: "brand1", brand_role_code: "brand_role3", employer_user_account: "limt", employer_time: '2016-10-11 12:30:46', employee_user_account: "tester2", status: "未审核", audit_user_account: "limt" }),
         employment.create({ guid: "ep3", brand_guid: "brand1", brand_role_code: "brand_role2", employer_user_account: "limt", employer_time: '2016-12-11 12:30:46', employee_user_account: "tester3", status: "未审核", audit_user_account: "limt" }),
