@@ -17,19 +17,19 @@
 
         <group>
 <div class="search">
-            <x-input class="weui_cell_primary" title="" :value.sync="keyword"  
-
-                    placeholder="输入需要查看的功能名称" is-type="china-name" v-ref:name></x-input>
+            <x-input class="weui_cell_primary" title="" :value.sync="keyword"   placeholder="输入需要查看的功能名称" is-type="china-name" v-ref:name></x-input>
             <div class="search-button"><button class="weui_btn weui_btn_primary" @click="search">.</button></div>
 </div>
 
         </group>
-        <group class="icon_btn" v-for="item in btn_list">
-            <button class="weui_btn" v-link="item.link">
-                <img class="weui_media_appmsg_thumb" src="" alt="icon" v-show="item.isShow">
-                <h4 class="weui_media_title">{{item.title}}</h4>
-            </button>
-        </group>
+        <table>
+            <td v-for="item in btn_list">
+                <button v-link="item.link">
+                    <img :src.sync="item.iconhref" alt="icon" v-show="item.isShow">
+                    <h4 class="weui_media_title">{{item.title}}</h4>
+                </button>
+            </td>
+        </table>
 	</div>
 </template>
 
@@ -52,34 +52,42 @@
                 btn_list: [{
                     title: '货品销售',
                     link: '',
+                    iconhref: '/static/icon/audit.png',
                     isShow: true
                 }, {
                     title: '货品查验',
                     link: '',
+                    iconhref: null,
                     isShow: true
                 }, {
                     title: '成员招募',
                     link: '/employManagement',
+                    iconhref: null,
                     isShow: true
                 }, {
                     title: '订货管理',
                     link: '',
+                    iconhref: '',
                     isShow: true
                 }, {
                     title: '我的库存',
                     link: '',
+                    iconhref: '',
                     isShow: true
                 }, {
                     title: '我的团队',
                     link: '',
+                    iconhref: '',
                     isShow: true
                 }, {
                     title: '我的货品',
                     link: '',
+                    iconhref: '',
                     isShow: true
                 }, {
                     title: '我的账户',
                     link: '/accountManagement',
+                    iconhref: '',
                     isShow: true
                 }, {
                     title: '更多功能，敬请期待',
@@ -106,11 +114,11 @@
             },
             search() {
                 console.log("开始搜索")
-                var reg = /[\u4e00-\u9fa5]/ //中文
+                var reg = /^[\u4e00-\u9fa5]*$/ //全中文
 
                 if (this.keyword == null) {
                     window.alert("搜索框内容不能为空")
-                } else if (!this.$refs.name.valid || !reg.test(this.keyword)) {
+                } else if (!reg.test(this.keyword)) {
                     window.alert("填写格式错误，请填写中文")
                 } else {
                     // window.alert("填暂不开放")

@@ -60,14 +60,19 @@
                     return
                 }
                 if (this.$route.name === 'HomePageSearch') {
+                    this.leftOptions.showBack = true
                     return
                 }
-                if (this.$route.path === '/employManagement')
+                if (this.$route.path === '/employManagement') {
+                    this.leftOptions.showBack = true
                     return '成员招募'
-                if (this.$route.path === '/employManagement/chooseEmployableRoles')
+                }
+                if (this.$route.path === '/employManagement/chooseEmployableRoles') {
+                    this.leftOptions.showBack = true
                     return '选择招募代理级别'
+                }
                 if (this.$route.name === 'BrandAuthorization') {
-                    console.log(this.$route.params.account)
+                    this.leftOptions.showBack = true
                     return this.$route.params.brandName
                 }
                 if (this.$route.name === 'FillInEmployment') {
@@ -91,8 +96,10 @@
                     return '招募详情'
                 if (this.$route.path === '/employManagement/employmentHistory')
                     return '招募历史'
-                if (this.$route.path === '/accountManagement')
+                if (this.$route.path === '/accountManagement') {
+                    this.leftOptions.showBack = true
                     return '我的账号'
+                }
             }
         },
         methods: {
