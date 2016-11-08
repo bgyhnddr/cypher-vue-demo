@@ -2,7 +2,7 @@
     <div>
         <group>
             <!--我的证书-->
-            <a class="weui_cell"  v-link="" >
+            <a class="weui_cell" v-if="showMyInfoClick"  v-link="" >
                 <div class="weui_cell_hd">
                     <img  alt="图标LOGO" >
                 </div>
@@ -79,26 +79,25 @@
                             }
                         }
                     }
-                }
+                },
+                showMyInfoClick: true,
             }
         },
         methods: {
             getPersonalInfo() {
                 var that = this
                 authAPI.getUser().then(function(result) {
-                    if (typeof(result.name) == 'undefined') {
-                        window.alert("获取用户登录信息失败，请重新登录")
-                        that.$route.router.go('/auth/login')
-                        return
-                    }
-
                     that.user.user_info = result
                     console.log("用户账号:" + that.user.user_info.name)
 
                     agentInfoAPI.getBrandInfo({
                         user_account: that.user.user_info.name
                     }).then(function(result) {
-                        that.user.brand_info = result
+                        console.log(JSON.stringify(result))
+
+                        if (result.brand_role.level == "0") {
+                            that.showMyInfoClick = false
+                        }
                     }).catch(function(err) {
                         window.alert(err)
                     })

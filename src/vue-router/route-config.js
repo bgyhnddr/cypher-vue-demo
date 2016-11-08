@@ -55,6 +55,18 @@ export function configRouter(router) {
                 },
             }
         },
+        '/homePage': {
+            component: require('../components/WapMain.vue'),
+            subRoutes: {
+                '': {
+                    component: require('../components/HomePage.vue')
+                },
+                'search/:keyword': {
+                    name: 'HomePageSearch',
+                    component: require('../components/HomePageSearch.vue')
+                },
+            }
+        },
         '/employManagement': {
             component: function(reslove) {
                 return require(['../components/WapMain.vue'], reslove)

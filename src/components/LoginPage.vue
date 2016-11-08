@@ -79,7 +79,7 @@
                 if (that.valid()) {
                     authAPI.login(that.loginInfo).then(function(result) {
                         that.state.userInfo = result
-                        that.$route.router.go('/employManagement')
+                        that.$route.router.go('/homePage')
                         console.log(that.state.userInfo)
                     }).catch(function(err) {
                         that.errmsg = err
@@ -94,7 +94,6 @@
             //this.$els.account.focus()
         }
     }
-
 </script>
 <style>
     .login_zindex {
@@ -104,105 +103,120 @@
     .login_loading_zindex {
         z-index: 10000001 !important;
     }
-.login-bac {
-    font-family: "微软雅黑";
-    background-color: #fff;
-}
-/*品牌商logo*/
-    .login-header{
-    background: #ebebeb;
-    padding: 6%;
-    text-align: center;
-    display: block;
-}
- .login-header img{
-    width: 27%;
-    height: auto;
-    border: 2px solid #fff;
-    border-radius: 50%;
-     display:initial;
-}
- .login-header p{
-       display: block;
-    color: #292832;
-    font-size: 18px;
-}
-/*登录框*/
-.input-boder{
-border: 1px solid #d3d1d1;
-    border-radius: 3px;
-    background: #fff;
-margin-bottom: 2%;
-}
-.login-message {
-    width: 89%;
-    margin: 20px auto 0 auto;
-position: relative;
-}
-.weui_cell {
-    padding: 9px 15px;}
-.weui_cells {
-    margin-top: 0;
-  
-  font-size: 14px;
-    color: #aeaeae;
-font-family: "微软雅黑";
-}
-.weui_cells:before{
-    border-top: none;
-}
-.weui_cells:after{
-    border-bottom: none;
-}
-.login-message  input{
-font-family: "微软雅黑";
-
-}
-.weui_label {
-    color: #fff;
-    width: 2em!important;}
-.user{
-   position: absolute;
-   z-index: 10000;
+    
+    .login-bac {
+        font-family: "微软雅黑";
+        background-color: #fff;
+    }
+    /*品牌商logo*/
+    
+    .login-header {
+        background: #ebebeb;
+        padding: 6%;
+        text-align: center;
+        display: block;
+    }
+    
+    .login-header img {
+        width: 27%;
+        height: auto;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        display: initial;
+    }
+    
+    .login-header p {
+        display: block;
+        color: #292832;
+        font-size: 18px;
+    }
+    /*登录框*/
+    
+    .input-boder {
+        border: 1px solid #d3d1d1;
+        border-radius: 3px;
+        background: #fff;
+        margin-bottom: 2%;
+    }
+    
+    .login-message {
+        width: 89%;
+        margin: 20px auto 0 auto;
+        position: relative;
+    }
+    
+    .weui_cell {
+        padding: 9px 15px;
+    }
+    
+    .weui_cells {
+        margin-top: 0;
+        font-size: 14px;
+        color: #aeaeae;
+        font-family: "微软雅黑";
+    }
+    
+    .weui_cells:before {
+        border-top: none;
+    }
+    
+    .weui_cells:after {
+        border-bottom: none;
+    }
+    
+    .login-message input {
+        font-family: "微软雅黑";
+    }
+    
+    .weui_label {
+        color: #fff;
+        width: 2em!important;
+    }
+    
+    .user {
+        position: absolute;
+        z-index: 10000;
         top: 1%;
-    left: 2%;    
-}
-.password{
-position: absolute;
-   z-index: 10000;
-bottom: -8%;
-left: 2%;
-
-}
-.user img,.password img{
-width: 100%;
-    height: auto;
-}
-
-/*登录*/
-button.weui_btn.weui_btn_primary {
-       width: 89%;
-    line-height: 2.2;
-    background: #21c36d;
-    font-family: "微软雅黑";
-    font-size: 17px;
-    border-radius: 3px;
-}
-button.weui_btn.weui_btn_primary:active{
- background: #21935a;
-
-
-}
-.weui_icon_warn:before {
-    font-size: 18px;
-    color: #f43530;
-}
-
-/*隐藏返回按钮*/
-a.vux-header-back.headerTransition-transition {
-    display: none;
-}
-/*顶栏*/
-.vux-header{
-}
+        left: 2%;
+    }
+    
+    .password {
+        position: absolute;
+        z-index: 10000;
+        bottom: -8%;
+        left: 2%;
+    }
+    
+    .user img,
+    .password img {
+        width: 100%;
+        height: auto;
+    }
+    /*登录*/
+    
+    button.weui_btn.weui_btn_primary {
+        width: 89%;
+        line-height: 2.2;
+        background: #21c36d;
+        font-family: "微软雅黑";
+        font-size: 17px;
+        border-radius: 3px;
+    }
+    
+    button.weui_btn.weui_btn_primary:active {
+        background: #21935a;
+    }
+    
+    .weui_icon_warn:before {
+        font-size: 18px;
+        color: #f43530;
+    }
+    /*隐藏返回按钮*/
+    
+    a.vux-header-back.headerTransition-transition {
+        display: none;
+    }
+    /*顶栏*/
+    
+    .vux-header {}
 </style>

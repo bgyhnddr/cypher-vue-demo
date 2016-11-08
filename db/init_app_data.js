@@ -46,14 +46,10 @@ module.exports = function() {
         employable_rule.create({ employer_brand_role_code: "brand_role2", employable_brand_role_code: "brand_role4" }),
         employable_rule.create({ employer_brand_role_code: "brand_role2", employable_brand_role_code: "brand_role5" }),
 
+	agent.create({ user_account: "limt", guid: "agent1" }),
         agent.create({ user_account: "bili", guid: "agent2" }),
-
-
         agent.create({ user_account: "bili2", guid: "agent3" }),
-        agent.create({ user_account: "limt", guid: "agent1" }),
         agent.create({ user_account: "admin", guid: "agent4" }),
-
-
 
         brand_detail.create({ brand_guid: "brand1", key: "headImg", value: "1" }),
         brand_detail.create({ brand_guid: "brand1", key: "name", value: "2" }),
@@ -63,7 +59,13 @@ module.exports = function() {
         agent_detail.create({ agent_guid: "agent1", key: "headImg", value: "1" }),
 
         agent_detail.create({ agent_guid: "agent2", key: "name", value: "李xx" }),
-        agent_detail.create({ agent_guid: "agent1", key: "headImg", value: "1" }),
+        agent_detail.create({ agent_guid: "agent2", key: "headImg", value: "1" }),
+
+        agent_detail.create({ agent_guid: "agent3", key: "name", value: "limt" }),
+        agent_detail.create({ agent_guid: "agent3", key: "headImg", value: "1" }),
+
+        agent_detail.create({ agent_guid: "agent4", key: "name", value: "admin" }),
+        agent_detail.create({ agent_guid: "agent4", key: "headImg", value: "1" }),
 
         employment.create({ guid: "ep1", brand_guid: "brand1", brand_role_code: "brand_role2", employer_user_account: "limt", employer_time: '2016-09-11 12:30:46', employee_user_account: "tester1", status: "未审核", audit_user_account: "limt" }),
         employment.create({ guid: "ep2", brand_guid: "brand1", brand_role_code: "brand_role3", employer_user_account: "limt", employer_time: '2016-10-11 12:30:46', employee_user_account: "tester2", status: "未审核", audit_user_account: "limt" }),
