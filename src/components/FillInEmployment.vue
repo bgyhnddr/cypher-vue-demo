@@ -1,6 +1,7 @@
-<template>
+﻿<template>
     <div>
-        <p>代理申请表</p>
+<div class="fillin">
+        <h3>代理申请表</h3>
         <div v-if="!showNextFillModel">
                 <p>上级代理:{{employmentData.employerName}}上级授权号{{employmentData.agentGuid}}</p>
                 <p>您当前代理级别为:{{employmentData.brandRoleName}}</p>
@@ -35,7 +36,7 @@
             </group>
             <button class="weui_btn weui_btn_primary" :class="classes" @click="submit">确认申请</button>
         </div>
-    </div>
+    </div></div>
 </template>
 <script>
     import {
@@ -247,3 +248,14 @@
         }
     }
 </script>
+<style>
+.fillin {
+    width: 90%;
+    margin: auto;
+}
+.fillin  h3 {
+    text-align: center;
+    color: #852d25;
+    font-family: "微软雅黑";
+}
+</style>

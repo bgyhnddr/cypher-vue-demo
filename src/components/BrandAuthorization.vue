@@ -180,7 +180,8 @@ table.personal-identity {
 }
 
 table.personal-identity tbody tr td img {
-    width: 88%
+    width: 88%;
+    height: auto;
 }
 .color-gray {
     color: #57534d;
