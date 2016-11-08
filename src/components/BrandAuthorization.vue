@@ -79,8 +79,8 @@
                     that.createEmployment()
                     for (var item in result.brand_details) {
                         for (var meta in result.brand_details[item]) {
-                            //key = "headImg"
-                            if (meta == 'key' && result.brand_details[item][meta] == 'headImg') {
+                            //key = "LOGOImg"
+                            if (meta == 'key' && result.brand_details[item][meta] == 'LOGOImg') {
                                 console.log(result.brand_details[item]['value'])
                                 var brand_logo_href = parseInt(result.brand_details[item]['value'])
                                 that.brand_logo_href = "/service/public/upload/getAttachment?id=" + brand_logo_href

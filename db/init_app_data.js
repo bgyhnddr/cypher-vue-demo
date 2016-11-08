@@ -48,7 +48,7 @@ module.exports = function() {
         agent.create({ user_account: "bili2", guid: "agent3" }),
         agent.create({ user_account: "admin", guid: "agent4" }),
 
-        brand_detail.create({ brand_guid: "brand1", key: "headImg", value: "1" }),
+        brand_detail.create({ brand_guid: "brand1", key: "LOGOImg", value: "1" }),
         brand_detail.create({ brand_guid: "brand1", key: "name", value: "2" }),
         brand_detail.create({ brand_guid: "brand1", key: "companyName", value: "A公司" }),
 
