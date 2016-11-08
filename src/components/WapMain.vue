@@ -126,23 +126,18 @@
                 }
             },
             initBGColor() {
-<<<<<<< HEAD
                 if (this.$route.path === '/auth/login') {
                     document.body.style.background = '#fff'
                     console.log(document.body.style.background)
                     return
                 }
-             if (this.$route.path === '/employManagement') {
+             	if (this.$route.path === '/employManagement') {
                     document.body.style.background = '#f2f2f2'
                     console.log(document.body.style.background)
                     return
                 }
-           if (this.$route.path === '/employManagement/chooseEmployableRoles') {
+           	if (this.$route.path === '/employManagement/chooseEmployableRoles') {
                     document.body.style.background = '#fff'
-=======
-                if (this.$route.path === '/index') {
-                    document.body.style.background = 'white'
->>>>>>> origin/bili.ou
                     console.log(document.body.style.background)
                     return
                 }
