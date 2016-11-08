@@ -1,33 +1,52 @@
 ﻿<template>
     <div>
-<div class="brandauthorization-bac">
-<div class="brandauthorization">
-<div class="brandauthorization-img">
-        <p class="brand-logo"><img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="品牌logo"/></p>
-        <p><img src="/static/TestIMG/authorization.png" class="authorization"/></p>
-</div>
-        <div>
-            <h3>兹授权</h3>
-     <table boder=0 class="personal-identity">
-<tbody>
+        <div class="brandauthorization-bac">
+            <div class="brandauthorization">
+                <div class="brandauthorization-img">
+                    <p class="brand-logo"><img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="品牌logo" /></p>
+                    <p><img src="/static/TestIMG/authorization.png" class="authorization" /></p>
+                </div>
+                <div>
+                    <h3>兹授权</h3>
+                    <table boder=0 class="personal-identity">
+                        <tbody>
 
-            <tr><td width="20%">姓名:</td><td class="color-gray">张三</td><td rowspan="4" align="right"><img class="vux-x-img ximg-demo" alt="授权者头像" src="/static/TestIMG/grantee.jpg"/></td></tr>
-           <tr><td> 微信:</td><td class="color-gray">AA</td></tr>
-            <tr><td>身份证:</td><td class="color-gray">4404xxxxxxxxxxxxx</td></tr>
-           <tr><td height="6px"></td><td></td></tr>
-     </tbody>       
-</table>
+                            <tr>
+                                <td width="20%">姓名:</td>
+                                <td class="color-gray">张三</td>
+                                <td rowspan="4" align="right"><img class="vux-x-img ximg-demo" alt="授权者头像" src="/static/TestIMG/grantee.jpg" /></td>
+                            </tr>
+                            <tr>
+                                <td> 微信:</td>
+                                <td class="color-gray">AA</td>
+                            </tr>
+                            <tr>
+                                <td>身份证:</td>
+                                <td class="color-gray">4404xxxxxxxxxxxxx</td>
+                            </tr>
+                            <tr>
+                                <td height="6px"></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-            <div class="set-agent ">为{{employmentData.name}}<label>{{employer.brand_role_name}}</label></div>
-          <div class="allow-agent"> 允许其在网络上销售{{employmentData.name}}<label>旗下产品</label></div>
-           <div class="agent-message"> <p>授权编号:<label class="color-gray">A111</label></p>
-            <p >授权期限:<label class="color-gray">{{date.start}}</label>至<labelclass="color-gray">{{date.deadline}}</label></p></div>
-           
-            <p class="agent-unit ">授权单位:<label class="color-gray">{{company_name}}</label></p>
-            
+                    <div class="set-agent ">为{{employmentData.name}}<label>{{employer.brand_role_name}}</label></div>
+                    <div class="allow-agent"> 允许其在网络上销售{{employmentData.name}}<label>旗下产品</label></div>
+                    <div class="agent-message">
+                        <p>授权编号:<label class="color-gray">A111</label></p>
+                        <p>授权期限:<label class="color-gray">{{date.start}}</label>至
+                            <label class="color-gray">{{date.deadline}}</label>
+                        </p>
+                    </div>
 
+                    <p class="agent-unit ">授权单位:<label class="color-gray">{{company_name}}</label></p>
+
+
+                </div>
+            </div>
         </div>
-    </div></div></div>
+    </div>
 </template>
 <script>
     import authAPI from '../api/auth'
@@ -149,76 +168,84 @@
     }
 </script>
 <style>
-
-/*底部距离*/
-.weui_tab_bd{
-padding-bottom:0;}
-.brandauthorization-bac {
-    background: url(/static/TestIMG/PowerOfAttorney-bac.png) no-repeat;
-    background-size: 100%;
-    width: 94%;
-    margin: 3% auto;
-}
-.brandauthorization {
-  width: 75%;
-    margin: auto;
-    padding: 13% 0%;
-    font-size: 0.3em;
-    color: #3f3a36;
-}
-
-.brandauthorization-img .brand-logo img{
- width:60%;
-    height: auto;
-}
-.authorization{ width:60%;
-    height: auto;}
-.brandauthorization-img {
-    text-align: center;
-}
-table.personal-identity {
-    font-family: " 微软雅黑";
-    width: 100%;
-    margin: auto;
-
-
-}
-
-table.personal-identity tbody tr td img {
-    width: 88%;
-    height: auto;
-}
-.color-gray {
-    color: #57534d;
-}
-.set-agent{
-    font-family: "微软雅黑";
-text-align: center;
-
-}
-.set-agent label {
-    font-size: 12px!important;
-    color: #36bdaf;
-
-}
-.allow-agent{
-text-align: center;
-
-  font-family: " 微软雅黑";
-}
-.agent-message{
-    margin: 8% 0 17% 0;
-text-align: left;
-}
-.agent-message p{
-text-align: left;
- font-family: " 微软雅黑";
-}
-.agent-unit  {
-  font-family: " 微软雅黑";
-text-align: right;
-margin-bottom: 14%;
-
-}
-
+    /*底部距离*/
+    
+    .weui_tab_bd {
+        padding-bottom: 0;
+    }
+    
+    .brandauthorization-bac {
+        background: url(/static/TestIMG/PowerOfAttorney-bac.png) no-repeat;
+        background-size: 100%;
+        width: 94%;
+        margin: 3% auto;
+    }
+    
+    .brandauthorization {
+        width: 75%;
+        margin: auto;
+        padding: 13% 0%;
+        font-size: 0.3em;
+        color: #3f3a36;
+    }
+    
+    .brandauthorization-img .brand-logo img {
+        width: 60%;
+        height: auto;
+    }
+    
+    .authorization {
+        width: 60%;
+        height: auto;
+    }
+    
+    .brandauthorization-img {
+        text-align: center;
+    }
+    
+    table.personal-identity {
+        font-family: " 微软雅黑";
+        width: 100%;
+        margin: auto;
+    }
+    
+    table.personal-identity tbody tr td img {
+        width: 88%;
+        height: auto;
+    }
+    
+    .color-gray {
+        color: #57534d;
+    }
+    
+    .set-agent {
+        font-family: "微软雅黑";
+        text-align: center;
+    }
+    
+    .set-agent label {
+        font-size: 12px!important;
+        color: #36bdaf;
+    }
+    
+    .allow-agent {
+        text-align: center;
+        font-family: " 微软雅黑";
+    }
+    
+    .agent-message {
+        margin: 8% 0 17% 0;
+        text-align: left;
+    }
+    
+    .agent-message p {
+        text-align: left;
+        font-family: " 微软雅黑";
+    }
+    
+    .agent-unit {
+        font-family: " 微软雅黑";
+        text-align: right;
+        margin-bottom: 14%;
+    }
 </style>
