@@ -22,14 +22,61 @@
 </div>
 
         </group>
-        <table>
-            <td v-for="item in btn_list">
-                <button v-link="item.link">
-                    <img :src.sync="item.iconhref" alt="icon" v-show="item.isShow">
-                    <h4 class="weui_media_title">{{item.title}}</h4>
-                </button>
-            </td>
-        </table>
+        <div>
+            <button v-link="btn_list[0].link">
+                <img :src.sync="btn_list[0].iconhref" alt="icon" v-show="btn_list[0].isShow">
+                <h4 class="weui_media_title">{{btn_list[0].title}}</h4>
+            </button>
+         </div>
+         <div>
+            <button v-link="btn_list[1].link">
+                <img :src.sync="btn_list[1].iconhref" alt="icon" v-show="btn_list[1].isShow">
+                <h4 class="weui_media_title">{{btn_list[1].title}}</h4>
+            </button>
+         </div>
+         <div>
+            <button v-link="btn_list[2].link">
+                <img :src.sync="btn_list[2].iconhref" alt="icon" v-show="btn_list[2].isShow">
+                <h4 class="weui_media_title">{{btn_list[2].title}}</h4>
+            </button>
+         </div>
+         <div>
+            <button v-link="btn_list[3].link">
+                <img :src.sync="btn_list[3].iconhref" alt="icon" v-show="btn_list[3].isShow">
+                <h4 class="weui_media_title">{{btn_list[3].title}}</h4>
+            </button>
+         </div>
+         <div>
+            <button v-link="btn_list[4].link">
+                <img :src.sync="btn_list[4].iconhref" alt="icon" v-show="btn_list[4].isShow">
+                <h4 class="weui_media_title">{{btn_list[4].title}}</h4>
+            </button>
+         </div>
+         <div>
+            <button v-link="btn_list[5].link">
+                <img :src.sync="btn_list[5].iconhref" alt="icon" v-show="btn_list[5].isShow">
+                <h4 class="weui_media_title">{{btn_list[5].title}}</h4>
+            </button>
+         </div>
+         <div>
+            <button v-link="btn_list[6].link">
+                <img :src.sync="btn_list[6].iconhref" alt="icon" v-show="btn_list[6].isShow">
+                <h4 class="weui_media_title">{{btn_list[6].title}}</h4>
+            </button>
+         </div>
+         <div>
+            <button v-link="btn_list[7].link">
+                <img :src.sync="btn_list[7].iconhref" alt="icon" v-show="btn_list[7].isShow">
+                <h4 class="weui_media_title">{{btn_list[7].title}}</h4>
+            </button>
+         </div>
+          <div>
+            <button v-link="btn_list[8].link">
+                <img :src.sync="btn_list[8].iconhref" alt="icon" v-show="btn_list[8].isShow">
+                <h4 class="weui_media_title">{{btn_list[8].title}}</h4>
+            </button>
+         </div>
+
 	</div>
 </template>
 
