@@ -3,7 +3,7 @@
 <div class="brandauthorization-bac">
 <div class="brandauthorization">
 <div class="brandauthorization-img">
-        <p><img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="品牌logo"/></p>
+        <p class="brand-logo"><img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="品牌logo"/></p>
         <p><img src="/static/TestIMG/authorization.png" class="authorization"/></p>
 </div>
         <div>
@@ -167,7 +167,12 @@ padding-bottom:0;}
     color: #3f3a36;
 }
 
-.authorization{ width:60%}
+.brandauthorization-img .brand-logo img{
+ width:60%;
+    height: auto;
+}
+.authorization{ width:60%;
+    height: auto;}
 .brandauthorization-img {
     text-align: center;
 }

@@ -1,32 +1,42 @@
-﻿<template>
+﻿
+<template>
     <div>
 <div class="fillin">
         <h3>代理申请表</h3>
         <div v-if="!showNextFillModel">
+             <div class="ApplyFor-agent-message">
                 <p>上级代理:{{employmentData.employerName}}上级授权号{{employmentData.agentGuid}}</p>
-                <p>您当前代理级别为:{{employmentData.brandRoleName}}</p>
-                <img class="vux-x-img ximg-demo" :name.sync="meta.headimg" alt="上传头像" />
+                <p>您当前代理级别为:<label>{{employmentData.brandRoleName}}</label></p>
+</div>
+               <div class="ApplyFor-agent-header"> <img class="vux-x-img ximg-demo" :name.sync="meta.headimg" src="/static/TestIMG/upload.png" /></div>
                 <vue-strap-upload :file-id.sync="data.headimg" ></vue-strap-upload>
+               <div class="ApplyFor-agent-input">
+
                 <group>
-                    <x-input class="weui_cell_primary" title="申请人" :name.sync="meta.name" :value.sync="data.name"  
+
+                    <x-input class="weui_cell_primary  applicant-name" title="申请人:" :name.sync="meta.name" :value.sync="data.name"  
                         placeholder="申请人姓名" is-type="china-name" v-ref:name ></x-input>
+
                 </group>
-                <p>*姓名一经审批将不得修改，请慎重填写</p>
+                <p class="applicants">*姓名一经审批将不得修改，请慎重填写</p>
                 <group>
-                    <x-input class="weui_cell_primary" type="text" title="微信号" :name.sync="meta.wechat" :value.sync="data.wechat"
-                        placeholder="必须以字母开头，6-20个字母，数字，下划线或减号" :min="6" :max="20" 
+                    <x-input class="weui_cell_primary applicant-weixin" type="text" title="微信号:" :name.sync="meta.wechat" :value.sync="data.wechat"
+                        placeholder="6-20个字母，数字，下划线或减号" :min="6" :max="20" 
                         v-ref:wechat ></x-input>
                 </group>
                 <group>
-                    <x-input class="weui_cell_primary" keyboard="number" title="手机号" :value.sync="data.account"  
+                    <x-input class="weui_cell_primary applicant-phone" keyboard="number" title="手机号:" :value.sync="data.account"  
                         placeholder="请输入手机号码"  is-type="china-mobile" v-ref:account></x-input>
                 </group>
+</div>
                 <button class="weui_btn weui_btn_primary" :class="classes"  @click="goFillEmployment2">下一步</button>
         </div>
         <div v-else>
+<div class="certificate ">
             <group>
                 <selector placeholder="-证件类型-" :options="personalIdentityTypeList" :value.sync="data.typeOfPersonalIdentity"></selector>
-                <x-input class="weui_cell_primary" keyboard="number" placeholder="输入证件号" :value.sync="data.valueOfPersonalIdentity" v-ref:valueOfPersonalIdentity></x-input>
+                <x-input class="weui_cell_primary certificate-input" keyboard="number" placeholder="输入证件号" :value.sync="data.valueOfPersonalIdentity" v-ref:valueOfPersonalIdentity></x-input>
+                <div class="clean"></div>
             </group>
             <group title="通讯地址">
                 <address title="" :value.sync="data.provinceAndRegionTemp" :list="addressData"></address>
@@ -34,12 +44,13 @@
             <group>
                 <x-textarea :name.sync="meta.addressDetail" :max="50" placeholder="请填写详细地址" :value.sync="data.addressDetail"></x-textarea>
             </group>
+
             <button class="weui_btn weui_btn_primary" :class="classes" @click="submit">确认申请</button>
-        </div>
+        </div></div
     </div></div>
 </template>
 <script>
-    import {
+   import {
         Group,
         XInput,
         XNumber,
@@ -247,8 +258,12 @@
             this.initDate()
         }
     }
+
 </script>
 <style>
+.clean{
+clean:both
+}
 .fillin {
     width: 90%;
     margin: auto;
@@ -257,5 +272,174 @@
     text-align: center;
     color: #852d25;
     font-family: "微软雅黑";
+    font-size: 18px;
+margin-top: 1%;
+}
+.ApplyFor-agent-message{
+font-family: "微软雅黑";
+font-size: 14px;
+    color: #000;
+margin-top: 1%;
+}
+.ApplyFor-agent-message label{
+    font-size: 14px;
+    color: #fd5e5e;
+}
+.ApplyFor-agent-header{
+ text-align: center;
+ margin-top: 2%;
+
+}
+.ApplyFor-agent-header img{
+width: 31%;
+    height: auto;
+
+
+}
+.ApplyFor-agent-input  .weui_cell{
+    padding: 2% 0;
+
+}
+
+.ApplyFor-agent-input label.weui_label {
+       color: #000;
+    font-size: 15px;
+    font-family: "微软雅黑";
+    display: inline;
+}
+
+.ApplyFor-agent-input .weui_cell_hd {
+    width: 21%;
+}
+
+.applicant-name .weui_cell_primary,
+.applicant-weixin  .weui_cell_primary,
+.applicant-phone .weui_cell_primary{
+    background: #fff;
+    border: 1px solid #a8a8a8;
+ padding: 2% 0;
+}
+
+.applicant-name .weui_cell_primary input,
+.applicant-weixin .weui_cell_primary input,
+.applicant-phone .weui_cell_primary input{
+    padding-left: 2%;
+color: #aeaeae;
+    font-size: 14px;
+    font-family: "微软雅黑";
+  
+}
+.applicants {
+    font-size: 12px;
+    color: #d22d23;
+    font-family: "微软雅黑";
+}
+.fillin button.weui_btn.weui_btn_primary{
+
+    width: 100%;
+    margin-top: 5%;
+}
+
+.fillin .weui_icon_warn:before {
+    font-size: 14px;
+    color: #f43530;
+}
+
+/*证件信息*/
+.certificate {
+    margin-top: 3%;
+}
+
+.certificate  .weui_cell{
+    padding: 2% 0;
+
+}
+.certificate .weui_cell_hd{
+    width: auto;
+
+
+}
+
+
+.weui_cell_select .weui_cell_bd:after{
+
+transform: rotate(135deg);
+top: 44%;
+    right: 11px;
+}
+.certificate  .weui_cell_select{
+padding-top: 0!important;
+    padding-bottom: 0!important;
+    width: 35%;
+    background: #fff;
+    height: 2.5em;
+    float: left;
+border: 1px solid #d3d1d1;
+}
+.certificate  .weui_cell_select .weui_select{
+
+    padding-left: 4%;
+    font-family: "微软雅黑";
+padding-right: 23%;
+}
+
+
+.certificate .weui_input{
+
+    font-family: "微软雅黑";
+padding-left: 2%;
+
+}
+
+.certificate .weui_cells_title {
+    padding: 0;
+    font-size: 15px;
+    font-family: "微软雅黑";
+color: #000;
+}
+ .certificate .weui_cell_ft.weui_cell_primary.with_arrow {
+    text-align: left;
+    padding-left: 2%;
+    background: #fff;
+    height: 2.5em;
+    line-height: 2.5;
+border: 1px solid #d3d1d1;
+}
+.certificate-input {
+    background: #fff;
+    height: 1.7em;
+    width: 60%;
+    float: right;
+  border: 1px solid #d3d1d1;
+    padding-left: 2%;
+}
+ .certificate span.vux-popup-picker-value {
+  
+    width: 89%;
+}
+ .certificate .weui_cell_ft.with_arrow:after{
+
+    transform: rotate(135deg);
+height: 6px;
+    width: 6px;
+    border-width: 2px 2px 0 0;
+    border-color: #c8c8cd;
+    border-style: solid;
+    position: relative;
+    top: -1px;
+    margin-left: .3em;
+
+}
+ .certificate textarea.weui_textarea {
+   border: 1px solid #d3d1d1;
+    width: 97%;
+    padding-left: 2%;
+}
+.certificate .weui_textarea_counter {
+    margin-top: 4%;
+}
+.certificate [class*=" weui_icon_"]:before, [class^=weui_icon_]:before {
+    margin-right: 0.5em;
+
 }
 </style>

@@ -11,6 +11,7 @@
         </view-box>
     </div>
 </template>
+
 <script>
     import {
         Tabbar,
@@ -138,6 +139,16 @@
                 }
            	if (this.$route.path === '/employManagement/chooseEmployableRoles') {
                     document.body.style.background = '#fff'
+                    console.log(document.body.style.background)
+                    return
+                }
+                 if (this.$route.name === 'FillInEmployment') {
+                    document.body.style.background = '#f2f2f2'
+                    console.log(document.body.style.background)
+                    return
+                }
+                 if (this.$route.path === '/homePage') {
+                    document.body.style.background = '#f2f2f2'
                     console.log(document.body.style.background)
                     return
                 }
