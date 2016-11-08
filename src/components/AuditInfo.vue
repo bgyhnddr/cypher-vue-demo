@@ -106,7 +106,7 @@
                 var that = this
                 employAPI.getAuditInfo({
                     auditID: that.auditID,
-                    brandID: that.GetQueryString('brandID')
+                    brandID: that.$route.params.brandID
                 }).then(function(result) {
                     if (result[0].employment.status == "已审核" && that.Toggle) {
                         that.alertMsg = "该申请已经审核"
@@ -126,12 +126,6 @@
                     that.serveMsg = err
                 })
             },
-            GetQueryString(name) {
-                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)")
-                var r = window.location.search.substr(1).match(reg)
-                if (r != null) return unescape(r[2])
-                return null
-            },
             PassAudit() {
                 var that = this
                 if (that.valid()) {
@@ -141,7 +135,6 @@
                     }).then(function(result) {
                         that.alertMsg = "已通过"
                         that.showAlert = true
-                        console.log(result)
                     }).catch(function(err) {
                         console.log(err)
                         that.serveMsg = err
@@ -167,10 +160,12 @@
             },
             onHide() {
                 if (this.valid() || this.alertMsg == "已拒绝") {
-                    this.$router.go('audit')
+                    this.$router.go({
+                        path: '/employManagement/audit'
+                    })
                 } else if (this.alertMsg == "该申请已经审核") {
                     this.$router.go({
-                        path: '/index'
+                        path: '/employManagement'
                     })
                 }
             },
@@ -191,10 +186,10 @@
             }
         },
         ready() {
-            if (this.GetQueryString('from') == 'audit') {
+            if (this.$route.params.locate == 'audit') {
                 this.Toggle = true
             }
-            this.auditID = this.GetQueryString('employmentID')
+            this.auditID = this.$route.params.employmentID
             this.getInfo()
         }
     }

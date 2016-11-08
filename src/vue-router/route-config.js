@@ -81,7 +81,7 @@ export function configRouter(router) {
                 'audit': {
                     component: require('../components/AuditList.vue')
                 },
-                'auditInfo': {
+                'auditInfo/:employmentID/:brandID/:locate': {
                     component: require('../components/AuditInfo.vue')
                 },
                 'employmentHistory': {

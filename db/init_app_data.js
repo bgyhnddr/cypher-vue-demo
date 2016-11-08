@@ -1,10 +1,7 @@
-﻿<<<<<<< HEAD
-﻿var brand = require('./models/brand')
-=======
+﻿
 var user = require('./models/user')
 var user_role = require('./models/user_role')
 var brand = require('./models/brand')
->>>>>>> origin/bili.ou
 var agent = require('./models/agent')
 var agent_brand_role = require('./models/agent_brand_role')
 var brand_role = require('./models/brand_role')
@@ -51,9 +48,11 @@ module.exports = function() {
 
         agent.create({ user_account: "bili", guid: "agent2" }),
 
+
         agent.create({ user_account: "bili2", guid: "agent3" }),
         agent.create({ user_account: "limt", guid: "agent1" }),
         agent.create({ user_account: "admin", guid: "agent4" }),
+
 
 
         brand_detail.create({ brand_guid: "brand1", key: "headImg", value: "1" }),
