@@ -6,7 +6,10 @@
     <group>
         <div>      
             <cell><div slot="icon">用户名：{{auditInfo.account}}</div></cell>
-            <cell><div slot="icon">授权品牌：{{auditInfo.brand}}</div></cell>
+            <cell>
+                <div slot="icon">授权品牌：{{auditInfo.brand}}</div>
+                <x-button v-if="Toggle" type="default">查看授权证书</x-button>
+            </cell>
             <cell>
                 <div slot="icon">授权上级：{{auditInfo.employer}}</div>
                 <x-button type="default">查看授权证书</x-button>
@@ -110,6 +113,7 @@
                     brandID: that.$route.params.brandID
                 }).then(function(result) {
                     if (result[0].employment.status == "已审核" && that.Toggle) {
+                        //修改back
                         that.alertMsg = "该申请已经审核"
                         that.showAlert = true
                     } else {
