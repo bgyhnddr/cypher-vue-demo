@@ -8,7 +8,7 @@
         </group>
         <group>
             <x-input class="weui_cell_primary" title="" :value.sync="keyword"  
-                    placeholder="输入需要查看的功能名称" is-type="china-name" v-ref:name></x-input>
+                    placeholder="输入需要查看的功能名称" is-type="china-name" :show-clear=false v-ref:name></x-input>
             <button class="weui_btn weui_btn_primary" @click="search">搜索</button>
         </group>
         <group class="icon_btn" v-for="item in btn_list">

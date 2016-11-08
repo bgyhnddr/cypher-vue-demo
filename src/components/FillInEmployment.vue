@@ -29,7 +29,7 @@
                 :show-clear=false v-ref:IDNumber></x-input>
             </group>
             <group title="通讯地址">
-                <address title="" :value.sync="data.addressTemp" :list="addressData"></address>
+                <address title="" :value.sync="data.addressTemp" :list="addressData" placeholder="--省份--，--城市--，--地区--"></address>
             </group>
             <group>
                 <x-textarea :name.sync="meta.addressDetail" :max="50" placeholder="请填写详细地址" :value.sync="data.addressDetail"></x-textarea>
