@@ -174,25 +174,57 @@ var exec = {
     getAuditInfo(req, res, next) {
         var auditID = req.body.auditID
         var brandID = req.body.brandID
+        var account = req.body.account
+        var locate = req.body.locate
+
         var employment = require('../../db/models/employment')
         var employment_detail = require('../../db/models/employment_detail')
         var brand = require('../../db/models/brand')
+        var agent = require('../../db/models/agent')
+        var agent_detail = require('../../db/models/agent_detail')
+        var agent_brand_role = require('../../db/models/agent_brand_role')
+        var employment_term = require('../../db/models/employment_term')
+
         employment_detail.belongsTo(employment)
+        agent_detail.belongsTo(agent)
+        agent.hasOne(agent_brand_role)
+        agent.hasOne(employment_term)
         employment.belongsTo(brand)
-        return employment_detail.findAll({
-            include: {
-                model: employment,
-                where: {
-                    guid: auditID
-                },
+
+        if (locate == 'audit') {
+            return employment_detail.findAll({
                 include: {
-                    model: brand,
+                    model: employment,
                     where: {
-                        guid: brandID
+                        guid: auditID
+                    },
+                    include: {
+                        model: brand,
+                        where: {
+                            guid: brandID
+                        }
                     }
                 }
-            },
-        })
+            })
+        } else if (locate == 'history' || locate == 'account') {
+            return agent_detail.findAll({
+                include: [{
+                    model: agent,
+                    where: {
+                        user_account: account
+                    },
+                    include: [
+                        {
+                            model: agent_brand_role,
+                        },
+                        {
+                            model: employment_term
+                        }
+                    ]
+                }]
+            })
+        }
+
     },
     passAudit(req, res, next) {
         var auditID = req.body.auditID
@@ -231,7 +263,7 @@ var exec = {
             }
             return Promise.all([
                 employment_term.create({
-                    employment_guid: auditID,
+                    agent_guid: guid,
                     term_from: result.employer_time,
                     term_to: term
                 }),
@@ -252,6 +284,11 @@ var exec = {
                     //guid test
                     agent_guid: guid,
                     brand_role_code: result.brand_role_code
+                }),
+                agent_detail.create({
+                    agent_guid: guid,
+                    key: 'employer',
+                    value: result.employer_user_account
                 }),
                 createList,
                 result.status = "已审核",

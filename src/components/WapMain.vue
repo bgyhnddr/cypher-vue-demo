@@ -92,6 +92,10 @@
                     return '招募历史'
                 if (this.$route.path === '/accountManagement')
                     return '我的账号'
+                if (this.$route.name === 'MyCertificate')
+                    return '我的证书'
+                if (this.$route.name === 'CertificateInfo')
+                    return 'adminBrand'
             }
         },
         methods: {
