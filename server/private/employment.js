@@ -209,7 +209,7 @@ var exec = {
         var uuid = require('node-uuid')
         var guid = uuid.v1()
 
-        // var dater = new Date()
+        var createList
 
         employment_detail.belongsTo(employment)
 
@@ -221,6 +221,14 @@ var exec = {
                 model: employment_detail
             }]
         }).then(function(result) {
+            for (var item in result.employment_details) {
+                createList = agent_detail.create({
+                    //guid test
+                    agent_guid: guid,
+                    key: result.employment_details[item]['key'],
+                    value: result.employment_details[item]['value']
+                })
+            }
             return Promise.all([
                 employment_term.create({
                     employment_guid: auditID,
@@ -240,35 +248,12 @@ var exec = {
                     //guid test
                     guid: guid
                 }),
-                agent_detail.create({
-                    //guid test
-                    agent_guid: guid,
-                    key: "name",
-                    value: result.employment_details[0].value
-                }),
-                agent_detail.create({
-                    //guid test
-                    agent_guid: guid,
-                    key: "wx",
-                    value: result.employment_details[1].value
-                }),
-                agent_detail.create({
-                    //guid test
-                    agent_guid: guid,
-                    key: "phone",
-                    value: result.employment_details[2].value
-                }),
-                agent_detail.create({
-                    //guid test
-                    agent_guid: guid,
-                    key: "address",
-                    value: result.employment_details[3].value
-                }),
                 agent_brand_role.create({
                     //guid test
                     agent_guid: guid,
                     brand_role_code: result.brand_role_code
                 }),
+                createList,
                 result.status = "已审核",
                 result.audit_time = new Date().toLocaleString(),
                 result.audit_result = "已通过",
