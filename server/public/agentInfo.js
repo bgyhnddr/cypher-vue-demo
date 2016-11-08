@@ -1,5 +1,5 @@
 var exec = {
-    getBrandInfo(req, res, next) {
+    getBrandRoleInfo(req, res, next) {
         var user_account = req.body.user_account
 
         var agent = require('../../db/models/agent')
@@ -12,25 +12,25 @@ var exec = {
         agent_brand_role.belongsTo(agent)
 
         return brand.findOne({
+            include: [{
+                model: brand_role,
                 include: [{
-                    model: brand_role, 
-                    include:[{
-                        model: agent_brand_role,
-                        include:[{
-                            model: agent,
-                             where: {
-                                user_account: user_account
-                            },
-                        }],
+                    model: agent_brand_role,
+                    include: [{
+                        model: agent,
+                        where: {
+                            user_account: user_account
+                        },
                     }],
-                }]
-            }).then(function(result) {
-                if (result == null) {
-                    return Promise.reject("找不到您的品牌商角色")
-                } else {
-                    return result
-                }
-            })
+                }],
+            }]
+        }).then(function(result) {
+            if (result == null) {
+                return Promise.reject("找不到您的品牌商角色")
+            } else {
+                return result
+            }
+        })
     },
 }
 

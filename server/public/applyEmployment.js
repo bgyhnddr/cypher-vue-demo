@@ -124,11 +124,11 @@ var exec = {
             } else {
                 var createList = []
                 for (var item in meta) {
-                    if (item != 'provinceAndRegionTemp') {
+                    if (item != 'addressTemp') {
                         createList.push(
                             employment_detail.create({
                                 employment_guid: guid,
-                                key: meta[item],
+                                key: item,
                                 value: data[item],
                             })
                         )

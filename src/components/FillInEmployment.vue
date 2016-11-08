@@ -6,6 +6,7 @@
         <div v-if="!showNextFillModel">
              <div class="ApplyFor-agent-message">
                 <p>上级代理:{{employmentData.employerName}}上级授权号{{employmentData.agentGuid}}</p>
+
                 <p>您当前代理级别为:<label>{{employmentData.brandRoleName}}</label></p>
 </div>
                <div class="ApplyFor-agent-header"> <img class="vux-x-img ximg-demo" :name.sync="meta.headimg" src="/static/TestIMG/upload.png" /></div>
@@ -17,9 +18,10 @@
                     <x-input class="weui_cell_primary  applicant-name" title="申请人:" :name.sync="meta.name" :value.sync="data.name"  
                         placeholder="申请人姓名" is-type="china-name" v-ref:name ></x-input>
 
+
                 </group>
                 <p class="applicants">*姓名一经审批将不得修改，请慎重填写</p>
-                <group>
+
                     <x-input class="weui_cell_primary applicant-weixin" type="text" title="微信号:" :name.sync="meta.wechat" :value.sync="data.wechat"
                         placeholder="6-20个字母，数字，下划线或减号" :min="6" :max="20" 
                         v-ref:wechat ></x-input>
@@ -27,6 +29,7 @@
                 <group>
                     <x-input class="weui_cell_primary applicant-phone" keyboard="number" title="手机号:" :value.sync="data.account"  
                         placeholder="请输入手机号码"  is-type="china-mobile" v-ref:account></x-input>
+
                 </group>
 </div>
                 <button class="weui_btn weui_btn_primary" :class="classes"  @click="goFillEmployment2">下一步</button>
@@ -34,12 +37,15 @@
         <div v-else>
 <div class="certificate ">
             <group>
-                <selector placeholder="-证件类型-" :options="personalIdentityTypeList" :value.sync="data.typeOfPersonalIdentity"></selector>
-                <x-input class="weui_cell_primary certificate-input" keyboard="number" placeholder="输入证件号" :value.sync="data.valueOfPersonalIdentity" v-ref:valueOfPersonalIdentity></x-input>
-                <div class="clean"></div>
+
+                <selector placeholder="-证件类型-" :options="IDTypeList" :value.sync="data.IDType"></selector>
+                <x-input class="weui_cell_primary certificate-input" keyboard="number" placeholder="输入证件号" :value.sync="data.IDNumber" 
+                :show-clear=false v-ref:IDNumber></x-input>
+<div class="clean"></div>
+
             </group>
             <group title="通讯地址">
-                <address title="" :value.sync="data.provinceAndRegionTemp" :list="addressData"></address>
+                <address title="" :value.sync="data.addressTemp" :list="addressData" placeholder="--省份--，--城市--，--地区--"></address>
             </group>
             <group>
                 <x-textarea :name.sync="meta.addressDetail" :max="50" placeholder="请填写详细地址" :value.sync="data.addressDetail"></x-textarea>
@@ -79,24 +85,24 @@
         data() {
             return {
                 meta: {
-                    headimg: "申请人头像",
+                    headImg: "申请人头像",
                     name: "申请人",
                     wechat: "微信号",
-                    account: "手机号",
-                    typeOfPersonalIdentity: "证件类型",
-                    valueOfPersonalIdentity: "证件号",
-                    provinceAndRegion: "通讯地址",
+                    cellphone: "手机号",
+                    IDType: "证件类型",
+                    IDNumber: "证件号",
+                    address: "通讯地址",
                     addressDetail: "详细地址"
                 },
                 data: {
-                    headimg: null,
+                    headImg: null,
                     name: "",
                     wechat: "",
-                    account: "",
-                    typeOfPersonalIdentity: "",
-                    valueOfPersonalIdentity: "",
-                    provinceAndRegionTemp: [],
-                    provinceAndRegion: "",
+                    cellphone: "",
+                    IDType: "",
+                    IDNumber: "",
+                    addressTemp: [],
+                    address: "",
                     addressDetail: ""
                 },
                 employmentData: {
@@ -108,7 +114,7 @@
                     employerName: {}
                 },
                 showNextFillModel: false,
-                personalIdentityTypeList: ['身份证', '回乡证', '护照'],
+                IDTypeList: ['身份证', '回乡证', '护照'],
                 addressData: AddressChinaData
 
             }
@@ -192,13 +198,13 @@
                 var reg = /^[a-z]+[a-zA-Z0-9_]*$/ //微信号
                 var reg2 = /[\u4e00-\u9fa5]/ //中文
 
-                if (!this.$refs.name.valid || !reg.test(this.data.name)) {
+                if (!this.$refs.name.valid || !reg2.test(this.data.name)) {
                     window.alert("申请人填写错误，请填写完整，再跳转到下一页")
                 } else if (!this.$refs.wechat.valid || !reg.test(this.data.wechat)) {
                     window.alert("微信号填写错误，请填写完整，再跳转到下一页")
-                } else if (!this.$refs.account.valid) {
+                } else if (!this.$refs.cellphone.valid) {
                     window.alert("手机号填写错误，请填写完整，再跳转到下一页")
-                } else if (this.data.headimg == null) {
+                } else if (this.data.headImg == null) {
                     window.alert("头像还未上传，请填写完整，再跳转到下一页")
                 } else {
                     this.$dispatch('fillInEmployment_goBack', true)
@@ -208,7 +214,7 @@
             submit() {
                 var that = this
                     //将data.provinceAndRegion 转换成中文字符串
-                this.data.provinceAndRegion = filterAddress(this.data.provinceAndRegionTemp, AddressChinaData)
+                this.data.address = filterAddress(this.data.addressTemp, AddressChinaData)
                 console.log(JSON.stringify(this.data))
 
                 //招募失效
@@ -221,11 +227,11 @@
                 }
 
                 //检查未填写完整的值
-                if (this.data.typeOfPersonalIdentity == "") {
+                if (this.data.IDType == "") {
                     window.alert("证件类型未填写，请填写完整，再跳转到下一页")
-                } else if (!this.$refs.valueofpersonalidentity.valid) {
+                } else if (!this.$refs.idnumber.valid) {
                     window.alert("证件号填写错误，请填写完整，再跳转到下一页")
-                } else if (this.data.provinceAndRegion == "") {
+                } else if (this.data.address == "") {
                     window.alert("通讯地址填写错误，请填写完整，再跳转到下一页")
                 } else if (this.data.addressDetail == "") {
                     window.alert("通讯地址填写错误，请填写完整，再跳转到下一页")
@@ -240,7 +246,7 @@
                         deadline: deadline
                     }).then(function(result) {
                         console.log("提交成功")
-                        that.$route.router.go('/employManagement/employmentSubmission' + this.$route.params.brandName)
+                        that.$route.router.go('/employManagement/employmentSubmission/' + that.$route.params.brandName)
                     }).catch(function(err) {
                         window.alert(err)
                     })

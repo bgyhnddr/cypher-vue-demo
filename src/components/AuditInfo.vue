@@ -12,9 +12,9 @@
                 <x-button type="default">查看授权证书</x-button>
             </cell>
             <cell><div slot="icon">姓名：{{auditInfo.name}}</div></cell>
-            <cell><div slot="icon">微信号：{{auditInfo.wx}}</div></cell>
-            <cell><div slot="icon">手机号：{{auditInfo.phone}}</div></cell>
-            <cell><div slot="icon">地址：{{auditInfo.address}}</div></cell>
+            <cell><div slot="icon">微信号：{{auditInfo.wechat}}</div></cell>
+            <cell><div slot="icon">手机号：{{auditInfo.cellphone}}</div></cell>
+            <cell><div slot="icon">地址：{{auditInfo.address}}{{auditInfo.addressDetail}}</div></cell>
             <selector v-if="Toggle" :value.sync="value" title="授权期限" :options="List" @on-change="onChange" placeholder="请选择期限"></selector>
         </div>
     </group>
@@ -79,9 +79,10 @@
                     brand: "",
                     employer: "",
                     name: "",
-                    wx: "",
-                    phone: "",
+                    wechat: "",
+                    cellphone: "",
                     address: "",
+                    addressDetail: "",
                     deadline: ""
                 }
             }
@@ -116,10 +117,25 @@
                         that.auditInfo.time = result[0].employment.employer_time
                         that.auditInfo.brand = result[0].employment.brand.name
                         that.auditInfo.employer = result[0].employment.employer_user_account
-                        that.auditInfo.name = result[0].value
-                        that.auditInfo.wx = result[1].value
-                        that.auditInfo.phone = result[2].value
-                        that.auditInfo.address = result[3].value
+                        for (var item in result) {
+                            for (var meta in result[item]) {
+                                if (meta == 'key') {
+                                    switch (result[item][meta]) {
+                                        case "name":
+                                            that.auditInfo.name = result[item]['value']
+                                        case "wechat":
+                                            that.auditInfo.wechat = result[item]['value']
+                                        case "cellphone":
+                                            that.auditInfo.cellphone = result[item]['value']
+                                        case "address":
+                                            that.auditInfo.address = result[item]['value']
+                                        case "addressDetail":
+                                            that.auditInfo.addressDetail = result[item]['value']
+                                            break
+                                    }
+                                }
+                            }
+                        }
                     }
                 }).catch(function(err) {
                     console.log(err)

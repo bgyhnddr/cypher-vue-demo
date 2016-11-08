@@ -18,9 +18,11 @@
         <group>
 <div class="search">
             <x-input class="weui_cell_primary" title="" :value.sync="keyword"  
+
                     placeholder="输入需要查看的功能名称" is-type="china-name" v-ref:name></x-input>
             <div class="search-button"><button class="weui_btn weui_btn_primary" @click="search">.</button></div>
 </div>
+
         </group>
         <group class="icon_btn" v-for="item in btn_list">
             <button class="weui_btn" v-link="item.link">

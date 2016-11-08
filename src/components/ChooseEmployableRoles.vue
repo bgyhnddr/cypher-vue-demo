@@ -50,7 +50,7 @@
                     var user_account = result.name
                     console.log("获取用户账号:" + user_account)
 
-                    agentInfoAPI.getBrandInfo({
+                    agentInfoAPI.getBrandRoleInfo({
                         user_account: user_account
                     }).then(function(result) {
                         console.log(result.name)
@@ -69,18 +69,20 @@
     }
 </script>
 <style lang="less">
-.choose-bac {
-    margin-top: 7%;
-}
-.choose-bac  .weui_btn+.weui_btn {
-    margin-top: 7px;
-}
-.choose-bac  button.weui_btn.weui_btn_primary {
-    width: 89%;
-    line-height: 2.2;
-    background: #3970aa;
-    font-size: 17px;
-    border-radius: 3px;
-    font-family: "微软雅黑";
-}
+    .choose-bac {
+        margin-top: 7%;
+    }
+    
+    .choose-bac .weui_btn+.weui_btn {
+        margin-top: 7px;
+    }
+    
+    .choose-bac button.weui_btn.weui_btn_primary {
+        width: 89%;
+        line-height: 2.2;
+        background: #3970aa;
+        font-size: 17px;
+        border-radius: 3px;
+        font-family: "微软雅黑";
+    }
 </style>

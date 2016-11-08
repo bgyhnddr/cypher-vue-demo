@@ -104,7 +104,7 @@
                     that.user.user_info = result
                     console.log("用户账号:" + that.user.user_info.name)
 
-                    agentInfoAPI.getBrandInfo({
+                    agentInfoAPI.getBrandRoleInfo({
                         user_account: that.user.user_info.name
                     }).then(function(result) {
                         console.log(JSON.stringify(result))
