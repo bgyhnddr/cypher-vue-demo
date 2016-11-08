@@ -40,7 +40,7 @@
                     <p>审核新代理申请表</p>
                 </div>
                 <div class="weui_cell_ft" :class="{'with_arrow': true}">
-                    <slot name="value">{{auditListLength}}</slot>
+                   <label> <slot name="value">{{auditListLength}}</slot></label>
                     <slot></slot>
                 </div>
             </a>
@@ -195,6 +195,10 @@ top: -2px;
 right: 2px;
 height: 8px;
     width: 8px;
+}
+.a-li label{
+ font-size: 16px;
+ color: #000;
 }
 
 

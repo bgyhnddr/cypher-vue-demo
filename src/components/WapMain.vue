@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div style="overflow-x: hidden;">
         <loading :show="isLoading" position="absolute"></loading>
         <view-box v-ref:view-box>
@@ -118,8 +118,18 @@
                 }
             },
             initBGColor() {
-                if (this.$route.path === '/index') {
-                    document.body.style.background = 'green'
+                if (this.$route.path === '/auth/login') {
+                    document.body.style.background = '#fff'
+                    console.log(document.body.style.background)
+                    return
+                }
+             if (this.$route.path === '/employManagement') {
+                    document.body.style.background = '#f2f2f2'
+                    console.log(document.body.style.background)
+                    return
+                }
+           if (this.$route.path === '/employManagement/chooseEmployableRoles') {
+                    document.body.style.background = '#fff'
                     console.log(document.body.style.background)
                     return
                 }
