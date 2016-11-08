@@ -163,8 +163,6 @@
                     this.$router.go({
                         path: '/employManagement/audit'
                     })
-                    this.$router.go('audit')
-                    console.log("why")
                 } else if (this.alertMsg == "该申请已经审核") {
                     this.$router.go({
                         path: '/employManagement'
