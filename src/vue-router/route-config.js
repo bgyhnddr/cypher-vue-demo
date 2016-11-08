@@ -94,6 +94,7 @@ export function configRouter(router) {
                     component: require('../components/AuditList.vue')
                 },
                 'auditInfo/:employmentID/:brandID/:locate': {
+                    name: "AuditInfo",
                     component: require('../components/AuditInfo.vue')
                 },
                 'employmentHistory': {

@@ -83,8 +83,11 @@
                 }
                 if (this.$route.path === '/employManagement/audit')
                     return '资料审核'
-                if (this.$route.path === '/employManagement/auditInfo')
-                    return '审核详情'
+                if (this.$route.name === 'AuditInfo')
+                    if (this.$route.params.locate == 'audit')
+                        return '审核详情'
+                    else if (this.$route.params.locate == 'history')
+                    return '招募详情'
                 if (this.$route.path === '/employManagement/employmentHistory')
                     return '招募历史'
                 if (this.$route.path === '/accountManagement')
