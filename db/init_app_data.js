@@ -35,7 +35,7 @@ module.exports = function() {
         agent.create({ user_account: "bili2", guid: "agent2" }),
 
         agent_detail.create({ agent_guid: "agent1", key: "name", value: "张代理" }),
-        agent.create({ user_account: "limt", guid: "agent1" }),
+        agent.create({ user_account: "limt", guid: "agent3" }),
         agent.create({ user_account: "admin", guid: "agent1" }),
         //agent_detail.create({ agent_guid: "agent1", key: "name", value: "张代理" }),
 
