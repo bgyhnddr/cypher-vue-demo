@@ -8,8 +8,8 @@
 
                     <p>您当前代理级别为:<label>{{employmentData.brandRoleName}}</label></p>
                 </div>
-                <div class="ApplyFor-agent-header"> <img class="vux-x-img ximg-demo" :name.sync="meta.headimg" src="/static/TestIMG/upload.png" /></div>
-                <vue-strap-upload :file-id.sync="data.headimg"></vue-strap-upload>
+                <div class="ApplyFor-agent-header"> <img class="vux-x-img ximg-demo" :name.sync="meta.headImg" src="/static/TestIMG/upload.png" /></div>
+                <vue-strap-upload :file-id.sync="data.headImg"></vue-strap-upload>
                 <div class="ApplyFor-agent-input">
                     <group>
                         <x-input class="weui_cell_primary  applicant-name" title="申请人:" :name.sync="meta.name" :value.sync="data.name" placeholder="申请人姓名" is-type="china-name" :show-clear=false v-ref:name></x-input>
