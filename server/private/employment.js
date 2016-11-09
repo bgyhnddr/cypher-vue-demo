@@ -371,16 +371,20 @@ var exec = {
 
         var publish_employment = require('../../db/models/publish_employment')
 
-        publish_employment.create({
+        return publish_employment.create({
             guid: guid,
             brand_guid: employmentData.guid,
             brand_role_code: employer.brand_role_code,
             employer_user_account: employer.user_account,
             create_time: createTime,
             status: true
+        }).then(function(result) {
+            if (result == null) {
+                return Promise.reject("创建招募失败")
+            } else {
+                return guid
+            }
         })
-
-        return guid
     }
 }
 

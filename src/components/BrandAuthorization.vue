@@ -156,6 +156,7 @@
                     that.showShareUrl(result)
                 }).catch(function(err) {
                     window.alert(err)
+                    that.$route.router.go('/employManagement/chooseEmployableRoles')
                 })
             },
             showShareUrl(employmentGuid) {
@@ -193,10 +194,10 @@
         width: 60%;
         height: auto;
     }
- .brandauthorization-img h3{
-font-family: " 微软雅黑";
-
-}
+    
+    .brandauthorization-img h3 {
+        font-family: " 微软雅黑";
+    }
     
     .authorization {
         width: 60%;
@@ -212,10 +213,11 @@ font-family: " 微软雅黑";
         width: 100%;
         margin: auto;
     }
-    table.personal-identity tbody tr td{
-  font-family: "微软雅黑";
-
-}
+    
+    table.personal-identity tbody tr td {
+        font-family: "微软雅黑";
+    }
+    
     table.personal-identity tbody tr td img {
         width: 88%;
         height: auto;
@@ -226,14 +228,14 @@ font-family: " 微软雅黑";
     }
     
     .set-agent {
-       font-family: "微软雅黑";
+        font-family: "微软雅黑";
         text-align: center;
     }
     
     .set-agent label {
         font-size: 12px!important;
         color: #36bdaf;
-     font-family: "微软雅黑";
+        font-family: "微软雅黑";
     }
     
     .allow-agent {
@@ -248,11 +250,11 @@ font-family: " 微软雅黑";
     
     .agent-message p {
         text-align: left;
-       font-family: "微软雅黑";
+        font-family: "微软雅黑";
     }
     
     .agent-unit {
-      font-family: "微软雅黑";
+        font-family: "微软雅黑";
         text-align: right;
         margin-bottom: 14%;
     }
