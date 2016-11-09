@@ -8,17 +8,16 @@
             <cell><div slot="icon">用户名：{{auditInfo.account}}</div></cell>
             <cell>
                 <div slot="icon">授权品牌：adminbrand</div>
-                <x-button v-if="!Toggle" type="default" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/account'}">查看授权证书</x-button>
+                <x-button type="default" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/account'}">查看授权证书</x-button>
             </cell>
             <cell>
                 <div slot="icon">授权上级：{{auditInfo.employer}}</div>
-                <x-button type="default" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/account'}">查看授权证书</x-button>
+                <x-button v-if="Toggle" type="default" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/account'}">查看授权证书</x-button>
             </cell>
             <cell><div slot="icon">姓名：{{auditInfo.name}}</div></cell>
             <cell><div slot="icon">微信号：{{auditInfo.wechat}}</div></cell>
             <cell><div slot="icon">手机号：{{auditInfo.cellphone}}</div></cell>
             <cell><div slot="icon">地址：{{auditInfo.address}}{{auditInfo.addressDetail}}</div></cell>
-            <selector v-if="Toggle" :value.sync="value" title="授权期限" :options="List" @on-change="onChange" placeholder="请选择期限"></selector>
         </div>
     </group>
   </div>
@@ -34,6 +33,7 @@
     export default {
         data() {
             return {
+                Toggle: true,
                 auditInfo: {
                     account: "",
                     employer: "",
@@ -57,6 +57,9 @@
                     account: that.$route.params.account,
                     locate: that.$route.params.locate,
                 }).then(function(result) {
+                    if (result[0].agent.agent_brand_role.brand_role_code) {
+                        that.Toggle = false
+                    }
                     for (var item in result) {
                         for (var meta in result[item]) {
                             if (meta == 'key') {
