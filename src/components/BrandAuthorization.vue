@@ -177,7 +177,7 @@
     .brandauthorization-bac {
         background: url(/static/TestIMG/PowerOfAttorney-bac.png) no-repeat;
         background-size: 100%;
-        width: 94%;
+        width: 98%;
         margin: 3% auto;
     }
     
