@@ -19,7 +19,7 @@
                     <x-input class="weui_cell_primary applicant-weixin" type="text" title="微信号:" :name.sync="meta.wechat" :value.sync="data.wechat" placeholder="6-20个字母，数字，下划线或减号" :min="6" :max="20" :show-clear=false v-ref:wechat></x-input>
                     </group>
                     <group>
-                        <x-input class="weui_cell_primary applicant-phone" keyboard="number" title="手机号:" :value.sync="data.account" placeholder="请输入手机号码" is-type="china-mobile" :show-clear=false v-ref:account></x-input>
+                        <x-input class="weui_cell_primary applicant-phone" keyboard="number" title="手机号:" :value.sync="data.account" placeholder="请输入手机号码" is-type="china-mobile" :show-clear=false v-ref:cellphone></x-input>
 
                     </group>
                 </div>
@@ -190,9 +190,9 @@
                 var reg2 = /[\u4e00-\u9fa5]/ //中文
 
                 if (!this.$refs.name.valid || !reg2.test(this.data.name)) {
-                    window.alert("申请人填写错误，请填写完整，再跳转到下一页")
+                    window.alert("申请人需填写中文，请填写完整，再跳转到下一页")
                 } else if (!this.$refs.wechat.valid || !reg.test(this.data.wechat)) {
-                    window.alert("微信号填写错误，请填写完整，再跳转到下一页")
+                    window.alert("微信号需填写以字母开头，由6-20个字母，数字，下划线或减号组成的字符串，请填写完整，再跳转到下一页")
                 } else if (!this.$refs.cellphone.valid) {
                     window.alert("手机号填写错误，请填写完整，再跳转到下一页")
                 } else if (this.data.headImg == null) {
