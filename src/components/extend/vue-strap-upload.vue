@@ -1,12 +1,15 @@
 <template>
 	<div>
-		<a target="_blank" href="{{href}}">{{fileName}}</a>
+		<!--<a target="_blank" href="{{href}}">{{fileName}}</a>-->
 		<input v-model="file" v-el:uploadinput v-show="false" type="file" />
 		<div v-if="!readonly">
-			<button @click="chooseFile" class="btn btn-default btn-xs">choose</button> {{file}}
-			<label v-if="uploading">{{percent+"%"}}</label>
+			<button  @click="chooseFile" class="btn btn-default btn-xs">
+                <img v-show="isShowImg" src="/static/TestIMG/upload.png"  />
+                <img v-show="!isShowImg" :src.sync="href"  />
+            </button> 
+			<!--<label v-if="uploading">{{percent+"%"}}</label>
 			<button v-if="file" @click="upload" class="btn btn-default btn-xs">upload</button>
-			<button v-if="uploading" @click="cancelUpload" class="btn btn-default btn-xs">cancel</button>
+			<button v-if="uploading" @click="cancelUpload" class="btn btn-default btn-xs">cancel</button>-->
 		</div>
 	</div>
 </template>
@@ -42,7 +45,8 @@
         data() {
             return {
                 file: "",
-                uploadRequest: undefined
+                uploadRequest: undefined,
+                isShowImg: true
             }
         },
         computed: {
@@ -53,6 +57,7 @@
         methods: {
             chooseFile() {
                 this.$els.uploadinput.click()
+                this.upload()
             },
             upload() {
                 var that = this
@@ -72,6 +77,7 @@
                     if (result.body) {
                         that.fileId = result.body.id
                         that.fileName = result.body.name
+                        that.isShowImg = false
                     }
                 }).catch(function(error) {
                     that.clear()
