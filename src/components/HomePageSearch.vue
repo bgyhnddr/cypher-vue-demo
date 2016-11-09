@@ -6,7 +6,7 @@
         </group>
         <group>
             <p>功能</p>
-            <a class="weui_cell" v-for="item in funcList" v-link="item.link" :v-show.sync="item.isShow">
+            <a class="weui_cell" v-for="item in funcList" v-link="item.link" v-show="item.isShow">
                 <div class="weui_cell_hd">
                     <img :src.sync="item.iconhref" />
                 </div>
@@ -51,7 +51,7 @@
                     name: '成员审核',
                     iconhref: '/static/icon/audit.png',
                     link: '/employManagement/audit',
-                    isShow: false
+                    isShow: true
                 }, {
                     name: '招募历史',
                     iconhref: '/static/icon/history.png',
@@ -61,7 +61,7 @@
                     name: '我的证书',
                     iconhref: '/static/icon/user.png',
                     link: null, //TODO 
-                    isShow: false
+                    isShow: true
                 }, {
                     name: '修改密码',
                     iconhref: '/static/icon/password.png',
@@ -96,17 +96,11 @@
                     }).then(function(result) {
                         console.log(JSON.stringify(result))
                         that.userLevel = result.brand_role.level
-                        if (result.brand_role.level == "0") {
-                            for (var item in that.funcList) {
-                                that.funcList[item].isShow = true
-                            }
-                        }
+                        that.filter(that.$route.params.keyword)
                     }).catch(function(err) {
                         window.alert(err)
                     })
                 })
-
-                this.filter()
             },
             search() {
                 console.log("开始搜索")
@@ -117,16 +111,32 @@
                 } else if (!reg.test(this.keyword)) {
                     window.alert("填写格式错误，请填写中文")
                 } else {
-                    filter(this.keyword)
+                    this.filter(this.keyword)
                 }
             },
-            filter() {
+            filter(keyword) {
+                //根据级别选择显示功能
+                if (this.userLevel == "0") {
+                    for (var item in this.funcList) {
+                        if (this.funcList[item]['name'] == '成员审核' || this.funcList[item]['name'] == '我的证书') {
+                            this.funcList[item].isShow = false
+                        } else {
+                            this.funcList[item].isShow = true
+                        }
+                    }
+                } else {
+                    for (var item in this.funcList) {
+                        this.funcList[item].isShow = true
+                    }
+                }
+
                 //根据搜索关键字选择显示功能
                 for (var item in this.funcList) {
-                    if (this.funcList[item].name.match(this.keyword) == null) {
+                    if (this.funcList[item].name.match(keyword) == null) {
                         this.funcList[item].isShow = false
                     }
                 }
+
                 console.log(JSON.stringify(this.funcList))
             }
         },

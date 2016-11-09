@@ -17,7 +17,7 @@
 
         <group>
 <div class="search">
-            <x-input class="weui_cell_primary" title="" :value.sync="keyword"   placeholder="输入需要查看的功能名称" is-type="china-name" v-ref:name></x-input>
+            <x-input class="weui_cell_primary" title="" :value.sync="keyword" placeholder="输入需要查看的功能名称" :show-clear=false ></x-input>
             <div class="search-button"><button class="weui_btn weui_btn_primary" @click="search">.</button></div>
 </div>
 
@@ -214,61 +214,66 @@
     div.icon_btn {
         width: 110px;
     }
-table.platform-message {
-       width: 94%;
-    margin: auto;
-    margin-top: 5%;
-    color: #292832;
-}
-table.platform-message img{
-
-width: 4em;
-    height: 4em;
-    border-radius: 50%;
-    border: 2px solid #fff;
-}
-table.platform-message label {
-color:#646464
-
-}
-.search .weui_cell{
-    padding: 9px
-}
-.search .weui_cell_hd {
-    width: 0;
-}
-.search input.weui_input {
-    width: 97%;
-    background: #fff;
-    margin: auto;
-    padding-left: 2%;
-    height: 2.1em;
-    font-family: "微软雅黑";
-    font-size: 15px;
-    color: #9b9c9c;
-border: 1px solid #d3d1d1;
-}
-.search-button {
-      position: absolute;
-    z-index: 10000000;
-     right: 9%;
-    top: 23%;
-}
-.search-button button.weui_btn.weui_btn_primary {
- width: 10%;
+    
+    table.platform-message {
+        width: 94%;
+        margin: auto;
+        margin-top: 5%;
+        color: #292832;
+    }
+    
+    table.platform-message img {
+        width: 4em;
+        height: 4em;
+        border-radius: 50%;
+        border: 2px solid #fff;
+    }
+    
+    table.platform-message label {
+        color: #646464
+    }
+    
+    .search .weui_cell {
+        padding: 9px
+    }
+    
+    .search .weui_cell_hd {
+        width: 0;
+    }
+    
+    .search input.weui_input {
+        width: 97%;
+        background: #fff;
+        margin: auto;
+        padding-left: 2%;
+        height: 2.1em;
+        font-family: "微软雅黑";
+        font-size: 15px;
+        color: #9b9c9c;
+        border: 1px solid #d3d1d1;
+    }
+    
+    .search-button {
+        position: absolute;
+        z-index: 10000000;
+        right: 9%;
+        top: 23%;
+    }
+    
+    .search-button button.weui_btn.weui_btn_primary {
+        width: 10%;
         line-height: 2.0;
-    background: url(/static/TestIMG/search.png);
-    background-size: 100%;
-    background-repeat: no-repeat;
-
-}
-.search-button .weui_btn:after{
-border: 0;
-
-}
-.search .weui_icon_warn:before {
-    font-size: 14px;
-    color: #f43530;
-}
-
+        background: url(/static/TestIMG/search.png);
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+    
+    .search-button .weui_btn:after {
+        border: 0;
+    }
+    
+    .search .weui_icon_warn:before {
+        font-size: 14px;
+        color: #f43530;
+    }
 </style>
