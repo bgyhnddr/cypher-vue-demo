@@ -12,7 +12,7 @@
             </cell>
             <cell>
                 <div slot="icon">授权上级：{{auditInfo.employer}}</div>
-                <x-button v-if="Toggle" type="default" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/account'}">查看授权证书</x-button>
+                <x-button type="default" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/account'}">查看授权证书</x-button>
             </cell>
             <cell><div slot="icon">姓名：{{auditInfo.name}}</div></cell>
             <cell><div slot="icon">微信号：{{auditInfo.wechat}}</div></cell>
@@ -33,7 +33,6 @@
     export default {
         data() {
             return {
-                Toggle: true,
                 auditInfo: {
                     account: "",
                     employer: "",
@@ -57,9 +56,6 @@
                     account: that.$route.params.account,
                     locate: that.$route.params.locate,
                 }).then(function(result) {
-                    if (result[0].agent.agent_brand_role.brand_role_code) {
-                        that.Toggle = false
-                    }
                     for (var item in result) {
                         for (var meta in result[item]) {
                             if (meta == 'key') {
