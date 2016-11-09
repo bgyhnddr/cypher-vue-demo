@@ -285,5 +285,8 @@ background: #fff;
     width: 100%;
 
 }
+.homepage-icon .vux-flexbox-item button img{
+    width: 39%;
+}
 
 </style>

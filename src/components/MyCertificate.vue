@@ -1,8 +1,10 @@
-<template>
+﻿<template>
   <div>
+<div class="certificate-header">
     <div class="vux-center">
         <img class="vux-x-img ximg-demo vux-center" alt="头像"/></p>
     </div>
+</div>
     <group>
         <div>      
             <cell><div slot="icon">用户名：{{auditInfo.account}}</div></cell>
