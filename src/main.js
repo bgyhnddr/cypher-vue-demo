@@ -101,14 +101,14 @@ router.beforeEach((tran) => {
         } else {
             if (path == '/index' || path == '/auth/login') {
                 tran.next()
+            }else if (name == "FillInEmployment" || name == "EmploymentSubmission") {
+                tran.next()
             } else {
                 router.go({ path: path.replace(path, '/index') })
             }
         }
     })
-    if (name == "FillInEmployment" || name == "EmploymentSubmission") {
-        tran.next()
-    }
+
 })
 
 router.start(App, 'app');
