@@ -2,7 +2,7 @@
     <div>
         <group>
             <!--我的证书-->
-            <a class="weui_cell" v-if="showMyInfoClick"  v-link="{path: '/accountManagement/MyCertificate/'+this.user.user_info.name+'/account'}" >
+            <a class="weui_cell" v-link="{path: '/accountManagement/MyCertificate/'+this.user.user_info.name+'/account'}" >
                 <div class="weui_cell_hd">
                     <img  alt="图标LOGO" >
                 </div>
@@ -79,8 +79,7 @@
                             }
                         }
                     }
-                },
-                showMyInfoClick: true,
+                }
             }
         },
         methods: {
@@ -94,10 +93,6 @@
                         user_account: that.user.user_info.name
                     }).then(function(result) {
                         console.log(JSON.stringify(result))
-
-                        if (result.brand_role.level == "0") {
-                            that.showMyInfoClick = false
-                        }
                     }).catch(function(err) {
                         window.alert(err)
                     })
