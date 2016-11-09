@@ -22,6 +22,7 @@
         </div>
     </group>
     <div>
+<div class="homepage-icon">
     <flexbox :gutter="0" wrap="wrap">
         <flexbox-item :span="1/3" v-for="item in btn_list">
             <div class="flex-demo">
@@ -33,7 +34,7 @@
         </flexbox-item>
     </flexbox>
 </div>
-
+</div>
 </template>
 
 <script>
@@ -59,46 +60,48 @@
                 btn_list: [{
                     title: '货品销售',
                     link: '',
-                    iconhref: '/static/icon/audit.png',
+                    iconhref: '/static/TestIMG/sell.png',
                     isShow: true
                 }, {
                     title: '货品查验',
                     link: '',
-                    iconhref: null,
+                    iconhref: '/static/TestIMG/inspection.png',
                     isShow: true
                 }, {
                     title: '成员招募',
                     link: '/employManagement',
-                    iconhref: null,
+                    iconhref:'/static/TestIMG/recruiting.png',
                     isShow: true
                 }, {
                     title: '订货管理',
                     link: '',
-                    iconhref: '',
+                    iconhref:'/static/TestIMG/order.png',
                     isShow: true
                 }, {
                     title: '我的库存',
                     link: '',
-                    iconhref: '',
+                    iconhref: '/static/TestIMG/inventory.png',
                     isShow: true
                 }, {
                     title: '我的团队',
                     link: '',
-                    iconhref: '',
+                    iconhref: '/static/TestIMG/team.png',
                     isShow: true
                 }, {
                     title: '我的货品',
                     link: '',
-                    iconhref: '',
+                    iconhref: '/static/TestIMG/goods.png',
                     isShow: true
                 }, {
                     title: '我的账户',
                     link: '/accountManagement',
-                    iconhref: '',
+                    iconhref: '/static/TestIMG/account.png',
                     isShow: true
                 }, {
-                    title: '更多功能，敬请期待',
-                    isShow: false
+                    title: '...',
+                    link: '',
+                    iconhref: '/static/TestIMG/more.png',
+                    isShow:  true
                 }],
                 keyword: null,
                 user: {
@@ -192,7 +195,10 @@
     table.platform-message label {
         color: #646464
     }
-    
+    table.platform-message p:nth-child(1){
+       
+        margin-bottom: 5%;
+    }
     .search .weui_cell {
         padding: 9px
     }
@@ -236,4 +242,46 @@
         font-size: 14px;
         color: #f43530;
     }
+/*九宫格*/
+.homepage-icon{
+background: #fff;
+    border-top: 1px solid #d3d1d1;
+ border-bottom: 1px solid #d3d1d1;
+}
+.homepage-icon .vux-flexbox-item .flex-demo {
+border-right: 1px solid #d3d1d1;
+border-bottom: 1px solid #d3d1d1;
+padding: 16% 0 25% 0;
+font-size: 14px;
+    color: #292832;
+}
+.homepage-icon .vux-flexbox-item .flex-demo h4{
+font-family: "微软雅黑";
+font-weight: normal;
+    margin-top: -5%;
+}
+.homepage-icon .vux-flexbox-item:last-child .flex-demo h4{
+  color:#fff
+
+}
+.homepage-icon .vux-flexbox-item:nth-child(3) .flex-demo,
+.homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo,
+.homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo {
+border-right: 0;
+
+}
+.homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo,
+.homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo,
+.homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo {
+border-bottom: 0;
+
+}
+.homepage-icon .vux-flexbox-item button{
+
+background: #fff;
+    border: 0;
+    width: 100%;
+
+}
+
 </style>

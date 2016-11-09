@@ -1,7 +1,7 @@
 ﻿<template>
     <div>
         <div class="brandauthorization-bac">
-            <div class="brandauthorization">
+            <div class="brandauthorizations">
                 <div class="brandauthorization-img">
                     <p class="brand-logo"><img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="品牌logo" /></p>
                     <p><img src="/static/TestIMG/authorization.png" class="authorization" /></p>
@@ -181,7 +181,7 @@
         margin: 3% auto;
     }
     
-    .brandauthorization {
+    .brandauthorizations {
         width: 75%;
         margin: auto;
         padding: 13% 0%;
@@ -226,6 +226,7 @@
     .set-agent label {
         font-size: 12px!important;
         color: #36bdaf;
+     font-family: " 微软雅黑";
     }
     
     .allow-agent {
@@ -240,7 +241,7 @@
     
     .agent-message p {
         text-align: left;
-        font-family: " 微软雅黑";
+        font-family:" 微软雅黑";
     }
     
     .agent-unit {
