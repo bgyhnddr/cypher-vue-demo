@@ -3,7 +3,7 @@
     <div class="employmentindex-bac">
 
         <group>
-         <a class="weui_cell a-li a-li-first"  v-link="{path: 'employManagement/chooseEmployableRoles'}" >
+         <a class="weui_cell a-li a-li-first"  v-link="{path: '/employManagement/chooseEmployableRoles'}" >
             <div class="weui_cell_hd">
                <img src="../icon/initiate.png" />
             </div>
@@ -31,7 +31,7 @@
                 </div>
             </a>
             <!--成员审核-->
-            <a class="weui_cell a-li" v-if="showAuditClick" v-link="{path: 'BrandManagement/audit'}" >
+            <a class="weui_cell a-li" v-if="showAuditClick" v-link="{path: '/employManagement/audit'}" >
                 <div class="weui_cell_hd">
                      <img src="../icon/audit.png"/>
                 </div>
@@ -45,7 +45,7 @@
                 </div>
             </a>
             <!--招募历史-->
-            <a class="weui_cell a-li-last"  v-link="{path: 'BrandManagement/employmentHistory'}" >
+            <a class="weui_cell a-li-last"  v-link="{path: '/employManagement/employmentHistory'}" >
                 <div class="weui_cell_hd">
                      <img src="../icon/history.png" />
                 </div>
@@ -111,7 +111,11 @@
 
                         employmentAPI.getAuditList().then(function(result) {
                             console.log(result.length)
-                            that.auditListLength = result.length
+                            if (result.length != 0) {
+                                that.auditListLength = result.length
+                            } else {
+                                that.auditListLength = null
+                            }
                         })
 
                         if (result.brand_role.level == "0") {
@@ -130,77 +134,81 @@
     }
 </script>
 <style lang="less">
-
-.employmentindex-bac {
-    font-family: "微软雅黑";
-    background-color: #f2f2f2;
-}
-/*顶栏*/
-a.vux-header-back.headerTransition-transition {
-    display: block;
-    font-size: 14px;
-    color: #fff;
-    font-family: "微软雅黑";
-}
-/*背景*/
-.weui_cells{
-background: none;
-border: 0;
-}
-/*发起招募*/
-a.weui_cell.a-li.a-li-first {
-    margin-top: 11px;
-}
-.a-li{
-    padding: 1px 15px;
-    background: #fff;
-       margin-bottom: 3px;
-}
-.a-li-last{
-
-    padding: 1px 15px;
-    background: #fff;
-}
-
-.a-li img,.a-li-last img {
-    width: 70%;
-    margin: 6% 0 0 0;
-    height: auto;
-
-}
-
-.weui_cell_bd.weui_cell_primary p:first-child {
-    font-size: 15px;
- font-family: "微软雅黑";
-}
-.weui_cell_bd.weui_cell_primary p:nth-child(2) {
-    font-size: 12px;
-    color: #999999;
-    font-family: "微软雅黑";
-    margin-top: -1%;
-}
-
-.weui_cell_hd {
-    width: 16%;
-}
-/*图标大小*/
-.vux-header .vux-header-left .vux-header-back:before {
-  
-    border: 1px solid #fff;
-    border-width: 2px 0 0 2px;}
-.weui_cell_ft.with_arrow:after {
-    border-width: 2px 2px 0 0;
-    border-color: #9a9fa4;
-top: -2px;
-right: 2px;
-height: 8px;
-    width: 8px;
-}
-.a-li label{
- font-size: 16px;
- color: #000;
-}
-
-
-
+    .employmentindex-bac {
+        font-family: "微软雅黑";
+        background-color: #f2f2f2;
+    }
+    /*顶栏*/
+    
+    a.vux-header-back.headerTransition-transition {
+        display: block;
+        font-size: 14px;
+        color: #fff;
+        font-family: "微软雅黑";
+    }
+    /*背景*/
+    
+    .weui_cells {
+        background: none;
+        border: 0;
+    }
+    /*发起招募*/
+    
+    a.weui_cell.a-li.a-li-first {
+        margin-top: 11px;
+    }
+    
+    .a-li {
+        padding: 1px 15px;
+        background: #fff;
+        margin-bottom: 3px;
+    }
+    
+    .a-li-last {
+        padding: 1px 15px;
+        background: #fff;
+    }
+    
+    .a-li img,
+    .a-li-last img {
+        width: 70%;
+        margin: 6% 0 0 0;
+        height: auto;
+    }
+    
+    .weui_cell_bd.weui_cell_primary p:first-child {
+        font-size: 15px;
+        font-family: "微软雅黑";
+    }
+    
+    .weui_cell_bd.weui_cell_primary p:nth-child(2) {
+        font-size: 12px;
+        color: #999999;
+        font-family: "微软雅黑";
+        margin-top: -1%;
+    }
+    
+    .weui_cell_hd {
+        width: 16%;
+    }
+    /*图标大小*/
+    
+    .vux-header .vux-header-left .vux-header-back:before {
+        border: 1px solid #fff;
+        border-width: 2px 0 0 2px;
+    }
+    
+    .weui_cell_ft.with_arrow:after {
+        border-width: 2px 2px 0 0;
+        border-color: #9a9fa4;
+        top: -2px;
+        right: 2px;
+        height: 8px;
+        width: 8px;
+    }
+    
+    .a-li label {
+        font-size: 16px;
+        color: #000;
+    }
 </style>
