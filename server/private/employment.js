@@ -213,8 +213,7 @@ var exec = {
                     where: {
                         user_account: account
                     },
-                    include: [
-                        {
+                    include: [{
                             model: agent_brand_role,
                         },
                         {
@@ -330,11 +329,6 @@ var exec = {
         var date_from = req.body.date_from
         var date_to = req.body.date_to
 
-
-        // if (level) {
-        //     condition.brand_role_code = level
-        // }
-
         employment_detail.belongsTo(employment)
         employment.hasMany(employment_detail)
         employment.hasOne(employment_detail)
@@ -343,7 +337,7 @@ var exec = {
         if (userinfo) {
             var account = userinfo.name
             var condition = {
-                audit_user_account: account,
+                employer_user_account: account,
                 status: "已审核",
                 audit_result: "已通过"
             }
