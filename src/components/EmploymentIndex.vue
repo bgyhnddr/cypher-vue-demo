@@ -3,7 +3,7 @@
     <div class="employmentindex-bac">
 
         <group>
-         <a class="weui_cell a-li a-li-first"  v-link="{path: 'employManagement/chooseEmployableRoles'}" >
+         <a class="weui_cell a-li a-li-first"  v-link="{path: '/employManagement/chooseEmployableRoles'}" >
             <div class="weui_cell_hd">
                <img src="../icon/initiate.png" />
             </div>
@@ -31,7 +31,7 @@
                 </div>
             </a>
             <!--成员审核-->
-            <a class="weui_cell a-li" v-if="showAuditClick" v-link="{path: 'BrandManagement/audit'}" >
+            <a class="weui_cell a-li" v-if="showAuditClick" v-link="{path: '/employManagement/audit'}" >
                 <div class="weui_cell_hd">
                      <img src="../icon/audit.png"/>
                 </div>
@@ -45,7 +45,7 @@
                 </div>
             </a>
             <!--招募历史-->
-            <a class="weui_cell a-li-last"  v-link="{path: 'BrandManagement/employmentHistory'}" >
+            <a class="weui_cell a-li-last"  v-link="{path: '/employManagement/employmentHistory'}" >
                 <div class="weui_cell_hd">
                      <img src="../icon/history.png" />
                 </div>

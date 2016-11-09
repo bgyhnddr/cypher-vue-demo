@@ -15,7 +15,7 @@
                 </div>
             </a>
             <!--修改密码-->
-            <a class="weui_cell"  v-link="{path: 'auth/changepwd'}" >
+            <a class="weui_cell"  v-link="{path: '/auth/changepwd'}" >
                 <div class="weui_cell_hd">
                     <img  alt="图标LOGO" >
                 </div>
