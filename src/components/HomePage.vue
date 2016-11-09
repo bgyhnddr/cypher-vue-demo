@@ -1,89 +1,47 @@
 ﻿<template>
-    <div>
-        <group>
-<table border="0" class="platform-message" cellspacing=0 cellpadding=0> 
-<tbody>
-<tr>
-<td  width="22%"> <img class="vux-x-img ximg-demo" :src.sync="user.userHeadimgHref" alt="用户头像"/></td>
-<td >{{user.brandName}}</td>
-<td> </td>
-<td><p>存款&nbsp;:&nbsp;<label>金额数</label></p><p>存货&nbsp;:&nbsp;<label>存货数量</p></label></td>
-</tr>
-
-</tbody>
-</table>
-            
-        </group>
-
-        <group>
-<div class="search">
-            <x-input class="weui_cell_primary" title="" :value.sync="keyword" placeholder="输入需要查看的功能名称" :show-clear=false ></x-input>
+<div>
+    <group>
+        <table border="0" class="platform-message" cellspacing=0 cellpadding=0>
+            <tbody>
+                <tr>
+                    <td width="22%"> <img class="vux-x-img ximg-demo" :src.sync="user.userHeadimgHref" alt="用户头像" /></td>
+                    <td>{{user.brandName}}</td>
+                    <td> </td>
+                    <td>
+                        <p>存款&nbsp;:&nbsp;<label>金额数</label></p>
+                        <p>存货&nbsp;:&nbsp;<label>存货数量</p></label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </group>
+    <group>
+        <div class="search">
+            <x-input class="weui_cell_primary" title="" :value.sync="keyword" placeholder="输入需要查看的功能名称" :show-clear=false></x-input>
             <div class="search-button"><button class="weui_btn weui_btn_primary" @click="search">.</button></div>
+        </div>
+    </group>
+    <div>
+    <flexbox :gutter="0" wrap="wrap">
+        <flexbox-item :span="1/3" v-for="item in btn_list">
+            <div class="flex-demo">
+                 <button v-link="item.link">
+                    <img :src.sync="item.iconhref" alt="icon" v-show="item.isShow">
+                    <h4 class="weui_media_title">{{item.title}}</h4>
+                </button>
+            </div>
+        </flexbox-item>
+    </flexbox>
 </div>
 
-        </group>
-        <div>
-            <button v-link="btn_list[0].link">
-                <img :src.sync="btn_list[0].iconhref" alt="icon" v-show="btn_list[0].isShow">
-                <h4 class="weui_media_title">{{btn_list[0].title}}</h4>
-            </button>
-         </div>
-         <div>
-            <button v-link="btn_list[1].link">
-                <img :src.sync="btn_list[1].iconhref" alt="icon" v-show="btn_list[1].isShow">
-                <h4 class="weui_media_title">{{btn_list[1].title}}</h4>
-            </button>
-         </div>
-         <div>
-            <button v-link="btn_list[2].link">
-                <img :src.sync="btn_list[2].iconhref" alt="icon" v-show="btn_list[2].isShow">
-                <h4 class="weui_media_title">{{btn_list[2].title}}</h4>
-            </button>
-         </div>
-         <div>
-            <button v-link="btn_list[3].link">
-                <img :src.sync="btn_list[3].iconhref" alt="icon" v-show="btn_list[3].isShow">
-                <h4 class="weui_media_title">{{btn_list[3].title}}</h4>
-            </button>
-         </div>
-         <div>
-            <button v-link="btn_list[4].link">
-                <img :src.sync="btn_list[4].iconhref" alt="icon" v-show="btn_list[4].isShow">
-                <h4 class="weui_media_title">{{btn_list[4].title}}</h4>
-            </button>
-         </div>
-         <div>
-            <button v-link="btn_list[5].link">
-                <img :src.sync="btn_list[5].iconhref" alt="icon" v-show="btn_list[5].isShow">
-                <h4 class="weui_media_title">{{btn_list[5].title}}</h4>
-            </button>
-         </div>
-         <div>
-            <button v-link="btn_list[6].link">
-                <img :src.sync="btn_list[6].iconhref" alt="icon" v-show="btn_list[6].isShow">
-                <h4 class="weui_media_title">{{btn_list[6].title}}</h4>
-            </button>
-         </div>
-         <div>
-            <button v-link="btn_list[7].link">
-                <img :src.sync="btn_list[7].iconhref" alt="icon" v-show="btn_list[7].isShow">
-                <h4 class="weui_media_title">{{btn_list[7].title}}</h4>
-            </button>
-         </div>
-          <div>
-            <button v-link="btn_list[8].link">
-                <img :src.sync="btn_list[8].iconhref" alt="icon" v-show="btn_list[8].isShow">
-                <h4 class="weui_media_title">{{btn_list[8].title}}</h4>
-            </button>
-         </div>
-
-	</div>
 </template>
 
 <script>
     import {
         Group,
-        XInput
+        XInput,
+        Flexbox,
+        FlexboxItem
     } from 'vux'
     import authAPI from '../api/auth'
     import employmentAPI from '../api/employment'
@@ -92,7 +50,9 @@
     export default {
         components: {
             Group,
-            XInput
+            XInput,
+            Flexbox,
+            FlexboxItem
         },
         data() {
             return {
