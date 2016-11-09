@@ -9,7 +9,7 @@
                     <p>您当前代理级别为:<label>{{employmentData.brandRoleName}}</label></p>
                 </div>
                 <div class="ApplyFor-agent-header"> <img class="vux-x-img ximg-demo" :name.sync="meta.headImg" src="/static/TestIMG/upload.png" /></div>
-                <vue-strap-upload :file-id.sync="data.headImg"></vue-strap-upload>
+                <employment-headimg-upload :file-id.sync="data.headImg"></employment-headimg-upload>
                 <div class="ApplyFor-agent-input">
                     <group>
                         <x-input class="weui_cell_primary  applicant-name" title="申请人:" :name.sync="meta.name" :value.sync="data.name" placeholder="申请人姓名" is-type="china-name" :show-clear=false v-ref:name></x-input>
@@ -60,7 +60,7 @@
     import authAPI from '../api/auth'
     import applyEmploymentAPI from '../api/applyEmployment'
     import filterAddress from '../extend/filter-address'
-    import VueStrapUpload from './extend/vue-strap-upload'
+    import EmploymentHeadimgUpload from './extend/employment-headimg-upload'
 
     export default {
         components: {
@@ -70,7 +70,7 @@
             Selector,
             Address,
             XTextarea,
-            VueStrapUpload,
+            EmploymentHeadimgUpload,
             Cell
         },
         data() {
