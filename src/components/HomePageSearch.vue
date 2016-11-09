@@ -118,7 +118,7 @@
                 //根据级别选择显示功能
                 if (this.userLevel == "0") {
                     for (var item in this.funcList) {
-                        if (this.funcList[item]['name'] == '成员审核' || this.funcList[item]['name'] == '我的证书') {
+                        if (this.funcList[item]['name'] == '成员审核') {
                             this.funcList[item].isShow = false
                         } else {
                             this.funcList[item].isShow = true
