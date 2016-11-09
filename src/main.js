@@ -74,6 +74,8 @@ router.beforeEach((tran) => {
             } else if (path.split('/')[1] == "accountManagement") {
                 switch (path.split('/')[2]) {
                     case undefined:
+                    case "MyCertificate":
+                    case "CertificateInfo":
                         tran.next()
                         break
                 }

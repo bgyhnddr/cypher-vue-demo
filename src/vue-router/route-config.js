@@ -93,7 +93,7 @@ export function configRouter(router) {
                 'audit': {
                     component: require('../components/AuditList.vue')
                 },
-                'auditInfo/:employmentID/:brandID/:locate': {
+                'auditInfo/:account/:employmentID/:brandID/:locate': {
                     name: "AuditInfo",
                     component: require('../components/AuditInfo.vue')
                 },
@@ -110,6 +110,14 @@ export function configRouter(router) {
             subRoutes: {
                 '': {
                     component: require('../components/AccountIndex.vue')
+                },
+                'MyCertificate/:account/:locate': {
+                    name: "MyCertificate",
+                    component: require('../components/MyCertificate.vue')
+                },
+                'CertificateInfo/:account/:locate': {
+                    name: "CertificateInfo",
+                    component: require('../components/CertificateInfo.vue')
                 }
             }
         }

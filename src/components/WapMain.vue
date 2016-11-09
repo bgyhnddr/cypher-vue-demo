@@ -100,6 +100,10 @@
                     this.leftOptions.showBack = true
                     return '我的账号'
                 }
+                if (this.$route.name === 'MyCertificate')
+                    return '我的证书'
+                if (this.$route.name === 'CertificateInfo')
+                    return 'adminBrand'
             }
         },
         methods: {

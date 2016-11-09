@@ -2,7 +2,7 @@
     <div>
         <group>
             <!--我的证书-->
-            <a class="weui_cell" v-if="showMyInfoClick"  v-link="" >
+            <a class="weui_cell" v-if="showMyInfoClick"  v-link="{path: '/accountManagement/MyCertificate/'+this.user.user_info.name+'/account'}" >
                 <div class="weui_cell_hd">
                     <img  alt="图标LOGO" >
                 </div>
