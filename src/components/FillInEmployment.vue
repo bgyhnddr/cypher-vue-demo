@@ -4,22 +4,22 @@
             <h3>代理申请表</h3>
             <div v-if="!showNextFillModel">
                 <div class="ApplyFor-agent-message">
-                    <p>上级代理:{{employmentData.employerName}}上级授权号{{employmentData.agentGuid}}</p>
+                    <p>上级代理&nbsp;:&nbsp;{{employmentData.employerName}}上级授权号{{employmentData.agentGuid}}</p>
 
-                    <p>您当前代理级别为:<label>{{employmentData.brandRoleName}}</label></p>
+                    <p>您当前代理级别为&nbsp;:&nbsp;<label>{{employmentData.brandRoleName}}</label></p>
                 </div>
-                <div class="ApplyFor-agent-header"> <img class="vux-x-img ximg-demo" :name.sync="meta.headImg" src="/static/TestIMG/upload.png" /></div>
-                <employment-headimg-upload :file-id.sync="data.headImg"></employment-headimg-upload>
+                <div class="ApplyFor-agent-header" style="display:none"> <img class="vux-x-img ximg-demo" :name.sync="meta.headImg" src="/static/TestIMG/upload.png" /></div>
+               <div class="ApplyFor-agent-header">  <employment-headimg-upload :file-id.sync="data.headImg"></employment-headimg-upload></div>
                 <div class="ApplyFor-agent-input">
                     <group>
-                        <x-input class="weui_cell_primary  applicant-name" title="申请人:" :name.sync="meta.name" :value.sync="data.name" placeholder="申请人姓名" is-type="china-name" :show-clear=false v-ref:name></x-input>
+                        <x-input class="weui_cell_primary  applicant-name" title="申请人&nbsp;:&nbsp;" :name.sync="meta.name" :value.sync="data.name" placeholder="申请人姓名" is-type="china-name" :show-clear=false v-ref:name></x-input>
                     </group>
                     <p class="applicants">*姓名一经审批将不得修改，请慎重填写</p>
 
-                    <x-input class="weui_cell_primary applicant-weixin" type="text" title="微信号:" :name.sync="meta.wechat" :value.sync="data.wechat" placeholder="6-20个字母，数字，下划线或减号" :min="6" :max="20" :show-clear=false v-ref:wechat></x-input>
+                    <x-input class="weui_cell_primary applicant-weixin" type="text" title="微信号&nbsp;:&nbsp;" :name.sync="meta.wechat" :value.sync="data.wechat" placeholder="6-20个字母，数字，下划线或减号" :min="6" :max="20" :show-clear=false v-ref:wechat></x-input>
                     </group>
                     <group>
-                        <x-input class="weui_cell_primary applicant-phone" keyboard="number" title="手机号:" :value.sync="data.account" placeholder="请输入手机号码" is-type="china-mobile" :show-clear=false v-ref:cellphone></x-input>
+                        <x-input class="weui_cell_primary applicant-phone" keyboard="number" title="手机号&nbsp;:&nbsp;" :value.sync="data.account" placeholder="请输入手机号码" is-type="china-mobile" :show-clear=false v-ref:cellphone></x-input>
 
                     </group>
                 </div>
@@ -290,7 +290,11 @@
         text-align: center;
         margin-top: 2%;
     }
-    
+   .ApplyFor-agent-header button {
+    width: 100%;
+    background: none;
+    border: 0;
+}
     .ApplyFor-agent-header img {
         width: 31%;
         height: auto;
@@ -299,7 +303,10 @@
     .ApplyFor-agent-input .weui_cell {
         padding: 2% 0;
     }
-    
+    .ApplyFor-agent-input  .weui_cell:before {
+
+         border-top:0
+   }
     .ApplyFor-agent-input label.weui_label {
         color: #000;
         font-size: 15px;
