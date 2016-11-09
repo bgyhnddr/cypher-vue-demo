@@ -166,6 +166,16 @@
                     console.log(document.body.style.background)
                     return
                 }
+                 if (this.$route.path === '/EmploymentSubmission') {
+                    document.body.style.background = '#fff'
+                    console.log(document.body.style.background)
+                    return
+                }
+                 if (this.$route.path === '/accountManagement') {
+                    document.body.style.background = '#f2f2f2'
+                    console.log(document.body.style.background)
+                    return
+                }
             }
         },
         ready() {

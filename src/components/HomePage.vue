@@ -174,6 +174,8 @@
     }
 </script>
 <style lang="less">
+span.headerTransition-transition {
+    font-size: 14px;}
     div.icon_btn {
         width: 110px;
     }

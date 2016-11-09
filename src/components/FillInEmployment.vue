@@ -398,6 +398,7 @@
         height: 2.5em;
         line-height: 2.5;
         border: 1px solid #d3d1d1;
+    position: relative;
     }
     
     .certificate-input {
@@ -439,4 +440,8 @@
     [class^=weui_icon_]:before {
         margin-right: 0.5em;
     }
+.certificate .weui_cell_ft.weui_cell_primary.with_arrow span:nth-child(2) {
+    position: absolute;
+    left: 5%;
+}
 </style>
