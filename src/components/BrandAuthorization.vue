@@ -1,7 +1,7 @@
 ﻿<template>
     <div>
         <div class="brandauthorization-bac">
-            <div class="brandauthorization">
+            <div class="brandauthorizations">
                 <div class="brandauthorization-img">
                     <p class="brand-logo"><img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="品牌logo" /></p>
                     <p><img src="/static/TestIMG/authorization.png" class="authorization" /></p>
@@ -177,11 +177,11 @@
     .brandauthorization-bac {
         background: url(/static/TestIMG/PowerOfAttorney-bac.png) no-repeat;
         background-size: 100%;
-        width: 94%;
+        width: 98%;
         margin: 3% auto;
     }
     
-    .brandauthorization {
+    .brandauthorizations {
         width: 75%;
         margin: auto;
         padding: 13% 0%;
@@ -193,6 +193,10 @@
         width: 60%;
         height: auto;
     }
+ .brandauthorization-img h3{
+font-family: " 微软雅黑";
+
+}
     
     .authorization {
         width: 60%;
@@ -204,11 +208,14 @@
     }
     
     table.personal-identity {
-        font-family: " 微软雅黑";
+        font-family: "微软雅黑";
         width: 100%;
         margin: auto;
     }
-    
+    table.personal-identity tbody tr td{
+  font-family: "微软雅黑";
+
+}
     table.personal-identity tbody tr td img {
         width: 88%;
         height: auto;
@@ -219,18 +226,19 @@
     }
     
     .set-agent {
-        font-family: "微软雅黑";
+       font-family: "微软雅黑";
         text-align: center;
     }
     
     .set-agent label {
         font-size: 12px!important;
         color: #36bdaf;
+     font-family: "微软雅黑";
     }
     
     .allow-agent {
         text-align: center;
-        font-family: " 微软雅黑";
+        font-family: "微软雅黑";
     }
     
     .agent-message {
@@ -240,11 +248,11 @@
     
     .agent-message p {
         text-align: left;
-        font-family: " 微软雅黑";
+       font-family: "微软雅黑";
     }
     
     .agent-unit {
-        font-family: " 微软雅黑";
+      font-family: "微软雅黑";
         text-align: right;
         margin-bottom: 14%;
     }
