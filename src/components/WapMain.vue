@@ -103,8 +103,11 @@
                     this.leftOptions.showBack = true
                     return '我的账号'
                 }
-                if (this.$route.name === 'MyCertificate')
+                if (this.$route.name === 'MyCertificate'){
+                    this.leftOptions.showBack = true
+                    document.body.style.background = '#f2f2f2'
                     return '我的证书'
+                     }  
                 if (this.$route.name === 'CertificateInfo')
                     return 'adminBrand'
             }
