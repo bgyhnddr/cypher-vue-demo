@@ -174,6 +174,8 @@
     }
 </script>
 <style lang="less">
+span.headerTransition-transition {
+    font-size: 14px;}
     div.icon_btn {
         width: 110px;
     }
@@ -282,6 +284,9 @@ background: #fff;
     border: 0;
     width: 100%;
 
+}
+.homepage-icon .vux-flexbox-item button img{
+    width: 39%;
 }
 
 </style>

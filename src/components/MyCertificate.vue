@@ -1,8 +1,11 @@
-<template>
+﻿<template>
   <div>
+<div class="certificate-header">
     <div class="vux-center">
         <headimg-upload :file-id.sync="auditInfo.headImg"></headimg-upload>
     </div>
+</div>
+<div>
     <group>
         <div>      
             <cell><div slot="icon">用户名：{{auditInfo.account}}</div></cell>
@@ -20,6 +23,7 @@
             <cell><div slot="icon">地址：{{auditInfo.address}}{{auditInfo.addressDetail}}</div></cell>
         </div>
     </group>
+</div>
   </div>
 </template>
 
@@ -92,3 +96,12 @@
         }
     }
 </script>
+<style>
+.certificate-header button{
+
+
+
+
+}
+
+</style>

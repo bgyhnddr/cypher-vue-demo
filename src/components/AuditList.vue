@@ -1,8 +1,13 @@
-<template>
+﻿<template>
   <div>
+ <div class="audit-choose">
     <group>
-      <selector placeholder="--排序--" title="排序" :options="List" @on-change="onChange"></selector>
+
+      <selector placeholder="&nbsp;&nbsp;&nbsp;&nbsp;--排序--" title="排序" :options="List" @on-change="onChange"></selector>
+
     </group>
+</div>
+<div class="audit-list">
     <group>
         <cell v-for="item in items">
             <div slot="icon">申请人：{{item.employment_details[1].value}}</div>
@@ -13,7 +18,7 @@
         </cell>
     </group>
     <alert :show.sync="show">无记录</alert>
-  </div>
+  </div></div>
 </template>
 
 <script>
@@ -77,3 +82,78 @@
         }
     }
 </script>
+<style>
+.audit-list {
+   
+}
+.audit-list  .weui_btn{
+    position: absolute;
+    top: 27%;
+    width: 25%;
+    right: 6%;
+background: #5091d5;
+border-radius:0;
+    color: #fff;
+    font-family: "微软雅黑";
+font-size: 14px
+}
+.audit-list .weui_cell{
+    background: #fff;
+    margin:3% 0;
+    border-top: 1px solid #d3d1d1;
+    border-bottom: 1px solid #d3d1d1;
+ position: relative;
+    padding: 4px 15px;
+}
+.audit-list .weui_cells {
+    color: #000000;
+    font-size: 14px;
+    font-family: "微软雅黑";
+}
+.audit-list .weui_cell .weui_cell_hd{
+
+    width: 83%;
+line-height: 1.6em;
+}
+
+.audit-list  .weui_cell:before{
+border-top:0
+}
+.audit-choose {
+    position: absolute;
+    top: 4%;
+    z-index: 100000;
+        right: 2%;
+width: 31%;
+border: 1px solid #d3d1d1;
+}
+.audit-choose  .weui_cell{
+position: initial;
+    
+        width: 83%;
+    background: #fff;
+    padding: 1% 28% 1% 6%;
+
+}
+.audit-choose  .weui_cell_select .weui_select{
+    padding-right: 0;
+font-family: "微软雅黑";
+    height: 22px;
+    line-height: 22px;
+font-size: 13px;
+}
+
+.audit-choose  .weui_cell_hd {
+    width: 0;
+}
+.audit-choose  .weui_cell_select .weui_cell_bd:after{
+    right: 3%;
+    top: 41%;
+    height: 4px;
+    width: 4px;
+
+}
+
+.audit-choose  .weui_cell_select .weui_select  option:nth-child(even) { background-color:#f5f5f5; }
+
+</style>

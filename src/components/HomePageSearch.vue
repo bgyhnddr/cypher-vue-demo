@@ -1,11 +1,13 @@
-<template>
+﻿<template>
     <div>
+<div class="function-search">
         <group>
             <x-input class="weui_cell_primary" title='' :value.sync="keyword" :show-clear=false ></x-input>
-            <button class="weui_btn weui_btn_primary" @click="search">搜索</button>
-        </group>
+             <div class="function-search-button"><button class="weui_btn weui_btn_primary" @click="search">.</button></div>
+        </group></div>
+<div class="function-search-list">
         <group>
-            <p>功能</p>
+            <h1>功能</h1>
             <a class="weui_cell" v-for="item in funcList" v-link="item.link" v-show="item.isShow">
                 <div class="weui_cell_hd">
                     <img :src.sync="item.iconhref" />
@@ -14,7 +16,7 @@
                     <p>{{item.name}}</p>
                 </div>
             </a>
-        </group>
+        </group></div>
     </div>
 </template>
 
@@ -146,5 +148,77 @@
     }
 </script>
 <style lang="less">
+ .function-search .weui_cell {
+        padding: 9px
+    }
+    
+    .function-search .weui_cell_hd {
+        width: 0;
+    }
+    
+    .function-search input.weui_input {
+        width: 97%;
+        background: #fff;
+        margin: auto;
+        padding-left: 2%;
+        height: 2.1em;
+        font-family: "微软雅黑";
+        font-size: 15px;
+        color: #9b9c9c;
+        border: 1px solid #d3d1d1;
+    }
+    
+    .function-search-button {
+        position: absolute;
+        z-index: 10000000;
+        right: 9%;
+        top: 23%;
+    }
+    
+    .function-search-button button.weui_btn.weui_btn_primary {
+        width: 10%;
+        line-height: 2.0;
+        background: url(/static/TestIMG/search.png);
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+    
+    .function-search-button .weui_btn:after {
+        border: 0;
+    }
+    
+    .function-search .weui_icon_warn:before {
+        font-size: 14px;
+        color: #f43530;
+    }
+.function-search-list {
+    background: #fff;
+    border-top: 1px solid #d3d1d1;
+    border-bottom: 1px solid #d3d1d1;
+}
+.function-search-list h1{
+    color: #393a3f;
+    font-size: 15px;
+    font-family: "微软雅黑";
+    padding: 2% 4%;
+    font-weight: normal;
 
+}
+    .function-search-list .weui_cell:before{
+border-top:0
+ 
+     }
+  .function-search-list .weui_cell{
+
+ border-top: 1px solid #d3d1d1;
+       padding: 7px 3% 4px 3%;
+
+}
+ .function-search-list .weui_cell_hd{
+    width: 11%;
+}
+ .function-search-list  img{
+
+width: 80%
+}
 </style>
