@@ -11,10 +11,13 @@ export default {
     getUser() {
         return httpRequest.get(path + 'getUser')
     },
-    regist(params){
-        return httpRequest.post(path + 'regist',params)
+    regist(params) {
+        return httpRequest.post(path + 'regist', params)
     },
-    changeuserpwd(params){
-        return httpRequest.post(path + 'changeuserpwd',params)
+    changeuserpwd(params) {
+        return httpRequest.post(path + 'changeuserpwd', params)
+    },
+    CheckUserBrand() {
+        return httpRequest.post(path + 'CheckUserBrand')
     }
 }

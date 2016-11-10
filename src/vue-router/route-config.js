@@ -47,14 +47,23 @@ export function configRouter(router) {
                 'login': {
                     component: require('../components/LoginPage.vue')
                 },
-                'regist': {
-                    component: require('../components/RegistPage.vue')
-                },
                 'changepwd': {
                     component: require('../components/ChangeUserPassword.vue')
                 },
                 'test': {
                     component: require('../components/testPage.vue')
+                },
+            }
+        },
+        '/homePage': {
+            component: require('../components/WapMain.vue'),
+            subRoutes: {
+                '': {
+                    component: require('../components/HomePage.vue')
+                },
+                'search/:keyword': {
+                    name: 'HomePageSearch',
+                    component: require('../components/HomePageSearch.vue')
                 },
             }
         },
@@ -69,40 +78,48 @@ export function configRouter(router) {
                 'chooseEmployableRoles': {
                     component: require('../components/ChooseEmployableRoles.vue')
                 },
-                'brandAuthorization/:account/:employableRole/:startTime': {
+                'brandAuthorization/:account/:employableRole/:brandName': {
                     name: 'BrandAuthorization',
                     component: require('../components/BrandAuthorization.vue')
                 },
-                'fillInEmployment/:account/:employableRole/:startTime': {
+                'fillInEmployment/:employmentGuid/:brandName': {
+                    name: 'FillInEmployment',
                     component: require('../components/FillInEmployment.vue')
                 },
-                'employmentSubmission': {
+                'employmentSubmission/:brandName': {
+                    name: 'EmploymentSubmission',
                     component: require('../components/EmploymentSubmission.vue')
-                }
-
-            }
-        },
-        '/test': {
-            component: require('../components/Test.vue')
-        },
-        '/BrandManagement': {
-            component: function(reslove) {
-                return require(['../components/WapMain.vue'], reslove)
-            },
-            subRoutes: {
+                },
                 'audit': {
                     component: require('../components/AuditList.vue')
                 },
-                'auditInfo': {
+                'auditInfo/:account/:employmentID/:brandID/:locate': {
+                    name: "AuditInfo",
                     component: require('../components/AuditInfo.vue')
                 },
                 'employmentHistory': {
                     component: require('../components/EmploymentHistory.vue')
                 }
+
             }
         },
-        '/test': {
-            component: require('../components/Test.vue')
+        '/accountManagement': {
+            component: function(reslove) {
+                return require(['../components/WapMain.vue'], reslove)
+            },
+            subRoutes: {
+                '': {
+                    component: require('../components/AccountIndex.vue')
+                },
+                'MyCertificate/:account/:locate': {
+                    name: "MyCertificate",
+                    component: require('../components/MyCertificate.vue')
+                },
+                'CertificateInfo/:account/:locate': {
+                    name: "CertificateInfo",
+                    component: require('../components/CertificateInfo.vue')
+                }
+            }
         }
 
     })

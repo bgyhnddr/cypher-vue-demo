@@ -73,7 +73,7 @@ var exec = {
             return Promise.reject("not login")
         }
     },
-    regist(req,res,next){
+    regist(req, res, next) {
         var account = req.body.account
         var password = req.body.password
         var user = require('../../db/models/user')
@@ -82,41 +82,56 @@ var exec = {
             where: {
                 account: account
             }
-        }).then(function(result){
-            if(result){
+        }).then(function(result) {
+            if (result) {
                 return Promise.reject("账号已被注册")
-            }else{
+            } else {
                 return Promise.all([
                     user.create({ account: account, password: password }),
                     user_role.create({ user_account: account, role_code: 'test_role' })
                 ])
             }
-        })     
+        })
     },
-    changeuserpwd(req,res,next){
+    changeuserpwd(req, res, next) {
         var user = require('../../db/models/user')
         var userinfo = req.session.userInfo
         var oldpwd = req.body.old_password
         var newpwd = req.body.new_password
-        if(userinfo){
+        if (userinfo) {
             var account = userinfo.name
             return user.findOne({
                 where: {
                     account: account
                 }
-            }).then(function (result) {
+            }).then(function(result) {
                 if (result.password != oldpwd) {
                     return Promise.reject("密码错误")
                 } else {
                     result.password = newpwd
                     return result.save()
                 }
-            }).then(function () {
+            }).then(function() {
                 return "success"
             })
-        }else{
+        } else {
             return Promise.reject("请先登录")
         }
+    },
+    CheckUserBrand(req, res, next) {
+        var user = req.session.userInfo.name
+        var agent = require('../../db/models/agent')
+        return agent.findOne({
+            where: {
+                user_account: user
+            }
+        }).then(function(result) {
+            if (result) {
+                return true
+            } else {
+                return false
+            }
+        })
     }
 }
 

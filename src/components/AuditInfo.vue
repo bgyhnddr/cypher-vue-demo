@@ -6,15 +6,18 @@
     <group>
         <div>      
             <cell><div slot="icon">用户名：{{auditInfo.account}}</div></cell>
-            <cell><div slot="icon">授权品牌：{{auditInfo.brand}}</div></cell>
+            <cell>
+                <div slot="icon">授权品牌：adminbrand</div>
+                <x-button v-if="!Toggle" type="default" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/account'}">查看授权证书</x-button>
+            </cell>
             <cell>
                 <div slot="icon">授权上级：{{auditInfo.employer}}</div>
-                <x-button type="default">查看授权证书</x-button>
+                <x-button type="default" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/account'}">查看授权证书</x-button>
             </cell>
             <cell><div slot="icon">姓名：{{auditInfo.name}}</div></cell>
-            <cell><div slot="icon">微信号：{{auditInfo.wx}}</div></cell>
-            <cell><div slot="icon">手机号：{{auditInfo.phone}}</div></cell>
-            <cell><div slot="icon">地址：{{auditInfo.address}}</div></cell>
+            <cell><div slot="icon">微信号：{{auditInfo.wechat}}</div></cell>
+            <cell><div slot="icon">手机号：{{auditInfo.cellphone}}</div></cell>
+            <cell><div slot="icon">地址：{{auditInfo.address}}{{auditInfo.addressDetail}}</div></cell>
             <selector v-if="Toggle" :value.sync="value" title="授权期限" :options="List" @on-change="onChange" placeholder="请选择期限"></selector>
         </div>
     </group>
@@ -24,7 +27,7 @@
         </flexbox-item>
         <flexbox-item>
             <x-button type="warn" @click="show=true">打回</x-button>
-        </flexbox-item>
+        </flexbox-item> 
     </flexbox>
     <div style="height: 1000px">
         <dialog :show.sync="show" class="dialog-demo">
@@ -71,16 +74,17 @@
                 showAlert: false,
                 show: false,
                 reason: "",
-                List: ['1', '2', '3', '4', '5', '6'],
+                List: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
                 term: "",
                 auditInfo: {
                     account: "",
-                    brand: "",
+                    time: "",
                     employer: "",
                     name: "",
-                    wx: "",
-                    phone: "",
+                    wechat: "",
+                    cellphone: "",
                     address: "",
+                    addressDetail: "",
                     deadline: ""
                 }
             }
@@ -105,25 +109,41 @@
                 var that = this
                 employAPI.getAuditInfo({
                     auditID: that.auditID,
-                    brandID: that.GetQueryString('brandID')
+                    brandID: that.$route.params.brandID,
+                    account: that.$route.params.account,
+                    locate: that.$route.params.locate,
                 }).then(function(result) {
-                    that.auditInfo.account = result[0].employment.employee_user_account
-                    that.auditInfo.brand = result[0].employment.brand.name
-                    that.auditInfo.employer = result[0].employment.employer_user_account
-                    that.auditInfo.name = result[0].value
-                    that.auditInfo.wx = result[1].value
-                    that.auditInfo.phone = result[2].value
-                    that.auditInfo.address = result[3].value
+                    if (that.$route.params.locate == 'audit') {
+                        that.auditInfo.time = result[0].employment.employer_time
+                        that.auditInfo.employer = result[0].employment.employer_user_account
+                    }
+                    for (var item in result) {
+                        for (var meta in result[item]) {
+                            if (meta == 'key') {
+                                switch (result[item][meta]) {
+                                    case "name":
+                                        that.auditInfo.name = result[item]['value']
+                                    case "wechat":
+                                        that.auditInfo.wechat = result[item]['value']
+                                    case "cellphone":
+                                        that.auditInfo.cellphone = result[item]['value']
+                                    case "address":
+                                        that.auditInfo.address = result[item]['value']
+                                    case "addressDetail":
+                                        that.auditInfo.addressDetail = result[item]['value']
+                                    case "employer":
+                                        if (that.$route.params.locate == 'history') {
+                                            that.auditInfo.employer = result[item]['value']
+                                        }
+                                        break
+                                }
+                            }
+                        }
+                    }
                 }).catch(function(err) {
                     console.log(err)
                     that.serveMsg = err
                 })
-            },
-            GetQueryString(name) {
-                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)")
-                var r = window.location.search.substr(1).match(reg)
-                if (r != null) return unescape(r[2])
-                return null
             },
             PassAudit() {
                 var that = this
@@ -134,7 +154,6 @@
                     }).then(function(result) {
                         that.alertMsg = "已通过"
                         that.showAlert = true
-                        console.log(result)
                     }).catch(function(err) {
                         console.log(err)
                         that.serveMsg = err
@@ -160,30 +179,37 @@
             },
             onHide() {
                 if (this.valid() || this.alertMsg == "已拒绝") {
-                    this.$router.go('audit')
+                    this.$router.go({
+                        path: '/employManagement/audit'
+                    })
+                } else if (this.alertMsg == "该申请已经审核") {
+                    this.$router.go({
+                        path: '/employManagement'
+                    })
                 }
             },
             onChange(val) {
-                var date = new Date()
+                var date = new Date(this.auditInfo.time)
                 var year = parseInt(date.getFullYear())
                 var month = parseInt(date.getMonth() + 1)
                 var day = parseInt(date.getDate())
+                var time = parseInt(date.getHours()) + ":" + parseInt(date.getMinutes()) + ":" + parseInt(date.getSeconds())
 
                 val = parseInt(val)
 
                 if (month + val > 12) {
-                    this.term = new Date((year + 1) + '-' + (month + val - 12) + '-' + day)
+                    this.term = (year + 1) + '-' + (month + val - 12) + '-' + day + " " + time
                 } else {
-                    this.term = new Date(year + '-' + (month + val) + '-' + day)
+                    this.term = year + '-' + (month + val) + '-' + day + " " + time
                 }
-
             }
         },
         ready() {
-            if (this.GetQueryString('from') == 'audit') {
+            if (this.$route.params.locate == 'audit') {
                 this.Toggle = true
             }
-            this.auditID = this.GetQueryString('employmentID')
+            this.auditInfo.account = this.$route.params.account
+            this.auditID = this.$route.params.employmentID
             this.getInfo()
         }
     }
