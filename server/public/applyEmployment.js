@@ -167,14 +167,17 @@ var exec = {
                             deadline: deadline,
                             status: "未审核"
                         }, { transaction: t }),
-                        employment_detail.create({ employment_guid: guid, key: 'headImg', value: data['headImg'] }, { transaction: t }),
-                        employment_detail.create({ employment_guid: guid, key: 'name', value: data['name'] }, { transaction: t }),
-                        employment_detail.create({ employment_guid: guid, key: 'wechat', value: data['wechat'] }, { transaction: t }),
-                        employment_detail.create({ employment_guid: guid, key: 'cellphone', value: data['cellphone'] }, { transaction: t }),
-                        employment_detail.create({ employment_guid: guid, key: 'IDType', value: data['IDType'] }, { transaction: t }),
-                        employment_detail.create({ employment_guid: guid, key: 'IDNumber', value: data['IDNumber'] }, { transaction: t }),
-                        employment_detail.create({ employment_guid: guid, key: 'address', value: data['address'] }, { transaction: t }),
-                        employment_detail.create({ employment_guid: guid, key: 'addressDetail', value: data['addressDetail'] }, { transaction: t }),
+                        employment_detail.bulkCreate([
+                            { employment_guid: guid, key: 'headImg', value: data['headImg'] },
+                            { employment_guid: guid, key: 'name', value: data['name'] },
+                            { employment_guid: guid, key: 'wechat', value: data['wechat'] },
+                            { employment_guid: guid, key: 'wechat', value: data['wechat'] },
+                            { employment_guid: guid, key: 'cellphone', value: data['cellphone'] },
+                            { employment_guid: guid, key: 'IDType', value: data['IDType'] },
+                            { employment_guid: guid, key: 'IDNumber', value: data['IDNumber'] },
+                            { employment_guid: guid, key: 'address', value: data['address'] },
+                            { employment_guid: guid, key: 'addressDetail', value: data['addressDetail'] }
+                        ], { transaction: t })
                     ]).then(function() {
                         t.commit()
                         req.session.pwd = pwd
