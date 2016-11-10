@@ -90,15 +90,21 @@
                     this.leftOptions.showBack = false
                     return this.$route.params.brandName + "——代理授权申请"
                 }
-                if (this.$route.path === '/employManagement/audit')
-                    return '资料审核'
+                if (this.$route.path === '/employManagement/audit'){
+                       this.leftOptions.showBack = true
+                    document.body.style.background = '#f2f2f2'
+                    return '资料审核'}
                 if (this.$route.name === 'AuditInfo')
                     if (this.$route.params.locate == 'audit')
                         return '审核详情'
                     else if (this.$route.params.locate == 'history')
                     return '招募详情'
-                if (this.$route.path === '/employManagement/employmentHistory')
-                    return '招募历史'
+                if (this.$route.path === '/employManagement/employmentHistory'){
+                    this.leftOptions.showBack = true
+                    document.body.style.background = '#f2f2f2'
+               return '招募历史'
+}
+                   
                 if (this.$route.path === '/accountManagement') {
                     this.leftOptions.showBack = true
                     return '我的账号'
