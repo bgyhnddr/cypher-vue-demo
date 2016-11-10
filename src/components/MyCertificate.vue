@@ -2,7 +2,7 @@
   <div>
 <div class="certificate-header">
     <div class="vux-center">
-        <img class="vux-x-img ximg-demo vux-center" alt="头像"/></p>
+        <headimg-upload :file-id.sync="auditInfo.headImg"></headimg-upload>
     </div>
 </div>
 <div>
@@ -34,6 +34,7 @@
         XButton,
     } from 'vux'
     import employAPI from '../api/employment'
+    import HeadimgUpload from './extend/change-headimg'
     export default {
         data() {
             return {
@@ -44,7 +45,8 @@
                     wechat: "",
                     cellphone: "",
                     address: "",
-                    addressDetail: ""
+                    addressDetail: "",
+                    headImg: null
                 }
             }
         },
@@ -52,6 +54,7 @@
             Group,
             Cell,
             XButton,
+            HeadimgUpload
         },
         methods: {
             getInfo() {

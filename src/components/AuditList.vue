@@ -2,7 +2,9 @@
   <div>
  <div class="audit-choose">
     <group>
-      <selector :value.sync="value" title="" :options="List" @on-change="onChange"></selector>
+
+      <selector placeholder="--排序--" title="排序" :options="List" @on-change="onChange"></selector>
+
     </group>
 </div>
 <div class="audit-list">
@@ -34,19 +36,19 @@
                 show: false,
                 items: [],
                 List: [{
-                    key: "timedesc",
-                    value: "时间由近到远"
-                }, {
-                    key: "timeasc",
-                    value: "时间由远到近"
-                }, {
-                    key: "leveldesc",
-                    value: "等级由高到低"
-                }, {
-                    key: "levelasc",
-                    value: "等级由低到高"
-                }],
-                value: "timedesc"
+                        key: "timedesc",
+                        value: "时间由近到远"
+                    }, {
+                        key: "timeasc",
+                        value: "时间由远到近"
+                    }, {
+                        key: "leveldesc",
+                        value: "等级由高到低"
+                    }, {
+                        key: "levelasc",
+                        value: "等级由低到高"
+                    }]
+                    // value: "请选择省份"
             }
         },
         components: {
