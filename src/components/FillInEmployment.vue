@@ -19,7 +19,9 @@
                     <x-input class="weui_cell_primary applicant-weixin" type="text" title="微信号&nbsp;:&nbsp;" :name.sync="meta.wechat" :value.sync="data.wechat" placeholder="6-20个字母，数字，下划线或减号" :min="6" :max="20" :show-clear=false v-ref:wechat></x-input>
                     </group>
                     <group>
-                        <x-input class="weui_cell_primary applicant-phone" keyboard="number" title="手机号&nbsp;:&nbsp;" :value.sync="data.account" placeholder="请输入手机号码" is-type="china-mobile" :show-clear=false v-ref:cellphone></x-input>
+
+                        <x-input class="weui_cell_primary applicant-phone" keyboard="number" title="手机号&nbsp;:&nbsp;" :value.sync="data.cellphone" placeholder="请输入手机号码" is-type="china-mobile" :show-clear=false v-ref:cellphone></x-input>
+
 
                     </group>
                 </div>

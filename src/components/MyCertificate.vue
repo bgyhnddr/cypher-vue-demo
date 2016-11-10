@@ -5,6 +5,7 @@
         <img class="vux-x-img ximg-demo vux-center" alt="头像"/></p>
     </div>
 </div>
+<div>
     <group>
         <div>      
             <cell><div slot="icon">用户名：{{auditInfo.account}}</div></cell>
@@ -22,6 +23,7 @@
             <cell><div slot="icon">地址：{{auditInfo.address}}{{auditInfo.addressDetail}}</div></cell>
         </div>
     </group>
+</div>
   </div>
 </template>
 
