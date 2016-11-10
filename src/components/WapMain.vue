@@ -112,7 +112,37 @@
         methods: {
             scrollTop() {
                 this.$refs.viewBox.$els.viewBoxBody.scrollTop = 0
-            }
+            },
+            onClickBack() {
+                if (this.leftOptions.preventGoBack) {
+                    this.$emit('on-click-back')
+                } else {
+                    if (this.$route.name === 'HomePageSearch') {
+                        this.$route.router.go('/homePage')
+                        return
+                    }
+                    if (this.$route.path === '/employManagement') {
+                        this.$route.router.go('/homePage')
+                        return
+                    }
+                    if (this.$route.path === '/employManagement/chooseEmployableRoles') {
+                        this.$route.router.go('/employManagement')
+                        return
+                    }
+                    if (this.$route.name === 'FillInEmployment') {
+                        this.$broadcast('goFillEmployment1')
+                        return
+                    }
+                    if (this.$route.name === 'BrandAuthorization') {
+                        this.$route.router.go('/employManagement/chooseEmployableRoles')
+                        return
+                    }
+                    if (this.$route.path === '/accountManagement') {
+                        this.$route.router.go('/homePage')
+                        return
+                    }
+                }
+            },
         },
     }
 </script>
