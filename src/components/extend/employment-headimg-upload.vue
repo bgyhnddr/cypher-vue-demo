@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<!--<a target="_blank" href="{{href}}">{{fileName}}</a>-->
-		<input v-model="file" v-el:uploadinput v-show="false" type="file" />
+		<input v-model="file" @change="upload" v-el:uploadinput v-show="false" type="file" />
 		<div v-if="!readonly">
 			<button  @click="chooseFile" class="btn btn-default btn-xs">
                 <img v-show="isShowImg" src="/static/TestIMG/upload.png"  />
@@ -46,7 +46,8 @@
             return {
                 file: "",
                 uploadRequest: undefined,
-                isShowImg: true
+                isShowImg: true,
+                href: null
             }
         },
         computed: {
@@ -57,7 +58,6 @@
         methods: {
             chooseFile() {
                 this.$els.uploadinput.click()
-                this.upload()
             },
             upload() {
                 var that = this

@@ -53,7 +53,7 @@ var exec = {
             if (req.method.toLowerCase() == 'post') {
                 var form = new formidable.IncomingForm();
                 form.uploadDir = "upload/temp";
-                form.maxFieldsSize = 2; //10G
+                form.maxFieldsSize = 2 * 1024; //10G
                 form.hash = "md5"
 
                 if (!fs.existsSync("upload")) {
