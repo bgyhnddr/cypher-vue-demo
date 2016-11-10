@@ -4,7 +4,10 @@
         <view-box v-ref:view-box>
             <!--header slot-->
             <div class="vux-demo-header-box" slot="header">
-                <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop" @click="onClickBack"></x-header>
+                <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
+                <div slot="left">
+                    <button v-if="ShowBack" @click="onClickBack">back</button>
+                </div>
             </div>
             <!--default slot-->
             <router-view class="view" transition="fate" transition-mode="out-in"></router-view>
@@ -33,80 +36,78 @@
         data() {
             return {
                 leftOptions: {
-                    showBack: true,
-                    backText: '返回',
+                    showBack: false,
+                    backText: '',
                     preventGoBack: false
-                }
+                },
+                ShowBack: false
             }
         },
         computed: {
             title() {
                 if (this.$route.path === '/index') {
-                    this.leftOptions.showBack = false
+                    this.ShowBack = false
                     return 'Home'
-                }
-                if (this.$route.path === '/auth/login') {
+                } else if (this.$route.path === '/auth/login') {
                     document.body.style.background = '#fff'
-                    this.leftOptions.showBack = false
+                    this.ShowBack = false
                     return '登录'
-                }
-                if (this.$route.path === '/auth/changepwd')
+                } else if (this.$route.path === '/auth/changepwd') {
+                    this.ShowBack = true
                     return '修改密码'
-                if (this.$route.path === '/auth/test')
-                    return '测试页面'
-                if (this.$route.path === '/homePage') {
-                    this.leftOptions.showBack = false
+                } else if (this.$route.path === '/homePage') {
+                    this.ShowBack = false
                     document.body.style.background = '#f2f2f2'
                     return
-                }
-                if (this.$route.name === 'HomePageSearch') {
-                    this.leftOptions.showBack = true
+                } else if (this.$route.name === 'HomePageSearch') {
+                    this.ShowBack = true
                     return
-                }
-                if (this.$route.path === '/employManagement') {
+                } else if (this.$route.path === '/employManagement') {
                     document.body.style.background = '#f2f2f2'
-                    this.leftOptions.showBack = true
+                    this.ShowBack = true
                     return '成员招募'
-                }
-                if (this.$route.path === '/employManagement/chooseEmployableRoles') {
-                    this.leftOptions.showBack = true
+                } else if (this.$route.path === '/employManagement/chooseEmployableRoles') {
+                    this.ShowBack = true
                     document.body.style.background = '#fff'
                     return '选择招募代理级别'
-                }
-                if (this.$route.name === 'BrandAuthorization') {
-                    this.leftOptions.showBack = true
+                } else if (this.$route.name === 'BrandAuthorization') {
+                    this.ShowBack = true
                     return this.$route.params.brandName
-                }
-                if (this.$route.name === 'FillInEmployment') {
+                } else if (this.$route.name === 'FillInEmployment') {
                     document.body.style.background = '#f2f2f2'
-                    this.leftOptions.showBack = false
+                    this.ShowBack = true
                     this.$on('fillInEmployment_goBack', function(flag) {
                         console.log("event" + "==========" + flag)
                         this.leftOptions.showBack = flag
                     })
                     return this.$route.params.brandName + "——代理授权申请"
-                }
-                if (this.$route.name === 'EmploymentSubmission') {
-                    this.leftOptions.showBack = false
+                } else if (this.$route.name === 'EmploymentSubmission') {
+                    this.ShowBack = false
                     return this.$route.params.brandName + "——代理授权申请"
-                }
-                if (this.$route.path === '/employManagement/audit')
+                } else if (this.$route.path === '/employManagement/audit') {
+                    this.ShowBack = true
                     return '资料审核'
-                if (this.$route.name === 'AuditInfo')
-                    if (this.$route.params.locate == 'audit')
+                } else if (this.$route.name === 'AuditInfo') {
+                    this.ShowBack = true
+                    if (this.$route.params.locate == 'audit') {
                         return '审核详情'
-                    else if (this.$route.params.locate == 'history')
-                    return '招募详情'
-                if (this.$route.path === '/employManagement/employmentHistory')
+                    } else if (this.$route.params.locate == 'history') {
+                        return '招募详情'
+                    }
+                } else if (this.$route.path === '/employManagement/employmentHistory') {
+                    this.ShowBack = true
                     return '招募历史'
-                if (this.$route.path === '/accountManagement') {
-                    this.leftOptions.showBack = true
+                } else if (this.$route.path === '/accountManagement') {
+                    this.ShowBack = true
                     return '我的账号'
-                }
-                if (this.$route.name === 'MyCertificate')
+                } else if (this.$route.name === 'MyCertificate') {
+                    this.ShowBack = true
                     return '我的证书'
-                if (this.$route.name === 'CertificateInfo')
+                } else if (this.$route.name === 'CertificateInfo') {
+                    this.ShowBack = true
                     return 'adminBrand'
+                }
+
             }
         },
         methods: {
@@ -114,31 +115,54 @@
                 this.$refs.viewBox.$els.viewBoxBody.scrollTop = 0
             },
             onClickBack() {
-                if (this.leftOptions.preventGoBack) {
-                    this.$emit('on-click-back')
-                } else {
-                    if (this.$route.name === 'HomePageSearch') {
+                var path = this.$route.path
+                var name = this.$route.name
+
+                var FirstPath = path.split('/')[1]
+                var SecPath = path.split('/')[2]
+
+                if (FirstPath == "auth") {
+                    if (SecPath == "changepwd") {
+                        this.$route.router.go('/accountManagement')
+                        return
+                    }
+                } else if (FirstPath == "homePage") {
+                    if (SecPath == "search") {
                         this.$route.router.go('/homePage')
                         return
                     }
-                    if (this.$route.path === '/employManagement') {
+                } else if (FirstPath == "employManagement") {
+                    if (!SecPath) {
                         this.$route.router.go('/homePage')
                         return
-                    }
-                    if (this.$route.path === '/employManagement/chooseEmployableRoles') {
+                    } else if (SecPath == "chooseEmployableRoles") {
+                        this.$route.router.go('/employManagement')
+                        return
+                    } else if (SecPath == "brandAuthorization") {
+                        this.$route.router.go('/employManagement/chooseEmployableRoles')
+                        return
+                    } else if (SecPath == "fillInEmployment") {
+                        this.$broadcast('goFillEmployment1')
+                        return
+                    } else if (SecPath == "audit") {
+                        this.$route.router.go('/employManagement')
+                        return
+                    } else if (SecPath == "auditInfo") {
+                        this.$route.router.go('/employManagement/audit')
+                        return
+                    } else if (SecPath == "employmentHistory") {
                         this.$route.router.go('/employManagement')
                         return
                     }
-                    if (this.$route.name === 'FillInEmployment') {
-                        this.$broadcast('goFillEmployment1')
-                        return
-                    }
-                    if (this.$route.name === 'BrandAuthorization') {
-                        this.$route.router.go('/employManagement/chooseEmployableRoles')
-                        return
-                    }
-                    if (this.$route.path === '/accountManagement') {
+                } else if (FirstPath == "accountManagement") {
+                    if (!SecPath) {
                         this.$route.router.go('/homePage')
+                        return
+                    } else if (SecPath == "MyCertificate") {
+                        this.$route.router.go('/accountManagement')
+                        return
+                    } else if (SecPath == "CertificateInfo") {
+                        history.back()
                         return
                     }
                 }

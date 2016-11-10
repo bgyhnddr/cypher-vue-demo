@@ -49,10 +49,7 @@ export function configRouter(router) {
                 },
                 'changepwd': {
                     component: require('../components/ChangeUserPassword.vue')
-                },
-                'test': {
-                    component: require('../components/testPage.vue')
-                },
+                }
             }
         },
         '/homePage': {
