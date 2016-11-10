@@ -3,7 +3,7 @@
  <div class="audit-choose">
     <group>
 
-      <selector placeholder="--排序--" title="排序" :options="List" @on-change="onChange"></selector>
+      <selector placeholder="&nbsp;&nbsp;&nbsp;&nbsp;--排序--" title="排序" :options="List" @on-change="onChange"></selector>
 
     </group>
 </div>
@@ -143,6 +143,9 @@ font-family: "微软雅黑";
 font-size: 13px;
 }
 
+.audit-choose  .weui_cell_hd {
+    width: 0;
+}
 .audit-choose  .weui_cell_select .weui_cell_bd:after{
     right: 3%;
     top: 41%;

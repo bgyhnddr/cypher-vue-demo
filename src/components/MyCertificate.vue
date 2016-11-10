@@ -96,3 +96,12 @@
         }
     }
 </script>
+<style>
+.certificate-header button{
+
+
+
+
+}
+
+</style>
