@@ -3,7 +3,7 @@
 <div class="brandauthorization-bac">
 <div class="brandauthorization">
 <div class="brandauthorization-img">
-        <img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="品牌logo"/>
+        <img class="vux-x-img ximg-demo" alt="品牌logo" src="/static/TestIMG/brand_logo_href.png"/>
         <p>授权证书</p>
 </div>
         <div>
