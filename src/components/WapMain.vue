@@ -113,36 +113,62 @@
             scrollTop() {
                 this.$refs.viewBox.$els.viewBoxBody.scrollTop = 0
             },
-            onClickBack() {
-                if (this.leftOptions.preventGoBack) {
-                    this.$emit('on-click-back')
-                } else {
-                    if (this.$route.name === 'HomePageSearch') {
-                        this.$route.router.go('/homePage')
-                        return
-                    }
-                    if (this.$route.path === '/employManagement') {
-                        this.$route.router.go('/homePage')
-                        return
-                    }
-                    if (this.$route.path === '/employManagement/chooseEmployableRoles') {
-                        this.$route.router.go('/employManagement')
-                        return
-                    }
-                    if (this.$route.name === 'FillInEmployment') {
-                        this.$broadcast('goFillEmployment1')
-                        return
-                    }
-                    if (this.$route.name === 'BrandAuthorization') {
-                        this.$route.router.go('/employManagement/chooseEmployableRoles')
-                        return
-                    }
-                    if (this.$route.path === '/accountManagement') {
-                        this.$route.router.go('/homePage')
-                        return
-                    }
+            initBGColor() {
+                if (this.$route.path === '/auth/login') {
+                    document.body.style.background = '#fff'
+                    console.log(document.body.style.background)
+                    return
                 }
-            },
+             	if (this.$route.path === '/employManagement') {
+                    document.body.style.background = '#f2f2f2'
+                    console.log(document.body.style.background)
+                    return
+                }
+           	if (this.$route.path === '/employManagement/chooseEmployableRoles') {
+                    document.body.style.background = '#fff'
+                    console.log(document.body.style.background)
+                    return
+                }
+                 if (this.$route.name === 'FillInEmployment') {
+                    document.body.style.background = '#f2f2f2'
+                    console.log(document.body.style.background)
+                    return
+                }
+                 if (this.$route.path === '/homePage') {
+                    document.body.style.background = '#f2f2f2'
+                    console.log(document.body.style.background)
+                    return
+                }
+                 if (this.$route.path === '/EmploymentSubmission') {
+                    document.body.style.background = '#fff'
+                    console.log(document.body.style.background)
+                    return
+                }
+                 if (this.$route.path === '/accountManagement') {
+                    document.body.style.background = '#f2f2f2'
+                    console.log(document.body.style.background)
+                    return
+                }
+                 if (this.$route.path === '/changepwd') {
+                    document.body.style.background = '#fff'
+                    console.log(document.body.style.background)
+                    return
+                }
+                 if (this.$route.name === 'HomePageSearch') {
+                    document.body.style.background = '#f2f2f2'
+                    console.log(document.body.style.background)
+                    return
+                }
+                 if (this.$route.path === '/employManagement/audit') {
+                    document.body.style.background = '#f2f2f2'
+                    console.log(document.body.style.background)
+                    return
+                }
+            }
+        },
+        ready() {
+            this.initBGColor()
+
         }
     }
 </script>

@@ -1,8 +1,9 @@
-<template>
+﻿<template>
   <div>
     <div class="vux-center">
         <img class="vux-x-img ximg-demo vux-center" alt="头像" :src.sync="auditInfo.headImg"/></p>
     </div>
+<div class="auditinfo-message">
     <group>
         <div>      
             <cell><div slot="icon">用户名：{{auditInfo.account}}</div></cell>
@@ -21,6 +22,7 @@
             <selector v-if="Toggle" :value.sync="value" title="授权期限" :options="List" @on-change="onChange" placeholder="请选择期限"></selector>
         </div>
     </group>
+</div>
     <flexbox v-if="Toggle">
         <flexbox-item>
             <x-button type="primary" @click="PassAudit">通过审核</x-button>
@@ -217,3 +219,11 @@
         }
     }
 </script>
+<style>
+.auditinfo-message .weui_cell_hd{
+    width: 100%;
+
+}
+
+
+</style>
