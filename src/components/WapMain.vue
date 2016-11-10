@@ -75,10 +75,10 @@
                     return this.$route.params.brandName
                 } else if (this.$route.name === 'FillInEmployment') {
                     document.body.style.background = '#f2f2f2'
-                    this.ShowBack = true
+                    this.ShowBack = false
                     this.$on('fillInEmployment_goBack', function(flag) {
                         console.log("event" + "==========" + flag)
-                        this.leftOptions.showBack = flag
+                        this.ShowBack = flag
                     })
                     return this.$route.params.brandName + "——代理授权申请"
                 } else if (this.$route.name === 'EmploymentSubmission') {
