@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="vux-center">
-        <img class="vux-x-img ximg-demo vux-center" alt="头像"/></p>
+        <img class="vux-x-img ximg-demo vux-center" alt="头像" :src.sync="auditInfo.headImg"/></p>
     </div>
     <group>
         <div>      
@@ -85,7 +85,8 @@
                     cellphone: "",
                     address: "",
                     addressDetail: "",
-                    deadline: ""
+                    deadline: "",
+                    headImg: ""
                 }
             }
         },
@@ -121,6 +122,8 @@
                         for (var meta in result[item]) {
                             if (meta == 'key') {
                                 switch (result[item][meta]) {
+                                    case "headImg":
+                                        that.auditInfo.headImg = "/service/public/upload/getAttachment?id=" + result[item]['value']
                                     case "name":
                                         that.auditInfo.name = result[item]['value']
                                     case "wechat":

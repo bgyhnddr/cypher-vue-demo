@@ -1,14 +1,14 @@
 <template>
 	<div>
 		<!--<a target="_blank" href="{{href}}">{{fileName}}</a>-->
-		<input v-model="file" v-el:uploadinput v-show="false" type="file" />
+		<input v-model="file" v-el:uploadinput v-show="false" @change="upload" type="file" />
 		<div v-if="!readonly">
 			<button  @click="chooseFile" class="btn btn-default btn-xs">
                 <img v-show="isShowImg" :src.sync="headImg"  />
                 <img v-show="!isShowImg" :src.sync="href"  />
             </button>
             <p>点击头像可修改头像</p> 
-			<button v-if="file" @click="upload" class="btn btn-default btn-xs">确认修改</button>
+			<!--<button v-if="file" @click="upload" class="btn btn-default btn-xs">确认修改</button>-->
 		</div>
 	</div>
 </template>
