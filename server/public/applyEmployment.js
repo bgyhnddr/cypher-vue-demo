@@ -103,23 +103,44 @@ var exec = {
         var brand_role = require('../../db/models/brand_role')
         var user = require('../../db/models/user')
         var user_role = require('../../db/models/user_role')
+        var agent = require('../../db/models/agent')
+        var agent_brand_role = require('../../db/models/agent_brand_role')
 
         employment.hasMany(employment_detail)
+        agent.hasOne(agent_brand_role)
+        agent_brand_role.belongsTo(brand_role)
 
         return Promise.all([
+            //查找是否已提交过招募申请
             employment.findOne({
                 where: {
                     brand_guid: employmentData.publishEmploymentInfo.brand_guid,
                     employee_user_account: data.account
                 }
             }),
+            //查找是否已注册过账号
             user.findOne({
                 where: {
                     account: data.account
                 }
+            }),
+            //查找品牌商account
+            agent.findOne({
+                include: [{
+                    model: agent_brand_role,
+                    include: [{
+                        model: brand_role,
+                        where: {
+                            level: "0"
+                        },
+                    }],
+                }]
             })
+
         ]).then(function(result) {
-            if (result[0] != null || result[1] != null) {
+            if (result[2] == null) {
+                return Promise.reject("找不到审核人的信息")
+            } else if (result[0] != null || result[1] != null) {
                 return Promise.reject("您已提交过申请或者已成为该品牌成员，提交申请失败")
             } else {
                 var createList = []
@@ -140,23 +161,48 @@ var exec = {
                     pwd += Math.floor(Math.random() * 10);
                 }
 
+                var audit_user_account = result[2].user_account
+
                 return Promise.all([
-                    employment.create({
-                        guid: guid,
-                        publish_employment_guid: employmentData.publishEmploymentInfo.guid,
-                        employer_user_account: employmentData.publishEmploymentInfo.employer_user_account,
-                        brand_role_code: employmentData.publishEmploymentInfo.brand_role_code,
-                        brand_guid: employmentData.publishEmploymentInfo.brand_guid,
-                        employee_user_account: data.account,
-                        employer_time: employmentData.publishEmploymentInfo.create_time,
-                        deadline: deadline,
-                        status: "未处理"
-                    }),
-                    createList,
-                    user.create({ account: data.account, password: pwd }),
-                    user_role.create({ user_account: data.account, role_code: 'test_role' })
+                    user.create({ account: data.cellphone, password: pwd }),
+                    user_role.create({ user_account: data.cellphone, role_code: 'test_role' })
                 ]).then(function(result) {
-                    req.session.pwd = pwd
+                    if (result[0] == null || result[1] == null) {
+                        return Promise.reject("创建您的成员账号失败")
+                    } else {
+                        return user.findOne({
+                            where: {
+                                account: data.cellphone
+                            }
+                        }).then(function(result) {
+                            var pwdFromTable = result.password
+                            return Promise.all([
+                                employment.create({
+                                    guid: guid,
+                                    publish_employment_guid: employmentData.publishEmploymentInfo.guid,
+                                    employer_user_account: employmentData.publishEmploymentInfo.employer_user_account,
+                                    brand_role_code: employmentData.publishEmploymentInfo.brand_role_code,
+                                    brand_guid: employmentData.publishEmploymentInfo.brand_guid,
+                                    employee_user_account: data.cellphone,
+                                    employer_time: employmentData.publishEmploymentInfo.create_time,
+                                    audit_user_account: audit_user_account,
+                                    deadline: deadline,
+                                    status: "未审核"
+                                }),
+                                createList,
+                            ]).then(function(result) {
+                                var flag = true
+                                for (var item in result) {
+                                    flag = ((result[item] == null) ? false : true) || flag
+                                }
+                                if (flag == true) {
+                                    req.session.pwd = pwdFromTable
+                                } else {
+                                    return Promise.reject("后台创建招募申请失败")
+                                }
+                            })
+                        })
+                    }
                 })
             }
         })
