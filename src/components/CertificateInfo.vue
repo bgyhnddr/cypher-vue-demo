@@ -3,7 +3,7 @@
 <div class="brandauthorization-bac">
 <div class="brandauthorization">
 <div class="brandauthorization-img">
-        <img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="品牌logo"/>
+        <img class="vux-x-img ximg-demo" alt="品牌logo" src="/static/TestIMG/brand_logo_href.png"/>
         <p>授权证书</p>
 </div>
         <div>
@@ -11,7 +11,7 @@
      <table boder=0 class="personal-identity">
 
 
-            <tr><th>姓名</th><th>{{auditInfo.name}}</th><th rowspan="3"><img class="vux-x-img ximg-demo" alt="授权者头像"/></th></tr>
+            <tr><th>姓名</th><th>{{auditInfo.name}}</th><th rowspan="3"><img class="vux-x-img ximg-demo" alt="授权者头像" :src.sync="auditInfo.headImg"/></th></tr>
            <tr><th> 微信</th><th>{{auditInfo.wechat}}</th></tr>
             <tr><th>身份证</th><th>4404xxxxxxxxxxxxx</th></tr>
             
@@ -40,7 +40,8 @@
                     addressDetail: "",
                     agent_level: "",
                     term_from: "",
-                    term_to: ""
+                    term_to: "",
+                    headImg: ""
                 }
             }
         },
@@ -54,6 +55,9 @@
                     that.auditInfo.term_from = result[0].agent.employment_term.term_from
                     that.auditInfo.term_to = result[0].agent.employment_term.term_to
                     switch (result[0].agent.agent_brand_role.brand_role_code) {
+                        case "brand_role1":
+                            that.auditInfo.agent_level = "品牌商"
+                            break
                         case "brand_role2":
                             that.auditInfo.agent_level = "总代理"
                             break
@@ -71,6 +75,8 @@
                         for (var meta in result[item]) {
                             if (meta == 'key') {
                                 switch (result[item][meta]) {
+                                    case "headImg":
+                                        that.auditInfo.headImg = "/service/public/upload/getAttachment?id=" + result[item]['value']
                                     case "name":
                                         that.auditInfo.name = result[item]['value']
                                     case "wechat":

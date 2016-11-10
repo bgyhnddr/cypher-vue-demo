@@ -80,20 +80,20 @@ module.exports = function() {
         employment_detail.create({ employment_guid: "ep1", key: "cellphone", value: "111" }),
         employment_detail.create({ employment_guid: "ep1", key: "address", value: "月球" }),
         employment_detail.create({ employment_guid: "ep1", key: "addressDetail", value: "东南" }),
-        employment_detail.create({ employment_guid: "ep1", key: "headImg", value: "123" }),
+        employment_detail.create({ employment_guid: "ep1", key: "headImg", value: "1" }),
 
         employment_detail.create({ employment_guid: "ep2", key: "name", value: "mike" }),
         employment_detail.create({ employment_guid: "ep2", key: "wechat", value: "wxB" }),
         employment_detail.create({ employment_guid: "ep2", key: "cellphone", value: "222" }),
         employment_detail.create({ employment_guid: "ep2", key: "address", value: "火星" }),
         employment_detail.create({ employment_guid: "ep2", key: "addressDetail", value: "东南" }),
-        employment_detail.create({ employment_guid: "ep2", key: "headImg", value: "123" }),
+        employment_detail.create({ employment_guid: "ep2", key: "headImg", value: "1" }),
 
         employment_detail.create({ employment_guid: "ep3", key: "name", value: "lucy" }),
         employment_detail.create({ employment_guid: "ep3", key: "wechat", value: "wxC" }),
         employment_detail.create({ employment_guid: "ep3", key: "cellphone", value: "333" }),
         employment_detail.create({ employment_guid: "ep3", key: "address", value: "地球" }),
         employment_detail.create({ employment_guid: "ep3", key: "addressDetail", value: "东南" }),
-        employment_detail.create({ employment_guid: "ep3", key: "headImg", value: "123" }),
+        employment_detail.create({ employment_guid: "ep3", key: "headImg", value: "1" }),
     ])
 }

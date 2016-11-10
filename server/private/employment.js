@@ -385,6 +385,34 @@ var exec = {
                 return guid
             }
         })
+    },
+    changeHeadImg(req, res, next) {
+        var account = req.body.account
+        var ImgID = req.body.ImgID
+
+        var agent = require('../../db/models/agent')
+        var agent_detail = require('../../db/models/agent_detail')
+
+        agent_detail.belongsTo(agent)
+
+        return agent_detail.findOne({
+            include: {
+                model: agent,
+                where: {
+                    user_account: account
+                }
+            },
+            where: {
+                key: "headImg"
+            }
+        }).then(function(result) {
+            if (ImgID) {
+                result.value = ImgID
+                return result.save()
+            } else {
+                return result
+            }
+        })
     }
 }
 
