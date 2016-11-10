@@ -75,20 +75,26 @@
                         for (var meta in result[item]) {
                             if (meta == 'key') {
                                 switch (result[item][meta]) {
-                                    case "headImg":
-                                        that.auditInfo.headImg = "/service/public/upload/getAttachment?id=" + result[item]['value']
                                     case "name":
                                         that.auditInfo.name = result[item]['value']
+                                        break
                                     case "wechat":
                                         that.auditInfo.wechat = result[item]['value']
+                                        break
                                     case "cellphone":
                                         that.auditInfo.cellphone = result[item]['value']
+                                        break
                                     case "address":
                                         that.auditInfo.address = result[item]['value']
+                                        break
                                     case "addressDetail":
                                         that.auditInfo.addressDetail = result[item]['value']
+                                        break
                                     case "employer":
                                         that.auditInfo.employer = result[item]['value']
+                                        break
+                                    case "headImg":
+                                        that.auditInfo.headImg = "/service/public/upload/getAttachment?id=" + result[item]['value']
                                         break
                                 }
                             }
