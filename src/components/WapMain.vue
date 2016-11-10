@@ -112,64 +112,8 @@
         methods: {
             scrollTop() {
                 this.$refs.viewBox.$els.viewBoxBody.scrollTop = 0
-            },
-            initBGColor() {
-                if (this.$route.path === '/auth/login') {
-                    document.body.style.background = '#fff'
-                    console.log(document.body.style.background)
-                    return
-                }
-             	if (this.$route.path === '/employManagement') {
-                    document.body.style.background = '#f2f2f2'
-                    console.log(document.body.style.background)
-                    return
-                }
-           	if (this.$route.path === '/employManagement/chooseEmployableRoles') {
-                    document.body.style.background = '#fff'
-                    console.log(document.body.style.background)
-                    return
-                }
-                 if (this.$route.name === 'FillInEmployment') {
-                    document.body.style.background = '#f2f2f2'
-                    console.log(document.body.style.background)
-                    return
-                }
-                 if (this.$route.path === '/homePage') {
-                    document.body.style.background = '#f2f2f2'
-                    console.log(document.body.style.background)
-                    return
-                }
-                 if (this.$route.path === '/EmploymentSubmission') {
-                    document.body.style.background = '#fff'
-                    console.log(document.body.style.background)
-                    return
-                }
-                 if (this.$route.path === '/accountManagement') {
-                    document.body.style.background = '#f2f2f2'
-                    console.log(document.body.style.background)
-                    return
-                }
-                 if (this.$route.path === '/changepwd') {
-                    document.body.style.background = '#fff'
-                    console.log(document.body.style.background)
-                    return
-                }
-                 if (this.$route.name === 'HomePageSearch') {
-                    document.body.style.background = '#f2f2f2'
-                    console.log(document.body.style.background)
-                    return
-                }
-                 if (this.$route.path === '/employManagement/audit') {
-                    document.body.style.background = '#f2f2f2'
-                    console.log(document.body.style.background)
-                    return
-                }
             }
         },
-        ready() {
-            this.initBGColor()
-
-        }
     }
 </script>
 <style lang="less">
