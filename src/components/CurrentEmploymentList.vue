@@ -4,7 +4,7 @@
       <selector title="" value="timeDesc" :options="selectList" @on-change="onChange"></selector>
     </group>
     <group>
-         <a v-for="item in data" class="weui_cell a-li a-li-first"  v-link="" >
+         <a v-for="item in data" class="weui_cell a-li a-li-first"  v-link="{path: '/employManagement/currentInfo/'+ item.guid}" >
             <div class="weui_cell_bd weui_cell_primary">
                 <span>招募等级：{{item.brand_role.name}}</span>
                 <p></p>
@@ -81,14 +81,18 @@
                                 }
                             }
                             console.log(JSON.stringify(showItemList))
-                            that.data = showItemList
+                            if (showItemList == null) {
+                                window.alert("暂无当前招募")
+                            } else {
+                                that.data = showItemList
 
-                            // 关闭时间已经超过2小时的招募
-                            console.log("清除时间已经超过2小时的招募")
-                            console.log(JSON.stringify(delectItemList))
-                            employmentAPI.CloseOverduePublishEmployemnt({
-                                delectItemList: delectItemList
-                            })
+                                // 关闭时间已经超过2小时的招募
+                                console.log("清除时间已经超过2小时的招募")
+                                console.log(JSON.stringify(delectItemList))
+                                employmentAPI.closeOverduePublishEmployment({
+                                    delectItemList: delectItemList
+                                })
+                            }
                         }
                     }).catch(function(err) {
                         console.log(err)

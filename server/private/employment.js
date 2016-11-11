@@ -468,42 +468,56 @@ var exec = {
         }
     },
     getCurrentInfo(req, res, next) {
-        // var selectMsg = req.body.key
-        // var user_account = req.body.user_account
-        // var select = null
+        var guid = req.body.guid
 
-        // var brand_role = require('../../db/models/brand_role')
-        // var publish_employment = require('../../db/models/publish_employment')
+        var publish_employment = require('../../db/models/publish_employment')
+        var employment = require('../../db/models/employment')
+        var brand_role = require('../../db/models/brand_role')
 
-        // publish_employment.belongsTo(brand_role)
+        publish_employment.hasMany(employment)
+        publish_employment.belongsTo(brand_role)
 
-        // switch (selectMsg) {
-        //     case "timeAsc":
-        //         select = "publish_employment.created_at ASC" //时间由远到近
-        //         break
-        //     case "timeDesc":
-        //         select = "publish_employment.created_at DESC" //时间由近到远
-        //         break
-        //     case "levelDesc":
-        //         select = "brand_role.level DESC" // 等级由低到高
-        //         break
-        //     case "levelAsc":
-        //         select = "brand_role.level ASC" // 等级由高到低
-        //         break
-        // }
-
-        // return publish_employment.findAll({
-        //     where: {
-        //         employer_user_account: user_account,
-        //         status: true
-        //     },
-        //     include: [{
-        //         model: brand_role
-        //     }],
-        //     order: select
-        // })
-
+        return publish_employment.findOne({
+            where: {
+                guid: guid
+            },
+            include: [{
+                model: employment
+            }, {
+                model: brand_role
+            }]
+        }).then(function(result) {
+            if (result == null) {
+                return Promise.reject("查找招募详情异常")
+            } else {
+                return result
+            }
+        })
     },
+    closeEmployment(req, res, next) {
+        var guid = req.body.guid
+
+        var publish_employment = require('../../db/models/publish_employment')
+
+        return publish_employment.findOne({
+            where: {
+                guid: guid
+            }
+        }).then(function(result) {
+            if (result == null) {
+                return Promise.reject("查找招募详情异常")
+            } else {
+                result.status = false
+                return result.save()
+            }
+        }).then(function(result) {
+            if (result == null) {
+                return Promise.reject("关闭当前招募失败")
+            } else {
+                return true
+            }
+        })
+    }
 
 }
 
