@@ -413,7 +413,61 @@ var exec = {
                 return result
             }
         })
+    },
+    getCurrentEmploymentList(req, res, next) {
+        var selectMsg = req.body.key
+        var user_account = req.body.user_account
+        var select = null
+
+        var brand_role = require('../../db/models/brand_role')
+        var publish_employment = require('../../db/models/publish_employment')
+
+        publish_employment.belongsTo(brand_role)
+
+        switch (selectMsg) {
+            case "timeAsc":
+                select = "publish_employment.created_at ASC" //时间由远到近
+                break
+            case "timeDesc":
+                select = "publish_employment.created_at DESC" //时间由近到远
+                break
+            case "levelDesc":
+                select = "brand_role.level DESC" // 等级由低到高
+                break
+            case "levelAsc":
+                select = "brand_role.level ASC" // 等级由高到低
+                break
+        }
+
+        return publish_employment.findAll({
+            where: {
+                employer_user_account: user_account,
+                status: true
+            },
+            include: [{
+                model: brand_role
+            }],
+            order: select
+        })
+
+    },
+    CloseOverduePublishEmployemnt(req, res, next) {
+        var delectItemList = req.body.delectItemList
+
+        var publish_employment = require('../../db/models/publish_employment')
+
+        for (var item in delectItemList) {
+            publish_employment.findOne({
+                where: {
+                    guid: delectItemList[item]
+                }
+            }).then(function(result) {
+                result.status = false
+                result.save()
+            })
+        }
     }
+
 }
 
 

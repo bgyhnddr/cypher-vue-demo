@@ -106,6 +106,9 @@
                 } else if (this.$route.name === 'CertificateInfo') {
                     this.ShowBack = true
                     return 'adminBrand'
+                } else if (this.$route.path === 'CurrentEmploymentList') {
+                    this.ShowBack = true
+                    return '当前招募'
                 }
 
             }
@@ -151,6 +154,9 @@
                         this.$route.router.go('/employManagement/audit')
                         return
                     } else if (SecPath == "employmentHistory") {
+                        this.$route.router.go('/employManagement')
+                        return
+                    } else if (SecPath == "currentEmploymentList") {
                         this.$route.router.go('/employManagement')
                         return
                     }

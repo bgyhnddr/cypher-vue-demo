@@ -68,6 +68,7 @@ router.beforeEach((tran) => {
                         case "audit":
                         case "auditInfo":
                         case "employmentHistory":
+                        case "currentEmploymentList":
                             CheckInfo()
                             break
                     }
