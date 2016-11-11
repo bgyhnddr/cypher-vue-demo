@@ -39,9 +39,12 @@ export default {
         return httpRequest.post(path + 'getCurrentList', params)
     },
     closeOverduePublishEmployment(params) {
-        return httpRequest.post(path + 'CloseOverduePublishEmployment', params)
+        return httpRequest.post(path + 'closeOverduePublishEmployment', params)
     },
     getCurrentInfo(params) {
         return httpRequest.post(path + 'getCurrentInfo', params)
+    },
+    closeEmployment(params) {
+        return httpRequest.post(path + 'closeEmployment', params)
     }
 }
