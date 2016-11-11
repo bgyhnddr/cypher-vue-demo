@@ -5,8 +5,8 @@
             <!--header slot-->
             <div class="vux-demo-header-box" slot="header">
                 <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
-                <div slot="left">
-                    <button v-if="ShowBack" @click="onClickBack">返回</button>
+                <div slot="left" v-if="ShowBack">
+                    <button @click="onClickBack">返回</button>
                 </div>
             </div>
             <!--default slot-->
