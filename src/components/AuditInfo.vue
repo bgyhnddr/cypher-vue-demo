@@ -359,7 +359,7 @@ font-family: "微软雅黑";
 .auditinfo-choose p{
 
 position: absolute;
-    z-index: 100000;
+    z-index:0;
     color: #000;
     right: 38%;
         bottom: 1px;

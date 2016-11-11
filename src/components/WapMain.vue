@@ -116,6 +116,11 @@ document.body.style.background = '#f2f2f2'
                     this.ShowBack = true
                     return 'adminBrand'
                 }
+                else if (this.$route.name === 'adminbrand') {
+ document.body.style.background = '#fff' 
+                    this.ShowBack = ture
+                    return 'adminBrand'
+                }
 
             }
         },
