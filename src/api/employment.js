@@ -31,5 +31,14 @@ export default {
     },
     createEmployment(params) {
         return httpRequest.post(path + 'createEmployment', params)
+    },
+    changeHeadImg(params) {
+        return httpRequest.post(path + 'changeHeadImg', params)
+    },
+    getCurrentEmploymentList(params) {
+        return httpRequest.post(path + 'getCurrentEmploymentList', params)
+    },
+    CloseOverduePublishEmployemnt(params) {
+        return httpRequest.post(path + 'CloseOverduePublishEmployemnt', params)
     }
 }

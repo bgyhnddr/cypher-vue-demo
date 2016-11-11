@@ -103,60 +103,91 @@ var exec = {
         var brand_role = require('../../db/models/brand_role')
         var user = require('../../db/models/user')
         var user_role = require('../../db/models/user_role')
+        var agent = require('../../db/models/agent')
+        var agent_brand_role = require('../../db/models/agent_brand_role')
+        var sequelize = require('../../db/sequelize')
 
         employment.hasMany(employment_detail)
+        agent.hasOne(agent_brand_role)
+        agent_brand_role.belongsTo(brand_role)
 
         return Promise.all([
+            //查找是否已提交过招募申请
             employment.findOne({
                 where: {
                     brand_guid: employmentData.publishEmploymentInfo.brand_guid,
-                    employee_user_account: data.account
+                    employee_user_account: data.cellphone
                 }
             }),
+            //查找是否已注册过账号
             user.findOne({
                 where: {
-                    account: data.account
+                    account: data.cellphone
                 }
+            }),
+            //查找品牌商account
+            agent.findOne({
+                include: [{
+                    model: agent_brand_role,
+                    include: [{
+                        model: brand_role,
+                        where: {
+                            level: "0"
+                        },
+                    }],
+                }]
             })
         ]).then(function(result) {
-            if (result[0] != null || result[1] != null) {
+            if (result[2] == null) {
+                return Promise.reject("找不到审核人的信息")
+            } else if (result[0] != null || result[1] != null) {
                 return Promise.reject("您已提交过申请或者已成为该品牌成员，提交申请失败")
             } else {
-                var createList = []
-                for (var item in meta) {
-                    if (item != 'addressTemp') {
-                        createList.push(
-                            employment_detail.create({
-                                employment_guid: guid,
-                                key: item,
-                                value: data[item],
-                            })
-                        )
-                    }
-                }
 
                 var pwd = "";
                 for (var i = 0; i < 8; i++) {
                     pwd += Math.floor(Math.random() * 10);
                 }
 
-                return Promise.all([
-                    employment.create({
-                        guid: guid,
-                        publish_employment_guid: employmentData.publishEmploymentInfo.guid,
-                        employer_user_account: employmentData.publishEmploymentInfo.employer_user_account,
-                        brand_role_code: employmentData.publishEmploymentInfo.brand_role_code,
-                        brand_guid: employmentData.publishEmploymentInfo.brand_guid,
-                        employee_user_account: data.account,
-                        employer_time: employmentData.publishEmploymentInfo.create_time,
-                        deadline: deadline,
-                        status: "未处理"
-                    }),
-                    createList,
-                    user.create({ account: data.account, password: pwd }),
-                    user_role.create({ user_account: data.account, role_code: 'test_role' })
-                ]).then(function(result) {
-                    req.session.pwd = pwd
+                var audit_user_account = result[2].user_account
+
+                return sequelize.transaction().then(function(t) {
+                    return Promise.all([
+                        user.create({ account: data.cellphone, password: pwd }, { transaction: t }),
+                        user_role.create({ user_account: data.cellphone, role_code: 'user' }, { transaction: t }),
+                        employment.create({
+                            guid: guid,
+                            publish_employment_guid: employmentData.publishEmploymentInfo.guid,
+                            employer_user_account: employmentData.publishEmploymentInfo.employer_user_account,
+                            brand_role_code: employmentData.publishEmploymentInfo.brand_role_code,
+                            brand_guid: employmentData.publishEmploymentInfo.brand_guid,
+                            employee_user_account: data.cellphone,
+                            employer_time: employmentData.publishEmploymentInfo.create_time,
+                            audit_user_account: audit_user_account,
+                            deadline: deadline,
+                            status: "未审核"
+                        }, { transaction: t }),
+                        employment_detail.bulkCreate([
+                            { employment_guid: guid, key: 'headImg', value: data['headImg'] },
+                            { employment_guid: guid, key: 'name', value: data['name'] },
+                            { employment_guid: guid, key: 'wechat', value: data['wechat'] },
+                            { employment_guid: guid, key: 'wechat', value: data['wechat'] },
+                            { employment_guid: guid, key: 'cellphone', value: data['cellphone'] },
+                            { employment_guid: guid, key: 'IDType', value: data['IDType'] },
+                            { employment_guid: guid, key: 'IDNumber', value: data['IDNumber'] },
+                            { employment_guid: guid, key: 'address', value: data['address'] },
+                            { employment_guid: guid, key: 'addressDetail', value: data['addressDetail'] }
+                        ], { transaction: t })
+                    ]).then(function() {
+                        t.commit()
+                        req.session.pwd = pwd
+                        return true
+                    }).catch(function(err) {
+                        // err 是事务回调中使用promise链中的异常结果
+                        t.rollback()
+                        return Promise.reject("提交申请失败")
+                    })
+
                 })
             }
         })

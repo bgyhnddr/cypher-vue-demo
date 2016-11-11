@@ -11,10 +11,10 @@ var employment = sequelize.define(
         employer_time: Sequelize.STRING,
         deadline: Sequelize.STRING,
         employee_user_account: Sequelize.STRING,
-        status: { type: Sequelize.STRING, comment: "可填：未处理，已通过，已关闭，打回" },
+        status: { type: Sequelize.STRING, comment: "可填：未审核，已审核" },
         audit_user_account: Sequelize.STRING,
         audit_time: Sequelize.STRING,
-        audit_result: { type: Sequelize.STRING, comment: "可填：成功，失败" },
+        audit_result: { type: Sequelize.STRING, comment: "可填：已通过，已拒绝" },
         reject_reason: Sequelize.STRING
     }, {
         underscored: true

@@ -49,10 +49,7 @@ export function configRouter(router) {
                 },
                 'changepwd': {
                     component: require('../components/ChangeUserPassword.vue')
-                },
-                'test': {
-                    component: require('../components/testPage.vue')
-                },
+                }
             }
         },
         '/homePage': {
@@ -99,6 +96,9 @@ export function configRouter(router) {
                 },
                 'employmentHistory': {
                     component: require('../components/EmploymentHistory.vue')
+                },
+                'currentEmploymentList': {
+                    component: require('../components/CurrentEmploymentList.vue')
                 }
 
             }
@@ -119,6 +119,8 @@ export function configRouter(router) {
                     name: "CertificateInfo",
                     component: require('../components/CertificateInfo.vue')
                 }
+
+
             }
         }
 

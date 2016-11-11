@@ -4,22 +4,24 @@
             <h3>代理申请表</h3>
             <div v-if="!showNextFillModel">
                 <div class="ApplyFor-agent-message">
-                    <p>上级代理:{{employmentData.employerName}}上级授权号{{employmentData.agentGuid}}</p>
+                    <p>上级代理&nbsp;:&nbsp;{{employmentData.employerName}}上级授权号{{employmentData.agentGuid}}</p>
 
-                    <p>您当前代理级别为:<label>{{employmentData.brandRoleName}}</label></p>
+                    <p>您当前代理级别为&nbsp;:&nbsp;<label>{{employmentData.brandRoleName}}</label></p>
                 </div>
-                <div class="ApplyFor-agent-header"> <img class="vux-x-img ximg-demo" :name.sync="meta.headimg" src="/static/TestIMG/upload.png" /></div>
-                <vue-strap-upload :file-id.sync="data.headimg"></vue-strap-upload>
+                <div class="ApplyFor-agent-header" style="display:none"> <img class="vux-x-img ximg-demo" :name.sync="meta.headImg" src="/static/TestIMG/upload.png" /></div>
+               <div class="ApplyFor-agent-header">  <employment-headimg-upload :file-id.sync="data.headImg"></employment-headimg-upload></div>
                 <div class="ApplyFor-agent-input">
                     <group>
-                        <x-input class="weui_cell_primary  applicant-name" title="申请人:" :name.sync="meta.name" :value.sync="data.name" placeholder="申请人姓名" is-type="china-name" :show-clear=false v-ref:name></x-input>
+                        <x-input class="weui_cell_primary  applicant-name" title="申请人&nbsp;:&nbsp;" :name.sync="meta.name" :value.sync="data.name" placeholder="申请人姓名" is-type="china-name" :show-clear=false v-ref:name></x-input>
                     </group>
                     <p class="applicants">*姓名一经审批将不得修改，请慎重填写</p>
 
-                    <x-input class="weui_cell_primary applicant-weixin" type="text" title="微信号:" :name.sync="meta.wechat" :value.sync="data.wechat" placeholder="6-20个字母，数字，下划线或减号" :min="6" :max="20" :show-clear=false v-ref:wechat></x-input>
+                    <x-input class="weui_cell_primary applicant-weixin" type="text" title="微信号&nbsp;:&nbsp;" :name.sync="meta.wechat" :value.sync="data.wechat" placeholder="6-20个字母，数字，下划线或减号" :min="6" :max="20" :show-clear=false v-ref:wechat></x-input>
                     </group>
                     <group>
-                        <x-input class="weui_cell_primary applicant-phone" keyboard="number" title="手机号:" :value.sync="data.account" placeholder="请输入手机号码" is-type="china-mobile" :show-clear=false v-ref:account></x-input>
+
+                        <x-input class="weui_cell_primary applicant-phone" keyboard="number" title="手机号&nbsp;:&nbsp;" :value.sync="data.cellphone" placeholder="请输入手机号码" is-type="china-mobile" :show-clear=false v-ref:cellphone></x-input>
+
 
                     </group>
                 </div>
@@ -60,7 +62,7 @@
     import authAPI from '../api/auth'
     import applyEmploymentAPI from '../api/applyEmployment'
     import filterAddress from '../extend/filter-address'
-    import VueStrapUpload from './extend/vue-strap-upload'
+    import EmploymentHeadimgUpload from './extend/employment-headimg-upload'
 
     export default {
         components: {
@@ -70,7 +72,7 @@
             Selector,
             Address,
             XTextarea,
-            VueStrapUpload,
+            EmploymentHeadimgUpload,
             Cell
         },
         data() {
@@ -186,13 +188,13 @@
             },
             goFillEmployment2() {
                 console.log("打开第二部分表格")
-                var reg = /^[a-z]+[a-zA-Z0-9_]*$/ //微信号
+                var reg = /^[a-zA-Z]+[a-zA-Z0-9_]*$/ //微信号
                 var reg2 = /[\u4e00-\u9fa5]/ //中文
 
                 if (!this.$refs.name.valid || !reg2.test(this.data.name)) {
-                    window.alert("申请人填写错误，请填写完整，再跳转到下一页")
+                    window.alert("申请人需填写中文，请填写完整，再跳转到下一页")
                 } else if (!this.$refs.wechat.valid || !reg.test(this.data.wechat)) {
-                    window.alert("微信号填写错误，请填写完整，再跳转到下一页")
+                    window.alert("微信号需填写以字母开头，由6-20个字母，数字，下划线或减号组成的字符串，请填写完整，再跳转到下一页")
                 } else if (!this.$refs.cellphone.valid) {
                     window.alert("手机号填写错误，请填写完整，再跳转到下一页")
                 } else if (this.data.headImg == null) {
@@ -291,6 +293,12 @@
         margin-top: 2%;
     }
     
+    .ApplyFor-agent-header button {
+        width: 100%;
+        background: none;
+        border: 0;
+    }
+    
     .ApplyFor-agent-header img {
         width: 31%;
         height: auto;
@@ -298,6 +306,10 @@
     
     .ApplyFor-agent-input .weui_cell {
         padding: 2% 0;
+    }
+    
+    .ApplyFor-agent-input .weui_cell:before {
+        border-top: 0
     }
     
     .ApplyFor-agent-input label.weui_label {
@@ -398,6 +410,7 @@
         height: 2.5em;
         line-height: 2.5;
         border: 1px solid #d3d1d1;
+        position: relative;
     }
     
     .certificate-input {
@@ -438,5 +451,10 @@
     .certificate [class*=" weui_icon_"]:before,
     [class^=weui_icon_]:before {
         margin-right: 0.5em;
+    }
+    
+    .certificate .weui_cell_ft.weui_cell_primary.with_arrow span:nth-child(2) {
+        position: absolute;
+        left: 5%;
     }
 </style>

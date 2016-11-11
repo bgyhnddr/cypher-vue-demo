@@ -1,89 +1,48 @@
 ﻿<template>
-    <div>
-        <group>
-<table border="0" class="platform-message" cellspacing=0 cellpadding=0> 
-<tbody>
-<tr>
-<td  width="22%"> <img class="vux-x-img ximg-demo" :src.sync="user.userHeadimgHref" alt="用户头像"/></td>
-<td >{{user.brandName}}</td>
-<td> </td>
-<td><p>存款&nbsp;:&nbsp;<label>金额数</label></p><p>存货&nbsp;:&nbsp;<label>存货数量</p></label></td>
-</tr>
-
-</tbody>
-</table>
-            
-        </group>
-
-        <group>
-<div class="search">
-            <x-input class="weui_cell_primary" title="" :value.sync="keyword" placeholder="输入需要查看的功能名称" :show-clear=false ></x-input>
+<div>
+    <group>
+        <table border="0" class="platform-message" cellspacing=0 cellpadding=0>
+            <tbody>
+                <tr>
+                    <td width="22%"> <img class="vux-x-img ximg-demo" :src.sync="user.userHeadimgHref" alt="用户头像" /></td>
+                    <td>{{user.brandName}}</td>
+                    <td> </td>
+                    <td>
+                        <p>存款&nbsp;:&nbsp;<label>金额数</label></p>
+                        <p>存货&nbsp;:&nbsp;<label>存货数量</p></label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </group>
+    <group>
+        <div class="search">
+            <x-input class="weui_cell_primary" title="" :value.sync="keyword" placeholder="输入需要查看的功能名称" :show-clear=false></x-input>
             <div class="search-button"><button class="weui_btn weui_btn_primary" @click="search">.</button></div>
+        </div>
+    </group>
+    <div>
+<div class="homepage-icon">
+    <flexbox :gutter="0" wrap="wrap">
+        <flexbox-item :span="1/3" v-for="item in btn_list">
+            <div class="flex-demo">
+                 <button v-link="item.link">
+                    <img :src.sync="item.iconhref" alt="icon" v-show="item.isShow">
+                    <h4 class="weui_media_title">{{item.title}}</h4>
+                </button>
+            </div>
+        </flexbox-item>
+    </flexbox>
 </div>
-
-        </group>
-        <div>
-            <button v-link="btn_list[0].link">
-                <img :src.sync="btn_list[0].iconhref" alt="icon" v-show="btn_list[0].isShow">
-                <h4 class="weui_media_title">{{btn_list[0].title}}</h4>
-            </button>
-         </div>
-         <div>
-            <button v-link="btn_list[1].link">
-                <img :src.sync="btn_list[1].iconhref" alt="icon" v-show="btn_list[1].isShow">
-                <h4 class="weui_media_title">{{btn_list[1].title}}</h4>
-            </button>
-         </div>
-         <div>
-            <button v-link="btn_list[2].link">
-                <img :src.sync="btn_list[2].iconhref" alt="icon" v-show="btn_list[2].isShow">
-                <h4 class="weui_media_title">{{btn_list[2].title}}</h4>
-            </button>
-         </div>
-         <div>
-            <button v-link="btn_list[3].link">
-                <img :src.sync="btn_list[3].iconhref" alt="icon" v-show="btn_list[3].isShow">
-                <h4 class="weui_media_title">{{btn_list[3].title}}</h4>
-            </button>
-         </div>
-         <div>
-            <button v-link="btn_list[4].link">
-                <img :src.sync="btn_list[4].iconhref" alt="icon" v-show="btn_list[4].isShow">
-                <h4 class="weui_media_title">{{btn_list[4].title}}</h4>
-            </button>
-         </div>
-         <div>
-            <button v-link="btn_list[5].link">
-                <img :src.sync="btn_list[5].iconhref" alt="icon" v-show="btn_list[5].isShow">
-                <h4 class="weui_media_title">{{btn_list[5].title}}</h4>
-            </button>
-         </div>
-         <div>
-            <button v-link="btn_list[6].link">
-                <img :src.sync="btn_list[6].iconhref" alt="icon" v-show="btn_list[6].isShow">
-                <h4 class="weui_media_title">{{btn_list[6].title}}</h4>
-            </button>
-         </div>
-         <div>
-            <button v-link="btn_list[7].link">
-                <img :src.sync="btn_list[7].iconhref" alt="icon" v-show="btn_list[7].isShow">
-                <h4 class="weui_media_title">{{btn_list[7].title}}</h4>
-            </button>
-         </div>
-          <div>
-            <button v-link="btn_list[8].link">
-                <img :src.sync="btn_list[8].iconhref" alt="icon" v-show="btn_list[8].isShow">
-                <h4 class="weui_media_title">{{btn_list[8].title}}</h4>
-            </button>
-         </div>
-
-	</div>
+</div>
 </template>
 
 <script>
     import {
         Group,
-        XInput
+        XInput,
+        Flexbox,
+        FlexboxItem
     } from 'vux'
     import authAPI from '../api/auth'
     import employmentAPI from '../api/employment'
@@ -92,53 +51,57 @@
     export default {
         components: {
             Group,
-            XInput
+            XInput,
+            Flexbox,
+            FlexboxItem
         },
         data() {
             return {
                 btn_list: [{
                     title: '货品销售',
                     link: '',
-                    iconhref: '/static/icon/audit.png',
+                    iconhref: '/static/TestIMG/sell.png',
                     isShow: true
                 }, {
                     title: '货品查验',
                     link: '',
-                    iconhref: null,
+                    iconhref: '/static/TestIMG/inspection.png',
                     isShow: true
                 }, {
                     title: '成员招募',
                     link: '/employManagement',
-                    iconhref: null,
+                    iconhref:'/static/TestIMG/recruiting.png',
                     isShow: true
                 }, {
                     title: '订货管理',
                     link: '',
-                    iconhref: '',
+                    iconhref:'/static/TestIMG/order.png',
                     isShow: true
                 }, {
                     title: '我的库存',
                     link: '',
-                    iconhref: '',
+                    iconhref: '/static/TestIMG/inventory.png',
                     isShow: true
                 }, {
                     title: '我的团队',
                     link: '',
-                    iconhref: '',
+                    iconhref: '/static/TestIMG/team.png',
                     isShow: true
                 }, {
                     title: '我的货品',
                     link: '',
-                    iconhref: '',
+                    iconhref: '/static/TestIMG/goods.png',
                     isShow: true
                 }, {
                     title: '我的账户',
                     link: '/accountManagement',
-                    iconhref: '',
+                    iconhref: '/static/TestIMG/account.png',
                     isShow: true
                 }, {
-                    title: '更多功能，敬请期待',
-                    isShow: false
+                    title: '...',
+                    link: '',
+                    iconhref: '/static/TestIMG/more.png',
+                    isShow:  true
                 }],
                 keyword: null,
                 user: {
@@ -211,6 +174,8 @@
     }
 </script>
 <style lang="less">
+span.headerTransition-transition {
+    font-size: 14px;}
     div.icon_btn {
         width: 110px;
     }
@@ -232,7 +197,10 @@
     table.platform-message label {
         color: #646464
     }
-    
+    table.platform-message p:nth-child(1){
+       
+        margin-bottom: 5%;
+    }
     .search .weui_cell {
         padding: 9px
     }
@@ -276,4 +244,49 @@
         font-size: 14px;
         color: #f43530;
     }
+/*九宫格*/
+.homepage-icon{
+background: #fff;
+    border-top: 1px solid #d3d1d1;
+ border-bottom: 1px solid #d3d1d1;
+}
+.homepage-icon .vux-flexbox-item .flex-demo {
+border-right: 1px solid #d3d1d1;
+border-bottom: 1px solid #d3d1d1;
+padding: 16% 0 25% 0;
+font-size: 14px;
+    color: #292832;
+}
+.homepage-icon .vux-flexbox-item .flex-demo h4{
+font-family: "微软雅黑";
+font-weight: normal;
+    margin-top: -5%;
+}
+.homepage-icon .vux-flexbox-item:last-child .flex-demo h4{
+  color:#fff
+
+}
+.homepage-icon .vux-flexbox-item:nth-child(3) .flex-demo,
+.homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo,
+.homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo {
+border-right: 0;
+
+}
+.homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo,
+.homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo,
+.homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo {
+border-bottom: 0;
+
+}
+.homepage-icon .vux-flexbox-item button{
+
+background: #fff;
+    border: 0;
+    width: 100%;
+
+}
+.homepage-icon .vux-flexbox-item button img{
+    width: 39%;
+}
+
 </style>
