@@ -62,7 +62,7 @@
                     console.log("用户账号:" + result.name)
 
                     //改变列表内容
-                    employmentAPI.getCurrentEmploymentList({
+                    employmentAPI.getCurrentList({
                         key: val,
                         user_account: result.name
                     }).then(function(result) {
@@ -110,7 +110,14 @@
                 var hour = parseInt(remainingSec / 3600 / 1000)
                 var min = parseInt((remainingSec - hour * 3600 * 1000) / (1000 * 60))
                 var sec = parseInt((remainingSec - hour * 3600 * 1000 - min * 1000 * 60) / 1000)
-                return hour + " h " + min + " m " + sec + " s"
+
+                if (hour == 0) {
+                    return min + " m " + sec + " s"
+                } else if (hour == 0 && min == 0) {
+                    return sec + " s"
+                } else {
+                    return hour + " h " + min + " m " + sec + " s"
+                }
             }
         },
         ready() {

@@ -112,9 +112,12 @@ document.body.style.background = '#f2f2f2'
                 } else if (this.$route.name === 'CertificateInfo') {
                     this.ShowBack = true
                     return 'adminBrand'
-                } else if (this.$route.path === 'CurrentEmploymentList') {
+                } else if (this.$route.path === 'currentList') {
                     this.ShowBack = true
                     return '当前招募'
+                } else if (this.$route.name === 'CurrentInfo') {
+                    this.ShowBack = true
+                    return '查看详情'
                 }
 
             }
@@ -162,8 +165,11 @@ document.body.style.background = '#f2f2f2'
                     } else if (SecPath == "employmentHistory") {
                         this.$route.router.go('/employManagement')
                         return
-                    } else if (SecPath == "currentEmploymentList") {
+                    } else if (SecPath == "currentList") {
                         this.$route.router.go('/employManagement')
+                        return
+                    } else if (SecPath == "currentInfo") {
+                        this.$route.router.go('/employManagement/currentList')
                         return
                     }
                 } else if (FirstPath == "accountManagement") {
