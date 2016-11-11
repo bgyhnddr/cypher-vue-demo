@@ -118,11 +118,11 @@
                 var sec = parseInt((remainingSec - hour * 3600 * 1000 - min * 1000 * 60) / 1000)
 
                 if (hour == 0) {
-                    return min + " m " + sec + " s"
+                    return min + " 分钟 " + sec + " 秒"
                 } else if (hour == 0 && min == 0) {
-                    return sec + " s"
+                    return sec + " 秒"
                 } else {
-                    return hour + " h " + min + " m " + sec + " s"
+                    return hour + " 小时 " + min + " 分钟 " + sec + " 秒"
                 }
             }
         },
