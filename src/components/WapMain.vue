@@ -90,7 +90,7 @@
 
                 } else if (this.$route.path === '/employManagement/audit') {
                     this.ShowBack = true
-document.body.style.background = '#f2f2f2'
+                    document.body.style.background = '#f2f2f2'
                     return '资料审核'
                 } else if (this.$route.name === 'AuditInfo') {
                     this.ShowBack = true
@@ -98,32 +98,31 @@ document.body.style.background = '#f2f2f2'
                         return '审核详情'
                     } else if (this.$route.params.locate == 'history') {
                         return '招募详情'
-                    document.body.style.background = '#f2f2f2'
+                        document.body.style.background = '#f2f2f2'
                     }
                 } else if (this.$route.path === '/employManagement/employmentHistory') {
                     this.ShowBack = true
                     return '招募历史'
                 } else if (this.$route.path === '/accountManagement') {
                     this.ShowBack = true
- document.body.style.background = '#f2f2f2'
+                    document.body.style.background = '#f2f2f2'
                     return '我的账号'
-               
+
                 } else if (this.$route.name === 'MyCertificate') {
                     this.ShowBack = true
-document.body.style.background = '#f2f2f2'
+                    document.body.style.background = '#f2f2f2'
                     return '我的证书'
                 } else if (this.$route.name === 'CertificateInfo') {
                     this.ShowBack = true
                     return 'adminBrand'
-                } else if (this.$route.path === 'currentList') {
+                } else if (this.$route.path === '/employManagement/currentList') {
                     this.ShowBack = true
                     return '当前招募'
                 } else if (this.$route.name === 'CurrentInfo') {
                     this.ShowBack = true
                     return '查看详情'
-                }
-                else if (this.$route.name === 'adminbrand') {
- document.body.style.background = '#fff' 
+                } else if (this.$route.name === 'adminbrand') {
+                    document.body.style.background = '#fff'
                     this.ShowBack = ture
                     return 'adminBrand'
                 }
@@ -353,24 +352,27 @@ document.body.style.background = '#f2f2f2'
     .fate-leave {
         opacity: 0;
     }
-.onclick-back {
- position: absolute;
-    top: 21%;
-    left: 4%;
-    font-size: 14px;
-    font-family: "微软雅黑";
-    width: 20%;
-    height: 61%;
-    line-height: 2em;
-    background: url(/static/TestIMG/back.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    padding-left: 7%;}
-.onclick-back button{
-    font-size: 14px;
-    font-family: "微软雅黑";
-    background: none;
-    border: 0;
-color: #fff;
-}
+    
+    .onclick-back {
+        position: absolute;
+        top: 21%;
+        left: 4%;
+        font-size: 14px;
+        font-family: "微软雅黑";
+        width: 20%;
+        height: 61%;
+        line-height: 2em;
+        background: url(/static/TestIMG/back.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+        padding-left: 7%;
+    }
+    
+    .onclick-back button {
+        font-size: 14px;
+        font-family: "微软雅黑";
+        background: none;
+        border: 0;
+        color: #fff;
+    }
 </style>
