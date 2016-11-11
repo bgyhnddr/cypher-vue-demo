@@ -35,10 +35,13 @@ export default {
     changeHeadImg(params) {
         return httpRequest.post(path + 'changeHeadImg', params)
     },
-    getCurrentEmploymentList(params) {
-        return httpRequest.post(path + 'getCurrentEmploymentList', params)
+    getCurrentList(params) {
+        return httpRequest.post(path + 'getCurrentList', params)
     },
-    CloseOverduePublishEmployemnt(params) {
-        return httpRequest.post(path + 'CloseOverduePublishEmployemnt', params)
+    closeOverduePublishEmployment(params) {
+        return httpRequest.post(path + 'CloseOverduePublishEmployment', params)
+    },
+    getCurrentInfo(params) {
+        return httpRequest.post(path + 'getCurrentInfo', params)
     }
 }
