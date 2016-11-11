@@ -123,8 +123,11 @@
                     return '查看详情'
                 } else if (this.$route.name === 'adminbrand') {
                     document.body.style.background = '#fff'
-                    this.ShowBack = ture
+                    this.ShowBack = true
                     return 'adminBrand'
+                } else if (this.$route.path === '/accountManagement/cheakPwd') {
+                    this.ShowBack = true
+                    return '使用登录密码'
                 }
 
             }
@@ -188,6 +191,9 @@
                         return
                     } else if (SecPath == "CertificateInfo") {
                         history.back()
+                        return
+                    } else if (SecPath == "cheakPwd") {
+                        this.$route.router.go('/accountManagement')
                         return
                     }
                 }
