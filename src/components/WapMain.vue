@@ -78,10 +78,10 @@
                     return this.$route.params.brandName
                 } else if (this.$route.name === 'FillInEmployment') {
                     document.body.style.background = '#f2f2f2'
-                    this.ShowBack = true
+                    this.ShowBack = false
                     this.$on('fillInEmployment_goBack', function(flag) {
                         console.log("event" + "==========" + flag)
-                        this.leftOptions.showBack = flag
+                        this.ShowBack = flag
                     })
                     return this.$route.params.brandName + "——代理授权申请"
                 } else if (this.$route.name === 'EmploymentSubmission') {
@@ -115,6 +115,12 @@ document.body.style.background = '#f2f2f2'
                 } else if (this.$route.name === 'CertificateInfo') {
                     this.ShowBack = true
                     return 'adminBrand'
+                } else if (this.$route.path === 'currentList') {
+                    this.ShowBack = true
+                    return '当前招募'
+                } else if (this.$route.name === 'CurrentInfo') {
+                    this.ShowBack = true
+                    return '查看详情'
                 }
                 else if (this.$route.name === 'adminbrand') {
  document.body.style.background = '#fff' 
@@ -166,6 +172,12 @@ document.body.style.background = '#f2f2f2'
                         return
                     } else if (SecPath == "employmentHistory") {
                         this.$route.router.go('/employManagement')
+                        return
+                    } else if (SecPath == "currentList") {
+                        this.$route.router.go('/employManagement')
+                        return
+                    } else if (SecPath == "currentInfo") {
+                        this.$route.router.go('/employManagement/currentList')
                         return
                     }
                 } else if (FirstPath == "accountManagement") {

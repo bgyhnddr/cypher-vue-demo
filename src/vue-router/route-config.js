@@ -96,7 +96,15 @@ export function configRouter(router) {
                 },
                 'employmentHistory': {
                     component: require('../components/EmploymentHistory.vue')
+                },
+                'currentList': {
+                    component: require('../components/CurrentEmploymentList.vue')
+                },
+                'currentInfo/:guid': {
+                    name: "CurrentInfo",
+                    component: require('../components/CurrentEmploymentInfo.vue')
                 }
+
 
             }
         },
@@ -116,6 +124,8 @@ export function configRouter(router) {
                     name: "CertificateInfo",
                     component: require('../components/CertificateInfo.vue')
                 }
+
+
             }
         }
 
