@@ -123,6 +123,9 @@ export function configRouter(router) {
                 'CertificateInfo/:account/:locate': {
                     name: "CertificateInfo",
                     component: require('../components/CertificateInfo.vue')
+                },
+                'cheakPwd': {
+                    component: require('../components/CheakPwd.vue')
                 }
 
 

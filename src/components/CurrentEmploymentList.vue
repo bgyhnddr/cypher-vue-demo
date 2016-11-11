@@ -1,7 +1,7 @@
 <template>
   <div>
     <group>
-      <selector title="" value="timeDesc" :options="selectList" @on-change="onChange"></selector>
+      <selector title="" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;--排序--" :options="selectList" @on-change="onChange"></selector>
     </group>
     <group>
          <a v-for="item in data" class="weui_cell a-li a-li-first"  v-link="{path: '/employManagement/currentInfo/'+ item.guid}" >

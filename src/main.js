@@ -78,6 +78,7 @@ router.beforeEach((tran) => {
                         case undefined:
                         case "MyCertificate":
                         case "CertificateInfo":
+                        case "cheakPwd":
                             tran.next()
                             break
                     }
