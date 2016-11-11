@@ -19,5 +19,8 @@ export default {
     },
     CheckUserBrand() {
         return httpRequest.post(path + 'CheckUserBrand')
+    },
+    GetVerificationCode(params) {
+        return httpRequest.post(path + 'GetVerificationCode', params)
     }
 }

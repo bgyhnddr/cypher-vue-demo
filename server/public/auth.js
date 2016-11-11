@@ -132,6 +132,19 @@ var exec = {
                 return false
             }
         })
+    },
+    GetVerificationCode(req, res, next) {
+        var soap = require('soap')
+        var phone = req.body.phone
+        var url = 'http://sdk4report.eucp.b2m.cn:8080/sdk/SDKService?wsdl'
+        var args = { arg0: "6SDK-EMY-6688-KIXRR", arg1: "709394" }
+        soap.WSDL.prototype.ignoredNamespaces = ['xs', 'xsd']
+        soap.createClient(url, function(err, client) {
+            client.getBalance(args, function(err, result) {
+                // console.log(JSON.stringify(result))
+                console.log(result)
+            })
+        })
     }
 }
 
