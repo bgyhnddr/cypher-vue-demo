@@ -22,5 +22,11 @@ export default {
     },
     GetVerificationCode(params) {
         return httpRequest.post(path + 'GetVerificationCode', params)
+    },
+    GetSMSBalance() {
+        return httpRequest.post(path + 'GetSMSBalance')
+    },
+    CommitVerification(params) {
+        return httpRequest.post(path + 'CommitVerification', params)
     }
 }

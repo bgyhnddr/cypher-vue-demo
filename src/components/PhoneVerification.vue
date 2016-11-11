@@ -10,7 +10,7 @@
                 </group>-->
                 <group class="weui_cells_form">
                     <x-input title="验证码" class="weui_vcode" :value.sync="VerificationCode" placeholder="请输入验证码">
-                        <x-button slot="right" type="default" @click="GetVerificationCode">发送验证码</x-button>
+                        <x-button slot="right" type="default" @click="GetVerificationCode">{{BtnName}}</x-button>
                     </x-input>
                 </group>
 			</div>
@@ -40,6 +40,8 @@
     export default {
         data() {
             return {
+                BtnName: "发送验证码",
+                BtnTime: 60,
                 cellphone: "",
                 VerificationCode: "",
                 show: false,
@@ -66,10 +68,22 @@
                     phone: that.cellphone
                 }).then(function(result) {
                     console.log(result)
+                }).catch(function(err) {
+                    console.log(err)
+                    that.serverMsg = err
                 })
             },
             CommitVerification() {
                 var that = this
+                authAPI.CommitVerification({
+                    phone: that.cellphone,
+                    code: that.VerificationCode
+                }).then(function(result) {
+                    console.log(result)
+                }).catch(function(err) {
+                    console.log(err)
+                    that.serverMsg = err
+                })
             }
         },
         ready() {
