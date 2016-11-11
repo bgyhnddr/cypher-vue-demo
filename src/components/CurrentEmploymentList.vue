@@ -1,10 +1,11 @@
-<template>
-  <div>
+﻿<template>
+  <div class="">
     <group>
       <selector title="" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;--排序--" :options="selectList" @on-change="onChange"></selector>
     </group>
+<div class="current-list">
     <group>
-         <a v-for="item in data" class="weui_cell a-li a-li-first"  v-link="{path: '/employManagement/currentInfo/'+ item.guid}" >
+         <a v-for="item in data" class="weui_cell a-li a-li-first current-list-list"  v-link="{path: '/employManagement/currentInfo/'+ item.guid}" >
             <div class="weui_cell_bd weui_cell_primary">
                 <span>招募等级：{{item.brand_role.name}}</span>
                 <p></p>
@@ -14,6 +15,7 @@
             </div>
          </a>
     </group>
+</div>
 </div>
 </template>
 
@@ -130,5 +132,34 @@
     }
 </script>
 <style>
+.current-list a.current-list-list {
+    background: #fff;
+    margin: 3% 0;
+    border-top: 1px solid #d3d1d1;
+    border-bottom: 1px solid #d3d1d1;
+    position: relative;
+    padding: 3px 15px 3px 15px;
+    line-height: 1.2em;
+}
 
+.current-list .weui_cell:before{
+
+  border-top:0;
+
+
+
+}
+.current-list .weui_cell_bd.weui_cell_primary span{
+
+    line-height: 1.8em;
+    font-size: 14px;
+    font-family: "微软雅黑";
+
+}
+.current-list .weui_cell_bd.weui_cell_primary span:nth-chlid(1){
+
+    line-height: 1.3em;
+
+
+}
 </style>
