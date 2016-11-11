@@ -266,14 +266,14 @@ var exec = {
                     term_from: result.employer_time,
                     term_to: term
                 }),
-                user.create({
-                    account: result.employee_user_account,
-                    password: "123"
-                }),
-                user_role.create({
-                    user_account: result.employee_user_account,
-                    role_code: "user"
-                }),
+                // user.create({
+                //     account: result.employee_user_account,
+                //     password: "123"
+                // }),
+                // user_role.create({
+                //     user_account: result.employee_user_account,
+                //     role_code: "user"
+                // }),
                 agent.create({
                     user_account: result.employee_user_account,
                     //guid test
