@@ -132,7 +132,75 @@ var exec = {
                 return false
             }
         })
+    },
+    GetVerificationCode(req, res, next) {
+
+        var user = require('../../db/models/user')
+
+        var soap = require('soap')
+        var phone = [req.body.phone]
+        var Randnum = ""
+        for (var i = 0; i < 6; i++) {
+            Randnum += Math.floor(Math.random() * 10);
+        }
+        var url = 'http://sdk4report.eucp.b2m.cn:8080/sdk/SDKService?wsdl'
+        var args = {
+            arg0: "6SDK-EMY-6688-KIXRR",
+            arg1: "709394",
+            arg2: null,
+            arg3: phone,
+            arg4: "【Cypher】验证码：" + Randnum,
+            arg5: null,
+            arg6: "GBK",
+            arg7: 5,
+            arg8: 123
+        }
+
+        return user.findOne({
+            where: {
+                account: phone
+            }
+        }).then(function(result) {
+            if (result == null) {
+                return Promise.reject("账号不存在")
+            } else {
+                // soap.WSDL.prototype.ignoredNamespaces = ['xs', 'xsd']
+                // soap.createClient(url, function(err, client) {
+                //     client.sendSMS(args, function(err, result) {
+                //         console.log(result)
+                //     })
+                // })
+                req.session.UserPhone = phone
+                req.session.VerificationCode = Randnum
+                console.log(Randnum)
+            }
+
+        })
+        
+
+    },
+    GetSMSBalance(req, res, next) {
+        var soap = require('soap')
+        var phone = req.body.phone
+        var url = 'http://sdk4report.eucp.b2m.cn:8080/sdk/SDKService?wsdl'
+        var args = { arg0: "6SDK-EMY-6688-KIXRR", arg1: "709394" }
+        soap.WSDL.prototype.ignoredNamespaces = ['xs', 'xsd']
+        soap.createClient(url, function(err, client) {
+            client.getBalance(args, function(err, result) {
+                console.log(result)
+            })
+        })
+    },
+    CommitVerification(req, res, next) {
+        var phone = req.body.phone
+        var VerificationCode = req.body.code
+
+        if (phone == req.session.UserPhone && VerificationCode == req.session.VerificationCode) {
+            return "success"
+        }
+
     }
+
 }
 
 

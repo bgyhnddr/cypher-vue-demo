@@ -128,6 +128,9 @@
                 } else if (this.$route.path === '/accountManagement/cheakPwd') {
                     this.ShowBack = true
                     return '使用登录密码'
+                } else if (this.$route.name === 'PhoneVerification') {
+                    this.ShowBack = true
+                    return '发送验证码'
                 }
 
             }
@@ -147,6 +150,14 @@
                     if (SecPath == "changepwd") {
                         this.$route.router.go('/accountManagement')
                         return
+                    } else if (SecPath == "PhoneVerification") {
+                        if (this.$route.params.locate == 'login') {
+                            this.$route.router.go('/index')
+                            return
+                        } else if (this.$route.params.locate == 'account') {
+                            this.$route.router.go('/accountManagement')
+                            return
+                        }
                     }
                 } else if (FirstPath == "homePage") {
                     if (SecPath == "search") {
