@@ -1,29 +1,34 @@
-<template>
+﻿<template>
     <div>
 <div class="brandauthorization-bac">
-<div class="brandauthorization">
+<div class="brandauthorizations">
 <div class="brandauthorization-img">
-        <img class="vux-x-img ximg-demo" alt="品牌logo" src="/static/TestIMG/brand_logo_href.png"/>
-        <p>授权证书</p>
+        <p class="brand-logo"><img class="vux-x-img ximg-demo" alt="品牌logo" src="/static/TestIMG/brand_logo_href.png"/></p>
+        <p><img src="/static/TestIMG/authorization.png" class="authorization" /></p>
 </div>
         <div>
-            <p>兹授权</p>
+            <h3>兹授权</h3>
      <table boder=0 class="personal-identity">
 
 
-            <tr><th>姓名</th><th>{{auditInfo.name}}</th><th rowspan="3"><img class="vux-x-img ximg-demo" alt="授权者头像" :src.sync="auditInfo.headImg"/></th></tr>
-           <tr><th> 微信</th><th>{{auditInfo.wechat}}</th></tr>
-            <tr><th>身份证</th><th>4404xxxxxxxxxxxxx</th></tr>
+            <tr><td width=18%;>姓名</td><td>{{auditInfo.name}}</td><td rowspan="3"><img class="vux-x-img ximg-demo" alt="授权者头像" :src.sync="auditInfo.headImg"/></td></tr>
+           <tr><td> 微信</th><td>{{auditInfo.wechat}}</td></tr>
+            <tr><td>身份证</th><td>4404xxxxxxxxxxxxx</td></tr>
+<tr>
+                                <td height="6px"></td>
+                                <td></td>
+                            </tr>
             
 </table>
-            <p>为<label>adminBrand</label><label>{{auditInfo.agent_level}}</label></p>
-            <p>允许其在网络上销售<label>adminBrand</label><label>旗下产品</label></p>
-            <p>授权编号<label>A111</label></p>
+           <div class="set-agent ">为<label>adminBrand</label><label>{{auditInfo.agent_level}}</label></div>
+           <div class="allow-agent">允许其在网络上销售<label>adminBrand</label><label>旗下产品</label></div>
+            <div class="agent-message">
+           <p>授权编号<label>A111</label></p>
             <p>授权期限<label>{{auditInfo.term_from}}</label>至<label>{{auditInfo.term_to}}</label></p>
-            <p>备注：本授权书以正本为有效文本，不得影印，涂改，转让。A公司有此授权书最终解释权。</p>
-            <p>授权单位<label>A公司</label></p>
-        </div>
-    </div></div></div>
+           </div>
+            <p class="agent-unit ">授权单位<label class="color-gray">A公司</label></p>
+        
+    </div></div></div></div>
 </template>
 <script>
     import employAPI from '../api/employment'
@@ -121,19 +126,87 @@
     
     .brandauthorization-bac {
         background: url(/static/TestIMG/PowerOfAttorney-bac.png) no-repeat;
-        background-size: cover;
+        background-size: 100%;
+        width: 98%;
+        margin: 3% auto;
     }
     
-    .brandauthorization {
-        width: 69%;
+    .brandauthorizations {
+        width: 75%;
         margin: auto;
-        padding: 23% 13%;
-        font-size: 10px;
+        padding: 13% 0%;
+        font-size: 0.3em;
+        color: #3f3a36;
+    }
+    
+    .brandauthorization-img .brand-logo img {
+        width: 60%;
+        height: auto;
+    }
+    
+    .brandauthorization-img h3 {
+        font-family: " 微软雅黑";
+    }
+    
+    .authorization {
+        width: 60%;
+        height: auto;
     }
     
     .brandauthorization-img {
         text-align: center;
     }
     
-    .personal-identity {}
+    table.personal-identity {
+        font-family: "微软雅黑";
+        width: 100%;
+        margin: auto;
+    }
+    
+    table.personal-identity tbody tr td {
+        font-family: "微软雅黑";
+    }
+    
+   table.personal-identity tbody tr td img {
+        width: 74%;
+    height: auto;
+    margin-right: 18%;
+   min-height: 76px;
+    }
+    
+    .color-gray {
+        color: #57534d;
+    }
+    
+    .set-agent {
+        font-family: "微软雅黑";
+        text-align: center;
+    }
+    
+    .set-agent label {
+        font-size: 12px!important;
+        color: #36bdaf;
+        font-family: "微软雅黑";
+    }
+    
+    .allow-agent {
+        text-align: center;
+        font-family: "微软雅黑";
+    }
+    
+    .agent-message {
+         margin: 8% 0 10% 0;
+        text-align: left;
+    }
+    
+    .agent-message p {
+        text-align: left;
+        font-family: "微软雅黑";
+    }
+    
+    .agent-unit {
+        font-family: "微软雅黑";
+        text-align: right;
+      margin-bottom: 29%
+    }
 </style>
