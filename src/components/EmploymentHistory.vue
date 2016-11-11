@@ -1,8 +1,11 @@
-<template>
+﻿<template>
   <div>
+<div class="history-button">
     <flexbox-item>
         <x-button type="default" @click="ShowFilterBox">筛选</x-button>
     </flexbox-item>
+</div>
+<div class="history-message">
     <group>
         <cell v-for="item in items">
             <div slot="icon">申请人：{{item.employment_details[0].value}}</div>
@@ -11,6 +14,7 @@
             <x-button mini v-link="{path: '/employManagement/auditInfo/'+item.employee_user_account+'/'+item.guid+'/'+item.brand_guid+'/history'}">查看</x-button>
         </cell>
     </group>
+</div>
     <popup :show.sync="show">
         <div>
             <group title="代理等级">
@@ -144,3 +148,59 @@
         }
     }
 </script>
+<style>
+.history-button {
+       position: absolute;
+    z-index: 1000;
+    right: 5%;
+    width: 22%;
+    top: 8%;
+}
+.history-button  button.weui_btn, input.weui_btn
+{
+      line-height: 1.8;
+    font-size: 13px;
+    font-family: "微软雅黑";
+    color: #000;
+    border-radius: 0;
+}
+.history-button  .weui_btn:after{
+    border-radius: 0;
+
+
+}
+
+/*信息*/
+
+
+.history-message .weui_cell{
+    background: #fff;
+    border-bottom: 1px solid #d3d1d1;
+    border-top: 1px solid #d3d1d1;
+    font-size: 14px;
+    margin-top: 3%;
+    color: #000;
+    font-family: "微软雅黑";
+    line-height: 1.8em;
+    padding: 0px 15px;
+}
+.history-message .weui_cell_hd {
+    width: 100%;
+    
+}
+.history-message .weui_btn.weui_btn_mini{
+   position: absolute;
+    right: 4%;
+    width: 24%;
+    border-radius: 2px;
+    font-family: "微软雅黑";
+    background: #5091d5;
+    color: #fff;
+    top: 33%;
+    font-size: 14px;
+}
+
+.history-message .weui_btn:after{
+border:0
+}
+</style>

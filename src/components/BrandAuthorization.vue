@@ -221,6 +221,7 @@
     table.personal-identity tbody tr td img {
         width: 88%;
         height: auto;
+    min-height: 85px;
     }
     
     .color-gray {
@@ -256,6 +257,6 @@
     .agent-unit {
         font-family: "微软雅黑";
         text-align: right;
-        margin-bottom: 14%;
+        margin-bottom: 24%;
     }
 </style>

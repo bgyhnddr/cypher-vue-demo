@@ -5,22 +5,23 @@
         <headimg-upload :file-id.sync="auditInfo.headImg"></headimg-upload>
     </div>
 </div>
-<div>
+
+<div class="certificate-messages ">
     <group>
         <div>      
-            <cell><div slot="icon">用户名：{{auditInfo.account}}</div></cell>
+            <cell><div slot="icon">用户名：<label>{{auditInfo.account}}</label></div></cell>
             <cell>
-                <div slot="icon">授权品牌：adminbrand</div>
-                <x-button type="default" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/account'}">查看授权证书</x-button>
+                <div slot="icon">授权品牌：<label>adminbrand</label></div>
+                <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/account'}">查看授权证书</x-button>
             </cell>
             <cell>
-                <div slot="icon">授权上级：{{auditInfo.employer}}</div>
-                <x-button type="default" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/account'}">查看授权证书</x-button>
+                <div slot="icon">授权上级：<label>{{auditInfo.employer}}</label></div>
+                <x-button type="default" class="certificate-views " v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/account'}">查看授权证书</x-button>
             </cell>
-            <cell><div slot="icon">姓名：{{auditInfo.name}}</div></cell>
-            <cell><div slot="icon">微信号：{{auditInfo.wechat}}</div></cell>
-            <cell><div slot="icon">手机号：{{auditInfo.cellphone}}</div></cell>
-            <cell><div slot="icon">地址：{{auditInfo.address}}{{auditInfo.addressDetail}}</div></cell>
+            <cell><div slot="icon">姓名：<label>{{auditInfo.name}}</label></div></cell>
+            <cell><div slot="icon">微信号：<label>{{auditInfo.wechat}}</label></div></cell>
+            <cell><div slot="icon">手机号：<label>{{auditInfo.cellphone}}</label></div></cell>
+            <cell><div slot="icon">地址：<label>{{auditInfo.address}}{{auditInfo.addressDetail}}</label></div></cell>
         </div>
     </group>
 </div>
@@ -97,10 +98,76 @@
     }
 </script>
 <style>
+.certificate-header{
+text-align: center;
+margin-top: 2%;
+}
 .certificate-header button{
+    
+    border: 0;
+    background-size: 100%;
+    width: 54%;
+}
 
 
 
+.certificate-header button img{
+     width: 100%;
+    height: auto;
+
+}
+.certificate-header p{
+
+color: #595959;
+    font-size: 14px;
+}
+.certificate-messages{
+    position: relative;
+    width: 89%;
+     margin: 7% auto;
+}
+.certificate-messages .weui_cell:before{
+border-top:0
+}
+.certificate-messages .weui_cell{
+    border-bottom: 1px solid #d3d1d1;
+    padding: 9px 0;
+
+}
+.certificate-messages  .weui_btn
+{
+    padding-left: 0;
+    padding-right: 0;
+}
+.certificate-messages   .certificate-view,.certificate-messages   .certificate-views {
+        position: absolute;
+   right: 0;
+    border: 0;
+    width: 33%;
+    background: #5091d5;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 0;
+    font-family: "微软雅黑";
+
+
+}
+.certificate-messages   .certificate-view{
+    top: -33px;
+}
+.certificate-messages   .certificate-views {
+    top: 4px;
+}
+.certificate-messages .weui_cell_hd{
+
+    width: 100%;
+    font-size: 14px;
+    color: #000;
+    font-family: "微软雅黑";
+}
+.certificate-messages .weui_cell_hd label{
+
+color: #595959;
 
 }
 
