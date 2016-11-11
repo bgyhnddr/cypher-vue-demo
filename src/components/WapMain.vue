@@ -5,7 +5,7 @@
             <!--header slot-->
             <div class="vux-demo-header-box" slot="header">
                 <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
-                <div slot="left">
+                <div slot="left"   class="onclick-back">
                     <button v-if="ShowBack" @click="onClickBack">返回</button>
                 </div>
             </div>
@@ -331,4 +331,24 @@ document.body.style.background = '#f2f2f2'
     .fate-leave {
         opacity: 0;
     }
+.onclick-back {
+ position: absolute;
+    top: 21%;
+    left: 4%;
+    font-size: 14px;
+    font-family: "微软雅黑";
+    width: 20%;
+    height: 61%;
+    line-height: 2em;
+    background: url(/static/TestIMG/back.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding-left: 7%;}
+.onclick-back button{
+    font-size: 14px;
+    font-family: "微软雅黑";
+    background: none;
+    border: 0;
+color: #fff;
+}
 </style>
