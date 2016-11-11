@@ -4,16 +4,16 @@
 <div class="brandauthorizations">
 <div class="brandauthorization-img">
         <p class="brand-logo"><img class="vux-x-img ximg-demo" alt="品牌logo" src="/static/TestIMG/brand_logo_href.png"/></p>
-        <p>授权证书</p>
+        <p><img src="/static/TestIMG/authorization.png" class="authorization" /></p>
 </div>
         <div>
             <h3>兹授权</h3>
      <table boder=0 class="personal-identity">
 
 
-            <tr><td>姓名</th><th>{{auditInfo.name}}</td><td rowspan="3"><img class="vux-x-img ximg-demo" alt="授权者头像" :src.sync="auditInfo.headImg"/></td></tr>
-           <tr><td> 微信</th><th>{{auditInfo.wechat}}</td></tr>
-            <tr><td>身份证</th><th>4404xxxxxxxxxxxxx</td></tr>
+            <tr><td width=18%;>姓名</td><td>{{auditInfo.name}}</td><td rowspan="3"><img class="vux-x-img ximg-demo" alt="授权者头像" :src.sync="auditInfo.headImg"/></td></tr>
+           <tr><td> 微信</th><td>{{auditInfo.wechat}}</td></tr>
+            <tr><td>身份证</th><td>4404xxxxxxxxxxxxx</td></tr>
 <tr>
                                 <td height="6px"></td>
                                 <td></td>
@@ -167,10 +167,11 @@
         font-family: "微软雅黑";
     }
     
-    table.personal-identity tbody tr td img {
-        width: 88%;
-        height: auto;
-    min-height: 85px;
+   table.personal-identity tbody tr td img {
+        width: 74%;
+    height: auto;
+    margin-right: 18%;
+   min-height: 76px;
     }
     
     .color-gray {
@@ -194,7 +195,7 @@
     }
     
     .agent-message {
-        margin: 8% 0 17% 0;
+         margin: 8% 0 10% 0;
         text-align: left;
     }
     

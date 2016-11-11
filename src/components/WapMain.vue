@@ -56,6 +56,7 @@
                     return '登录'
                 } else if (this.$route.path === '/auth/changepwd') {
                     this.ShowBack = true
+                    document.body.style.background = '#fff'
                     return '修改密码'
                 } else if (this.$route.path === '/homePage') {
                     this.ShowBack = false
@@ -104,7 +105,9 @@ document.body.style.background = '#f2f2f2'
                     return '招募历史'
                 } else if (this.$route.path === '/accountManagement') {
                     this.ShowBack = true
+ document.body.style.background = '#f2f2f2'
                     return '我的账号'
+               
                 } else if (this.$route.name === 'MyCertificate') {
                     this.ShowBack = true
 document.body.style.background = '#f2f2f2'
