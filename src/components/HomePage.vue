@@ -174,6 +174,12 @@
     }
 </script>
 <style lang="less">
+/*返回按钮*/
+.vux-demo-header-box button{
+
+
+
+}
 span.headerTransition-transition {
     font-size: 14px;}
     div.icon_btn {

@@ -12,7 +12,7 @@
                         <tbody>
 
                             <tr>
-                                <td width="20%">姓名:</td>
+                                <td  width=18%;>姓名:</td>
                                 <td class="color-gray">张三</td>
                                 <td rowspan="4" align="right"><img class="vux-x-img ximg-demo" alt="授权者头像" src="/static/TestIMG/grantee.jpg" /></td>
                             </tr>
@@ -219,8 +219,10 @@
     }
     
     table.personal-identity tbody tr td img {
-        width: 88%;
-        height: auto;
+        width: 74%;
+    height: auto;
+    margin-right: 18%;
+   min-height: 76px;
     }
     
     .color-gray {
@@ -244,7 +246,7 @@
     }
     
     .agent-message {
-        margin: 8% 0 17% 0;
+        margin: 8% 0 10% 0;
         text-align: left;
     }
     
@@ -256,6 +258,6 @@
     .agent-unit {
         font-family: "微软雅黑";
         text-align: right;
-        margin-bottom: 14%;
+        margin-bottom: 24%;
     }
 </style>
