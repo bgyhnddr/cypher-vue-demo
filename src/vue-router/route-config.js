@@ -124,8 +124,12 @@ export function configRouter(router) {
                     name: "CertificateInfo",
                     component: require('../components/CertificateInfo.vue')
                 },
-                'cheakPwd': {
-                    component: require('../components/CheakPwd.vue')
+                'checkPwd/:from': {
+                    name: "CheckPwd",
+                    component: require('../components/CheckPwd.vue')
+                },
+                'changeWechat': {
+                    component: require('../components/ChangeWechat.vue')
                 }
 
 

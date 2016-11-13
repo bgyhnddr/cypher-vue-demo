@@ -64,6 +64,7 @@ module.exports = function() {
 
         agent_detail.create({ agent_guid: "agent2", key: "name", value: "李xx" }),
         agent_detail.create({ agent_guid: "agent2", key: "headImg", value: "1" }),
+        agent_detail.create({ agent_guid: "agent2", key: "wechat", value: "wechatLiz" }),
 
         agent_detail.create({ agent_guid: "agent3", key: "name", value: "limt" }),
         agent_detail.create({ agent_guid: "agent3", key: "headImg", value: "1" }),

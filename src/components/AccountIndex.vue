@@ -29,7 +29,7 @@
                 </div>
             </a>
             <!--修改手机号-->
-            <a class="weui_cell"  v-link="" >
+            <a class="weui_cell"  v-link="{path: '/accountManagement/checkPwd/phone'}" >
                 <div class="weui_cell_hd">
                    <img src="/static/TestIMG/ModifyThePhone.png" >
                 </div>
@@ -42,7 +42,7 @@
                 </div>
             </a>
             <!--修改微信号-->
-            <a class="weui_cell"  v-link="" >
+            <a class="weui_cell"  v-link="{path: '/accountManagement/checkPwd/wechat'}" >
                 <div class="weui_cell_hd">
                   <img src="/static/TestIMG/ModifyTheWeixin.png" >
                 </div>
@@ -105,23 +105,25 @@
         }
     }
 </script>
-<style lang="less"> 
-  .My-account{
-margin-top: 2%;
-}
-  .My-account  .weui_cell{
- background: #fff;
-    margin-top: 1%;
-    padding: 1% 5%;
-    border-top:0!important;
-    font-size: 15px;
-    font-family: "微软雅黑";
-   }
-  .My-account img{width: 77%;} 
-  .My-account .weui_cell:before {
- border-top:0!important
-
-
- }
-
+<style lang="less">
+    .My-account {
+        margin-top: 2%;
+    }
+    
+    .My-account .weui_cell {
+        background: #fff;
+        margin-top: 1%;
+        padding: 1% 5%;
+        border-top: 0!important;
+        font-size: 15px;
+        font-family: "微软雅黑";
+    }
+    
+    .My-account img {
+        width: 77%;
+    }
+    
+    .My-account .weui_cell:before {
+        border-top: 0!important
+    }
 </style>
