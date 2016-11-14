@@ -170,33 +170,37 @@ var exec = {
             if (result == null) {
                 return Promise.reject("账号不存在")
             } else {
-                // soap.WSDL.prototype.ignoredNamespaces = ['xs', 'xsd']
-                // soap.createClient(url, function(err, client) {
-                //     client.sendSMS(args, function(err, result) {
-                //         console.log(result)
-                //     })
-                // })
-                if (req.session.VerificationInfo) {
-                    var codeTime = req.session.VerificationInfo.time
-                    var TimePass = NowTime - codeTime
-                    if (TimePass < 30) {
-                        return Promise.reject(TimePass)
-                    } else {
-                        VerificationInfo.phone = phone
-                        VerificationInfo.code = Randnum
-                        VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
-                        req.session.VerificationInfo = VerificationInfo
-                        console.log(Randnum)
-                        return "success"
-                    }
-                } else {
-                    VerificationInfo.phone = phone
-                    VerificationInfo.code = Randnum
-                    VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
-                    req.session.VerificationInfo = VerificationInfo
-                    console.log(Randnum)
-                    return "success"
-                }
+                soap.WSDL.prototype.ignoredNamespaces = ['xs', 'xsd']
+                return new Promise((resolve, reject) => {
+                    soap.createClient(url, function(err, client) {
+                        client.sendSMS(args, function(err, result) {
+                            console.log(result)
+                            if (req.session.VerificationInfo) {
+                                var codeTime = req.session.VerificationInfo.time
+                                var TimePass = NowTime - codeTime
+                                if (TimePass < 60) {
+                                    reject(TimePass)
+                                } else {
+                                    VerificationInfo.phone = phone
+                                    VerificationInfo.code = Randnum
+                                    VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
+                                    req.session.VerificationInfo = VerificationInfo
+                                    console.log(req.session.VerificationInfo)
+                                    resolve("success")
+                                }
+                            } else {
+                                VerificationInfo.phone = phone
+                                VerificationInfo.code = Randnum
+                                VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
+                                req.session.VerificationInfo = VerificationInfo
+                                console.log(req.session.VerificationInfo)
+                                resolve("success")
+                            }
+                        })
+                    })
+                })
+
+
             }
 
         })
@@ -225,13 +229,9 @@ var exec = {
         if (VerificationInfo) {
             var codeTime = req.session.VerificationInfo.time
             if (phone == VerificationInfo.phone && code == VerificationInfo.code) {
-                if (NowTime - codeTime > 30) {
+                if (NowTime - codeTime > 60) {
                     return Promise.reject("验证码错误或已过期")
                 }
-                // if (locate == "account") {
-                //     req.session.userInfo.name = phone
-                // }
-                //
                 req.session.VerificationInfo.code = undefined
                 return "success"
             } else {

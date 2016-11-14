@@ -90,7 +90,7 @@
                     }).then(function(result) {
                         that.showErr = false
                         that.show = true
-                        that.TimeLeft = 30
+                        that.TimeLeft = 60
                         that.showTime = true
                         that.SetInterval()
 
@@ -102,7 +102,7 @@
                             that.errmsg = err
                         } else {
                             that.errmsg = "获取过于频繁"
-                            that.TimeLeft = 30 - err
+                            that.TimeLeft = 60 - err
                             that.showTime = true
                             that.SetInterval()
                         }
@@ -135,7 +135,7 @@
                 var that = this
                 that.UserPhone = true
                 authAPI.getUser().then(function(result) {
-                    that.GetPhone = result.name.substring(0,3)+'****'+result.name.substring(8,11)
+                    that.GetPhone = result.name.substring(0, 3) + '****' + result.name.substring(8, 11)
                     that.cellphone = result.name
                 })
             }
