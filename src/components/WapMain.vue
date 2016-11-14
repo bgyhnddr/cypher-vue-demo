@@ -117,7 +117,7 @@
                     return 'adminBrand'
                 } else if (this.$route.path === '/employManagement/currentList') {
                     this.ShowBack = true
-document.body.style.background = '#f2f2f2'
+		    document.body.style.background = '#f2f2f2'
                     return '当前招募'
                 } else if (this.$route.name === 'CurrentInfo') {
                     this.ShowBack = true
@@ -126,7 +126,7 @@ document.body.style.background = '#f2f2f2'
                     document.body.style.background = '#fff'
                     this.ShowBack = true
                     return 'adminBrand'
-                } else if (this.$route.path === '/accountManagement/cheakPwd') {
+                } else if (this.$route.name === 'CheckPwd') {
                     this.ShowBack = true
                     return '使用登录密码'
                 } else if (this.$route.name === 'PhoneVerification') {
@@ -135,6 +135,9 @@ document.body.style.background = '#f2f2f2'
                 } else if (this.$route.name === 'ResetPwd') {
                     this.ShowBack = true
                     return '重置密码'
+                } else if (this.$route.path === 'changeWechat') {
+                    this.ShowBack = true
+                    return '修改微信号'
                 }
 
             }
@@ -215,8 +218,11 @@ document.body.style.background = '#f2f2f2'
                     } else if (SecPath == "CertificateInfo") {
                         history.back()
                         return
-                    } else if (SecPath == "cheakPwd") {
+                    } else if (SecPath == "checkPwd") {
                         this.$route.router.go('/accountManagement')
+                        return
+                    } else if (SecPath == "changeWechat") {
+                        this.$route.router.go('/accountManagement/checkPwd/wechat')
                         return
                     }
                 }

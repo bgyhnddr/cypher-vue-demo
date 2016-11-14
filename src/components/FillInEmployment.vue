@@ -15,14 +15,10 @@
                         <x-input class="weui_cell_primary  applicant-name" title="申请人&nbsp;:&nbsp;" :name.sync="meta.name" :value.sync="data.name" placeholder="申请人姓名" is-type="china-name" :show-clear=false v-ref:name></x-input>
                     </group>
                     <p class="applicants">*姓名一经审批将不得修改，请慎重填写</p>
-
                     <x-input class="weui_cell_primary applicant-weixin" type="text" title="微信号&nbsp;:&nbsp;" :name.sync="meta.wechat" :value.sync="data.wechat" placeholder="6-20个字母，数字，下划线或减号" :min="6" :max="20" :show-clear=false v-ref:wechat></x-input>
                     </group>
                     <group>
-
                         <x-input class="weui_cell_primary applicant-phone" keyboard="number" title="手机号&nbsp;:&nbsp;" :value.sync="data.cellphone" placeholder="请输入手机号码" is-type="china-mobile" :show-clear=false v-ref:cellphone></x-input>
-
-
                     </group>
                 </div>
                 <button class="weui_btn weui_btn_primary" :class="classes" @click="goFillEmployment2">下一步</button>
@@ -30,11 +26,9 @@
             <div v-else>
                 <div class="certificate ">
                     <group>
-
                         <selector placeholder="-证件类型-" :options="IDTypeList" :value.sync="data.IDType"></selector>
                         <x-input class="weui_cell_primary certificate-input" keyboard="number" placeholder="输入证件号" :value.sync="data.IDNumber" :show-clear=false v-ref:IDNumber></x-input>
                         <div class="clean"></div>
-
                     </group>
                     <group title="通讯地址">
                         <address title="" :value.sync="data.addressTemp" :list="addressData" placeholder="--省份--，--城市--，--地区--"></address>
@@ -42,10 +36,10 @@
                     <group>
                         <x-textarea :name.sync="meta.addressDetail" :max="50" placeholder="请填写详细地址" :value.sync="data.addressDetail"></x-textarea>
                     </group>
-
                     <button class="weui_btn weui_btn_primary" :class="classes" @click="submit">确认申请</button>
                 </div>
             </div>
+            <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
         </div>
 </template>
 <script>
@@ -57,7 +51,8 @@
         Address,
         AddressChinaData,
         XTextarea,
-        Cell
+        Cell,
+        Alert
     } from 'vux'
     import authAPI from '../api/auth'
     import applyEmploymentAPI from '../api/applyEmployment'
@@ -73,7 +68,8 @@
             Address,
             XTextarea,
             EmploymentHeadimgUpload,
-            Cell
+            Cell,
+            Alert
         },
         data() {
             return {
@@ -99,7 +95,6 @@
                     addressDetail: ""
                 },
                 employmentData: {
-                    employmentGuid: null,
                     publishEmploymentInfo: {},
                     agentGuid: "",
                     brandRoleName: "",
@@ -108,25 +103,27 @@
                 },
                 showNextFillModel: false,
                 IDTypeList: ['身份证', '回乡证', '护照'],
-                addressData: AddressChinaData
-
+                addressData: AddressChinaData,
+                showMsg: false,
+                errorMsg: null
             }
         },
         methods: {
             initDate() {
                 var that = this
-                this.employmentData.employmentGuid = this.$route.params.employmentGuid
-
+                var employmentGuid = this.$route.params.publishEmploymentID
+                console.log(employmentGuid)
                 applyEmploymentAPI.getPublishEmploymentInfo({
-                    employmentGuid: this.employmentData.employmentGuid
+                    employmentGuid: employmentGuid
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
 
-                    //TODO:招募失效
+                    //招募失效
                     var startDate = new Date(result.create_time)
                     var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
                     if (endDate <= new Date()) {
-                        window.alert("招募已失效")
+                        that.showMsg = true
+                        that.errorMsg = "招募已失效"
                         that.$route.router.go('/auth/login')
                     } else {
                         that.employmentData.publishEmploymentInfo = result
@@ -135,7 +132,8 @@
                         that.getAgentGuid(result.employer_user_account)
                     }
                 }).catch(function(err) {
-                    window.alert(err)
+                    that.showMsg = true
+                    that.errorMsg = err
                 })
             },
             getEmploymentInfo(user_account) {
@@ -149,7 +147,8 @@
 
                     that.getEmploymentBrandRole()
                 }).catch(function(err) {
-                    window.alert(err)
+                    that.showMsg = true
+                    that.errorMsg = err
                 })
             },
             getEmploymentBrandRole() {
@@ -162,7 +161,8 @@
                     that.employmentData.brandRoleName = result.name
                     console.log(JSON.stringify(result))
                 }).catch(function(err) {
-                    window.alert(err)
+                    that.showMsg = true
+                    that.errorMsg = err
                 })
             },
             getAgentGuid(user_account) {
@@ -183,7 +183,8 @@
                         }
                     }
                 }).catch(function(err) {
-                    window.alert(err)
+                    that.showMsg = true
+                    that.errorMsg = err
                 })
             },
             goFillEmployment2() {
@@ -192,13 +193,17 @@
                 var reg2 = /[\u4e00-\u9fa5]/ //中文
 
                 if (!this.$refs.name.valid || !reg2.test(this.data.name)) {
-                    window.alert("申请人需填写中文，请填写完整，再跳转到下一页")
+                    this.showMsg = true
+                    this.errorMsg = "申请人需填写中文，请填写完整，再跳转到下一页"
                 } else if (!this.$refs.wechat.valid || !reg.test(this.data.wechat)) {
-                    window.alert("微信号需填写以字母开头，由6-20个字母，数字，下划线或减号组成的字符串，请填写完整，再跳转到下一页")
+                    this.showMsg = true
+                    this.errorMsg = "微信号需填写以字母开头，由6-20个字母，数字，下划线或减号组成的字符串，请填写完整，再跳转到下一页"
                 } else if (!this.$refs.cellphone.valid) {
-                    window.alert("手机号填写错误，请填写完整，再跳转到下一页")
+                    this.showMsg = true
+                    this.errorMsg = "手机号填写错误，请填写完整，再跳转到下一页"
                 } else if (this.data.headImg == null) {
-                    window.alert("头像还未上传，请填写完整，再跳转到下一页")
+                    this.showMsg = true
+                    this.errorMsg = "头像还未上传，请填写完整，再跳转到下一页"
                 } else {
                     this.$dispatch('fillInEmployment_goBack', true)
                     this.showNextFillModel = true
@@ -210,24 +215,22 @@
                 this.data.address = filterAddress(this.data.addressTemp, AddressChinaData)
                 console.log(JSON.stringify(this.data))
 
-                //招募失效
                 var startDate = new Date(this.employmentData.publishEmploymentInfo.create_time)
                 var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
-                if (endDate <= new Date()) {
-                    window.alert("招募已失效")
-                    that.$route.router.go('/auth/login')
-                    return
-                }
 
                 //检查未填写完整的值
                 if (this.data.IDType == "") {
-                    window.alert("证件类型未填写，请填写完整，再跳转到下一页")
+                    this.showMsg = true
+                    this.errorMsg = "证件类型未填写，请填写完整，再跳转到下一页"
                 } else if (!this.$refs.idnumber.valid) {
-                    window.alert("证件号填写错误，请填写完整，再跳转到下一页")
+                    this.showMsg = true
+                    this.errorMsg = "证件号填写错误，请填写完整，再跳转到下一页"
                 } else if (this.data.address == "") {
-                    window.alert("通讯地址填写错误，请填写完整，再跳转到下一页")
+                    this.showMsg = true
+                    this.errorMsg = "通讯地址填写错误，请填写完整，再跳转到下一页"
                 } else if (this.data.addressDetail == "") {
-                    window.alert("通讯地址填写错误，请填写完整，再跳转到下一页")
+                    this.showMsg = true
+                    this.errorMsg = "通讯地址填写错误，请填写完整，再跳转到下一页"
                 } else {
                     var deadline = endDate.Format('yyyy-MM-dd hh:mm:ss')
                     console.log(deadline)
@@ -239,9 +242,10 @@
                         deadline: deadline
                     }).then(function(result) {
                         console.log("提交成功")
-                        that.$route.router.go('/employManagement/employmentSubmission/' + that.$route.params.brandName)
+                        that.$route.router.go('/employManagement/employmentSubmission/' + that.employmentData.brandInfo.name)
                     }).catch(function(err) {
-                        window.alert(err)
+                        that.showMsg = true
+                        that.errorMsg = err
                     })
                 }
             }

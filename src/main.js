@@ -1,4 +1,4 @@
-import Vue from 'vue'
+﻿import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
 import { configRouter } from './vue-router/route-config'
@@ -44,7 +44,6 @@ router.beforeEach((tran) => {
         case "FillInEmployment":
         case "EmploymentSubmission":
         case "PhoneVerification":
-        case "brandAuthorization":
         case "resetpwd":
             tran.next()
             return
@@ -88,6 +87,8 @@ router.beforeEach((tran) => {
                     case undefined:
                     case "MyCertificate":
                     case "CertificateInfo":
+                    case "checkPwd":
+                    case "changeWechat":
                         tran.next()
                         break
                 }
@@ -119,7 +120,6 @@ router.beforeEach((tran) => {
             }
         }
     })
-
 })
 
 router.start(App, 'app');

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
 	<div @keyup.enter="CommitVerification">
 			<div>
 <div class="change-password">
@@ -9,6 +9,7 @@
                 <!--<group>
                     <x-input title="验证码" :value.sync="VerificationCode" placeholder="请输入验证码"></x-input>
                 </group>-->
+   <div class=" phone-button">
                 <group class="weui_cells_form">
                     <x-input title="验证码" class="weui_vcode" :value.sync="VerificationCode" placeholder="请输入验证码">
                         <x-button slot="right" type="default" @click="GetVerificationCode" :disabled="disable">获取验证码</x-button>                      
@@ -16,6 +17,7 @@
                 </group>
                  <p v-if="showTime">{{TimeLeft}}秒重新发送</p>
                  <p v-if="showErr">{{errmsg}}</p>
+                </group></div>
 			</div>
             <flexbox style="margin-top:20px">
                 <flexbox-item>
@@ -180,4 +182,26 @@
         font-size: 16px;
         color: #f43530;
     }
+
+   .phone-button   button.weui_btn.weui_btn_default{
+
+color: #80c269;
+    font-size: 14px;
+    font-family: "微软雅黑";
+    border: 0;
+    background: 0;
+
+
+}
+
+
+   .phone-button  .weui_btn:after{
+
+    border: 0;
+    height: 62px;
+    margin-top: 7%;
+    border-left: 1px solid #d3d1d1;
+    border-radius: 0;
+
+}
 </style>

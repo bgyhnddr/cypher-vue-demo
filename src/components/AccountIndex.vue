@@ -1,11 +1,11 @@
 ﻿<template>
-    <div>
-<div class="My-account">
+<div>
+    <div class="My-account">
         <group>
             <!--我的证书-->
-            <a class="weui_cell" v-link="{path: '/accountManagement/MyCertificate/'+this.user.user_info.name+'/account'}" >
+            <a class="weui_cell" v-link="{path: '/accountManagement/MyCertificate/'+this.user.user_info.name+'/account'}">
                 <div class="weui_cell_hd">
-                    <img src="/static/TestIMG/certificate.png" >
+                    <img src="/static/TestIMG/certificate.png">
                 </div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <p>我的证书</p>
@@ -16,9 +16,9 @@
                 </div>
             </a>
             <!--修改密码-->
-            <a class="weui_cell"  v-link="{path: '/auth/changepwd'}" >
+            <a class="weui_cell" v-link="{path: '/auth/changepwd'}">
                 <div class="weui_cell_hd">
-                  <img src="/static/TestIMG/ModifyThePassword.png" >
+                    <img src="/static/TestIMG/ModifyThePassword.png">
                 </div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <p>修改密码</p>
@@ -29,9 +29,9 @@
                 </div>
             </a>
             <!--修改手机号-->
-            <a class="weui_cell"  v-link="" >
+            <a class="weui_cell" v-link="{path: '/accountManagement/checkPwd/phone'}">
                 <div class="weui_cell_hd">
-                   <img src="/static/TestIMG/ModifyThePhone.png" >
+                    <img src="/static/TestIMG/ModifyThePhone.png">
                 </div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <p>修改手机号</p>
@@ -42,9 +42,9 @@
                 </div>
             </a>
             <!--修改微信号-->
-            <a class="weui_cell"  v-link="" >
+            <a class="weui_cell" v-link="{path: '/accountManagement/checkPwd/wechat'}">
                 <div class="weui_cell_hd">
-                  <img src="/static/TestIMG/ModifyTheWeixin.png" >
+                    <img src="/static/TestIMG/ModifyTheWeixin.png">
                 </div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <p>修改微信号</p>
@@ -55,19 +55,23 @@
                 </div>
             </a>
         </group>
-	</div></div>
+    </div>
+    <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
+</div>
 </template>
 
 <script>
     import {
-        Group
+        Group,
+        Alert
     } from 'vux'
     import authAPI from '../api/auth'
     import agentInfoAPI from '../api/agentInfo'
 
     export default {
         components: {
-            Group
+            Group,
+            Alert
         },
         data() {
             return {
@@ -80,7 +84,9 @@
                             }
                         }
                     }
-                }
+                },
+                showMsg: false,
+                errorMsg: null
             }
         },
         methods: {
@@ -95,7 +101,8 @@
                     }).then(function(result) {
                         console.log(JSON.stringify(result))
                     }).catch(function(err) {
-                        window.alert(err)
+                        that.showMsg = true
+                        that.errorMsg = err
                     })
                 })
             }
@@ -105,23 +112,25 @@
         }
     }
 </script>
-<style lang="less"> 
-  .My-account{
-margin-top: 2%;
-}
-  .My-account  .weui_cell{
- background: #fff;
-    margin-top: 1%;
-    padding: 1% 5%;
-    border-top:0!important;
-    font-size: 15px;
-    font-family: "微软雅黑";
-   }
-  .My-account img{width: 77%;} 
-  .My-account .weui_cell:before {
- border-top:0!important
-
-
- }
-
+<style lang="less">
+    .My-account {
+        margin-top: 2%;
+    }
+    
+    .My-account .weui_cell {
+        background: #fff;
+        margin-top: 1%;
+        padding: 1% 5%;
+        border-top: 0!important;
+        font-size: 15px;
+        font-family: "微软雅黑";
+    }
+    
+    .My-account img {
+        width: 77%;
+    }
+    
+    .My-account .weui_cell:before {
+        border-top: 0!important
+    }
 </style>
