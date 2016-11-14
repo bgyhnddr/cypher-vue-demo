@@ -45,6 +45,7 @@ router.beforeEach((tran) => {
         case "EmploymentSubmission":
         case "PhoneVerification":
         case "resetpwd":
+        case "BrandAuthorization":
             tran.next()
             return
     }
