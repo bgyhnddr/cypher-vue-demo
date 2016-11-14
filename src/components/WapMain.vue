@@ -107,7 +107,6 @@ export default {
         this.ShowBack = true
         document.body.style.background = '#f2f2f2'
         return '我的账号'
-
       } else if (this.$route.name === 'MyCertificate') {
         this.ShowBack = true
         document.body.style.background = '#f2f2f2'
@@ -129,17 +128,22 @@ export default {
       } else if (this.$route.name === 'CheckPwd') {
         this.ShowBack = true
         return '使用登录密码'
-      } else if (this.$route.path === 'changeWechat') {
-        this.ShowBack = true
-        return '修改微信号'
       } else if (this.$route.name === 'PhoneVerification') {
         this.ShowBack = true
         return '发送验证码'
+      } else if (this.$route.name === 'ResetPwd') {
+        this.ShowBack = true
+        return '重置密码'
+      } else if (this.$route.path === 'changeWechat') {
+        this.ShowBack = true
+        return '修改微信号'
+      } else if (this.$route.path === '/auth/SuccessPage') {
+        this.ShowBack = false
+        return '修改成功'
       } else if (this.$route.path === '/accountManagement/changeCellPhone') {
         this.ShowBack = true
         return '修改手机号'
       }
-
     }
   },
   methods: {
@@ -163,6 +167,14 @@ export default {
             return
           } else if (this.$route.params.locate == 'account') {
             this.$route.router.go('/accountManagement')
+            return
+          }
+        } else if (SecPath == "resetpwd") {
+          if (this.$route.params.locate == 'login') {
+            this.$route.router.go('/auth/PhoneVerification/login')
+            return
+          } else if (this.$route.params.locate == 'account') {
+            this.$route.router.go('/auth/PhoneVerification/account')
             return
           }
         }

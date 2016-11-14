@@ -28,5 +28,11 @@ export default {
     },
     CommitVerification(params) {
         return httpRequest.post(path + 'CommitVerification', params)
+    },
+    resetuserpwd(params) {
+        return httpRequest.post(path + 'resetuserpwd', params)
+    },
+    getAccount() {
+        return httpRequest.get(path + 'getAccount')
     }
 }

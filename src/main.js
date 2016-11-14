@@ -1,4 +1,4 @@
-import Vue from 'vue'
+﻿import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
 import { configRouter } from './vue-router/route-config'
@@ -44,9 +44,11 @@ router.beforeEach((tran) => {
         case "FillInEmployment":
         case "EmploymentSubmission":
         case "PhoneVerification":
+        case "resetpwd":
         case "BrandAuthorization":
-            tran.next()
-            return
+        case "SuccessPage":
+        tran.next()
+        return
     }
 
     function CheckInfo() {
@@ -108,6 +110,7 @@ router.beforeEach((tran) => {
                     case "changepwd":
                         tran.next()
                         break
+
                 }
             } else if (path == '/index') {
                 router.go('homePage')
