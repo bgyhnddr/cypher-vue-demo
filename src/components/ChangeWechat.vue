@@ -4,8 +4,8 @@
             <x-input class="weui_cell_primary" :value.sync="wechat" placeholder="输入新的微信号" type="text" :show-clear=false 
             :min="6" :max="20" v-ref:wechat></x-input>
             <x-button type="primary" @click="confirm">确认修改</x-button>
-            <alert :show.sync="showMsg" @on-hide="onHide('showMsg')">你已经成功修改微信号</alert>
-            <alert :show.sync="showRemind" @on-hide="onHide('showRemind')">微信号需填写以字母开头，由6-20个字母，数字，下划线或减号组成的字符串，请再次输入微信号</alert>
+            <alert :show.sync="showMsg" @on-hide="onHide('showMsg')" button-text="确认">你已经成功修改微信号</alert>
+            <alert :show.sync="showRemind" @on-hide="onHide('showRemind')" button-text="确认">微信号需填写以字母开头，由6-20个字母，数字，下划线或减号组成的字符串，请再次输入微信号</alert>
         </group>
     </div>
 </template>

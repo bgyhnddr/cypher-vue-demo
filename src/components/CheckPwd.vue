@@ -3,7 +3,7 @@
         <group>
             <x-input class="weui_cell_primary" :value.sync="pwd" placeholder="输入登录密码" type="password" :show-clear=false :equal-with="password"></x-input>
             <x-button type="primary" @click="cheakPwd">下一步</x-button>
-            <alert :show.sync="show">{{errorMsg}}</alert>
+            <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
         </group>
     </div>
 </template>
