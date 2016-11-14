@@ -46,8 +46,9 @@ router.beforeEach((tran) => {
         case "PhoneVerification":
         case "resetpwd":
         case "BrandAuthorization":
-            tran.next()
-            return
+        case "SuccessPage":
+        tran.next()
+        return
     }
 
     function CheckInfo() {

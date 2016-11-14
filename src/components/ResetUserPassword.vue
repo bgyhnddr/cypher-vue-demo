@@ -71,7 +71,7 @@
                         pwd: that.pwd.new_password
                     }).then(function(result) {
                         that.$router.go({
-                            path: '/auth/resetpwd/' + that.$route.params.locate
+                            path: '/auth/SuccessPage'
                         })
                         console.log(result)
                     }).catch(function(err) {

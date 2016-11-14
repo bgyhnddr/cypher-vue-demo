@@ -117,7 +117,7 @@
                     return 'adminBrand'
                 } else if (this.$route.path === '/employManagement/currentList') {
                     this.ShowBack = true
-		    document.body.style.background = '#f2f2f2'
+                    document.body.style.background = '#f2f2f2'
                     return '当前招募'
                 } else if (this.$route.name === 'CurrentInfo') {
                     this.ShowBack = true
@@ -138,6 +138,9 @@
                 } else if (this.$route.path === 'changeWechat') {
                     this.ShowBack = true
                     return '修改微信号'
+                } else if (this.$route.path === '/auth/SuccessPage') {
+                    this.ShowBack = false
+                    return '修改成功'
                 }
 
             }

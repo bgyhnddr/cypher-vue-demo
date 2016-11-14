@@ -7,19 +7,29 @@
     </div>
 </template>
 <script>
+    import authAPI from '../api/auth'
     export default {
         data() {
             return {
-                time: ""
+                time: 5
             }
         },
         methods: {
             Countdown() {
                 var that = this
-                that.time = 5
-                setInterval(function() {
-                    if (that.time > 0) {
-                        time--
+                var num = 5
+                var Count = setInterval(function() {
+                    if (num > 0) {
+                        num--
+                        that.time = num
+                    } else if (num == 0) {
+                        clearInterval(Count)
+                        authAPI.logout().then(function() {
+                            that.$router.go({
+                                path: '/index'
+                            })
+                        })
+
                     }
                 }, 1000)
             }
