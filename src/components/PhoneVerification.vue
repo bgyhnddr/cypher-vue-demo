@@ -2,17 +2,20 @@
 	<div @keyup.enter="CommitVerification">
 			<div>
 <div class="change-password">
-                <group>
+                <group v-if="!UserPhone">
                     <x-input title="手机号" :value.sync="cellphone" placeholder="请输入手机号" is-type="china-mobile" v-ref:cellphone></x-input>
                 </group>
+                <p v-if="UserPhone">请输入{{cellphone}}短信验证码</p>
                 <!--<group>
                     <x-input title="验证码" :value.sync="VerificationCode" placeholder="请输入验证码"></x-input>
                 </group>-->
                 <group class="weui_cells_form">
                     <x-input title="验证码" class="weui_vcode" :value.sync="VerificationCode" placeholder="请输入验证码">
-                        <x-button slot="right" type="default" @click="GetVerificationCode">{{BtnName}}</x-button>
+                        <x-button slot="right" type="default" @click="GetVerificationCode" :disabled="disable">获取验证码</x-button>                      
                     </x-input>
                 </group>
+                 <p v-if="showTime">{{TimeLeft}}秒重新发送</p>
+                 <p v-if="showErr">{{errmsg}}</p>
 			</div>
             <flexbox style="margin-top:20px">
                 <flexbox-item>
@@ -20,10 +23,10 @@
                 </flexbox-item>
             </flexbox> 
             <div>
-                <toast :show.sync="show" :time="1000" type="warn">{{errmsg}}</toast>      
+                <toast :show.sync="show" :time="1000" type="default">验证码已发送</toast>      
             </div>  
 	</div></div>
-   
+
 </template>
 
 <script>
@@ -40,14 +43,15 @@
     export default {
         data() {
             return {
-                BtnName: "发送验证码",
-                BtnTime: 60,
+                TimeLeft: "",
                 cellphone: "",
                 VerificationCode: "",
+                UserPhone: false,
                 show: false,
-                state: window.state,
-                serverMsg: "",
-                errmsh: ""
+                showTime: false,
+                showErr: false,
+                errmsg: "",
+                disable: false
             }
         },
         components: {
@@ -62,31 +66,76 @@
             valid() {
                 return this.cellphone && this.VerificationCode
             },
+            SetInterval() {
+                var that = this
+                that.disable = true
+                var GetTime = setInterval(function() {
+                    if (that.TimeLeft > 0) {
+                        that.TimeLeft--
+                    } else if (that.TimeLeft == 0) {
+                        that.showTime = false
+                        clearInterval(GetTime)
+                        that.disable = false
+                    }
+                }, 1000)
+            },
             GetVerificationCode() {
                 var that = this
-                authAPI.GetVerificationCode({
-                    phone: that.cellphone
-                }).then(function(result) {
-                    console.log(result)
-                }).catch(function(err) {
-                    console.log(err)
-                    that.serverMsg = err
-                })
+                if (that.cellphone || that.UserPhone) {
+                    authAPI.GetVerificationCode({
+                        phone: that.cellphone
+                    }).then(function(result) {
+                        that.showErr = false
+                        that.show = true
+                        that.TimeLeft = 30
+                        that.showTime = true
+                        that.SetInterval()
+
+                        console.log(result)
+                    }).catch(function(err) {
+                        console.log(err)
+                        that.showErr = true
+                        if (err == "账号不存在") {
+                            that.errmsg = err
+                        } else {
+                            that.errmsg = "获取过于频繁"
+                            that.TimeLeft = 30 - err
+                            that.showTime = true
+                            that.SetInterval()
+                        }
+                    })
+                }
+
             },
             CommitVerification() {
                 var that = this
-                authAPI.CommitVerification({
-                    phone: that.cellphone,
-                    code: that.VerificationCode
-                }).then(function(result) {
-                    console.log(result)
-                }).catch(function(err) {
-                    console.log(err)
-                    that.serverMsg = err
-                })
+                if (that.valid()) {
+                    authAPI.CommitVerification({
+                        phone: that.cellphone,
+                        code: that.VerificationCode,
+                        locate: that.$route.params.locate
+                    }).then(function(result) {
+                        that.$router.go({
+                            path: '/auth/resetpwd/' + that.$route.params.locate
+                        })
+                        console.log(result)
+                    }).catch(function(err) {
+                        that.showErr = true
+                        that.errmsg = err
+                    })
+                }
+
             }
         },
         ready() {
+            if (this.$route.params.locate == 'account') {
+                var that = this
+                that.UserPhone = true
+                authAPI.getUser().then(function(result) {
+                    that.GetPhone = result.name
+                    that.cellphone = result.name
+                })
+            }
             // this.$els.cellphone.focus()
         }
     }

@@ -90,7 +90,7 @@
 
                 } else if (this.$route.path === '/employManagement/audit') {
                     this.ShowBack = true
-document.body.style.background = '#f2f2f2'
+                    document.body.style.background = '#f2f2f2'
                     return '资料审核'
                 } else if (this.$route.name === 'AuditInfo') {
                     this.ShowBack = true
@@ -98,19 +98,19 @@ document.body.style.background = '#f2f2f2'
                         return '审核详情'
                     } else if (this.$route.params.locate == 'history') {
                         return '招募详情'
-                    document.body.style.background = '#f2f2f2'
+                        document.body.style.background = '#f2f2f2'
                     }
                 } else if (this.$route.path === '/employManagement/employmentHistory') {
                     this.ShowBack = true
                     return '招募历史'
                 } else if (this.$route.path === '/accountManagement') {
                     this.ShowBack = true
- document.body.style.background = '#f2f2f2'
+                    document.body.style.background = '#f2f2f2'
                     return '我的账号'
-               
+
                 } else if (this.$route.name === 'MyCertificate') {
                     this.ShowBack = true
-document.body.style.background = '#f2f2f2'
+                    document.body.style.background = '#f2f2f2'
                     return '我的证书'
                 } else if (this.$route.name === 'CertificateInfo') {
                     this.ShowBack = true
@@ -118,6 +118,9 @@ document.body.style.background = '#f2f2f2'
                 } else if (this.$route.name === 'PhoneVerification') {
                     this.ShowBack = true
                     return '发送验证码'
+                } else if (this.$route.name === 'ResetPwd') {
+                    this.ShowBack = true
+                    return '重置密码'
                 }
 
             }
@@ -143,6 +146,14 @@ document.body.style.background = '#f2f2f2'
                             return
                         } else if (this.$route.params.locate == 'account') {
                             this.$route.router.go('/accountManagement')
+                            return
+                        }
+                    } else if (SecPath == "resetpwd") {
+                        if (this.$route.params.locate == 'login') {
+                            this.$route.router.go('/auth/PhoneVerification/login')
+                            return
+                        } else if (this.$route.params.locate == 'account') {
+                            this.$route.router.go('/auth/PhoneVerification/account')
                             return
                         }
                     }
@@ -347,24 +358,27 @@ document.body.style.background = '#f2f2f2'
     .fate-leave {
         opacity: 0;
     }
-.onclick-back {
- position: absolute;
-    top: 21%;
-    left: 4%;
-    font-size: 14px;
-    font-family: "微软雅黑";
-    width: 20%;
-    height: 61%;
-    line-height: 2em;
-    background: url(/static/TestIMG/back.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    padding-left: 7%;}
-.onclick-back button{
-    font-size: 14px;
-    font-family: "微软雅黑";
-    background: none;
-    border: 0;
-color: #fff;
-}
+    
+    .onclick-back {
+        position: absolute;
+        top: 21%;
+        left: 4%;
+        font-size: 14px;
+        font-family: "微软雅黑";
+        width: 20%;
+        height: 61%;
+        line-height: 2em;
+        background: url(/static/TestIMG/back.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+        padding-left: 7%;
+    }
+    
+    .onclick-back button {
+        font-size: 14px;
+        font-family: "微软雅黑";
+        background: none;
+        border: 0;
+        color: #fff;
+    }
 </style>
