@@ -17,7 +17,7 @@
                 </flexbox-item>
             </flexbox> 
             <div>
-                <toast :show.sync="show1" :time="1000" @on-hide="onHide">修改成功</toast>
+                <!--<toast :show.sync="show1" :time="1000" @on-hide="onHide">修改成功</toast>-->
                 <!--<toast :show.sync="show2" :time="1000" @on-hide="onHide" type="warn">{{errmsg}}</toast>      -->
             </div>  
 	</div></div>
@@ -61,15 +61,6 @@
                 return this.pwd.new_password && this.pwd.insure_password && this.pwd.new_password == this.pwd.insure_password
             },
             onHide() {
-                if (this.$route.params.locate == 'login') {
-                    this.$router.go({
-                        path: '/index'
-                    })
-                } else if (this.$route.params.locate == 'account') {
-                    this.$router.go({
-                        path: '/accountManagement'
-                    })
-                }
 
             },
             ChangePwd() {
@@ -79,7 +70,9 @@
                         account: that.account,
                         pwd: that.pwd.new_password
                     }).then(function(result) {
-                        that.show1 = true
+                        that.$router.go({
+                            path: '/auth/resetpwd/' + that.$route.params.locate
+                        })
                         console.log(result)
                     }).catch(function(err) {
                         console.log(err)
