@@ -215,6 +215,9 @@
                     } else if (SecPath == "changeWechat") {
                         this.$route.router.go('/accountManagement/checkPwd/wechat')
                         return
+                    } else if (SecPath == "changeCellPhone") {
+                        this.$route.router.go('/accountManagement/checkPwd/phone')
+                        return
                     }
                 }
             },
