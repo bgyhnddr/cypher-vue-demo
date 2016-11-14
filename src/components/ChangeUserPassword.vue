@@ -23,7 +23,7 @@
                 </flexbox-item>
             </flexbox> 
             <div>
-                <toast :show.sync="show1" :time="1000" @on-hide="onHide">修改成功</toast>
+                <!--<toast :show.sync="show1" :time="1000" @on-hide="onHide">修改成功</toast>-->
                 <toast :show.sync="show2" :time="1000" @on-hide="onHide" type="warn">{{errmsg}}</toast>      
             </div>  
 	</div></div>
@@ -82,7 +82,9 @@
                         that.show2 = true
                     } else {
                         authAPI.changeuserpwd(that.pwd).then(function(result) {
-                            that.show1 = true
+                            that.$router.go({
+                                path: '/auth/SuccessPage'
+                            })
                             console.log("success")
                         }).catch(function(err) {
                             that.errmsg = err
