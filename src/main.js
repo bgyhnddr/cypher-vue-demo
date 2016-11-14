@@ -44,6 +44,7 @@ router.beforeEach((tran) => {
         case "FillInEmployment":
         case "EmploymentSubmission":
         case "PhoneVerification":
+        case "brandAuthorization":
             tran.next()
             return
     }
@@ -73,10 +74,11 @@ router.beforeEach((tran) => {
                 switch ((path.split('/')[2])) {
                     case undefined:
                     case "chooseEmployableRoles":
-                    case "brandAuthorization":
                     case "audit":
                     case "auditInfo":
                     case "employmentHistory":
+                    case "currentList":
+                    case "currentInfo":
                         CheckInfo()
                         break
                 }
