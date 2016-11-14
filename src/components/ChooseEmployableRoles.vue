@@ -1,21 +1,26 @@
 ﻿<template>
-
-    <div>
-<div class="choose-bac">
-        <button class="weui_btn weui_btn_primary" :class="classes" v-for="role in employableRolesList"  
-         v-link="{path: '/employManagement/brandAuthorization/'+userinfo.brand_role.agent_brand_role.agent.user_account
-                    +'/'+role.employable_brand_role_code + '/' + brandName}">
+<div>
+    <div class="choose-bac">
+        <button class="weui_btn weui_btn_primary" :class="classes" v-for="role in employableRolesList" @click="chooseRole(role.employable_brand_role_code)">
             {{role.brand_role.name}}
         </button>
-    </div></div>
+    </div>
+    <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
+</div>
 </template>
 
 <script>
+    import {
+        Alert
+    } from 'vux'
     import authAPI from '../api/auth'
     import agentInfoAPI from '../api/agentInfo'
     import employmentAPI from '../api/employment'
 
     export default {
+        components: {
+            Alert
+        },
         data() {
             return {
                 userinfo: {
@@ -27,20 +32,26 @@
                 },
                 employableRolesList: [],
                 brandName: "",
+                showMsg: false,
+                errorMsg: null
             }
         },
         methods: {
             chooseBrandRole() {
                 var that = this
-                console.log(that.userinfo.brand_role.code)
+                console.log("招募者的角色" + that.userinfo.brand_role.code)
                 employmentAPI.getEmployableRoles({
                     brand_role_code: that.userinfo.brand_role.code
                 }).then(function(result) {
                     if (result.roleCount == 0) {
-                        console.log("找不到你可以招募的级别")
+                        that.showMsg = true
+                        that.errorMsg = "找不到您可以招募的级别"
                     } else {
                         that.employableRolesList = result.employableRoles
                     }
+                }).catch(function(err) {
+                    that.showMsg = true
+                    that.errorMsg = err
                 })
             },
             getPersonalInfo() {
@@ -53,15 +64,39 @@
                     agentInfoAPI.getBrandRoleInfo({
                         user_account: user_account
                     }).then(function(result) {
-                        console.log(result.name)
+                        console.log(JSON.stringify(result))
                         that.brandName = result.name
                         that.userinfo = result
                         that.chooseBrandRole()
                     }).catch(function(err) {
-                        window.alert(err)
+                        that.showMsg = true
+                        that.errorMsg = err
                     })
                 })
-            }
+            },
+            chooseRole(roleCode) {
+                //创建发起招募
+                var that = this
+                console.log(roleCode)
+                var employer = this.userinfo.brand_role.agent_brand_role.agent.user_account
+                var brandGuid = this.userinfo.brand_role.brand_guid
+
+                employmentAPI.createEmployment({
+                    employer: employer,
+                    brandGuid: brandGuid,
+                    roleCode: roleCode,
+                    createTime: new Date().Format('yyyy-MM-dd hh:mm:ss')
+                }).then(function(result) {
+                    console.log(JSON.stringify(result))
+                        //跳转证书页
+                    that.$route.router.go('/employManagement/brandAuthorization/' + result)
+                }).catch(function(err) {
+                    that.showMsg = true
+                    that.errorMsg = err
+                    that.$route.router.go('/employManagement')
+                })
+
+            },
         },
         ready() {
             this.getPersonalInfo()

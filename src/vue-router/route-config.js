@@ -51,8 +51,16 @@ export function configRouter(router) {
                     component: require('../components/ChangeUserPassword.vue')
                 },
                 'PhoneVerification/:locate': {
-                    name:"PhoneVerification",
+                    name: "PhoneVerification",
                     component: require('../components/PhoneVerification.vue')
+                },
+                'resetpwd/:locate': {
+                    name: "resetpwd",
+                    component: require('../components/ResetUserPassword.vue')
+                },
+                'SuccessPage': {
+                    name: "SuccessPage",
+                    component: require('../components/SuccessPage.vue')
                 }
             }
         },
@@ -79,11 +87,11 @@ export function configRouter(router) {
                 'chooseEmployableRoles': {
                     component: require('../components/ChooseEmployableRoles.vue')
                 },
-                'brandAuthorization/:account/:employableRole/:brandName': {
+                'brandAuthorization/:publishEmploymentID': {
                     name: 'BrandAuthorization',
                     component: require('../components/BrandAuthorization.vue')
                 },
-                'fillInEmployment/:employmentGuid/:brandName': {
+                'fillInEmployment/:publishEmploymentID/:brandName': {
                     name: 'FillInEmployment',
                     component: require('../components/FillInEmployment.vue')
                 },
@@ -128,8 +136,12 @@ export function configRouter(router) {
                     name: "CertificateInfo",
                     component: require('../components/CertificateInfo.vue')
                 },
-                'cheakPwd': {
-                    component: require('../components/CheakPwd.vue')
+                'checkPwd/:from': {
+                    name: "CheckPwd",
+                    component: require('../components/CheckPwd.vue')
+                },
+                'changeWechat': {
+                    component: require('../components/ChangeWechat.vue')
                 }
 
 

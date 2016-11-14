@@ -1,4 +1,4 @@
-import Vue from 'vue'
+﻿import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
 import { configRouter } from './vue-router/route-config'
@@ -44,8 +44,11 @@ router.beforeEach((tran) => {
         case "FillInEmployment":
         case "EmploymentSubmission":
         case "PhoneVerification":
-            tran.next()
-            return
+        case "resetpwd":
+        case "BrandAuthorization":
+        case "SuccessPage":
+        tran.next()
+        return
     }
 
     function CheckInfo() {
@@ -73,7 +76,6 @@ router.beforeEach((tran) => {
                 switch ((path.split('/')[2])) {
                     case undefined:
                     case "chooseEmployableRoles":
-                    case "brandAuthorization":
                     case "audit":
                     case "auditInfo":
                     case "employmentHistory":
@@ -87,6 +89,8 @@ router.beforeEach((tran) => {
                     case undefined:
                     case "MyCertificate":
                     case "CertificateInfo":
+                    case "checkPwd":
+                    case "changeWechat":
                         tran.next()
                         break
                 }
@@ -105,6 +109,7 @@ router.beforeEach((tran) => {
                     case "changepwd":
                         tran.next()
                         break
+
                 }
             } else if (path == '/index') {
                 router.go('homePage')
@@ -117,7 +122,6 @@ router.beforeEach((tran) => {
             }
         }
     })
-
 })
 
 router.start(App, 'app');

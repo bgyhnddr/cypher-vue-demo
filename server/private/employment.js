@@ -363,7 +363,8 @@ var exec = {
     },
     createEmployment(req, res, next) {
         var employer = req.body.employer
-        var employmentData = req.body.employmentData
+        var roleCode = req.body.roleCode
+        var brandGuid = req.body.brandGuid
         var createTime = req.body.createTime
 
         var uuid = require('node-uuid')
@@ -373,9 +374,9 @@ var exec = {
 
         return publish_employment.create({
             guid: guid,
-            brand_guid: employmentData.guid,
-            brand_role_code: employer.brand_role_code,
-            employer_user_account: employer.user_account,
+            brand_guid: brandGuid,
+            brand_role_code: roleCode,
+            employer_user_account: employer,
             create_time: createTime,
             status: true
         }).then(function(result) {
@@ -517,6 +518,26 @@ var exec = {
                 return true
             }
         })
+    },
+    getPublishEmploymentInfo(req, res, next) {
+        var employmentGuid = req.body.employmentGuid
+
+        var publish_employment = require('../../db/models/publish_employment')
+
+        return publish_employment.findOne({
+            where: {
+                guid: employmentGuid
+            }
+        }).then(function(result) {
+            if (result == null) {
+                return Promise.reject("招募信息读取出错")
+            } else if (result.status == false) {
+                return Promise.reject("招募已关闭")
+            } else {
+                return result
+            }
+        })
+
     }
 
 }

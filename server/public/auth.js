@@ -52,6 +52,9 @@ var exec = {
     getUser(req, res, next) {
         return req.session.userInfo
     },
+    getAccount(req, res, next) {
+        return req.session.VerificationInfo
+    },
     changePassword(req, res, next) {
         var userInfo = req.session.userInfo
         if (userInfo) {
@@ -137,6 +140,9 @@ var exec = {
 
         var user = require('../../db/models/user')
 
+        var VerificationInfo = {}
+        var NowTime = new Date().getTime().toString().substring(0, 10)
+
         var soap = require('soap')
         var phone = [req.body.phone]
         var Randnum = ""
@@ -170,13 +176,31 @@ var exec = {
                 //         console.log(result)
                 //     })
                 // })
-                req.session.UserPhone = phone
-                req.session.VerificationCode = Randnum
-                console.log(Randnum)
+                if (req.session.VerificationInfo) {
+                    var codeTime = req.session.VerificationInfo.time
+                    var TimePass = NowTime - codeTime
+                    if (TimePass < 30) {
+                        return Promise.reject(TimePass)
+                    } else {
+                        VerificationInfo.phone = phone
+                        VerificationInfo.code = Randnum
+                        VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
+                        req.session.VerificationInfo = VerificationInfo
+                        console.log(Randnum)
+                        return "success"
+                    }
+                } else {
+                    VerificationInfo.phone = phone
+                    VerificationInfo.code = Randnum
+                    VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
+                    req.session.VerificationInfo = VerificationInfo
+                    console.log(Randnum)
+                    return "success"
+                }
             }
 
         })
-        
+
 
     },
     GetSMSBalance(req, res, next) {
@@ -193,11 +217,46 @@ var exec = {
     },
     CommitVerification(req, res, next) {
         var phone = req.body.phone
-        var VerificationCode = req.body.code
+        var code = req.body.code
+        var locate = req.body.locate
+        var VerificationInfo = req.session.VerificationInfo
+        var NowTime = new Date().getTime().toString().substring(0, 10)
 
-        if (phone == req.session.UserPhone && VerificationCode == req.session.VerificationCode) {
-            return "success"
+        if (VerificationInfo) {
+            var codeTime = req.session.VerificationInfo.time
+            if (phone == VerificationInfo.phone && code == VerificationInfo.code) {
+                if (NowTime - codeTime > 30) {
+                    return Promise.reject("验证码错误或已过期")
+                }
+                // if (locate == "account") {
+                //     req.session.userInfo.name = phone
+                // }
+                //
+                req.session.VerificationInfo.code = undefined
+                return "success"
+            } else {
+                return Promise.reject("验证码错误或已过期")
+            }
+        } else {
+            return Promise.reject("验证码错误或已过期")
         }
+    },
+    resetuserpwd(req, res, next) {
+        var user = require('../../db/models/user')
+
+        var account = req.body.account
+        var pwd = req.body.pwd
+
+        return user.findOne({
+            where: {
+                account: account
+            }
+        }).then(function(result) {
+            result.password = pwd
+            return result.save()
+        }).then(function() {
+            return "success"
+        })
 
     }
 
