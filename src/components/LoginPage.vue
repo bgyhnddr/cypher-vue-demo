@@ -11,8 +11,7 @@
 <img src="../icon/user.png" />
 </div>
 <div class="input-boder">
-                <group>
-                
+                <group>              
                     <x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入手机号/微信号" is-type="china-name"></x-input>
                 </group>
 <div class="password">
@@ -28,10 +27,13 @@
                 <flexbox-item>
                     <x-button type="primary" @click="submitLogin">登陆</x-button>
                 </flexbox-item>
-              <div style="display: none;"> <flexbox-item>
+              <!--<div style="display: none;"> <flexbox-item>
                     <x-button type="warn" v-link="{ path: '/auth/regist' }">账户注册</x-button>
-                </flexbox-item></div>
+                </flexbox-item></div>-->
             </flexbox>
+            <div>
+                <x-button mini v-link="{path: '/auth/PhoneVerification/login'}">忘记密码？</x-button>
+            </div>
             <div>
                 <toast :show.sync="show" :time="1000" type="warn">{{errmsg}}</toast>       
             </div>           
