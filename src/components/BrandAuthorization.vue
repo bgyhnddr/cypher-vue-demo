@@ -97,7 +97,6 @@
                         authAPI.getUser().then(function(result) {
                             if (result.name == that.publishEmploymentData.employer_user_account) {
                                 that.getRoleName()
-                                that.showShareUrl()
                             } else {
                                 that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.employmentData.name)
                             }
@@ -136,6 +135,7 @@
                             }
                         }
                     }
+                    that.showShareUrl()
                 }).catch(function(err) {
                     that.showMsg = true
                     that.errorMsg = err
