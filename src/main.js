@@ -44,6 +44,7 @@ router.beforeEach((tran) => {
         case "FillInEmployment":
         case "EmploymentSubmission":
         case "PhoneVerification":
+        case "BrandAuthorization":
             tran.next()
             return
     }
@@ -73,10 +74,11 @@ router.beforeEach((tran) => {
                 switch ((path.split('/')[2])) {
                     case undefined:
                     case "chooseEmployableRoles":
-                    case "brandAuthorization":
                     case "audit":
                     case "auditInfo":
                     case "employmentHistory":
+                    case "currentList":
+                    case "currentInfo":
                         CheckInfo()
                         break
                 }
@@ -85,6 +87,9 @@ router.beforeEach((tran) => {
                     case undefined:
                     case "MyCertificate":
                     case "CertificateInfo":
+                    case "checkPwd":
+                    case "changeWechat":
+                    case "changeCellPhone":
                         tran.next()
                         break
                 }
@@ -115,7 +120,6 @@ router.beforeEach((tran) => {
             }
         }
     })
-
 })
 
 router.start(App, 'app');

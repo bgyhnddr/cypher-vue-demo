@@ -15,6 +15,7 @@
             </div>
          </a>
     </group>
+    <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
 </div>
 </div>
 </template>
@@ -22,12 +23,18 @@
 <script>
     import {
         Group,
-        Selector
+        Selector,
+        Alert
     } from 'vux'
     import authAPI from '../api/auth'
     import employmentAPI from '../api/employment'
 
     export default {
+        components: {
+            Group,
+            Selector,
+            Alert
+        },
         data() {
             return {
                 data: [],
@@ -43,33 +50,25 @@
                 }, {
                     key: "levelDesc",
                     value: "等级由低到高"
-                }]
+                }],
+                showMsg: false,
+                errorMsg: null
             }
-        },
-        components: {
-            Group,
-            Selector
         },
         methods: {
             getData(val) {
-
                 var that = this
                     //获取用户account
                 authAPI.getUser().then(function(result) {
-                    if (typeof(result.name) == 'undefined') {
-                        window.alert("获取用户登录信息失败，请重新登录")
-                        that.$route.router.go('/auth/login')
-                        return
-                    }
                     console.log("用户账号:" + result.name)
-
-                    //改变列表内容
+                        //改变列表内容
                     employmentAPI.getCurrentList({
                         key: val,
                         user_account: result.name
                     }).then(function(result) {
                         if (result == null) {
-                            window.alert("暂无当前招募")
+                            that.showMsg = true
+                            that.errorMsg = "暂无当前招募"
                         } else {
 
                             var delectItemList = []
@@ -84,7 +83,8 @@
                             }
                             console.log(JSON.stringify(showItemList))
                             if (showItemList == null) {
-                                window.alert("暂无当前招募")
+                                that.showMsg = true
+                                that.errorMsg = "暂无当前招募"
                             } else {
                                 that.data = showItemList
 
@@ -96,13 +96,13 @@
                                 })
                             }
                         }
-                    }).catch(function(err) {
-                        console.log(err)
-                        that.serveMsg = err
                     })
                 })
             },
             onChange(val) {
+                if (val == '') {
+                    val = "timeDesc"
+                }
                 console.log(val)
                 this.getData(val)
             },
@@ -125,9 +125,6 @@
                     return hour + " 小时 " + min + " 分钟 " + sec + " 秒"
                 }
             }
-        },
-        ready() {
-            this.getData("timeDesc")
         }
     }
 </script>

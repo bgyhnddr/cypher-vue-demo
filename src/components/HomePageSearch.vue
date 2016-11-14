@@ -1,11 +1,12 @@
 ﻿<template>
-    <div>
-<div class="function-search">
+<div>
+    <div class="function-search">
         <group>
-            <x-input class="weui_cell_primary" title='' :value.sync="keyword" :show-clear=false ></x-input>
-             <div class="function-search-button"><button class="weui_btn weui_btn_primary" @click="search">.</button></div>
-        </group></div>
-<div class="function-search-list">
+            <x-input class="weui_cell_primary" title='' :value.sync="keyword" :show-clear=false></x-input>
+            <div class="function-search-button"><button class="weui_btn weui_btn_primary" @click="search">.</button></div>
+        </group>
+    </div>
+    <div class="function-search-list">
         <group>
             <h1>功能</h1>
             <a class="weui_cell" v-for="item in funcList" v-link="item.link" v-show="item.isShow">
@@ -16,14 +17,17 @@
                     <p>{{item.name}}</p>
                 </div>
             </a>
-        </group></div>
+        </group>
     </div>
+    <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
+</div>
 </template>
 
 <script>
     import {
         Group,
-        XInput
+        XInput,
+        Alert
     } from 'vux'
     import authAPI from '../api/auth'
     import agentInfoAPI from '../api/agentInfo'
@@ -32,7 +36,8 @@
     export default {
         components: {
             Group,
-            XInput
+            XInput,
+            Alert
         },
         data() {
             return {
@@ -80,6 +85,8 @@
                     link: null,
                     isShow: true
                 }],
+                show: false,
+                errorMsg: null
             }
         },
         methods: {
@@ -100,7 +107,8 @@
                         that.userLevel = result.brand_role.level
                         that.filter(that.$route.params.keyword)
                     }).catch(function(err) {
-                        window.alert(err)
+                        this.show = true
+                        this.errorMsg = err
                     })
                 })
             },
@@ -109,9 +117,11 @@
                 var reg = /^[\u4e00-\u9fa5]*$/ //中文
 
                 if (this.keyword == null) {
-                    window.alert("搜索框内容不能为空")
+                    this.show = true
+                    this.errorMsg = "搜索框内容不能为空"
                 } else if (!reg.test(this.keyword)) {
-                    window.alert("填写格式错误，请填写中文")
+                    this.show = true
+                    this.errorMsg = "填写格式错误，请填写中文"
                 } else {
                     this.filter(this.keyword)
                 }
@@ -148,7 +158,7 @@
     }
 </script>
 <style lang="less">
- .function-search .weui_cell {
+    .function-search .weui_cell {
         padding: 9px
     }
     
@@ -191,34 +201,35 @@
         font-size: 14px;
         color: #f43530;
     }
-.function-search-list {
-    background: #fff;
-    border-top: 1px solid #d3d1d1;
-    border-bottom: 1px solid #d3d1d1;
-}
-.function-search-list h1{
-    color: #393a3f;
-    font-size: 15px;
-    font-family: "微软雅黑";
-    padding: 2% 4%;
-    font-weight: normal;
-
-}
-    .function-search-list .weui_cell:before{
-border-top:0
- 
-     }
-  .function-search-list .weui_cell{
-
- border-top: 1px solid #d3d1d1;
-       padding: 7px 3% 4px 3%;
-
-}
- .function-search-list .weui_cell_hd{
-    width: 11%;
-}
- .function-search-list  img{
-
-width: 80%
-}
+    
+    .function-search-list {
+        background: #fff;
+        border-top: 1px solid #d3d1d1;
+        border-bottom: 1px solid #d3d1d1;
+    }
+    
+    .function-search-list h1 {
+        color: #393a3f;
+        font-size: 15px;
+        font-family: "微软雅黑";
+        padding: 2% 4%;
+        font-weight: normal;
+    }
+    
+    .function-search-list .weui_cell:before {
+        border-top: 0
+    }
+    
+    .function-search-list .weui_cell {
+        border-top: 1px solid #d3d1d1;
+        padding: 7px 3% 4px 3%;
+    }
+    
+    .function-search-list .weui_cell_hd {
+        width: 11%;
+    }
+    
+    .function-search-list img {
+        width: 80%
+    }
 </style>
