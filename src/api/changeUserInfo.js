@@ -7,5 +7,8 @@ export default {
     },
     changeWechat(params) {
         return httpRequest.post(path + 'changeWechat', params)
+    },
+    changeCellphone(params) {
+        return httpRequest.post(path + 'changeCellphone', params)
     }
 }

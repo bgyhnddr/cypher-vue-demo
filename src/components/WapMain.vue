@@ -134,6 +134,9 @@
                 } else if (this.$route.name === 'PhoneVerification') {
                     this.ShowBack = true
                     return '发送验证码'
+                } else if (this.$route.path === '/accountManagement/changeCellPhone') {
+                    this.ShowBack = true
+                    return '修改手机号'
                 }
 
             }
