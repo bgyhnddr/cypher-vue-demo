@@ -59,13 +59,14 @@
                 </div>
             </a>
         </group>
-
+        <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
 	</div>
 </template>
 
 <script>
     import {
-        Group
+        Group,
+        Alert
     } from 'vux'
     import authAPI from '../api/auth'
     import agentInfoAPI from '../api/agentInfo'
@@ -73,7 +74,8 @@
 
     export default {
         components: {
-            Group
+            Group,
+            Alert
         },
         data() {
             return {
@@ -88,19 +90,15 @@
                     }
                 },
                 showAuditClick: false,
-                auditListLength: null
+                auditListLength: null,
+                show: false,
+                errorMsg: null
             }
         },
         methods: {
             getPersonalInfo() {
                 var that = this
                 authAPI.getUser().then(function(result) {
-                    if (typeof(result.name) == 'undefined') {
-                        window.alert("获取用户登录信息失败，请重新登录")
-                        that.$route.router.go('/auth/login')
-                        return
-                    }
-
                     that.user.user_info = result
                     console.log("用户账号:" + that.user.user_info.name)
 
@@ -116,6 +114,9 @@
                             } else {
                                 that.auditListLength = null
                             }
+                        }).catch(function(err) {
+                            this.show = true
+                            this.errorMsg = err
                         })
 
                         if (result.brand_role.level == "0") {
@@ -123,7 +124,8 @@
                         }
                         that.user.brand_info = result
                     }).catch(function(err) {
-                        window.alert(err)
+                        this.show = true
+                        this.errorMsg = err
                     })
                 })
             }

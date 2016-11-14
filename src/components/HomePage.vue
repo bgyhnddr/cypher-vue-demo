@@ -123,8 +123,6 @@
                 authAPI.getUser().then(function(result) {
                     that.user.userInfo = result
                     that.getAgentInfo(result.name)
-                }).catch(function(err) {
-                    window.alert(err)
                 })
             },
             search() {
@@ -162,7 +160,8 @@
                         }
                     }
                 }).catch(function(err) {
-                    window.alert(err)
+                    this.show = true
+                    this.errorMsg = err
                 })
 
                 employmentAPI.getBrandInfo({
@@ -171,7 +170,8 @@
                     console.log(JSON.stringify(result))
                     that.user.brandName = result.name
                 }).catch(function(err) {
-                    window.alert(err)
+                    this.show = true
+                    this.errorMsg = err
                 })
             }
         },
