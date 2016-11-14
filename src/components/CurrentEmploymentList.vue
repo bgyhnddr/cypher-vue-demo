@@ -57,13 +57,11 @@
         },
         methods: {
             getData(val) {
-
                 var that = this
                     //获取用户account
                 authAPI.getUser().then(function(result) {
                     console.log("用户账号:" + result.name)
-
-                    //改变列表内容
+                        //改变列表内容
                     employmentAPI.getCurrentList({
                         key: val,
                         user_account: result.name
@@ -102,6 +100,9 @@
                 })
             },
             onChange(val) {
+                if (val == '') {
+                    val = "timeDesc"
+                }
                 console.log(val)
                 this.getData(val)
             },
@@ -124,9 +125,6 @@
                     return hour + " 小时 " + min + " 分钟 " + sec + " 秒"
                 }
             }
-        },
-        ready() {
-            this.getData("timeDesc")
         }
     }
 </script>

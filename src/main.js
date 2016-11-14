@@ -91,6 +91,7 @@ router.beforeEach((tran) => {
                     case "CertificateInfo":
                     case "checkPwd":
                     case "changeWechat":
+                    case "changeCellPhone":
                         tran.next()
                         break
                 }

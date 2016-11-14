@@ -142,6 +142,9 @@ export function configRouter(router) {
                 },
                 'changeWechat': {
                     component: require('../components/ChangeWechat.vue')
+                },
+                'changeCellPhone': {
+                    component: require('../components/ChangeCellPhone.vue')
                 }
 
 
