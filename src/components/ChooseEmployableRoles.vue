@@ -74,14 +74,12 @@
                     })
                 })
             },
-
             chooseRole(roleCode) {
                 //创建发起招募
                 var that = this
                 console.log(roleCode)
                 var employer = this.userinfo.brand_role.agent_brand_role.agent.user_account
                 var brandGuid = this.userinfo.brand_role.brand_guid
-
 
                 employmentAPI.createEmployment({
                     employer: employer,

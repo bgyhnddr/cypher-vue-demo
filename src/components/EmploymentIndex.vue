@@ -59,7 +59,7 @@
                 </div>
             </a>
         </group>
-        <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
+        <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
 	</div>
 </template>
 
@@ -91,7 +91,7 @@
                 },
                 showAuditClick: false,
                 auditListLength: null,
-                show: false,
+                showMsg: false,
                 errorMsg: null
             }
         },
@@ -115,7 +115,7 @@
                                 that.auditListLength = null
                             }
                         }).catch(function(err) {
-                            this.show = true
+                            this.showMsg = true
                             this.errorMsg = err
                         })
 
@@ -124,7 +124,7 @@
                         }
                         that.user.brand_info = result
                     }).catch(function(err) {
-                        this.show = true
+                        this.showMsg = true
                         this.errorMsg = err
                     })
                 })

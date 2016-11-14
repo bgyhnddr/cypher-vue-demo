@@ -8,19 +8,22 @@
         <p></p>
         <span>剩余时间：{{calculateRemainingTime(data)}}</span>
         <x-button type="warn" @click="closeEmployment" >关闭当前招募</x-button>
+        <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
     </div>
 </template>
 
 <script>
     import {
-        XButton
+        XButton,
+        Alert
     } from 'vux'
     import authAPI from '../api/auth'
     import employmentAPI from '../api/employment'
 
     export default {
         components: {
-            XButton
+            XButton,
+            Alert
         },
         data() {
             return {
@@ -28,7 +31,9 @@
                     employments: [],
                     brand_role: {}
                 },
-                applicantNum: null
+                applicantNum: null,
+                showMsg: false,
+                errorMsg: null
             }
         },
         methods: {
@@ -45,7 +50,8 @@
                     that.calculateRemainingTime(result)
                     that.count(result)
                 }).catch(function(err) {
-                    window.alert(err)
+                    that.showMsg = true
+                    that.errorMsg = err
                 })
             },
             calculateRemainingTime(item) {
@@ -79,11 +85,13 @@
                     guid: this.$route.params.guid
                 }).then(function(result) {
                     if (result == true) {
-                        window.alert("成功关闭当前招募")
+                        that.showMsg = true
+                        that.errorMsg = "成功关闭当前招募"
                         that.$route.router.go('/employManagement/currentList')
                     }
                 }).catch(function(err) {
-                    window.alert(err)
+                    that.showMsg = true
+                    that.errorMsg = err
                 })
             }
         },

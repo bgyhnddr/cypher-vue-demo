@@ -73,6 +73,7 @@
         },
         methods: {
             initData() {
+                console.log("显示发起招募证书")
                 var that = this
                 var publishEmploymentID = this.$route.params.publishEmploymentID
 
