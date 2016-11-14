@@ -99,7 +99,6 @@
                     addressDetail: ""
                 },
                 employmentData: {
-                    employmentGuid: null,
                     publishEmploymentInfo: {},
                     agentGuid: "",
                     brandRoleName: "",
@@ -115,14 +114,14 @@
         methods: {
             initDate() {
                 var that = this
-                this.employmentData.employmentGuid = this.$route.params.employmentGuid
-
+                var employmentGuid = this.$route.params.publishEmploymentID
+                console.log(employmentGuid)
                 applyEmploymentAPI.getPublishEmploymentInfo({
-                    employmentGuid: this.employmentData.employmentGuid
+                    employmentGuid: employmentGuid
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
 
-                    //TODO:招募失效
+                    //招募失效
                     var startDate = new Date(result.create_time)
                     var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
                     if (endDate <= new Date()) {
@@ -210,14 +209,8 @@
                 this.data.address = filterAddress(this.data.addressTemp, AddressChinaData)
                 console.log(JSON.stringify(this.data))
 
-                //招募失效
                 var startDate = new Date(this.employmentData.publishEmploymentInfo.create_time)
                 var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
-                if (endDate <= new Date()) {
-                    window.alert("招募已失效")
-                    that.$route.router.go('/auth/login')
-                    return
-                }
 
                 //检查未填写完整的值
                 if (this.data.IDType == "") {
@@ -239,7 +232,7 @@
                         deadline: deadline
                     }).then(function(result) {
                         console.log("提交成功")
-                        that.$route.router.go('/employManagement/employmentSubmission/' + that.$route.params.brandName)
+                        that.$route.router.go('/employManagement/employmentSubmission/' + that.employmentData.brandInfo.name)
                     }).catch(function(err) {
                         window.alert(err)
                     })

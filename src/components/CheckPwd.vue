@@ -3,6 +3,7 @@
         <group>
             <x-input class="weui_cell_primary" :value.sync="pwd" placeholder="输入登录密码" type="password" :show-clear=false :equal-with="password"></x-input>
             <x-button type="primary" @click="cheakPwd">下一步</x-button>
+            <alert :show.sync="show">{{errorMsg}}</alert>
         </group>
     </div>
 </template>
@@ -11,7 +12,8 @@
     import {
         Group,
         XInput,
-        XButton
+        XButton,
+        Alert
     } from 'vux'
     import authAPI from '../api/auth'
     import changeUserInfoAPI from '../api/changeUserInfo'
@@ -19,13 +21,16 @@
     export default {
         data() {
             return {
-                pwd: ""
+                pwd: "",
+                show: false,
+                errorMsg: null
             }
         },
         components: {
             Group,
             XInput,
-            XButton
+            XButton,
+            Alert
         },
         methods: {
             cheakPwd() {
@@ -48,11 +53,11 @@
                             }
                         }
                     }).catch(function(err) {
-                        window.alert(err)
+                        that.errorMsg = err
                     })
 
                 }).catch(function(err) {
-                    window.alert(err)
+                    that.errorMsg = err
                 })
             }
         }

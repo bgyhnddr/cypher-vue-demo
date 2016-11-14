@@ -13,9 +13,9 @@ var agent_detail = require('./models/agent_detail')
 
 module.exports = function() {
     return Promise.all([
-        user.create({ account: 'bili', password: "123" }), //品牌商
+        user.create({ account: 'bili', password: "123" }), //二级代理
         user.create({ account: 'bili2', password: "123" }), //一级代理
-        user.create({ account: 'limt', password: '123' }),
+        user.create({ account: 'limt', password: '123' }), //品牌商
 
         user_role.create({ user_account: "bili", role_code: "user" }),
         user_role.create({ user_account: "bili2", role_code: "user" }),
@@ -31,7 +31,7 @@ module.exports = function() {
 
         agent_brand_role.create({ agent_guid: "agent1", brand_role_code: "brand_role1" }),
         agent_brand_role.create({ agent_guid: "agent3", brand_role_code: "brand_role2" }),
-        agent_brand_role.create({ agent_guid: "agent2", brand_role_code: "brand_role1" }),
+        agent_brand_role.create({ agent_guid: "agent2", brand_role_code: "brand_role3" }),
         agent_brand_role.create({ agent_guid: "agent4", brand_role_code: "brand_role2" }),
 
         employment_term.create({ agent_guid: "agent1", term_from: "2016-12-11 12:30:46", term_to: "2017-4-11 12:30:46" }),

@@ -13,16 +13,16 @@
 
                             <tr>
                                 <td  width=18%;>姓名:</td>
-                                <td class="color-gray">张三</td>
+                                <td class="color-gray">某某某</td>
                                 <td rowspan="4" align="right"><img class="vux-x-img ximg-demo" alt="授权者头像" src="/static/TestIMG/grantee.jpg" /></td>
                             </tr>
                             <tr>
                                 <td> 微信:</td>
-                                <td class="color-gray">AA</td>
+                                <td class="color-gray">******微信号</td>
                             </tr>
                             <tr>
                                 <td>身份证:</td>
-                                <td class="color-gray">4404xxxxxxxxxxxxx</td>
+                                <td class="color-gray">4404xxxxxxxxxxx52</td>
                             </tr>
                             <tr>
                                 <td height="6px"></td>
@@ -31,7 +31,7 @@
                         </tbody>
                     </table>
 
-                    <div class="set-agent ">为{{employmentData.name}}<label>{{employer.brand_role_name}}</label></div>
+                    <div class="set-agent ">为{{employmentData.name}}<label>{{brand_role_name}}</label></div>
                     <div class="allow-agent"> 允许其在网络上销售{{employmentData.name}}<label>旗下产品</label></div>
                     <div class="agent-message">
                         <p>授权编号:<label class="color-gray">A111</label></p>
@@ -55,51 +55,64 @@
     export default {
         data() {
             return {
-                employer: {
-                    agent_guid: "",
-                    user_account: "",
-                    brand_role_code: "",
-                    brand_role_name: ""
-                },
                 employmentData: {},
                 date: {
                     start: "",
                     deadline: ""
                 },
                 brand_logo_href: null,
-                company_name: null
+                company_name: null,
+                publishEmploymentData: {},
+                brand_role_name: "",
             }
         },
         methods: {
             initData() {
                 var that = this
-                this.employer.user_account = this.$route.params.account
-                this.employer.brand_role_code = this.$route.params.employableRole
+                var publishEmploymentID = this.$route.params.publishEmploymentID
+
+                //获取发起招募信息
+                employmentAPI.getPublishEmploymentInfo({
+                    employmentGuid: publishEmploymentID
+                }).then(function(result) {
+                    console.log(JSON.stringify(result))
+                    that.publishEmploymentData = result
+
+                    //招募失效
+                    var startDate = new Date(result.create_time)
+                    var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
+                    if (endDate <= new Date()) {
+                        window.alert("招募已失效")
+                        that.$route.router.go('/auth/login')
+                    } else {
+                        //判断用户类型
+                        that.getBrandInfo()
+                        authAPI.getUser().then(function(result) {
+                            if (result.name == that.publishEmploymentData.employer_user_account) {
+                                that.getRoleName()
+                                that.showShareUrl()
+                            } else {
+                                that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.employmentData.name)
+                            }
+                        })
+                    }
+                }).catch(function(err) {
+                    window.alert(err)
+                })
+
                 this.date.start = new Date().Format('yyyy-MM-dd')
                 this.date.deadline = new Date(new Date().getTime() + 30 * 24 * 3600 * 1000).Format('yyyy-MM-dd')
-
-                authAPI.getUser().then(function(result) {
-                    if (result.name == that.employer.user_account) {
-                        that.getEmploymentInfo()
-                        that.getRoleName()
-                        that.getAgentGuid()
-                    } else {
-                        window.alert("您暂没有权限查看他人创建的招募证书")
-                        return
-                    }
-                })
             },
-            getEmploymentInfo() {
+            getBrandInfo() {
                 var that = this
                 console.log("正在获取品牌资料")
 
                 employmentAPI.getBrandInfo({
-                    user_account: this.employer.user_account
+                    user_account: this.publishEmploymentData.employer_user_account
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
                     that.employmentData = result
 
-                    that.createEmployment()
                     for (var item in result.brand_details) {
                         for (var meta in result.brand_details[item]) {
                             //key = "LOGOImg"
@@ -122,45 +135,16 @@
             getRoleName() {
                 var that = this
                 employmentAPI.getRoleName({
-                    brand_role_code: that.employer.brand_role_code
+                    brand_role_code: this.publishEmploymentData.brand_role_code
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
-                    that.employer.brand_role_name = result.name
+                    that.brand_role_name = result.name
                 }).catch(function(err) {
                     window.alert(err)
-                })
-            },
-            getAgentGuid() {
-                var that = this
-                employmentAPI.getAgentInfo({
-                    user_account: that.employer.user_account
-                }).then(function(result) {
-                    console.log(JSON.stringify(result))
-                    that.employer.agent_guid = result.guid
-                }).catch(function(err) {
-                    window.alert(err)
-                })
-            },
-            goBackToEmploymentIndex() {
-                this.$route.router.go('/employManagement')
-            },
-            createEmployment() {
-                var that = this
-
-                employmentAPI.createEmployment({
-                    employer: this.employer,
-                    employmentData: this.employmentData,
-                    createTime: new Date().Format('yyyy-MM-dd hh:mm:ss')
-                }).then(function(result) {
-                    console.log(JSON.stringify(result))
-                    that.showShareUrl(result)
-                }).catch(function(err) {
-                    window.alert(err)
-                    that.$route.router.go('/employManagement/chooseEmployableRoles')
                 })
             },
             showShareUrl(employmentGuid) {
-                console.log('/employManagement/fillInEmployment/' + employmentGuid + "/" + this.$route.params.brandName)
+                console.log("填写资料跳转地址：" + '/employManagement/fillInEmployment/' + this.$route.params.publishEmploymentID + '/' + this.employmentData.name)
             }
         },
         ready() {
@@ -220,9 +204,9 @@
     
     table.personal-identity tbody tr td img {
         width: 74%;
-    height: auto;
-    margin-right: 18%;
-   min-height: 76px;
+        height: auto;
+        margin-right: 18%;
+        min-height: 76px;
     }
     
     .color-gray {
@@ -258,6 +242,6 @@
     .agent-unit {
         font-family: "微软雅黑";
         text-align: right;
-      margin-bottom: 29%
+        margin-bottom: 29%
     }
 </style>
