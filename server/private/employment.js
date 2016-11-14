@@ -481,18 +481,6 @@ var exec = {
                     ]
                 })
         }
-
-        // return publish_employment.findAll({
-        //     where: {
-        //         employer_user_account: user_account,
-        //         status: true
-        //     },
-        //     include: [{
-        //         model: brand_role
-        //     }],
-        //     order: select
-        // })
-
     },
     closeOverduePublishEmployment(req, res, next) {
         var delectItemList = req.body.delectItemList
