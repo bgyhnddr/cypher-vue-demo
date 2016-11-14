@@ -188,7 +188,7 @@
             },
             goFillEmployment2() {
                 console.log("打开第二部分表格")
-                var reg = /^[a-z]+[a-zA-Z0-9_]*$/ //微信号
+                var reg = /^[a-zA-Z]+[a-zA-Z0-9_]*$/ //微信号
                 var reg2 = /[\u4e00-\u9fa5]/ //中文
 
                 if (!this.$refs.name.valid || !reg2.test(this.data.name)) {
@@ -292,11 +292,13 @@
         text-align: center;
         margin-top: 2%;
     }
-   .ApplyFor-agent-header button {
-    width: 100%;
-    background: none;
-    border: 0;
-}
+    
+    .ApplyFor-agent-header button {
+        width: 100%;
+        background: none;
+        border: 0;
+    }
+    
     .ApplyFor-agent-header img {
         width: 31%;
         height: auto;
@@ -305,10 +307,11 @@
     .ApplyFor-agent-input .weui_cell {
         padding: 2% 0;
     }
-    .ApplyFor-agent-input  .weui_cell:before {
-
-         border-top:0
-   }
+    
+    .ApplyFor-agent-input .weui_cell:before {
+        border-top: 0
+    }
+    
     .ApplyFor-agent-input label.weui_label {
         color: #000;
         font-size: 15px;
@@ -407,7 +410,7 @@
         height: 2.5em;
         line-height: 2.5;
         border: 1px solid #d3d1d1;
-    position: relative;
+        position: relative;
     }
     
     .certificate-input {
@@ -449,8 +452,9 @@
     [class^=weui_icon_]:before {
         margin-right: 0.5em;
     }
-.certificate .weui_cell_ft.weui_cell_primary.with_arrow span:nth-child(2) {
-    position: absolute;
-    left: 5%;
-}
+    
+    .certificate .weui_cell_ft.weui_cell_primary.with_arrow span:nth-child(2) {
+        position: absolute;
+        left: 5%;
+    }
 </style>

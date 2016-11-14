@@ -17,7 +17,7 @@
             </div>
         </a>
             <!--当前招募-->
-            <a class="weui_cell a-li "  v-link="" >
+            <a class="weui_cell a-li "  v-link="{path: '/employManagement/currentList'}" >
                 <div class="weui_cell_hd">
                       <img src="../icon/current.png" />
                 </div>

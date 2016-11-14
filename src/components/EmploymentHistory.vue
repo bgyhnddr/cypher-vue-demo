@@ -209,6 +209,10 @@
 border:0
 }
 /*筛选*/
+.history-level .weui_cell:before{
+border:0
+
+}
 .history-level .weui_cell {
     padding: 0;
 border-bottom: 1px solid #d3d1d1;

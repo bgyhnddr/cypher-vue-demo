@@ -207,6 +207,6 @@
     .agent-unit {
         font-family: "微软雅黑";
         text-align: right;
-        margin-bottom: 24%;
+      margin-bottom: 29%
     }
 </style>

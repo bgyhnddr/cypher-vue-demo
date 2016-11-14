@@ -3,7 +3,7 @@
  <div class="audit-choose">
     <group>
 
-      <selector placeholder="&nbsp;&nbsp;&nbsp;&nbsp;--排序--" title="排序" :options="List" @on-change="onChange"></selector>
+      <selector placeholder="&nbsp;&nbsp;&nbsp;&nbsp;--排序--" :options="List" @on-change="onChange"></selector>
 
     </group>
 </div>
@@ -119,39 +119,39 @@ line-height: 1.6em;
 .audit-list  .weui_cell:before{
 border-top:0
 }
-.audit-choose {
-    position: absolute;
-    top: 4%;
-    z-index: 100000;
-        right: 2%;
-width: 31%;
-border: 1px solid #d3d1d1;
-}
-.audit-choose  .weui_cell{
-position: initial;
-    
-        width: 83%;
-    background: #fff;
-    padding: 1% 28% 1% 6%;
+.audit-choose .weui_cells.vux-no-group-title{
+
+position: absolute;
+    z-index: 1000;
+       top: 12px;
+    right: 16px;
+
+
 
 }
-.audit-choose  .weui_cell_select .weui_select{
-    padding-right: 0;
-font-family: "微软雅黑";
-    height: 22px;
+
+.audit-choose .weui_cell.weui_cell_select {
+    padding: 0;
+}
+.audit-choose .weui_cell_select .weui_select{
+    height: 23px;
     line-height: 22px;
-font-size: 13px;
-}
+    font-size: 13px;
+    font-family: "微软雅黑";
+padding-right: 14px;
+    background: #fff;
+border: 1px solid #d3d1d1;
+    padding-left: 1px;
 
-.audit-choose  .weui_cell_hd {
-    width: 0;
 }
-.audit-choose  .weui_cell_select .weui_cell_bd:after{
-    right: 3%;
-    top: 41%;
+.audit-choose .weui_cell_select .weui_cell_bd:after{
+
+    transform: rotate(135deg);
+    top: 44%;
+    right: 5px;
+    z-index: 1;
     height: 4px;
     width: 4px;
-
 }
 
 .audit-choose  .weui_cell_select .weui_select  option:nth-child(even) { background-color:#f5f5f5; }
