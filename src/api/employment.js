@@ -46,5 +46,8 @@ export default {
     },
     closeEmployment(params) {
         return httpRequest.post(path + 'closeEmployment', params)
-    }
+    },
+    getPublishEmploymentInfo(params) {
+        return httpRequest.post(path + 'getPublishEmploymentInfo', params)
+    },
 }

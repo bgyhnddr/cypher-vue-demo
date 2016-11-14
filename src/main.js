@@ -44,6 +44,7 @@ router.beforeEach((tran) => {
         case "FillInEmployment":
         case "EmploymentSubmission":
         case "PhoneVerification":
+        case "BrandAuthorization":
             tran.next()
             return
     }
@@ -66,7 +67,6 @@ router.beforeEach((tran) => {
     }
 
     authAPI.getUser().then(function(result) {
-
         window.state.userInfo = { name: result.name, permissions: result.permissions }
         if (result.name) {
             if (path.split('/')[1] == "employManagement") {
@@ -74,19 +74,21 @@ router.beforeEach((tran) => {
                 switch ((path.split('/')[2])) {
                     case undefined:
                     case "chooseEmployableRoles":
-                    case "brandAuthorization":
                     case "audit":
                     case "auditInfo":
                     case "employmentHistory":
+                    case "currentList":
+                    case "currentInfo":
                         CheckInfo()
                         break
-
                 }
             } else if (path.split('/')[1] == "accountManagement") {
                 switch (path.split('/')[2]) {
                     case undefined:
                     case "MyCertificate":
                     case "CertificateInfo":
+                    case "checkPwd":
+                    case "changeWechat":
                         tran.next()
                         break
                 }
@@ -117,7 +119,6 @@ router.beforeEach((tran) => {
             }
         }
     })
-
 })
 
 router.start(App, 'app');

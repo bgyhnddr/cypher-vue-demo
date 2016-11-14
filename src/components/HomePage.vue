@@ -34,6 +34,7 @@
         </flexbox-item>
     </flexbox>
 </div>
+<alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
 </div>
 </template>
 
@@ -42,7 +43,8 @@
         Group,
         XInput,
         Flexbox,
-        FlexboxItem
+        FlexboxItem,
+        Alert
     } from 'vux'
     import authAPI from '../api/auth'
     import employmentAPI from '../api/employment'
@@ -53,7 +55,8 @@
             Group,
             XInput,
             Flexbox,
-            FlexboxItem
+            FlexboxItem,
+            Alert
         },
         data() {
             return {
@@ -70,12 +73,12 @@
                 }, {
                     title: '成员招募',
                     link: '/employManagement',
-                    iconhref:'/static/TestIMG/recruiting.png',
+                    iconhref: '/static/TestIMG/recruiting.png',
                     isShow: true
                 }, {
                     title: '订货管理',
                     link: '',
-                    iconhref:'/static/TestIMG/order.png',
+                    iconhref: '/static/TestIMG/order.png',
                     isShow: true
                 }, {
                     title: '我的库存',
@@ -101,7 +104,7 @@
                     title: '...',
                     link: '',
                     iconhref: '/static/TestIMG/more.png',
-                    isShow:  true
+                    isShow: true
                 }],
                 keyword: null,
                 user: {
@@ -109,7 +112,9 @@
                     agentInfo: {},
                     userHeadimgHref: null,
                     brandName: null
-                }
+                },
+                show: false,
+                errorMsg: null
             }
         },
         methods: {
@@ -118,8 +123,6 @@
                 authAPI.getUser().then(function(result) {
                     that.user.userInfo = result
                     that.getAgentInfo(result.name)
-                }).catch(function(err) {
-                    window.alert(err)
                 })
             },
             search() {
@@ -127,9 +130,11 @@
                 var reg = /^[\u4e00-\u9fa5]*$/ //全中文
 
                 if (this.keyword == null) {
-                    window.alert("搜索框内容不能为空")
+                    this.show = true
+                    this.errorMsg = "搜索框内容不能为空"
                 } else if (!reg.test(this.keyword)) {
-                    window.alert("填写格式错误，请填写中文")
+                    this.show = true
+                    this.errorMsg = "填写格式错误，请填写中文"
                 } else {
                     // window.alert("填暂不开放")
                     this.$route.router.go('/homePage/search/' + this.keyword)
@@ -155,7 +160,8 @@
                         }
                     }
                 }).catch(function(err) {
-                    window.alert(err)
+                    this.show = true
+                    this.errorMsg = err
                 })
 
                 employmentAPI.getBrandInfo({
@@ -164,7 +170,8 @@
                     console.log(JSON.stringify(result))
                     that.user.brandName = result.name
                 }).catch(function(err) {
-                    window.alert(err)
+                    this.show = true
+                    this.errorMsg = err
                 })
             }
         },
@@ -174,14 +181,14 @@
     }
 </script>
 <style lang="less">
-/*返回按钮*/
-.vux-demo-header-box button{
-
-
-
-}
-span.headerTransition-transition {
-    font-size: 14px;}
+    /*返回按钮*/
+    
+    .vux-demo-header-box button {}
+    
+    span.headerTransition-transition {
+        font-size: 14px;
+    }
+    
     div.icon_btn {
         width: 110px;
     }
@@ -203,10 +210,11 @@ span.headerTransition-transition {
     table.platform-message label {
         color: #646464
     }
-    table.platform-message p:nth-child(1){
-       
+    
+    table.platform-message p:nth-child(1) {
         margin-bottom: 5%;
     }
+    
     .search .weui_cell {
         padding: 9px
     }
@@ -250,49 +258,51 @@ span.headerTransition-transition {
         font-size: 14px;
         color: #f43530;
     }
-/*九宫格*/
-.homepage-icon{
-background: #fff;
-    border-top: 1px solid #d3d1d1;
- border-bottom: 1px solid #d3d1d1;
-}
-.homepage-icon .vux-flexbox-item .flex-demo {
-border-right: 1px solid #d3d1d1;
-border-bottom: 1px solid #d3d1d1;
-padding: 16% 0 25% 0;
-font-size: 14px;
-    color: #292832;
-}
-.homepage-icon .vux-flexbox-item .flex-demo h4{
-font-family: "微软雅黑";
-font-weight: normal;
-    margin-top: -5%;
-}
-.homepage-icon .vux-flexbox-item:last-child .flex-demo h4{
-  color:#fff
-
-}
-.homepage-icon .vux-flexbox-item:nth-child(3) .flex-demo,
-.homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo,
-.homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo {
-border-right: 0;
-
-}
-.homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo,
-.homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo,
-.homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo {
-border-bottom: 0;
-
-}
-.homepage-icon .vux-flexbox-item button{
-
-background: #fff;
-    border: 0;
-    width: 100%;
-
-}
-.homepage-icon .vux-flexbox-item button img{
-    width: 39%;
-}
-
+    /*九宫格*/
+    
+    .homepage-icon {
+        background: #fff;
+        border-top: 1px solid #d3d1d1;
+        border-bottom: 1px solid #d3d1d1;
+    }
+    
+    .homepage-icon .vux-flexbox-item .flex-demo {
+        border-right: 1px solid #d3d1d1;
+        border-bottom: 1px solid #d3d1d1;
+        padding: 16% 0 25% 0;
+        font-size: 14px;
+        color: #292832;
+    }
+    
+    .homepage-icon .vux-flexbox-item .flex-demo h4 {
+        font-family: "微软雅黑";
+        font-weight: normal;
+        margin-top: -5%;
+    }
+    
+    .homepage-icon .vux-flexbox-item:last-child .flex-demo h4 {
+        color: #fff
+    }
+    
+    .homepage-icon .vux-flexbox-item:nth-child(3) .flex-demo,
+    .homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo,
+    .homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo {
+        border-right: 0;
+    }
+    
+    .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo,
+    .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo,
+    .homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo {
+        border-bottom: 0;
+    }
+    
+    .homepage-icon .vux-flexbox-item button {
+        background: #fff;
+        border: 0;
+        width: 100%;
+    }
+    
+    .homepage-icon .vux-flexbox-item button img {
+        width: 39%;
+    }
 </style>
