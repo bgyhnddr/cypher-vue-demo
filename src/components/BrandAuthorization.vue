@@ -1,58 +1,61 @@
 ﻿<template>
-    <div>
-        <div class="brandauthorization-bac">
-            <div class="brandauthorizations">
-                <div class="brandauthorization-img">
-                    <p class="brand-logo"><img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="品牌logo" /></p>
-                    <p><img src="/static/TestIMG/authorization.png" class="authorization" /></p>
+<div>
+    <div class="brandauthorization-bac">
+        <div class="brandauthorizations">
+            <div class="brandauthorization-img">
+                <p class="brand-logo"><img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="品牌logo" /></p>
+                <p><img src="/static/TestIMG/authorization.png" class="authorization" /></p>
+            </div>
+            <div>
+                <h3>兹授权</h3>
+                <table boder=0 class="personal-identity">
+                    <tbody>
+
+                        <tr>
+                            <td width=18%;>姓名:</td>
+                            <td class="color-gray">某某某</td>
+                            <td rowspan="4" align="right"><img class="vux-x-img ximg-demo" alt="授权者头像" src="/static/TestIMG/grantee.jpg" /></td>
+                        </tr>
+                        <tr>
+                            <td> 微信:</td>
+                            <td class="color-gray">******微信号</td>
+                        </tr>
+                        <tr>
+                            <td>身份证:</td>
+                            <td class="color-gray">4404xxxxxxxxxxx52</td>
+                        </tr>
+                        <tr>
+                            <td height="6px"></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="set-agent ">为{{employmentData.name}}<label>{{brand_role_name}}</label></div>
+                <div class="allow-agent"> 允许其在网络上销售{{employmentData.name}}<label>旗下产品</label></div>
+                <div class="agent-message">
+                    <p>授权编号:<label class="color-gray">A111</label></p>
+                    <p>授权期限:<label class="color-gray">{{date.start}}</label>至
+                        <label class="color-gray">{{date.deadline}}</label>
+                    </p>
                 </div>
-                <div>
-                    <h3>兹授权</h3>
-                    <table boder=0 class="personal-identity">
-                        <tbody>
-
-                            <tr>
-                                <td  width=18%;>姓名:</td>
-                                <td class="color-gray">某某某</td>
-                                <td rowspan="4" align="right"><img class="vux-x-img ximg-demo" alt="授权者头像" src="/static/TestIMG/grantee.jpg" /></td>
-                            </tr>
-                            <tr>
-                                <td> 微信:</td>
-                                <td class="color-gray">******微信号</td>
-                            </tr>
-                            <tr>
-                                <td>身份证:</td>
-                                <td class="color-gray">4404xxxxxxxxxxx52</td>
-                            </tr>
-                            <tr>
-                                <td height="6px"></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="set-agent ">为{{employmentData.name}}<label>{{brand_role_name}}</label></div>
-                    <div class="allow-agent"> 允许其在网络上销售{{employmentData.name}}<label>旗下产品</label></div>
-                    <div class="agent-message">
-                        <p>授权编号:<label class="color-gray">A111</label></p>
-                        <p>授权期限:<label class="color-gray">{{date.start}}</label>至
-                            <label class="color-gray">{{date.deadline}}</label>
-                        </p>
-                    </div>
-
-                    <p class="agent-unit ">授权单位:<label class="color-gray">{{company_name}}</label></p>
-
-
-                </div>
+                <p class="agent-unit ">授权单位:<label class="color-gray">{{company_name}}</label></p>
             </div>
         </div>
     </div>
+    <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
+</div>
 </template>
 <script>
+    import {
+        Alert
+    } from 'vux'
     import authAPI from '../api/auth'
     import employmentAPI from '../api/employment'
 
     export default {
+        components: {
+            Alert
+        },
         data() {
             return {
                 employmentData: {},
@@ -64,6 +67,8 @@
                 company_name: null,
                 publishEmploymentData: {},
                 brand_role_name: "",
+                showMsg: false,
+                errorMsg: null
             }
         },
         methods: {
@@ -82,7 +87,8 @@
                     var startDate = new Date(result.create_time)
                     var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
                     if (endDate <= new Date()) {
-                        window.alert("招募已失效")
+                        that.showMsg = true
+                        that.errorMsg = "招募已失效"
                         that.$route.router.go('/auth/login')
                     } else {
                         //判断用户类型
@@ -97,7 +103,8 @@
                         })
                     }
                 }).catch(function(err) {
-                    window.alert(err)
+                    that.showMsg = true
+                    that.errorMsg = err
                 })
 
                 this.date.start = new Date().Format('yyyy-MM-dd')
@@ -129,7 +136,8 @@
                         }
                     }
                 }).catch(function(err) {
-                    alert(err)
+                    that.showMsg = true
+                    that.errorMsg = err
                 })
             },
             getRoleName() {
@@ -140,7 +148,8 @@
                     console.log(JSON.stringify(result))
                     that.brand_role_name = result.name
                 }).catch(function(err) {
-                    window.alert(err)
+                    that.showMsg = true
+                    that.errorMsg = err
                 })
             },
             showShareUrl(employmentGuid) {
