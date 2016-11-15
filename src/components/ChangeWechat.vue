@@ -1,5 +1,6 @@
-<template>
+﻿<template>
     <div>
+<div class="changewechat-input">
         <group title ="新的微信号">
             <x-input class="weui_cell_primary" :value.sync="wechat" placeholder="输入新的微信号" type="text" :show-clear=false 
             :min="6" :max="20" v-ref:wechat></x-input>
@@ -7,7 +8,7 @@
             <alert :show.sync="showMsg" @on-hide="onHide()" button-text="确认">你已经成功修改微信号</alert>
             <alert :show.sync="showRemind" button-text="确认">{{errorMsg}}</alert>
         </group>
-    </div>
+    </div></div>
 </template>
 
 <script>
@@ -74,4 +75,58 @@
 </script>
 <style>
 
+
+.changewechat-input  .weui_cell{
+
+    border: 1px solid #d3d1d1;
+    width: 83%;
+    margin: 0 auto 13% auto;
+    padding: 9px 3%;
+    border-radius: 3px;
+
+}
+.changewechat-input .weui_cell_hd {
+    width: 0
+}
+.changewechat-input .weui_input{
+    font-family: "微软雅黑";
+    font-size: 14px;
+    color: #aeaeae;
+
+}
+
+.changewechat-input .weui_cells_title{
+margin-top: 13%;
+    color: #000;
+    font-size: 15px;
+
+
+}
+
+.changewechat-input .weui_dialog_ft{
+
+    width: 89%;
+    margin: 8% auto;
+    background: #fd5e5e;
+    line-height: 35px;
+    border-radius: 2px;
+
+
+}
+.changewechat-input .weui_dialog_bd
+{
+    color: #000000;
+    font-size: 17px;
+    font-family: "微软雅黑";
+margin-top: 5%;
+
+}
+.changewechat-input .weui_btn_dialog.primary {
+    font-size: 16px;
+    color: #fff;
+}
+.changewechat-input .weui_dialog{
+width: 92%;
+
+}
 </style>
