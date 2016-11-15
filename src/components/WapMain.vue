@@ -140,6 +140,9 @@
                 } else if (this.$route.path === '/auth/SuccessPage') {
                     this.ShowBack = false
                     return '修改成功'
+                } else if (this.$route.path === '/accountManagement/changeCellPhone') {
+                    this.ShowBack = true
+                    return '修改手机号'
                 }
 
             }
