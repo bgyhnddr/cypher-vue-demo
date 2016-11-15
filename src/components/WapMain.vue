@@ -7,7 +7,7 @@
       <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
 
       <div slot="left" class="onclick-back" v-if="ShowBack">
-        <button @click="onClickBack">返回</button>
+        <button @click="onClickBack">{{backText}}</button>
 
       </div>
     </div>
@@ -24,6 +24,7 @@ import {
   ViewBox,
   XHeader
 } from 'vux'
+import authAPI from '../api/auth'
 require('vux/dist/vux.css')
 
 export default {
@@ -41,11 +42,13 @@ export default {
         backText: '',
         preventGoBack: false
       },
-      ShowBack: false
+      ShowBack: false,
+      backText: "返回"
     }
   },
   computed: {
     title() {
+      this.backText = "返回"
       if (this.$route.path === '/index') {
         this.ShowBack = false
         return 'Home'
@@ -58,7 +61,8 @@ export default {
         document.body.style.background = '#fff'
         return '修改密码'
       } else if (this.$route.path === '/homePage') {
-        this.ShowBack = false
+        this.backText = "退出"
+        this.ShowBack = true
         document.body.style.background = '#f2f2f2'
         return
       } else if (this.$route.name === 'HomePageSearch') {
@@ -152,7 +156,6 @@ export default {
     onClickBack() {
       var path = this.$route.path
       var name = this.$route.name
-
       var FirstPath = path.split('/')[1]
       var SecPath = path.split('/')[2]
       if (FirstPath == "auth") {
@@ -177,7 +180,12 @@ export default {
           }
         }
       } else if (FirstPath == "homePage") {
-        if (SecPath == "search") {
+        if (!SecPath) {
+          //登出
+          authAPI.logout()
+          this.$route.router.go('/')
+          return
+        } else if (SecPath == "search") {
           this.$route.router.go('/homePage')
           return
         }
@@ -185,7 +193,8 @@ export default {
         if (!SecPath) {
           this.$route.router.go('/homePage')
           return
-        } else if (SecPath == "chooseEmployableRoles") {
+        }
+        if (SecPath == "chooseEmployableRoles") {
           this.$route.router.go('/employManagement')
           return
         } else if (SecPath == "brandAuthorization") {
@@ -231,8 +240,8 @@ export default {
           return
         }
       }
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="less">

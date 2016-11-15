@@ -17,7 +17,7 @@
     </group>
     <group>
         <div class="search">
-            <x-input class="weui_cell_primary" title="" :value.sync="keyword" placeholder="输入需要查看的功能名称" :show-clear=false></x-input>
+            <x-input class="weui_cell_primary" title="" :value.sync="keyword" placeholder="输入需要查看的功能名称" :show-clear=false :required="false"></x-input>
             <div class="search-button"><button class="weui_btn weui_btn_primary" @click="search">.</button></div>
         </div>
     </group>
@@ -61,6 +61,16 @@
         data() {
             return {
                 btn_list: [{
+                    title: '我的账户',
+                    link: '/accountManagement',
+                    iconhref: '/static/TestIMG/account.png',
+                    isShow: true
+                },{
+                    title: '成员招募',
+                    link: '/employManagement',
+                    iconhref: '/static/TestIMG/recruiting.png',
+                    isShow: true
+                },  {
                     title: '货品销售',
                     link: '',
                     iconhref: '/static/TestIMG/sell.png',
@@ -69,11 +79,6 @@
                     title: '货品查验',
                     link: '',
                     iconhref: '/static/TestIMG/inspection.png',
-                    isShow: true
-                }, {
-                    title: '成员招募',
-                    link: '/employManagement',
-                    iconhref: '/static/TestIMG/recruiting.png',
                     isShow: true
                 }, {
                     title: '订货管理',
@@ -94,11 +99,6 @@
                     title: '我的货品',
                     link: '',
                     iconhref: '/static/TestIMG/goods.png',
-                    isShow: true
-                }, {
-                    title: '我的账户',
-                    link: '/accountManagement',
-                    iconhref: '/static/TestIMG/account.png',
                     isShow: true
                 }, {
                     title: '...',
@@ -128,7 +128,7 @@
                 console.log("开始搜索")
                 var reg = /^[\u4e00-\u9fa5]*$/ //全中文
 
-                if (this.keyword == null) {
+                if (this.keyword == null || this.keyword == '') {
                     this.show = true
                     this.errorMsg = "搜索框内容不能为空"
                 } else if (!reg.test(this.keyword)) {
