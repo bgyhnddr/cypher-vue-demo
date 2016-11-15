@@ -1,6 +1,6 @@
 ﻿<template>
 <div>
-    <div class="brandauthorization-bac">
+    <div class="brandauthorization-bac" v-if="showBrandAuthorizationModel">
         <div class="brandauthorizations">
             <div class="brandauthorization-img">
                 <p class="brand-logo"><img class="vux-x-img ximg-demo" src="/static/TestIMG/brand_logo_href.png" alt="品牌logo" /></p>
@@ -79,6 +79,7 @@
                     deadline: ""
                 },
                 showEmploymentIDAndTerm: true,
+                showBrandAuthorizationModel: false,
                 showMsg: false,
                 errorMsg: null
             }
@@ -112,6 +113,7 @@
                                 that.getAgentInfo(result.name)
                                     //获取自己的代理等级名称 & 获取授权编号 & 授权期 
                                 that.getRoleName(result.name)
+                                that.showBrandAuthorizationModel = true
                             } else {
                                 console.log("非招募跳转地址：" + '/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
                                 that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
