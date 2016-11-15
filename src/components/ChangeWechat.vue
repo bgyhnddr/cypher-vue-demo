@@ -5,8 +5,8 @@
             <x-input class="weui_cell_primary" :value.sync="wechat" placeholder="输入新的微信号" type="text" :show-clear=false 
             :min="6" :max="20" v-ref:wechat></x-input>
             <x-button type="primary" @click="confirm">确认修改</x-button>
-            <alert :show.sync="showMsg" @on-hide="onHide('showMsg')" button-text="确认">你已经成功修改微信号</alert>
-            <alert :show.sync="showRemind" @on-hide="onHide('showRemind')" button-text="确认">微信号需填写以字母开头，由6-20个字母，数字，下划线或减号组成的字符串，请再次输入微信号</alert>
+            <alert :show.sync="showMsg" @on-hide="onHide()" button-text="确认">你已经成功修改微信号</alert>
+            <alert :show.sync="showRemind" button-text="确认">{{errorMsg}}</alert>
         </group>
     </div></div>
 </template>
@@ -26,7 +26,8 @@
             return {
                 wechat: "",
                 showMsg: false,
-                showRemind: false
+                showRemind: false,
+                errorMsg: null
             }
         },
         components: {
@@ -43,6 +44,7 @@
                 //检测微信账号输入是否正确
                 if (!this.$refs.wechat.valid || !reg.test(this.wechat)) {
                     that.showRemind = true
+                    that.errorMsg = "微信号需填写以字母开头，由6-20个字母，数字，下划线或减号组成的字符串，请再次输入微信号"
                 } else {
                     authAPI.getUser().then(function(result) {
 
@@ -54,21 +56,19 @@
                                 that.showMsg = true
                             }
                         }).catch(function(err) {
-                            window.alert(err)
+                            that.showMsg = true
+                            that.errorMsg = err
                         })
 
                     }).catch(function(err) {
-                        window.alert(err)
+                        that.showMsg = true
+                        that.errorMsg = err
                     })
                 }
             },
-            onHide(msg) {
-                if (msg == 'showMsg') {
-                    this.showMsg = false
-                    this.$route.router.go('/accountManagement')
-                } else if (msg == 'showRemind') {
-                    this.showRemind = false
-                }
+            onHide() {
+                this.showMsg = false
+                this.$route.router.go('/accountManagement')
             }
         }
     }

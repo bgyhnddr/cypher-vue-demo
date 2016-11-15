@@ -51,7 +51,7 @@ export function configRouter(router) {
                     component: require('../components/ChangeUserPassword.vue')
                 },
                 'PhoneVerification/:locate': {
-                    name:"PhoneVerification",
+                    name: "PhoneVerification",
                     component: require('../components/PhoneVerification.vue')
                 }
             }
@@ -134,6 +134,9 @@ export function configRouter(router) {
                 },
                 'changeWechat': {
                     component: require('../components/ChangeWechat.vue')
+                },
+                'changeCellPhone': {
+                    component: require('../components/ChangeCellPhone.vue')
                 }
 
 

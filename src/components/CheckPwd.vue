@@ -50,7 +50,7 @@
                             if (that.$route.params.from == 'wechat') {
                                 that.$route.router.go('/accountManagement/changeWechat')
                             } else if (that.$route.params.from == 'phone') {
-                                //修改手机号
+                                that.$route.router.go('/accountManagement/changeCellPhone')
                             }
                         }
                     }).catch(function(err) {
@@ -58,9 +58,6 @@
                         that.errorMsg = err
                     })
 
-                }).catch(function(err) {
-                    that.showMsg = true
-                    that.errorMsg = err
                 })
             }
         }
