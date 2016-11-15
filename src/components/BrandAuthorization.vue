@@ -51,6 +51,7 @@
     } from 'vux'
     import authAPI from '../api/auth'
     import employmentAPI from '../api/employment'
+    import applyEmploymentAPI from '../api/applyEmployment'
 
     export default {
         components: {
@@ -114,7 +115,7 @@
                 var that = this
                 console.log("正在获取品牌资料")
 
-                employmentAPI.getBrandInfo({
+                applyEmploymentAPI.getBrandInfo({
                     user_account: this.publishEmploymentData.employer_user_account
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
