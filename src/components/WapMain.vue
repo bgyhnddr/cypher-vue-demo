@@ -235,9 +235,7 @@
                 }
             },
         },
-    } >>>
-    >>>
-    > origin / master
+    }
 </script>
 <style lang="less">
     body,
