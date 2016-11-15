@@ -25,8 +25,9 @@
 </div>
  <div class="history-choose">
             <group title="时间范围">
-                <datetime :value.sync="date1" title="从"></datetime>
-                <datetime :value.sync="date2" title="至"></datetime>
+                <datetime :value.sync="date1" title = "" placeholder="请选择日期"></datetime>
+                至
+                <datetime :value.sync="date2" title = "" placeholder="请选择日期"></datetime>
                 <!--<calendar :value.sync="date1" title="从" disable-past></calendar>
                 <calendar :value.sync="date2" title="至" disable-past></calendar>-->
 <div class="history-buttons">
@@ -154,148 +155,150 @@
     }
 </script>
 <style>
-.history-button {
-       position: absolute;
-    z-index: 1000;
-    right: 5%;
-    width: 22%;
-   top: 11px;
-}
-.history-button  button.weui_btn, input.weui_btn
-{
-      line-height: 1.8;
-    font-size: 13px;
-    font-family: "微软雅黑";
-    color: #000;
-    border-radius: 0;
-}
-.history-button  .weui_btn:after{
-    border-radius: 0;
-
-
-}
-
-/*信息*/
-
-
-.history-message .weui_cell{
-    background: #fff;
-    border-bottom: 1px solid #d3d1d1;
-    border-top: 1px solid #d3d1d1;
-    font-size: 14px;
-    margin-top: 3%;
-    color: #000;
-    font-family: "微软雅黑";
-    line-height: 1.8em;
-    padding: 0px 15px;
-}
-.history-message .weui_cell_hd {
-    width: 100%;
+    .history-button {
+        position: absolute;
+        z-index: 1000;
+        right: 5%;
+        width: 22%;
+        top: 11px;
+    }
     
-}
-.history-message .weui_btn.weui_btn_mini{
-   position: absolute;
-    right: 4%;
-    width: 24%;
-    border-radius: 2px;
-    font-family: "微软雅黑";
-    background: #5091d5;
-    color: #fff;
-    top: 33%;
-    font-size: 14px;
-}
-
-.history-message .weui_btn:after{
-border:0
-}
-/*筛选*/
-.history-level .weui_cell:before{
-border:0
-
-}
-.history-level .weui_cell {
-    padding: 0;
-border-bottom: 1px solid #d3d1d1;
-}
-.history-level .weui_cell:nth-child(5){
-border-bottom:0
-
-}
-.history-level .weui_cells_title{
-    font-size: 14px;
-    color: #666666;
-    margin-top: 0.2em;
-
-}
-.history-level .weui_cells_radio {
-    background: #fff;
-}
-.history-level .weui_cell_bd.weui_cell_primary p {
-    color: #4d4d4d;
-    font-size: 14px;
-padding: 5px 15px;
-}
-.history-choose a{
-
-       width: 37%;
-    border: 1px solid #d3d1d1;
-    margin-bottom: 3%;
+    .history-button button.weui_btn,
+    input.weui_btn {
+        line-height: 1.8;
+        font-size: 13px;
+        font-family: "微软雅黑";
+        color: #000;
+        border-radius: 0;
+    }
     
-}
-.history-choose .weui_cells_title {
-    margin-top: .3em;
-    margin-bottom: .2em;}
-.history-choose a:nth-child(1){
-
- float: left;
-background: #fff;
-    margin-left: 4%;
-}
-
-.history-choose a:nth-child(2){
-    float: right;
-background: #fff;
-margin-right: 4%;
-}
-
-.history-choose .weui_cell {
-    padding: 2px 8px;
-}
-
-.history-choose .weui_cell:before{
-border:0
-}
-.history-buttons .weui_btn {
-    position: relative;
-    display: block;
-    padding-left: 0;
-    padding-right: 0;
-    font-size: 15px;
-    text-align: center;
-    text-decoration: none;
-    color: #fff;
-    line-height: 2.0;
-    border-radius: 0;
-       
-    overflow: hidden;
-    font-family: "微软雅黑";
-}
-
-.history-buttons .weui_btn:after{
-
-    border-radius: 0;
-    border: 0;
-}
-.history-buttons .vux-flexbox .vux-flexbox-item{
-    margin-left: 0px!important;
-
-}
-.history-buttons .vux-flexbox .vux-flexbox-item:nth-child(1) .weui_btn{
-background: #21c36d;
-
-}
-.history-buttons .vux-flexbox .vux-flexbox-item:nth-child(2) .weui_btn{
-background: #9b9b9b;
-
-}
+    .history-button .weui_btn:after {
+        border-radius: 0;
+    }
+    /*信息*/
+    
+    .history-message .weui_cell {
+        background: #fff;
+        border-bottom: 1px solid #d3d1d1;
+        border-top: 1px solid #d3d1d1;
+        font-size: 14px;
+        margin-top: 3%;
+        color: #000;
+        font-family: "微软雅黑";
+        line-height: 1.8em;
+        padding: 0px 15px;
+    }
+    
+    .history-message .weui_cell_hd {
+        width: 100%;
+    }
+    
+    .history-message .weui_btn.weui_btn_mini {
+        position: absolute;
+        right: 4%;
+        width: 24%;
+        border-radius: 2px;
+        font-family: "微软雅黑";
+        background: #5091d5;
+        color: #fff;
+        top: 33%;
+        font-size: 14px;
+    }
+    
+    .history-message .weui_btn:after {
+        border: 0
+    }
+    /*筛选*/
+    
+    .history-level .weui_cell:before {
+        border: 0
+    }
+    
+    .history-level .weui_cell {
+        padding: 0;
+        border-bottom: 1px solid #d3d1d1;
+    }
+    
+    .history-level .weui_cell:nth-child(5) {
+        border-bottom: 0
+    }
+    
+    .history-level .weui_cells_title {
+        font-size: 14px;
+        color: #666666;
+        margin-top: 0.2em;
+    }
+    
+    .history-level .weui_cells_radio {
+        background: #fff;
+    }
+    
+    .history-level .weui_cell_bd.weui_cell_primary p {
+        color: #4d4d4d;
+        font-size: 14px;
+        padding: 5px 15px;
+    }
+    
+    .history-choose a {
+        width: 37%;
+        border: 1px solid #d3d1d1;
+        margin-bottom: 3%;
+    }
+    
+    .history-choose .weui_cells_title {
+        margin-top: .3em;
+        margin-bottom: .2em;
+    }
+    
+    .history-choose a:nth-child(1) {
+        float: left;
+        background: #fff;
+        margin-left: 4%;
+    }
+    
+    .history-choose a:nth-child(2) {
+        float: right;
+        background: #fff;
+        margin-right: 4%;
+    }
+    
+    .history-choose .weui_cell {
+        padding: 2px 8px;
+    }
+    
+    .history-choose .weui_cell:before {
+        border: 0
+    }
+    
+    .history-buttons .weui_btn {
+        position: relative;
+        display: block;
+        padding-left: 0;
+        padding-right: 0;
+        font-size: 15px;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+        line-height: 2.0;
+        border-radius: 0;
+        overflow: hidden;
+        font-family: "微软雅黑";
+    }
+    
+    .history-buttons .weui_btn:after {
+        border-radius: 0;
+        border: 0;
+    }
+    
+    .history-buttons .vux-flexbox .vux-flexbox-item {
+        margin-left: 0px!important;
+    }
+    
+    .history-buttons .vux-flexbox .vux-flexbox-item:nth-child(1) .weui_btn {
+        background: #21c36d;
+    }
+    
+    .history-buttons .vux-flexbox .vux-flexbox-item:nth-child(2) .weui_btn {
+        background: #9b9b9b;
+    }
 </style>
