@@ -3,7 +3,7 @@
     <div class="employmentindex-bac">
 
         <group>
-         <a class="weui_cell a-li a-li-first"  v-link="{path: '/employManagement/chooseEmployableRoles'}" >
+         <a class="weui_cell a-li a-li-first" v-if="showCreateClick"  v-link="{path: '/employManagement/chooseEmployableRoles'}" >
             <div class="weui_cell_hd">
                <img src="../icon/initiate.png" />
             </div>
@@ -90,6 +90,7 @@
                     }
                 },
                 showAuditClick: false,
+                showCreateClick: false,
                 auditListLength: null,
                 showMsg: false,
                 errorMsg: null
@@ -121,6 +122,9 @@
 
                         if (result.brand_role.level == "0") {
                             that.showAuditClick = true
+                        }
+                        if (result.brand_role.level != "4") {
+                            that.showCreateClick = true
                         }
                         that.user.brand_info = result
                     }).catch(function(err) {
