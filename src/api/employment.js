@@ -50,4 +50,7 @@ export default {
     getPublishEmploymentInfo(params) {
         return httpRequest.post(path + 'getPublishEmploymentInfo', params)
     },
+    getEmploymentInfo(params) {
+        return httpRequest.post(path + 'getEmploymentInfo', params)
+    },
 }

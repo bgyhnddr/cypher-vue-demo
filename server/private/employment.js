@@ -568,6 +568,40 @@ var exec = {
             }
         })
 
+    },
+    getEmploymentInfo(req, res, next) {
+        var user_account = req.body.account
+
+        var employment = require('../../db/models/employment')
+        var agent = require('../../db/models/agent')
+        var employment_term = require('../../db/models/employment_term')
+
+        agent.hasOne(employment_term)
+
+        return Promise.all([
+            employment.findOne({
+                where: {
+                    employee_user_account: user_account
+                }
+            }),
+            agent.findOne({
+                where: {
+                    user_account: user_account
+                },
+                include: [{
+                    model: employment_term,
+                }]
+
+            }),
+        ]).then(function(result) {
+            // return result[0]
+            if (result[0] == null || result[1] == null) {
+                return Promise.reject("读取招募信息读取出错")
+            } else {
+                return result
+            }
+        })
+
     }
 
 }
