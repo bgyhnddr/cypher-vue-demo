@@ -1,20 +1,20 @@
 ﻿<template>
-    <div style="overflow-x: hidden;">
-        <loading :show="isLoading" position="absolute"></loading>
-        <view-box v-ref:view-box>
-            <!--header slot-->
-            <div class="vux-demo-header-box" slot="header">
-                <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
+<div style="overflow-x: hidden;">
+  <loading :show="isLoading" position="absolute"></loading>
+  <view-box v-ref:view-box>
+    <!--header slot-->
+    <div class="vux-demo-header-box" slot="header">
+      <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
 
-                <div slot="left"   class="onclick-back" v-if="ShowBack">
-                    <button  @click="onClickBack">返回</button>
+      <div slot="left" class="onclick-back" v-if="ShowBack">
+        <button @click="onClickBack">返回</button>
 
-                </div>
-            </div>
-            <!--default slot-->
-            <router-view class="view" transition="fate" transition-mode="out-in"></router-view>
-        </view-box>
+      </div>
     </div>
+    <!--default slot-->
+    <router-view class="view" transition="fate" transition-mode="out-in"></router-view>
+  </view-box>
+</div>
 </template>
 
 <script>
@@ -107,7 +107,6 @@
                     this.ShowBack = true
                     document.body.style.background = '#f2f2f2'
                     return '我的账号'
-
                 } else if (this.$route.name === 'MyCertificate') {
                     this.ShowBack = true
                     document.body.style.background = '#f2f2f2'
@@ -117,6 +116,7 @@
                     return 'adminBrand'
                 } else if (this.$route.path === '/employManagement/currentList') {
                     this.ShowBack = true
+                    document.body.style.background = '#f2f2f2'
                     return '当前招募'
                 } else if (this.$route.name === 'CurrentInfo') {
                     this.ShowBack = true
@@ -128,17 +128,22 @@
                 } else if (this.$route.name === 'CheckPwd') {
                     this.ShowBack = true
                     return '使用登录密码'
-                } else if (this.$route.path === 'changeWechat') {
-                    this.ShowBack = true
-                    return '修改微信号'
                 } else if (this.$route.name === 'PhoneVerification') {
                     this.ShowBack = true
                     return '发送验证码'
+                } else if (this.$route.name === 'ResetPwd') {
+                    this.ShowBack = true
+                    return '重置密码'
+                } else if (this.$route.path === 'changeWechat') {
+                    this.ShowBack = true
+                    return '修改微信号'
+                } else if (this.$route.path === '/auth/SuccessPage') {
+                    this.ShowBack = false
+                    return '修改成功'
                 } else if (this.$route.path === '/accountManagement/changeCellPhone') {
                     this.ShowBack = true
                     return '修改手机号'
                 }
-
             }
         },
         methods: {
@@ -162,6 +167,14 @@
                             return
                         } else if (this.$route.params.locate == 'account') {
                             this.$route.router.go('/accountManagement')
+                            return
+                        }
+                    } else if (SecPath == "resetpwd") {
+                        if (this.$route.params.locate == 'login') {
+                            this.$route.router.go('/auth/PhoneVerification/login')
+                            return
+                        } else if (this.$route.params.locate == 'account') {
+                            this.$route.router.go('/auth/PhoneVerification/account')
                             return
                         }
                     }
@@ -222,11 +235,13 @@
                 }
             },
         },
-    }
+    } >>>
+    >>>
+    > origin / master
 </script>
 <style lang="less">
-    html,
-    body {
+    body,
+    html {
         height: 100%;
         width: 100%;
         overflow-x: hidden;
@@ -284,7 +299,7 @@
     }
     
     .weui_tabbar_icon+.weui_tabbar_label {
-        margin-top: 0!important;
+        margin-top: 0 !important;
     }
     
     .vux-demo-header-box {
@@ -302,18 +317,18 @@
 * vue-router transition
 */
     
-    .vux-pop-out-transition,
-    .vux-pop-in-transition {
+    .vux-pop-in-transition,
+    .vux-pop-out-transition {
         width: 100%;
         animation-duration: 0.5s;
         animation-fill-mode: both;
         backface-visibility: hidden;
     }
     
-    .vux-pop-out-enter,
-    .vux-pop-out-leave,
     .vux-pop-in-enter,
-    .vux-pop-in-leave {
+    .vux-pop-in-leave,
+    .vux-pop-out-enter,
+    .vux-pop-out-leave {
         will-change: transform;
         height: 100%;
         position: absolute;
@@ -374,7 +389,7 @@
     }
     
     .view {
-        transition: all .3s ease;
+        transition: all 0.3s ease;
     }
     
     .fate-enter,
@@ -391,7 +406,7 @@
         width: 20%;
         height: 61%;
         line-height: 2em;
-        background: url(/static/TestIMG/back.png);
+        background: url("/static/TestIMG/back.png");
         background-repeat: no-repeat;
         background-size: contain;
         padding-left: 7%;

@@ -53,6 +53,14 @@ export function configRouter(router) {
                 'PhoneVerification/:locate': {
                     name: "PhoneVerification",
                     component: require('../components/PhoneVerification.vue')
+                },
+                'resetpwd/:locate': {
+                    name: "resetpwd",
+                    component: require('../components/ResetUserPassword.vue')
+                },
+                'SuccessPage': {
+                    name: "SuccessPage",
+                    component: require('../components/SuccessPage.vue')
                 }
             }
         },

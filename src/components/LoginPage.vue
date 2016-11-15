@@ -23,6 +23,9 @@
                     <x-input title="密码" :value.sync="loginInfo.password" type="password" placeholder="请输入密码" :equal-with="password"></x-input>
                 </group></div>
 			</div></div>
+   <div class="forget-button">
+                <x-button mini v-link="{path: '/auth/PhoneVerification/login'}">忘记密码？</x-button>
+            </div>
             <flexbox style="margin-top:20px">
                 <flexbox-item>
                     <x-button type="primary" @click="submitLogin">登陆</x-button>
@@ -31,9 +34,7 @@
                     <x-button type="warn" v-link="{ path: '/auth/regist' }">账户注册</x-button>
                 </flexbox-item></div>-->
             </flexbox>
-            <div>
-                <x-button mini v-link="{path: '/auth/PhoneVerification/login'}">忘记密码？</x-button>
-            </div>
+           
             <div>
                 <toast :show.sync="show" :time="1000" type="warn">{{errmsg}}</toast>       
             </div>           
@@ -221,4 +222,26 @@
     /*顶栏*/
     
     .vux-header {}
+    /*忘记密码*/
+.forget-button{
+    width: 94%;
+    margin: -5px auto 0 auto;
+    text-align: right;
+   
+
+}
+.forget-button  button.weui_btn.weui_btn_mini.weui_btn_default{
+
+    font-family: "微软雅黑";
+  color: #1191e3;
+    border: 0;
+    font-size: 13px;
+    background: none;
+ text-decoration: underline;
+}
+.forget-button .weui_btn:after{
+border:0
+
+
+}
 </style>

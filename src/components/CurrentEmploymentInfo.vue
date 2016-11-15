@@ -1,15 +1,17 @@
-<template>
+﻿<template>
     <div>
+<div class="currnt-info">
         <span>招募等级：{{data.brand_role.name}}</span>
-        <p></p>
+        
         <span>发起时间：{{data.create_time}}</span>
-        <p></p>
+       
         <span>当前申请人数：{{applicantNum}}人</span>
-        <p></p>
+       
         <span>剩余时间：{{calculateRemainingTime(data)}}</span>
         <x-button type="warn" @click="closeEmployment" >关闭当前招募</x-button>
         <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
     </div>
+ </div>
 </template>
 
 <script>
@@ -101,5 +103,28 @@
     }
 </script>
 <style>
+.currnt-info{
+    width: 89%;
+    margin: 5% auto;
+}
+.currnt-info span{
+display: block;
+    font-size: 14px;
+    color: #000;
+    font-family: "微软雅黑";
 
+}
+.currnt-info .weui_btn{
+    line-height: 2.2;
+    border-radius: 3px;
+    font-family: "微软雅黑";
+    font-size: 17px;
+    margin-top: 8%;
+    background: #fd5e5e;
+}
+.currnt-info .weui_btn:after{
+
+border:0;
+border-radius:0
+}
 </style>

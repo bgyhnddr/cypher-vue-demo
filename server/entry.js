@@ -9,6 +9,17 @@ module.exports = (app) => {
         init(req, res, next)
     })
 
+    app.use('/', express.static('mp'));
+
+    var OAuth = require('wechat-oauth')
+    var api = new OAuth('wxa4ff4d9b9169aa46', '6ebc82ec6b6d69f2402ac1495147b1f2')
+    var WechatAPI = require('wechat-api')
+    var wechatapi = new WechatAPI('wxa4ff4d9b9169aa46', '6ebc82ec6b6d69f2402ac1495147b1f2')
+    app.use('/wechat', function(req, res, next) {
+        var test = require('./wechat/test.js')
+        test(req, res, next, api, wechatapi)
+    })
+
     // parse application/x-www-form-urlencoded
     app.use(bodyParser.urlencoded({ extended: false }))
 
