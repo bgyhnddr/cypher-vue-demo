@@ -87,7 +87,7 @@ export function configRouter(router) {
                 'chooseEmployableRoles': {
                     component: require('../components/ChooseEmployableRoles.vue')
                 },
-                'brandAuthorization/:publishEmploymentID': {
+                'brandAuthorization/:publishEmploymentID/:brandName': {
                     name: 'BrandAuthorization',
                     component: require('../components/BrandAuthorization.vue')
                 },
