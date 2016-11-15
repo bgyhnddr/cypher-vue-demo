@@ -23,6 +23,7 @@
             <cell><div slot="icon">手机号：<label>{{auditInfo.cellphone}}</label></div></cell>
             <cell><div slot="icon">地址：<label>{{auditInfo.address}}{{auditInfo.addressDetail}}</label></div></cell>
             <div class="auditinfo-choose "><selector v-if="Toggle" :value.sync="value" title="授权期限" :options="List" @on-change="onChange" placeholder="请选择期限"></selector><p v-if="Toggle">月</p></div>
+            <div style="height:60px"></div>
         </div>
     </group>
 </div>
