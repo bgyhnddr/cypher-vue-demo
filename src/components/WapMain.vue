@@ -1,20 +1,20 @@
 ﻿<template>
-    <div style="overflow-x: hidden;">
-        <loading :show="isLoading" position="absolute"></loading>
-        <view-box v-ref:view-box>
-            <!--header slot-->
-            <div class="vux-demo-header-box" slot="header">
-                <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
+<div style="overflow-x: hidden;">
+  <loading :show="isLoading" position="absolute"></loading>
+  <view-box v-ref:view-box>
+    <!--header slot-->
+    <div class="vux-demo-header-box" slot="header">
+      <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
 
-                <div slot="left"   class="onclick-back" v-if="ShowBack">
-                    <button  @click="onClickBack">返回</button>
+      <div slot="left" class="onclick-back" v-if="ShowBack">
+        <button @click="onClickBack">返回</button>
 
-                </div>
-            </div>
-            <!--default slot-->
-            <router-view class="view" transition="fate" transition-mode="out-in"></router-view>
-        </view-box>
+      </div>
     </div>
+    <!--default slot-->
+    <router-view class="view" transition="fate" transition-mode="out-in"></router-view>
+  </view-box>
+</div>
 </template>
 
 <script>
@@ -144,7 +144,6 @@
                     this.ShowBack = true
                     return '修改手机号'
                 }
-
             }
         },
         methods: {
@@ -239,8 +238,8 @@
     }
 </script>
 <style lang="less">
-    html,
-    body {
+    body,
+    html {
         height: 100%;
         width: 100%;
         overflow-x: hidden;
@@ -298,7 +297,7 @@
     }
     
     .weui_tabbar_icon+.weui_tabbar_label {
-        margin-top: 0!important;
+        margin-top: 0 !important;
     }
     
     .vux-demo-header-box {
@@ -316,18 +315,18 @@
 * vue-router transition
 */
     
-    .vux-pop-out-transition,
-    .vux-pop-in-transition {
+    .vux-pop-in-transition,
+    .vux-pop-out-transition {
         width: 100%;
         animation-duration: 0.5s;
         animation-fill-mode: both;
         backface-visibility: hidden;
     }
     
-    .vux-pop-out-enter,
-    .vux-pop-out-leave,
     .vux-pop-in-enter,
-    .vux-pop-in-leave {
+    .vux-pop-in-leave,
+    .vux-pop-out-enter,
+    .vux-pop-out-leave {
         will-change: transform;
         height: 100%;
         position: absolute;
@@ -388,7 +387,7 @@
     }
     
     .view {
-        transition: all .3s ease;
+        transition: all 0.3s ease;
     }
     
     .fate-enter,
@@ -405,7 +404,7 @@
         width: 20%;
         height: 61%;
         line-height: 2em;
-        background: url(/static/TestIMG/back.png);
+        background: url("/static/TestIMG/back.png");
         background-repeat: no-repeat;
         background-size: contain;
         padding-left: 7%;
