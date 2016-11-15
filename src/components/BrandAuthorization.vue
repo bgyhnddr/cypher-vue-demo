@@ -113,7 +113,8 @@
                                     //获取自己的代理等级名称 & 获取授权编号 & 授权期 
                                 that.getRoleName(result.name)
                             } else {
-                                that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.employmentData.name)
+                                console.log("非招募跳转地址：" + '/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
+                                that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
                             }
                         })
                     }
@@ -142,7 +143,7 @@
                             }
                         }
                     }
-                    that.showShareUrl()
+
                 }).catch(function(err) {
                     that.showMsg = true
                     that.errorMsg = err
@@ -212,6 +213,7 @@
                     that.employmentIDAndTerm.employmentGuid = result[0].guid
                     that.employmentIDAndTerm.start = new Date(result[1].employment_term.term_from).Format("yyyy 年 MM 月 dd 日")
                     that.employmentIDAndTerm.deadline = new Date(result[1].employment_term.term_to).Format("yyyy 年 MM 月 dd 日")
+                    that.showShareUrl()
                 }).catch(function(err) {
                     that.showMsg = true
                     that.errorMsg = err
