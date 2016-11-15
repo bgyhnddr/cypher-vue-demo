@@ -14,7 +14,7 @@
                         <tr>
                             <td width=18%;>姓名:</td>
                             <td class="color-gray">{{agentInfo.name}}</td>
-                            <td rowspan="4" align="right"><img class="vux-x-img ximg-demo" alt="授权者头像" src="{{agentInfo.headHref}}" /></td>
+                            <td rowspan="4" align="right"><img class="vux-x-img ximg-demo" alt="授权者头像" :src.sync="agentInfo.headHref" /></td>
                         </tr>
                         <tr>
                             <td> 微信:</td>
