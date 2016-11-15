@@ -61,6 +61,16 @@
         data() {
             return {
                 btn_list: [{
+                    title: '我的账户',
+                    link: '/accountManagement',
+                    iconhref: '/static/TestIMG/account.png',
+                    isShow: true
+                },{
+                    title: '成员招募',
+                    link: '/employManagement',
+                    iconhref: '/static/TestIMG/recruiting.png',
+                    isShow: true
+                },  {
                     title: '货品销售',
                     link: '',
                     iconhref: '/static/TestIMG/sell.png',
@@ -69,11 +79,6 @@
                     title: '货品查验',
                     link: '',
                     iconhref: '/static/TestIMG/inspection.png',
-                    isShow: true
-                }, {
-                    title: '成员招募',
-                    link: '/employManagement',
-                    iconhref: '/static/TestIMG/recruiting.png',
                     isShow: true
                 }, {
                     title: '订货管理',
@@ -94,11 +99,6 @@
                     title: '我的货品',
                     link: '',
                     iconhref: '/static/TestIMG/goods.png',
-                    isShow: true
-                }, {
-                    title: '我的账户',
-                    link: '/accountManagement',
-                    iconhref: '/static/TestIMG/account.png',
                     isShow: true
                 }, {
                     title: '...',
