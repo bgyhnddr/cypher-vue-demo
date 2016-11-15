@@ -1,5 +1,6 @@
-<template>
+﻿<template>
     <div>
+<div class="changepcellphone-input">
         <group title ="新手机号">
             <x-input class="weui_cell_primary" title="+86" keyboard="number" :value.sync="cellphone" placeholder="输入新手机号" :show-clear=false 
             is-type="china-mobile" :required="false" v-ref:cellphone></x-input>
@@ -7,7 +8,7 @@
             <alert :show.sync="showMsg" @on-hide="onHide()" button-text="确认">您已经成功修改手机号</alert>
             <alert :show.sync="showRemind" button-text="确认">{{errorMsg}}</alert>
         </group>
-    </div>
+    </div></div>
 </template>
 
 <script>
@@ -69,5 +70,53 @@
     }
 </script>
 <style>
+.changepcellphone-input .weui_label{
+font-size: 15px;
+    color: #000;
+    font-family: "微软雅黑";
 
+}
+.changepcellphone-input .weui_input {
+    width: 93%;
+    border: 0;
+    outline: 0;
+    -webkit-appearance: none;
+    background-color: transparent;
+    font-size: inherit;
+    color: inherit;
+    height: 2.5em;
+    line-height: 2em;
+    border: 1px solid #d3d1d1;
+    font-family: "微软雅黑";
+    padding-left: 5%;
+    color: #aeaeae;
+    font-size: 14px;
+}
+
+.changepcellphone-input .weui_dialog_ft{
+
+    width: 89%;
+    margin: 8% auto;
+    background: #fd5e5e;
+    line-height: 35px;
+    border-radius: 2px;
+
+
+}
+.changepcellphone-input .weui_dialog_bd
+{
+    color: #000000;
+    font-size: 17px;
+    font-family: "微软雅黑";
+margin-top: 5%;
+
+}
+.changepcellphone-input .weui_btn_dialog.primary {
+    font-size: 16px;
+    color: #fff;
+}
+.changepcellphone-input .weui_dialog{
+width: 92%;
+
+}
 </style>

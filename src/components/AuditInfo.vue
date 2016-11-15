@@ -8,7 +8,7 @@
 </div>
 <div class="auditinfo-message">
     <group>
-        <div>      
+        <div>
             <cell><div slot="icon">用户名：<label>{{auditInfo.account}}</label></div></cell>
             <cell>
                 <div slot="icon">授权品牌：<label>adminbrand</label></div>
@@ -22,7 +22,11 @@
             <cell><div slot="icon">微信号：<label>{{auditInfo.wechat}}</label></div></cell>
             <cell><div slot="icon">手机号：<label>{{auditInfo.cellphone}}</label></div></cell>
             <cell><div slot="icon">地址：<label>{{auditInfo.address}}{{auditInfo.addressDetail}}</label></div></cell>
-            <div class="auditinfo-choose "><selector v-if="Toggle" :value.sync="value" title="授权期限" :options="List" @on-change="onChange" placeholder="请选择期限"></selector><p v-if="Toggle">月</p></div>
+            <div class="auditinfo-choose ">
+              <x-number v-if="Toggle" title="授权期限" :value="12" :min="1" @on-change="onChange"></x-number><p v-if="Toggle">月</p>
+              <!-- <selector v-if="Toggle" :value.sync="value" title="授权期限" :options="List" @on-change="onChange" placeholder="请选择期限"></selector><p v-if="Toggle">月</p> -->
+            </div>
+            <div style="height:60px"></div>
         </div>
     </group>
 </div>
@@ -33,7 +37,7 @@
         </flexbox-item>
         <flexbox-item>
             <x-button type="warn" @click="show=true">打回</x-button>
-        </flexbox-item> 
+        </flexbox-item>
     </flexbox></div>
     <div class="auditinfo-backto ">
         <dialog :show.sync="show" class="dialog-demo">
@@ -51,8 +55,8 @@
         </dialog>
     </div>
     <div>
-        <toast :show.sync="showAlert" :time="1000" @on-hide="onHide" type="text">{{alertMsg}}</toast>       
-    </div> 
+        <toast :show.sync="showAlert" :time="1000" @on-hide="onHide" type="text">{{alertMsg}}</toast>
+    </div>
   </div>
 </template>
 
@@ -67,7 +71,8 @@
         XTextarea,
         XInput,
         Toast,
-        Selector
+        Selector,
+        XNumber
     } from 'vux'
     import employAPI from '../api/employment'
     export default {
@@ -75,12 +80,11 @@
             return {
                 alertMsg: "",
                 auditID: "",
-                value: "",
+                value: "12",
                 Toggle: false,
                 showAlert: false,
                 show: false,
                 reason: "",
-                List: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
                 term: "",
                 auditInfo: {
                     account: "",
@@ -106,7 +110,8 @@
             XTextarea,
             XInput,
             Toast,
-            Selector
+            Selector,
+            XNumber
         },
         methods: {
             valid() {
@@ -208,15 +213,27 @@
                 var year = parseInt(date.getFullYear())
                 var month = parseInt(date.getMonth() + 1)
                 var day = parseInt(date.getDate())
-                    // var time = parseInt(date.getHours()) + ":" + parseInt(date.getMinutes()) + ":" + parseInt(date.getSeconds())
 
                 val = parseInt(val)
 
-                if (month + val > 12) {
+                if(val>12){
+                  var num = parseInt(val/12)
+                  if(!(val%12)){
+                    this.term = (year + (num)) + '-' + (month + val - 12*(num)) + '-' + day
+                  }else{
+                    this.term = (year + (num+1)) + '-' + (month + val - 12*(num+1)) + '-' + day
+                  }
+                }else if(month + val > 12){
                     this.term = (year + 1) + '-' + (month + val - 12) + '-' + day
-                } else {
+                }else{
                     this.term = year + '-' + (month + val) + '-' + day
                 }
+
+                // if (month + val > 12) {
+                //     this.term = (year + 1) + '-' + (month + val - 12) + '-' + day
+                // } else {
+                //     this.term = year + '-' + (month + val) + '-' + day
+                // }
             }
         },
         ready() {
@@ -234,37 +251,37 @@
         text-align: center;
         margin-top: 2%;
     }
-    
+
     .auditinfo-header img {
         border: 0;
         background-size: 100%;
         width: 25%;
     }
-    
+
     .auditinfo-message .weui_cell_hd {
         width: 100%;
     }
-    
+
     .auditinfo-message {
         position: relative;
         width: 89%;
         margin: 1% auto;
     }
-    
+
     .auditinfo-message .weui_cell:before {
         border-top: 0
     }
-    
+
     .auditinfo-message .weui_cell {
         border-bottom: 1px solid #d3d1d1;
         padding: 9px 0;
     }
-    
+
     .auditinfo-message .weui_btn {
         padding-left: 0;
         padding-right: 0;
     }
-    
+
     .auditinfo-message .auditinfo-view,
     .auditinfo-message .auditinfo-views {
         position: absolute;
@@ -277,36 +294,36 @@
         border-radius: 0;
         font-family: "微软雅黑";
     }
-    
+
     .auditinfo-message .auditinfo-view {
         top: -33px;
     }
-    
+
     .auditinfo-message .auditinfo-views {
         top: 4px;
     }
-    
+
     .auditinfo-message .weui_cell_hd {
         width: 100%;
         font-size: 14px;
         color: #000;
         font-family: "微软雅黑";
     }
-    
+
     .auditinfo-message .weui_cell_hd label {
         color: #595959;
     }
-    
+
     .auditinfo-button {
         position: fixed;
         width: 100%;
         bottom: 0;
     }
-    
+
     .auditinfo-button .vux-flexbox .vux-flexbox-item {
         margin-left: 0px!important;
     }
-    
+
     .auditinfo-button button.weui_btn.weui_btn_primary,
     .auditinfo-button button.weui_btn,
     input.weui_btn {
@@ -316,37 +333,37 @@
         font-size: 17px;
         border-radius: 0;
     }
-    
+
     .auditinfo-button button.weui_btn.weui_btn_primary {
         background: #21c36d;
     }
-    
+
     .auditinfo-button .weui_cell_primary {}
-    
+
     .auditinfo-button button.weui_btn,
     input.weui_btn {
         background: #9b9b9b;
     }
-    
+
     .auditinfo-button .weui_btn:after {
         border: 0
     }
-    
+
     .auditinfo-choose {
         position: relative;
         margin-top: 3%;
     }
-    
+
     .auditinfo-choose .weui_cell_hd {
         width: 24%;
     }
-    
+
     .auditinfo-choose .weui_cell_hd label {
         width: 100%!important;
         display: inline-block;
         color: #000;
     }
-    
+
     .auditinfo-choose .weui_select {
         font-family: "微软雅黑";
         width: 43%;
@@ -359,11 +376,11 @@
         text-align: center;
         z-index: 0;
     }
-    
+
     .auditinfo-choose .weui_cell_select .weui_cell_bd:after {
         right: 45%;
     }
-    
+
     .auditinfo-choose p {
         position: absolute;
         z-index: 0;
@@ -371,17 +388,17 @@
         right: 38%;
         bottom: 1px;
     }
-    
+
     .auditinfo-choose .weui_cell {
         border-bottom: 0
     }
     /*打回弹窗*/
-    
+
     .auditinfo-backto .weui_dialog {
         width: 89%;
         border-radius: 5px;
     }
-    
+
     .auditinfo-backto .weui_textarea {
         display: block;
         border: 0;
@@ -397,23 +414,23 @@
         color: #aeaeae;
         padding: 2%;
     }
-    
+
     .auditinfo-backto .weui_cells_title {
         font-size: 17px;
         margin-top: 0.45em;
         color: #000;
         font-family: "微软雅黑";
     }
-    
+
     .auditinfo-backto .weui_cell {
         padding: 5px 15px;
     }
-    
+
     .auditinfo-backto .vux-flexbox {
         width: 91%;
         margin: 4% auto 9% auto;
     }
-    
+
     .auditinfo-backto .weui_btn {
         line-height: 2.2;
         font-size: 14px;
@@ -422,15 +439,15 @@
         background: #9b9b9b;
         color: #fff;
     }
-    
+
     .auditinfo-backto .auditinfo-determine {
         background: #21c36d;
     }
-    
+
     .auditinfo-backto .weui_btn:after {
         border: 0
     }
-    
+
     .auditinfo-backto .vux-flexbox .vux-flexbox-item {
         margin-left: 5px;
     }

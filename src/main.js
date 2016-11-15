@@ -31,7 +31,7 @@ window.actions = {
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-    history: true
+    history: false
 })
 
 configRouter(router)
@@ -40,16 +40,37 @@ router.beforeEach((tran) => {
     var path = tran.to.path
     var name = tran.to.name
 
-    switch (name) {
-        case "FillInEmployment":
-        case "EmploymentSubmission":
-        case "PhoneVerification":
-        case "resetpwd":
-        case "BrandAuthorization":
-        case "SuccessPage":
-        tran.next()
-        return
+    var FirstPath = path.split('/')[1]
+    var SecPath = path.split('/')[2]
+
+    if (FirstPath == "employManagement") {
+        switch (SecPath) {
+            case "fillInEmployment":
+            case "employmentSubmission":
+            case "brandAuthorization":
+                tran.next()
+                return
+        }
+    } else if (FirstPath == "auth") {
+        switch (SecPath) {
+            case "PhoneVerification":
+            case "resetpwd":
+            case "SuccessPage":
+                tran.next()
+                return
+        }
     }
+
+    // switch (name) {
+    //     case "FillInEmployment":
+    //     case "EmploymentSubmission":
+    //     case "PhoneVerification":
+    //     case "resetpwd":
+    //     case "BrandAuthorization":
+    //     case "SuccessPage":
+    //         tran.next()
+    //         return
+    // }
 
     function CheckInfo() {
         if (checkPermission(['agentInfo', 'employment'])) {
@@ -71,9 +92,8 @@ router.beforeEach((tran) => {
     authAPI.getUser().then(function(result) {
         window.state.userInfo = { name: result.name, permissions: result.permissions }
         if (result.name) {
-            if (path.split('/')[1] == "employManagement") {
-                console.log(path.split('/')[2])
-                switch ((path.split('/')[2])) {
+            if (FirstPath == "employManagement") {
+                switch (SecPath) {
                     case undefined:
                     case "chooseEmployableRoles":
                     case "audit":
@@ -84,8 +104,8 @@ router.beforeEach((tran) => {
                         CheckInfo()
                         break
                 }
-            } else if (path.split('/')[1] == "accountManagement") {
-                switch (path.split('/')[2]) {
+            } else if (FirstPath == "accountManagement") {
+                switch (SecPath) {
                     case undefined:
                     case "MyCertificate":
                     case "CertificateInfo":
@@ -95,15 +115,15 @@ router.beforeEach((tran) => {
                         tran.next()
                         break
                 }
-            } else if (path.split('/')[1] == "homePage") {
-                switch (path.split('/')[2]) {
+            } else if (FirstPath == "homePage") {
+                switch (SecPath) {
                     case undefined:
                     case "search":
                         CheckInfo()
                         break
                 }
-            } else if (path.split('/')[1] == "auth") {
-                switch (path.split('/')[2]) {
+            } else if (FirstPath == "auth") {
+                switch (SecPath) {
                     case "login":
                         router.go('homePage')
                         break

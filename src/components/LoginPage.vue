@@ -28,7 +28,7 @@
             </div>
             <flexbox style="margin-top:20px">
                 <flexbox-item>
-                    <x-button type="primary" @click="submitLogin">登陆</x-button>
+                    <x-button type="primary" @click="submitLogin">登录</x-button>
                 </flexbox-item>
               <!--<div style="display: none;"> <flexbox-item>
                     <x-button type="warn" v-link="{ path: '/auth/regist' }">账户注册</x-button>
@@ -223,25 +223,23 @@
     
     .vux-header {}
     /*忘记密码*/
-.forget-button{
-    width: 94%;
-    margin: -5px auto 0 auto;
-    text-align: right;
-   
-
-}
-.forget-button  button.weui_btn.weui_btn_mini.weui_btn_default{
-
-    font-family: "微软雅黑";
-  color: #1191e3;
-    border: 0;
-    font-size: 13px;
-    background: none;
- text-decoration: underline;
-}
-.forget-button .weui_btn:after{
-border:0
-
-
-}
+    
+    .forget-button {
+        width: 94%;
+        margin: -5px auto 0 auto;
+        text-align: right;
+    }
+    
+    .forget-button button.weui_btn.weui_btn_mini.weui_btn_default {
+        font-family: "微软雅黑";
+        color: #1191e3;
+        border: 0;
+        font-size: 13px;
+        background: none;
+        text-decoration: underline;
+    }
+    
+    .forget-button .weui_btn:after {
+        border: 0
+    }
 </style>
