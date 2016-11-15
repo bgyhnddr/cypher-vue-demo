@@ -4,7 +4,7 @@
         <table border="0" class="platform-message" cellspacing=0 cellpadding=0>
             <tbody>
                 <tr>
-                    <td width="22%"> <img class="vux-x-img ximg-demo" :src.sync="user.userHeadimgHref" alt="用户头像" /></td>
+                    <td width="22%"> <img class="vux-x-img ximg-demo" src="/static/TestIMG/brand_logo_href.png" alt="用户头像" /></td>
                     <td>{{user.brandName}}</td>
                     <td> </td>
                     <td>
@@ -110,7 +110,6 @@
                 user: {
                     userInfo: {},
                     agentInfo: {},
-                    userHeadimgHref: null,
                     brandName: null
                 },
                 show: false,
@@ -148,17 +147,6 @@
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
                     that.user.agentInfo = result
-                    for (var item in result.agent_details) {
-                        for (var meta in result.agent_details[item]) {
-                            //key = "headImg"
-                            if (meta == 'key' && result.agent_details[item][meta] == 'headImg') {
-                                console.log(result.agent_details[item]['value'])
-                                var user_headImg_href = parseInt(result.agent_details[item]['value'])
-                                console.log("/service/public/upload/getAttachment?id=" + user_headImg_href)
-                                that.user.userHeadimgHref = "/service/public/upload/getAttachment?id=" + user_headImg_href
-                            }
-                        }
-                    }
                 }).catch(function(err) {
                     this.show = true
                     this.errorMsg = err

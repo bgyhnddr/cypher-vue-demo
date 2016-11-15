@@ -46,6 +46,11 @@ module.exports = function() {
         employable_rule.create({ employer_brand_role_code: "brand_role2", employable_brand_role_code: "brand_role4" }),
         employable_rule.create({ employer_brand_role_code: "brand_role2", employable_brand_role_code: "brand_role5" }),
 
+        employable_rule.create({ employer_brand_role_code: "brand_role3", employable_brand_role_code: "brand_role4" }),
+        employable_rule.create({ employer_brand_role_code: "brand_role3", employable_brand_role_code: "brand_role5" }),
+
+        employable_rule.create({ employer_brand_role_code: "brand_role4", employable_brand_role_code: "brand_role5" }),
+
         agent.create({ user_account: "limt", guid: "agent1" }),
         agent.create({ user_account: "bili", guid: "agent2" }),
         agent.create({ user_account: "bili2", guid: "agent3" }),

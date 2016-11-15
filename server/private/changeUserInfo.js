@@ -86,38 +86,48 @@ var exec = {
                             key: 'cellphone'
                         }
                     }),
-                    result
+                    result,
+                    //查找是否修改的手机号有相同的account
+                    user.findOne({
+                        where: {
+                            account: cellphone
+                        }
+                    }),
                 ]).then(function(result) {
                     if (result[0] == null || result[1] == null || result[2] == null || result[3] == null) {
                         return Promise.reject("查找您的信息出现异常，请稍后再试")
                     } else {
-                        return sequelize.transaction().then(function(t) {
-                            return Promise.all([
-                                //修改user表 account
-                                user.create({ account: cellphone, password: result[0].password }, { transaction: t }).then(function(result) {
-                                    user.destroy({
-                                        where: {
-                                            account: user_account
-                                        }
-                                    })
-                                }),
-                                //修改user_role表 user_account
-                                result[1].update({ user_account: cellphone }, { transaction: t }),
-                                //修改agent_detail表中资料的手机号
-                                result[2].update({ value: cellphone }, { transaction: t }),
-                                //修改agent表中资料的手机号
-                                result[3].update({ user_account: cellphone }, { transaction: t })
-                            ]).then(function(result) {
-                                t.commit()
-                                req.session.userInfo.name = cellphone
-                                return true
-                            }).catch(function(err) {
-                                // err 是事务回调中使用promise链中的异常结果
-                                t.rollback()
-                                return Promise.reject("修改手机号失败")
-                            })
+                        if (result[4] != null) {
+                            return Promise.reject("您所输入的手机号已被注册，请重新输入")
+                        } else {
+                            return sequelize.transaction().then(function(t) {
+                                return Promise.all([
+                                    //修改user表 account
+                                    user.create({ account: cellphone, password: result[0].password }, { transaction: t }).then(function(result) {
+                                        user.destroy({
+                                            where: {
+                                                account: user_account
+                                            }
+                                        })
+                                    }),
+                                    //修改user_role表 user_account
+                                    result[1].update({ user_account: cellphone }, { transaction: t }),
+                                    //修改agent_detail表中资料的手机号
+                                    result[2].update({ value: cellphone }, { transaction: t }),
+                                    //修改agent表中资料的手机号
+                                    result[3].update({ user_account: cellphone }, { transaction: t })
+                                ]).then(function(result) {
+                                    t.commit()
+                                    req.session.userInfo.name = cellphone
+                                    return true
+                                }).catch(function(err) {
+                                    // err 是事务回调中使用promise链中的异常结果
+                                    t.rollback()
+                                    return Promise.reject("修改手机号失败")
+                                })
 
-                        })
+                            })
+                        }
                     }
                 })
             }
