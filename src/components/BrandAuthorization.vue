@@ -3,7 +3,7 @@
     <div class="brandauthorization-bac">
         <div class="brandauthorizations">
             <div class="brandauthorization-img">
-                <p class="brand-logo"><img class="vux-x-img ximg-demo" :src.sync="brand_logo_href" alt="品牌logo" /></p>
+                <p class="brand-logo"><img class="vux-x-img ximg-demo" src="/static/TestIMG/brand_logo_href.png" alt="品牌logo" /></p>
                 <p><img src="/static/TestIMG/authorization.png" class="authorization" /></p>
             </div>
             <div>
@@ -13,16 +13,16 @@
 
                         <tr>
                             <td width=18%;>姓名:</td>
-                            <td class="color-gray">某某某</td>
-                            <td rowspan="4" align="right"><img class="vux-x-img ximg-demo" alt="授权者头像" src="/static/TestIMG/grantee.jpg" /></td>
+                            <td class="color-gray">{{agentInfo.name}}</td>
+                            <td rowspan="4" align="right"><img class="vux-x-img ximg-demo" alt="授权者头像" src="{{agentInfo.headHref}}" /></td>
                         </tr>
                         <tr>
                             <td> 微信:</td>
-                            <td class="color-gray">******微信号</td>
+                            <td class="color-gray">{{agentInfo.wechat}}</td>
                         </tr>
                         <tr>
-                            <td>身份证:</td>
-                            <td class="color-gray">4404xxxxxxxxxxx52</td>
+                            <td>{{agentInfo.IDType}}:</td>
+                            <td class="color-gray">{{agentInfo.IDNumber}}</td>
                         </tr>
                         <tr>
                             <td height="6px"></td>
@@ -32,10 +32,12 @@
                 </table>
                 <div class="set-agent ">为{{employmentData.name}}<label>{{brand_role_name}}</label></div>
                 <div class="allow-agent"> 允许其在网络上销售{{employmentData.name}}<label>旗下产品</label></div>
-                <div class="agent-message">
-                    <p>授权编号:<label class="color-gray">A111</label></p>
-                    <p>授权期限:<label class="color-gray">{{date.start}}</label>至
-                        <label class="color-gray">{{date.deadline}}</label>
+                <div class="agent-message" v-show="showEmploymentIDAndTerm">
+                    <p>授权编号:<label class="color-gray">{{employmentIDAndTerm.employmentGuid}}</label></p>
+                    <p>授权期限:
+                        <label class="color-gray">{{employmentIDAndTerm.start}}</label>
+                        至
+                        <label class="color-gray">{{employmentIDAndTerm.deadline}}</label>
                     </p>
                 </div>
                 <p class="agent-unit ">授权单位:<label class="color-gray">{{company_name}}</label></p>
@@ -50,7 +52,9 @@
         Alert
     } from 'vux'
     import authAPI from '../api/auth'
+    import agentInfoAPI from '../api/agentInfo'
     import employmentAPI from '../api/employment'
+    import applyEmploymentAPI from '../api/applyEmployment'
 
     export default {
         components: {
@@ -59,14 +63,22 @@
         data() {
             return {
                 employmentData: {},
-                date: {
-                    start: "",
-                    deadline: ""
-                },
-                brand_logo_href: null,
                 company_name: null,
                 publishEmploymentData: {},
                 brand_role_name: "",
+                agentInfo: {
+                    name: "",
+                    wechat: "",
+                    IDType: "",
+                    IDNumber: "",
+                    headHref: "",
+                },
+                employmentIDAndTerm: {
+                    employmentGuid: "",
+                    start: "",
+                    deadline: ""
+                },
+                showEmploymentIDAndTerm: true,
                 showMsg: false,
                 errorMsg: null
             }
@@ -78,7 +90,7 @@
                 var publishEmploymentID = this.$route.params.publishEmploymentID
 
                 //获取发起招募信息
-                employmentAPI.getPublishEmploymentInfo({
+                applyEmploymentAPI.getPublishEmploymentInfo({
                     employmentGuid: publishEmploymentID
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
@@ -96,7 +108,10 @@
                         that.getBrandInfo()
                         authAPI.getUser().then(function(result) {
                             if (result.name == that.publishEmploymentData.employer_user_account) {
-                                that.getRoleName()
+                                //获取自己的资料
+                                that.getAgentInfo(result.name)
+                                    //获取自己的代理等级名称 & 获取授权编号 & 授权期 
+                                that.getRoleName(result.name)
                             } else {
                                 that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.employmentData.name)
                             }
@@ -105,16 +120,14 @@
                 }).catch(function(err) {
                     that.showMsg = true
                     that.errorMsg = err
+                    that.$route.router.go('/employManagement/chooseEmployableRoles')
                 })
-
-                this.date.start = new Date().Format('yyyy-MM-dd')
-                this.date.deadline = new Date(new Date().getTime() + 30 * 24 * 3600 * 1000).Format('yyyy-MM-dd')
             },
             getBrandInfo() {
                 var that = this
                 console.log("正在获取品牌资料")
 
-                employmentAPI.getBrandInfo({
+                applyEmploymentAPI.getBrandInfo({
                     user_account: this.publishEmploymentData.employer_user_account
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
@@ -122,12 +135,6 @@
 
                     for (var item in result.brand_details) {
                         for (var meta in result.brand_details[item]) {
-                            //key = "LOGOImg"
-                            if (meta == 'key' && result.brand_details[item][meta] == 'LOGOImg') {
-                                console.log(result.brand_details[item]['value'])
-                                var brand_logo_href = parseInt(result.brand_details[item]['value'])
-                                that.brand_logo_href = "/service/public/upload/getAttachment?id=" + brand_logo_href
-                            }
                             //key = "companyName"
                             if (meta == 'key' && result.brand_details[item][meta] == 'companyName') {
                                 console.log(result.brand_details[item]['value'])
@@ -141,13 +148,70 @@
                     that.errorMsg = err
                 })
             },
-            getRoleName() {
+            getRoleName(account) {
                 var that = this
-                employmentAPI.getRoleName({
-                    brand_role_code: this.publishEmploymentData.brand_role_code
+                agentInfoAPI.getBrandRoleInfo({
+                    user_account: account
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
-                    that.brand_role_name = result.name
+                    that.brand_role_name = result.brand_role.name
+
+                    if (result.brand_role.level == "0") {
+                        that.showEmploymentIDAndTerm = false
+                    } else {
+                        //获取授权编号 & 授权期
+                        that.getEmploymentGuidAndTerm(account)
+                    }
+                }).catch(function(err) {
+                    that.showMsg = true
+                    that.errorMsg = err
+                })
+            },
+            getAgentInfo(account) {
+                var that = this
+                employmentAPI.getAgentInfo({
+                    user_account: account
+                }).then(function(result) {
+                    console.log(JSON.stringify(result))
+                    that.agentInfo = result
+
+                    for (var item in result.agent_details) {
+                        for (var meta in result.agent_details[item]) {
+                            if (meta == 'key') {
+                                switch (result.agent_details[item][meta]) {
+                                    case "headImg":
+                                        that.agentInfo.headHref = "/service/public/upload/getAttachment?id=" + parseInt(result.agent_details[item]['value'])
+                                        break
+                                    case "name":
+                                        that.agentInfo.name = result.agent_details[item]['value']
+                                        break
+                                    case "wechat":
+                                        that.agentInfo.wechat = result.agent_details[item]['value']
+                                        break
+                                    case "IDType":
+                                        that.agentInfo.IDType = result.agent_details[item]['value']
+                                        break
+                                    case "IDNumber":
+                                        that.agentInfo.IDNumber = result.agent_details[item]['value']
+                                        break
+                                }
+                            }
+                        }
+                    }
+                }).catch(function(err) {
+                    that.showMsg = true
+                    that.errorMsg = err
+                })
+            },
+            getEmploymentGuidAndTerm(account) {
+                var that = this
+                employmentAPI.getEmploymentInfo({
+                    account: account
+                }).then(function(result) {
+                    console.log(JSON.stringify(result))
+                    that.employmentIDAndTerm.employmentGuid = result[0].guid
+                    that.employmentIDAndTerm.start = new Date(result[1].employment_term.term_from).Format("yyyy 年 MM 月 dd 日")
+                    that.employmentIDAndTerm.deadline = new Date(result[1].employment_term.term_to).Format("yyyy 年 MM 月 dd 日")
                 }).catch(function(err) {
                     that.showMsg = true
                     that.errorMsg = err

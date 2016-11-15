@@ -89,7 +89,7 @@
                 }).then(function(result) {
                     console.log(JSON.stringify(result))
                         //跳转证书页
-                    that.$route.router.go('/employManagement/brandAuthorization/' + result)
+                    that.$route.router.go('/employManagement/brandAuthorization/' + result + '/' + that.brandName)
                 }).catch(function(err) {
                     that.showMsg = true
                     that.errorMsg = err

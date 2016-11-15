@@ -252,6 +252,7 @@ var exec = {
                 model: employment_detail
             }]
         }).then(function(result) {
+            var date = new Date(result.employer_time)
             for (var item in result.employment_details) {
                 createList = agent_detail.create({
                     //guid test
@@ -263,17 +264,9 @@ var exec = {
             return Promise.all([
                 employment_term.create({
                     agent_guid: guid,
-                    term_from: result.employer_time,
+                    term_from: date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate(),
                     term_to: term
                 }),
-                // user.create({
-                //     account: result.employee_user_account,
-                //     password: "123"
-                // }),
-                // user_role.create({
-                //     user_account: result.employee_user_account,
-                //     role_code: "user"
-                // }),
                 agent.create({
                     user_account: result.employee_user_account,
                     //guid test
@@ -563,6 +556,40 @@ var exec = {
                 return Promise.reject("招募信息读取出错")
             } else if (result.status == false) {
                 return Promise.reject("招募已关闭")
+            } else {
+                return result
+            }
+        })
+
+    },
+    getEmploymentInfo(req, res, next) {
+        var user_account = req.body.account
+
+        var employment = require('../../db/models/employment')
+        var agent = require('../../db/models/agent')
+        var employment_term = require('../../db/models/employment_term')
+
+        agent.hasOne(employment_term)
+
+        return Promise.all([
+            employment.findOne({
+                where: {
+                    employee_user_account: user_account
+                }
+            }),
+            agent.findOne({
+                where: {
+                    user_account: user_account
+                },
+                include: [{
+                    model: employment_term,
+                }]
+
+            }),
+        ]).then(function(result) {
+            // return result[0]
+            if (result[0] == null || result[1] == null) {
+                return Promise.reject("读取招募信息读取出错")
             } else {
                 return result
             }
