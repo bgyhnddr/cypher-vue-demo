@@ -8,8 +8,12 @@
         <span>当前申请人数：{{applicantNum}}人</span>
        
         <span>剩余时间：{{calculateRemainingTime(data)}}</span>
-        <x-button type="warn" @click="closeEmployment" >关闭当前招募</x-button>
+        <x-button type="warn" @click="showCheck=true" >关闭当前招募</x-button>
         <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
+        <alert :show.sync="showSuccessMsg" @on-hide="onHide" button-text="确认">您已经成功关闭当前招募</alert>
+        <confirm :show.sync="showCheck" title="" confirm-text="确认" cancel-text="取消"  @on-confirm="closeEmployment">
+            <p style="text-align:center;">是否关闭当前招募？</p>
+        </confirm>
     </div>
  </div>
 </template>
@@ -17,7 +21,8 @@
 <script>
     import {
         XButton,
-        Alert
+        Alert,
+        Confirm
     } from 'vux'
     import authAPI from '../api/auth'
     import employmentAPI from '../api/employment'
@@ -25,7 +30,8 @@
     export default {
         components: {
             XButton,
-            Alert
+            Alert,
+            Confirm
         },
         data() {
             return {
@@ -35,7 +41,9 @@
                 },
                 applicantNum: null,
                 showMsg: false,
-                errorMsg: null
+                showSuccessMsg: false,
+                errorMsg: null,
+                showCheck: false
             }
         },
         methods: {
@@ -87,14 +95,16 @@
                     guid: this.$route.params.guid
                 }).then(function(result) {
                     if (result == true) {
-                        that.showMsg = true
-                        that.errorMsg = "成功关闭当前招募"
-                        that.$route.router.go('/employManagement/currentList')
+                        that.showSuccessMsg = true
                     }
                 }).catch(function(err) {
                     that.showMsg = true
                     that.errorMsg = err
                 })
+            },
+            onHide() {
+                this.showSuccessMsg = false
+                this.$route.router.go('/employManagement/currentList')
             }
         },
         ready() {
@@ -103,28 +113,29 @@
     }
 </script>
 <style>
-.currnt-info{
-    width: 89%;
-    margin: 5% auto;
-}
-.currnt-info span{
-display: block;
-    font-size: 14px;
-    color: #000;
-    font-family: "微软雅黑";
-
-}
-.currnt-info .weui_btn{
-    line-height: 2.2;
-    border-radius: 3px;
-    font-family: "微软雅黑";
-    font-size: 17px;
-    margin-top: 8%;
-    background: #fd5e5e;
-}
-.currnt-info .weui_btn:after{
-
-border:0;
-border-radius:0
-}
+    .currnt-info {
+        width: 89%;
+        margin: 5% auto;
+    }
+    
+    .currnt-info span {
+        display: block;
+        font-size: 14px;
+        color: #000;
+        font-family: "微软雅黑";
+    }
+    
+    .currnt-info .weui_btn {
+        line-height: 2.2;
+        border-radius: 3px;
+        font-family: "微软雅黑";
+        font-size: 17px;
+        margin-top: 8%;
+        background: #fd5e5e;
+    }
+    
+    .currnt-info .weui_btn:after {
+        border: 0;
+        border-radius: 0
+    }
 </style>
