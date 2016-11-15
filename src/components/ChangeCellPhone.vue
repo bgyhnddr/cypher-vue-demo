@@ -2,7 +2,7 @@
     <div>
         <group title ="新手机号">
             <x-input class="weui_cell_primary" title="+86" keyboard="number" :value.sync="cellphone" placeholder="输入新手机号" :show-clear=false 
-            is-type="china-mobile" v-ref:cellphone></x-input>
+            is-type="china-mobile" :required="false" v-ref:cellphone></x-input>
             <x-button type="primary" @click="confirm">确认修改</x-button>
             <alert :show.sync="showMsg" @on-hide="onHide()" button-text="确认">你已经成功修改手机号</alert>
             <alert :show.sync="showRemind" button-text="确认">{{errorMsg}}</alert>

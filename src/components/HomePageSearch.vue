@@ -2,7 +2,7 @@
 <div>
     <div class="function-search">
         <group>
-            <x-input class="weui_cell_primary" title='' :value.sync="keyword" :show-clear=false></x-input>
+            <x-input class="weui_cell_primary" title='' :value.sync="keyword" :show-clear=false :required="false"></x-input>
             <div class="function-search-button"><button class="weui_btn weui_btn_primary" @click="search">.</button></div>
         </group>
     </div>

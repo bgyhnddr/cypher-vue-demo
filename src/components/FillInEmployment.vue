@@ -12,13 +12,13 @@
                <div class="ApplyFor-agent-header">  <employment-headimg-upload :file-id.sync="data.headImg"></employment-headimg-upload></div>
                 <div class="ApplyFor-agent-input">
                     <group>
-                        <x-input class="weui_cell_primary  applicant-name" title="申请人&nbsp;:&nbsp;" :name.sync="meta.name" :value.sync="data.name" placeholder="申请人姓名" is-type="china-name" :show-clear=false v-ref:name></x-input>
+                        <x-input class="weui_cell_primary  applicant-name" title="申请人&nbsp;:&nbsp;" :name.sync="meta.name" :value.sync="data.name" placeholder="申请人姓名" is-type="china-name" :show-clear=false :required="false" v-ref:name></x-input>
                     </group>
                     <p class="applicants">*姓名一经审批将不得修改，请慎重填写</p>
-                    <x-input class="weui_cell_primary applicant-weixin" type="text" title="微信号&nbsp;:&nbsp;" :name.sync="meta.wechat" :value.sync="data.wechat" placeholder="6-20个字母，数字，下划线或减号" :min="6" :max="20" :show-clear=false v-ref:wechat></x-input>
+                    <x-input class="weui_cell_primary applicant-weixin" type="text" title="微信号&nbsp;:&nbsp;" :name.sync="meta.wechat" :value.sync="data.wechat" placeholder="6-20个字母，数字，下划线或减号" :min="6" :max="20" :show-clear=false :required="false" v-ref:wechat></x-input>
                     </group>
                     <group>
-                        <x-input class="weui_cell_primary applicant-phone" keyboard="number" title="手机号&nbsp;:&nbsp;" :value.sync="data.cellphone" placeholder="请输入手机号码" is-type="china-mobile" :show-clear=false v-ref:cellphone></x-input>
+                        <x-input class="weui_cell_primary applicant-phone" keyboard="number" title="手机号&nbsp;:&nbsp;" :value.sync="data.cellphone" placeholder="请输入手机号码" is-type="china-mobile" :show-clear=false :required="false" v-ref:cellphone></x-input>
                     </group>
                 </div>
                 <button class="weui_btn weui_btn_primary" :class="classes" @click="goFillEmployment2">下一步</button>
@@ -27,7 +27,7 @@
                 <div class="certificate ">
                     <group>
                         <selector placeholder="-证件类型-" :options="IDTypeList" :value.sync="data.IDType"></selector>
-                        <x-input class="weui_cell_primary certificate-input" keyboard="number" placeholder="输入证件号" :value.sync="data.IDNumber" :show-clear=false v-ref:IDNumber></x-input>
+                        <x-input class="weui_cell_primary certificate-input" keyboard="number" placeholder="输入证件号" :value.sync="data.IDNumber" :show-clear=false :required="false" v-ref:IDNumber></x-input>
                         <div class="clean"></div>
                     </group>
                     <group title="通讯地址">
