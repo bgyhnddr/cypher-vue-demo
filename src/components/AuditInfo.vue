@@ -2,8 +2,8 @@
   <div>
 <div class="auditinfo-header">
     <div class="vux-center">
-        <img class="vux-x-img ximg-demo vux-center" style="display:none" alt="头像" :src.sync="auditInfo.headImg" src="/static/TestIMG/grantee.jpg" /></p>
-    <img class="vux-x-img ximg-demo vux-center" alt="头像"  src="/static/TestIMG/grantee.jpg" /></p>
+        <img class="vux-x-img ximg-demo vux-center" alt="头像" :src.sync="auditInfo.headImg"/></p>
+        <!-- <img class="vux-x-img ximg-demo vux-center" alt="头像"  src="/static/TestIMG/grantee.jpg" /></p> -->
     </div>
 </div>
 <div class="auditinfo-message">
