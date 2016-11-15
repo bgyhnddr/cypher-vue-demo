@@ -34,7 +34,7 @@ module.exports = function() {
         agent_brand_role.create({ agent_guid: "agent2", brand_role_code: "brand_role3" }),
         agent_brand_role.create({ agent_guid: "agent4", brand_role_code: "brand_role2" }),
 
-        employment_term.create({ agent_guid: "agent1", term_from: "2016-12-11 12:30:46", term_to: "2017-4-11 12:30:46" }),
+        employment_term.create({ agent_guid: "agent1", term_from: "2016-12-11", term_to: "2017-4-11" }),
 
         employable_rule.create({ employer_brand_role_code: "brand_role1", employable_brand_role_code: "brand_role2" }),
         employable_rule.create({ employer_brand_role_code: "brand_role1", employable_brand_role_code: "brand_role3" }),

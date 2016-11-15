@@ -44,9 +44,11 @@ router.beforeEach((tran) => {
         case "FillInEmployment":
         case "EmploymentSubmission":
         case "PhoneVerification":
+        case "resetpwd":
         case "BrandAuthorization":
-            tran.next()
-            return
+        case "SuccessPage":
+        tran.next()
+        return
     }
 
     function CheckInfo() {
@@ -108,6 +110,7 @@ router.beforeEach((tran) => {
                     case "changepwd":
                         tran.next()
                         break
+
                 }
             } else if (path == '/index') {
                 router.go('homePage')
