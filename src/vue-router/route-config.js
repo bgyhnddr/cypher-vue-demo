@@ -132,7 +132,7 @@ export function configRouter(router) {
                     name: "MyCertificate",
                     component: require('../components/MyCertificate.vue')
                 },
-                'CertificateInfo/:account/:locate': {
+                'CertificateInfo/:account/:locate/:employmentID/:brandID': {
                     name: "CertificateInfo",
                     component: require('../components/CertificateInfo.vue')
                 },
