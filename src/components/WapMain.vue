@@ -227,8 +227,12 @@ export default {
           this.$route.router.go('/accountManagement')
           return
         } else if (SecPath == "CertificateInfo") {
-          history.back()
-          return
+          if(this.$route.params.locate == "account"){
+            this.$route.router.go('/accountManagement/MyCertificate/'+this.$route.params.account+'/'+this.$route.params.locate)
+            return
+          }else if(this.$route.params.locate == "history")
+            this.$route.router.go('/accountManagement/MyCertificate/'+this.$route.params.account+'/'+this.$route.params.locate)
+            return
         } else if (SecPath == "checkPwd") {
           this.$route.router.go('/accountManagement')
           return

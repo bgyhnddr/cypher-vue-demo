@@ -16,7 +16,7 @@
             </cell>
             <cell>
                 <div slot="icon">授权上级：<label>{{auditInfo.employer}}</label></div>
-                <x-button type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/account'}">查看授权证书</x-button>
+                <x-button type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/audit'}">查看授权证书</x-button>
             </cell>
             <cell><div slot="icon">姓名：<label>{{auditInfo.name}}</label></div></cell>
             <cell><div slot="icon">微信号：<label>{{auditInfo.wechat}}</label></div></cell>
