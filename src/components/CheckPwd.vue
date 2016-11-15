@@ -110,5 +110,9 @@ margin-top: 5%;
 width: 92%;
 
 }
+ .checkpasswork-input .weui_icon_success:before {
+    font-size: 15px;
+    color: #09bb07;
+}
 
 </style>
