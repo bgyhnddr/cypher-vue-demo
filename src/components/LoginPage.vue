@@ -4,7 +4,7 @@
 			<div>
                 <div class="vux-center login-header">
                   <img class="vux-x-img ximg-demo vux-center" alt="头像" src="http://img2.imgtn.bdimg.com/it/u=1672707696,3957209627&fm=21&gp=0.jpg"/>
-                     <p>品牌商名称</p>
+                     <p>贝利龙</p>
                 </div>
    <div class="login-message">
 <div class="user">
@@ -102,24 +102,24 @@
     .login_zindex {
         z-index: 10000000 !important;
     }
-
+    
     .login_loading_zindex {
         z-index: 10000001 !important;
     }
-
+    
     .login-bac {
         font-family: "微软雅黑";
         background-color: #fff;
     }
     /*品牌商logo*/
-
+    
     .login-header {
         background: #ebebeb;
         padding: 6%;
         text-align: center;
         display: block;
     }
-
+    
     .login-header img {
         width: 27%;
         height: auto;
@@ -127,76 +127,76 @@
         border-radius: 50%;
         display: initial;
     }
-
+    
     .login-header p {
         display: block;
         color: #292832;
         font-size: 18px;
     }
     /*登录框*/
-
+    
     .input-boder {
         border: 1px solid #d3d1d1;
         border-radius: 3px;
         background: #fff;
         margin-bottom: 2%;
     }
-
+    
     .login-message {
         width: 89%;
         margin: 20px auto 0 auto;
         position: relative;
     }
-
+    
     .weui_cell {
         padding: 9px 15px;
     }
-
+    
     .weui_cells {
         margin-top: 0;
         font-size: 14px;
         color: #aeaeae;
         font-family: "微软雅黑";
     }
-
+    
     .weui_cells:before {
         border-top: none;
     }
-
+    
     .weui_cells:after {
         border-bottom: none;
     }
-
+    
     .login-message input {
         font-family: "微软雅黑";
     }
-
+    
     .weui_label {
         color: #fff;
         width: 2em!important;
     }
-
+    
     .user {
         position: absolute;
         z-index: 10000;
         top: 1%;
         left: 2%;
     }
-
+    
     .password {
         position: absolute;
         z-index: 10000;
         bottom: -8%;
         left: 2%;
     }
-
+    
     .user img,
     .password img {
         width: 100%;
         height: auto;
     }
     /*登录*/
-
+    
     button.weui_btn.weui_btn_primary {
         width: 89%;
         line-height: 2.2;
@@ -205,31 +205,31 @@
         font-size: 17px;
         border-radius: 3px;
     }
-
+    
     button.weui_btn.weui_btn_primary:active {
         background: #21935a;
     }
-
+    
     .weui_icon_warn:before {
         font-size: 18px;
         color: #f43530;
     }
     /*隐藏返回按钮*/
-
+    
     a.vux-header-back.headerTransition-transition {
         display: none;
     }
     /*顶栏*/
-
+    
     .vux-header {}
     /*忘记密码*/
-
+    
     .forget-button {
         width: 94%;
         margin: -5px auto 0 auto;
         text-align: right;
     }
-
+    
     .forget-button button.weui_btn.weui_btn_mini.weui_btn_default {
         font-family: "微软雅黑";
         color: #1191e3;
@@ -238,7 +238,7 @@
         background: none;
         text-decoration: underline;
     }
-
+    
     .forget-button .weui_btn:after {
         border: 0
     }
