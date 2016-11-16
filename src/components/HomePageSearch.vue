@@ -67,7 +67,7 @@
                 }, {
                     name: '我的证书',
                     iconhref: '/static/icon/user.png',
-                    link: null, //TODO 
+                    link: null, //TODO
                     isShow: true
                 }, {
                     name: '修改密码',
@@ -138,6 +138,14 @@
                             this.funcList[item].isShow = true
                         }
                     }
+                }if (this.userLevel == "4") {
+                    for (var item in this.funcList) {
+                        if (this.funcList[item]['name'] == '发起招募') {
+                            this.funcList[item].isShow = false
+                        } else {
+                            this.funcList[item].isShow = true
+                        }
+                    }
                 } else {
                     for (var item in this.funcList) {
                         this.funcList[item].isShow = true
@@ -163,11 +171,11 @@
     .function-search .weui_cell {
         padding: 9px
     }
-    
+
     .function-search .weui_cell_hd {
         width: 0;
     }
-    
+
     .function-search input.weui_input {
         width: 97%;
         background: #fff;
@@ -179,14 +187,14 @@
         color: #9b9c9c;
         border: 1px solid #d3d1d1;
     }
-    
+
     .function-search-button {
         position: absolute;
         z-index: 10000000;
         right: 9%;
         top: 23%;
     }
-    
+
     .function-search-button button.weui_btn.weui_btn_primary {
         width: 10%;
         line-height: 2.0;
@@ -194,22 +202,22 @@
         background-size: 100%;
         background-repeat: no-repeat;
     }
-    
+
     .function-search-button .weui_btn:after {
         border: 0;
     }
-    
+
     .function-search .weui_icon_warn:before {
         font-size: 14px;
         color: #f43530;
     }
-    
+
     .function-search-list {
         background: #fff;
         border-top: 1px solid #d3d1d1;
         border-bottom: 1px solid #d3d1d1;
     }
-    
+
     .function-search-list h1 {
         color: #393a3f;
         font-size: 15px;
@@ -217,20 +225,20 @@
         padding: 2% 4%;
         font-weight: normal;
     }
-    
+
     .function-search-list .weui_cell:before {
         border-top: 0
     }
-    
+
     .function-search-list .weui_cell {
         border-top: 1px solid #d3d1d1;
         padding: 7px 3% 4px 3%;
     }
-    
+
     .function-search-list .weui_cell_hd {
         width: 11%;
     }
-    
+
     .function-search-list img {
         width: 80%
     }

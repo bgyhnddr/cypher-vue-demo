@@ -7,7 +7,7 @@
                     <td width="22%"> <img class="vux-x-img ximg-demo" src="/static/TestIMG/brand_logo_href.png" alt="用户头像" /></td>
                     <td>{{user.brandName}}</td>
                     <td> </td>
-                    <td>
+                    <td v-if="false">
                         <p>存款&nbsp;:&nbsp;<label>金额数</label></p>
                         <p>存货&nbsp;:&nbsp;<label>存货数量</p></label>
                     </td>
@@ -26,7 +26,7 @@
     <flexbox :gutter="0" wrap="wrap">
         <flexbox-item :span="1/3" v-for="item in btn_list">
             <div class="flex-demo">
-                 <button v-link="item.link">
+                 <button @click="goto(item)" >
                     <img :src.sync="item.iconhref" alt="icon" v-show="item.isShow">
                     <h4 class="weui_media_title">{{item.title}}</h4>
                 </button>
@@ -34,6 +34,9 @@
         </flexbox-item>
     </flexbox>
 </div>
+<p>CopyRight © 2016 ShareWin. All Rights Reserved</p>
+<p>珠海市赛孚科技有限公司 版权所有</p>
+<p>粤ICP备14056388号</p>
 <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
 </div>
 </template>
@@ -101,7 +104,7 @@
                     iconhref: '/static/TestIMG/goods.png',
                     isShow: true
                 }, {
-                    title: '...',
+                    title: '',
                     link: '',
                     iconhref: '/static/TestIMG/more.png',
                     isShow: true
@@ -161,6 +164,17 @@
                     this.show = true
                     this.errorMsg = err
                 })
+            },
+            goto(item){
+              if(item.link == ""){
+                if(item.title == ""){
+                  return
+                }
+                this.show = true
+                this.errorMsg = "该功能正在开发中"
+              }else{
+                this.$route.router.go(item.link)
+              }
             }
         },
         ready() {
