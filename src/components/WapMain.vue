@@ -298,15 +298,4 @@ body {
     border: 0;
     color: #fff;
 }
-    border: 0;
-    color: #fff;
-    }
-    
-    .onclick-back button {
-        font-size: 14px;
-        font-family: "微软雅黑";
-        background: none;
-        border: 0;
-        color: #fff;
-    }
 </style>
