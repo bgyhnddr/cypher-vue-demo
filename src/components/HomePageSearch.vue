@@ -7,8 +7,8 @@
         </group>
     </div>
     <div class="function-search-list">
-        <group>
-            <h1>功能</h1>
+        <h1>功能</h1>
+        <group v-if="showResult">
             <a class="weui_cell" v-for="item in funcList" v-link="item.link" v-show="item.isShow">
                 <div class="weui_cell_hd">
                     <img :src.sync="item.iconhref" />
@@ -86,7 +86,8 @@
                     isShow: true
                 }],
                 show: false,
-                errorMsg: null
+                errorMsg: null,
+                showResult: false
             }
         },
         methods: {
@@ -123,6 +124,7 @@
                     this.show = true
                     this.errorMsg = "填写格式错误，请填写中文"
                 } else {
+                    this.showResult = false
                     this.filter(this.keyword)
                 }
             },
@@ -148,7 +150,7 @@
                         this.funcList[item].isShow = false
                     }
                 }
-
+                this.showResult = true
                 console.log(JSON.stringify(this.funcList))
             }
         },
