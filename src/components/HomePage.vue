@@ -170,47 +170,47 @@
 </script>
 <style lang="less">
     /*返回按钮*/
-    
+
     .vux-demo-header-box button {}
-    
+
     span.headerTransition-transition {
         font-size: 14px;
     }
-    
+
     div.icon_btn {
         width: 110px;
     }
-    
+
     table.platform-message {
         width: 94%;
         margin: auto;
         margin-top: 5%;
         color: #292832;
     }
-    
+
     table.platform-message img {
         width: 4em;
         height: 4em;
         border-radius: 50%;
         border: 2px solid #fff;
     }
-    
+
     table.platform-message label {
         color: #646464
     }
-    
+
     table.platform-message p:nth-child(1) {
         margin-bottom: 5%;
     }
-    
+
     .search .weui_cell {
         padding: 9px
     }
-    
+
     .search .weui_cell_hd {
         width: 0;
     }
-    
+
     .search input.weui_input {
         width: 97%;
         background: #fff;
@@ -222,14 +222,14 @@
         color: #9b9c9c;
         border: 1px solid #d3d1d1;
     }
-    
+
     .search-button {
         position: absolute;
         z-index: 10000000;
-        right: 9%;
+        right: 4%;
         top: 23%;
     }
-    
+
     .search-button button.weui_btn.weui_btn_primary {
         width: 10%;
         line-height: 2.0;
@@ -237,23 +237,23 @@
         background-size: 100%;
         background-repeat: no-repeat;
     }
-    
+
     .search-button .weui_btn:after {
         border: 0;
     }
-    
+
     .search .weui_icon_warn:before {
         font-size: 14px;
         color: #f43530;
     }
     /*九宫格*/
-    
+
     .homepage-icon {
         background: #fff;
         border-top: 1px solid #d3d1d1;
         border-bottom: 1px solid #d3d1d1;
     }
-    
+
     .homepage-icon .vux-flexbox-item .flex-demo {
         border-right: 1px solid #d3d1d1;
         border-bottom: 1px solid #d3d1d1;
@@ -261,35 +261,35 @@
         font-size: 14px;
         color: #292832;
     }
-    
+
     .homepage-icon .vux-flexbox-item .flex-demo h4 {
         font-family: "微软雅黑";
         font-weight: normal;
         margin-top: -5%;
     }
-    
+
     .homepage-icon .vux-flexbox-item:last-child .flex-demo h4 {
         color: #fff
     }
-    
+
     .homepage-icon .vux-flexbox-item:nth-child(3) .flex-demo,
     .homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo,
     .homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo {
         border-right: 0;
     }
-    
+
     .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo,
     .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo,
     .homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo {
         border-bottom: 0;
     }
-    
+
     .homepage-icon .vux-flexbox-item button {
         background: #fff;
         border: 0;
         width: 100%;
     }
-    
+
     .homepage-icon .vux-flexbox-item button img {
         width: 39%;
     }

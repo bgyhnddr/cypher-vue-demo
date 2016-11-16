@@ -12,9 +12,9 @@
                     <tbody>
 
                         <tr>
-                            <td width=18%;>姓名:</td>
+                            <td width="60px">姓名:</td>
                             <td class="color-gray">{{agentInfo.name}}</td>
-                            <td rowspan="4" align="right"><img class="vux-x-img ximg-demo" alt="授权者头像" :src.sync="agentInfo.headHref" /></td>
+                            <td rowspan="4" align="right" ><img class="vux-x-img ximg-demo" alt="授权者头像" :src.sync="agentInfo.headHref" /></td>
                         </tr>
                         <tr>
                             <td> 微信:</td>
@@ -32,6 +32,7 @@
                 </table>
                 <div class="set-agent ">为{{employmentData.name}}<label>{{brand_role_name}}</label></div>
                 <div class="allow-agent"> 允许其在网络上销售{{employmentData.name}}<label>旗下产品</label></div>
+                <div class="agent-height">
                 <div class="agent-message" v-show="showEmploymentIDAndTerm">
                     <p>授权编号:<label class="color-gray">{{employmentIDAndTerm.employmentGuid}}</label></p>
                     <p>授权期限:
@@ -39,7 +40,7 @@
                         至
                         <label class="color-gray">{{employmentIDAndTerm.deadline}}</label>
                     </p>
-                </div>
+                </div></div>
                 <p class="agent-unit ">授权单位:<label class="color-gray">{{company_name}}</label></p>
             </div>
         </div>
@@ -111,7 +112,7 @@
                             if (result.name == that.publishEmploymentData.employer_user_account) {
                                 //获取自己的资料
                                 that.getAgentInfo(result.name)
-                                    //获取自己的代理等级名称 & 获取授权编号 & 授权期 
+                                    //获取自己的代理等级名称 & 获取授权编号 & 授权期
                                 that.getRoleName(result.name)
                                 that.showBrandAuthorizationModel = true
                             } else {
@@ -232,18 +233,18 @@
 </script>
 <style>
     /*底部距离*/
-    
+
     .weui_tab_bd {
         padding-bottom: 0;
     }
-    
+
     .brandauthorization-bac {
         background: url(/static/TestIMG/PowerOfAttorney-bac.png) no-repeat;
         background-size: 100%;
-        width: 98%;
+        width: 100%;
         margin: 3% auto;
     }
-    
+
     .brandauthorizations {
         width: 75%;
         margin: auto;
@@ -251,75 +252,84 @@
         font-size: 0.3em;
         color: #3f3a36;
     }
-    
+
     .brandauthorization-img .brand-logo img {
-        width: 60%;
+        width: 57%;
         height: auto;
     }
-    
+
     .brandauthorization-img h3 {
         font-family: " 微软雅黑";
     }
-    
+
     .authorization {
-        width: 60%;
+        width: 57%;
         height: auto;
     }
-    
+
     .brandauthorization-img {
         text-align: center;
     }
-    
+
     table.personal-identity {
         font-family: "微软雅黑";
         width: 100%;
         margin: auto;
     }
-    
+
     table.personal-identity tbody tr td {
         font-family: "微软雅黑";
+          text-align: left;
     }
-    
+
     table.personal-identity tbody tr td img {
-        width: 74%;
+        width:58px;
         height: auto;
-        margin-right: 18%;
+        margin-right: 0;
         min-height: 76px;
+        min-width: 46px;
+
     }
-    
+
     .color-gray {
         color: #57534d;
     }
-    
+
     .set-agent {
         font-family: "微软雅黑";
         text-align: center;
     }
-    
+
     .set-agent label {
         font-size: 12px!important;
         color: #36bdaf;
         font-family: "微软雅黑";
     }
-    
+
     .allow-agent {
         text-align: center;
         font-family: "微软雅黑";
     }
-    
+
     .agent-message {
-        margin: 8% 0 10% 0;
+      margin: 8% 0 0 0;
         text-align: left;
     }
-    
+
     .agent-message p {
         text-align: left;
         font-family: "微软雅黑";
     }
-    
+
     .agent-unit {
         font-family: "微软雅黑";
         text-align: right;
-        margin-bottom: 29%
+        margin-bottom: 42%
+    }
+    .agent-height{
+
+    margin: 8% 0px 10%;
+    height: 38px
+
     }
 </style>
