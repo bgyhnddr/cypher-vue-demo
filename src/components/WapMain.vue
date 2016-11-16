@@ -3,14 +3,14 @@
   <loading :show="isLoading" position="absolute"></loading>
   <view-box v-ref:view-box>
     <!--header slot-->
-    <div class="vux-demo-header-box" slot="header">
+    <div class="vux-demo-header-box wapmain-header" slot="header" >
       <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
-      <div slot="left" v-if="ShowBack">
-        <button @click="onClickBack">{{backText}}</button>
+      <div slot="left" v-if="ShowBack" class="onclick-back">
+        <button @click="onClickBack" >返回</button>
       </div>
     </div>
     <!--default slot-->
-    <router-view class="view" transition="fate" transition-mode="out-in"></router-view>
+    <router-view></router-view>
   </view-box>
 </div>
 </template>
@@ -297,5 +297,8 @@ body {
     background: none;
     border: 0;
     color: #fff;
+}
+.wapmain-header{
+position: relative;
 }
 </style>
