@@ -238,8 +238,9 @@ export default {
             return
           } else if (this.$route.params.locate == "history")
             console.log(this.$route.path)
-          this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/history')
-          return
+            this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/history')
+            return
+          }
         } else if (SecPath == "checkPwd") {
           this.$route.router.go('/accountManagement')
           return
