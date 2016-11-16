@@ -2,7 +2,7 @@
 
     <div class="employmentindex-bac">
 
-        <group>
+        <group v-if="showClickModel">
          <a class="weui_cell a-li a-li-first" v-if="showCreateClick"  v-link="{path: '/employManagement/chooseEmployableRoles'}" >
             <div class="weui_cell_hd">
                <img src="../icon/initiate.png" />
@@ -93,7 +93,8 @@
                 showCreateClick: false,
                 auditListLength: null,
                 showMsg: false,
-                errorMsg: null
+                errorMsg: null,
+                showClickModel: false
             }
         },
         methods: {
@@ -127,6 +128,7 @@
                             that.showCreateClick = true
                         }
                         that.user.brand_info = result
+                        that.showClickModel = true
                     }).catch(function(err) {
                         this.showMsg = true
                         this.errorMsg = err
