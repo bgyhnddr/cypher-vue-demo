@@ -69,6 +69,7 @@
   </div>
   <div class="auditinfo-backto ">
     <dialog :show.sync="show" class="dialog-demo">
+      <button @click="show=false">X</button>
       <group title="打回理由">
         <x-textarea :value.sync="reason" placeholder="填写打回理由" :show-counter="false"></x-textarea>
       </group>
