@@ -12,21 +12,20 @@
       <div>
         <cell>
           <div slot="icon">用户名：
-            <label>{{auditInfo.employee}}</label>
+            <label>{{auditInfo.account}}</label>
           </div>
         </cell>
         <cell>
           <div slot="icon">授权品牌：
             <label>adminbrand</label>
           </div>
-          <x-button v-if="!Toggle" type="default" class="auditinfo-view" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/'+this.$route.params.locate+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
+          <x-button v-if="!Toggle" type="default" class="auditinfo-view" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/'+this.$route.params.locate+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">授权上级：
             <label>{{auditInfo.employer}}</label>
           </div>
-          <x-button v-if="Toggle" type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/auditInfo'+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
-          <x-button v-if="!Toggle" type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/history'+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
+          <x-button type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/'+this.$route.params.locate+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">姓名：
@@ -49,43 +48,45 @@
           </div>
         </cell>
         <div class="auditinfo-choose ">
-          <x-number v-if="Toggle" title="授权期限" :value="12" :min="1" @on-change="onChange"></x-number>
-          <p v-if="Toggle">月</p>
+          <x-number v-if="Toggle" title="授权期限：" :value="12" :min="1" @on-change="onChange"></x-number>
+          <p v-if="Toggle" class="months">月</p>
           <!-- <selector v-if="Toggle" :value.sync="value" title="授权期限" :options="List" @on-change="onChange" placeholder="请选择期限"></selector><p v-if="Toggle">月</p> -->
         </div>
         <div style="height:60px"></div>
       </div>
-    </group>
+      <div style="height:60px"></div>
   </div>
-  <div class="auditinfo-button">
-    <flexbox v-if="Toggle">
+  </group>
+</div>
+<div class="auditinfo-button">
+  <flexbox v-if="Toggle">
+    <flexbox-item>
+      <x-button type="primary" @click="PassAudit">通过审核</x-button>
+    </flexbox-item>
+    <flexbox-item>
+      <x-button type="warn" @click="show=true">打回</x-button>
+    </flexbox-item>
+  </flexbox>
+</div>
+<div class="auditinfo-backto ">
+  <dialog :show.sync="show" class="dialog-demo">
+    <button @click="show=false">X</button>
+    <group title="打回理由">
+      <x-textarea :value.sync="reason" placeholder="填写打回理由" :show-counter="false"></x-textarea>
+    </group>
+    <flexbox>
       <flexbox-item>
-        <x-button type="primary" @click="PassAudit">通过审核</x-button>
+        <x-button type="default" @click="rejectAudit" class="auditinfo-determine ">确定</x-button>
       </flexbox-item>
       <flexbox-item>
-        <x-button type="warn" @click="show=true">打回</x-button>
+        <x-button type="default" @click="show=false">取消</x-button>
       </flexbox-item>
     </flexbox>
-  </div>
-  <div class="auditinfo-backto ">
-    <dialog :show.sync="show" class="dialog-demo">
-      <button @click="show=false">X</button>
-      <group title="打回理由">
-        <x-textarea :value.sync="reason" placeholder="填写打回理由" :show-counter="false"></x-textarea>
-      </group>
-      <flexbox>
-        <flexbox-item>
-          <x-button type="default" @click="rejectAudit" class="auditinfo-determine ">确定</x-button>
-        </flexbox-item>
-        <flexbox-item>
-          <x-button type="default" @click="show=false">取消</x-button>
-        </flexbox-item>
-      </flexbox>
-    </dialog>
-  </div>
-  <div>
-    <toast :show.sync="showAlert" :time="1000" @on-hide="onHide" type="text">{{alertMsg}}</toast>
-  </div>
+  </dialog>
+</div>
+<div>
+  <toast :show.sync="showAlert" :time="1000" @on-hide="onHide" type="text">{{alertMsg}}</toast>
+</div>
 </div>
 </template>
 
@@ -190,7 +191,7 @@ export default {
           that.auditInfo.time = result[0].employment.employer_time
           that.auditInfo.employer = result[0].employment.employer_user_account
           that.auditInfo.employee = result[0].employment.employee_user_account
-        } else{
+        } else {
           that.auditInfo.employee = that.auditInfo.cellphone
         }
       }).catch(function(err) {
@@ -299,7 +300,8 @@ export default {
   width: 33%;
   background: #5091d5;
   color: #fff;
-  font-size: 12px;
+  font-size: 3.9vw;
+  /*12px*/
   border-radius: 0;
   font-family: "微软雅黑";
 }
@@ -314,7 +316,8 @@ export default {
 
 .auditinfo-message .weui_cell_hd {
   width: 100%;
-  font-size: 14px;
+  font-size: 4.5vw;
+  /*14px*/
   color: #000;
   font-family: "微软雅黑";
 }
@@ -339,7 +342,8 @@ input.weui_btn {
   width: 100%;
   line-height: 2.2;
   font-family: "\5FAE\8F6F\96C5\9ED1";
-  font-size: 17px;
+  font-size: 5.2vw;
+  /*17px*/
   border-radius: 0;
 }
 
@@ -363,8 +367,12 @@ input.weui_btn {
   margin-top: 3%;
 }
 
-.auditinfo-choose .weui_cell_hd {
-  width: 24%;
+.auditinfo-choose .weui_cell_hd {}
+
+.auditinfo-choose .weui_cell_ft {
+  position: absolute;
+  left: 78px;
+  top: 11%;
 }
 
 .auditinfo-choose .weui_cell_hd label {
@@ -390,16 +398,27 @@ input.weui_btn {
   right: 45%;
 }
 
-.auditinfo-choose p {
+.auditinfo-choose .months {
+  display: inline-block;
   position: absolute;
-  z-index: 0;
-  color: #000;
-  right: 38%;
-  bottom: 1px;
+  top: 18%;
+  left: 208px;
+}
+
+.auditinfo-choose .vux-number-selector-plus,
+.auditinfo-choose .vux-number-selector-sub {
+  background: #fff;
+  /*月份添加背景色*/
 }
 
 .auditinfo-choose .weui_cell {
   border-bottom: 0
+}
+
+.auditinfo-choose .vux-number-input {
+  font-size: 13px;
+  color: #666;
+  font-family: "微软雅黑";
 }
 
 
@@ -421,13 +440,15 @@ input.weui_btn {
   outline: 0;
   border: 1px solid #d3d1d1;
   min-height: 120px;
-  font-size: 15px;
+  font-size: 4.7vw;
+  /*15px*/
   color: #aeaeae;
   padding: 2%;
 }
 
 .auditinfo-backto .weui_cells_title {
-  font-size: 17px;
+  font-size: 5.2vw;
+  /*17px*/
   margin-top: 0.45em;
   color: #000;
   font-family: "微软雅黑";
@@ -444,7 +465,8 @@ input.weui_btn {
 
 .auditinfo-backto .weui_btn {
   line-height: 2.2;
-  font-size: 14px;
+  font-size: 4.5vw;
+  /*14px*/
   font-family: "微软雅黑";
   border-radius: 0;
   background: #9b9b9b;

@@ -150,16 +150,17 @@ export default {
 
 .change-password {
 	width: 89%;
-	margin: 7% auto;
+	margin: 7% auto 5% auto;
 }
 
 .change-password .weui_cell_hd {
-	width: 27%;
+	width: 22%
 }
 
 .change-password .weui_label {
 	color: #595959;
-	font-size: 15px;
+	font-size: 4.7vw;
+	/*15px*/
 	font-family: "微软雅黑";
 	width: 100%!important;
 	display: inline-block;
@@ -182,7 +183,8 @@ export default {
 
 .phone-button button.weui_btn.weui_btn_default {
 	color: #80c269;
-	font-size: 14px;
+	font-size: 4.5vw;
+	/*14px*/
 	font-family: "微软雅黑";
 	border: 0;
 	background: 0;
@@ -194,5 +196,19 @@ export default {
 	margin-top: 7%;
 	border-left: 1px solid #d3d1d1;
 	border-radius: 0;
+}
+
+.again-send {
+	text-align: right;
+	font-size: 4.5vw;
+	/*14px*/
+	color: #aeaeae;
+	font-family: "微软雅黑";
+}
+
+.frequent {
+	font-size: 13px;
+	color: #d22d23;
+	font-family: "微软雅黑";
 }
 </style>
