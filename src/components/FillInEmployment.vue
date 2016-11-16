@@ -229,6 +229,17 @@
                 } else if (!this.$refs.idnumber.valid) {
                     this.showMsg = true
                     this.errorMsg = "证件号填写错误，请填写完整，再跳转到下一页"
+                } else if (this.$refs.idnumber.valid) {
+                    var reg1 = /^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$/ //身份证
+                    var reg2 = /^[A-Z]\d{10}$/ //回乡证
+                        //护照
+                    if (this.data.IDType == "身份证" && !reg1.test(this.data.idnumber)) {
+                        this.showMsg = true
+                        this.errorMsg = "证件号填写错误，请填写完整，再跳转到下一页"
+                    } else if (this.data.IDType == "回乡证" && !reg2.test(this.data.idnumber)) {
+                        this.showMsg = true
+                        this.errorMsg = "证件号填写错误，请填写完整，再跳转到下一页"
+                    }
                 } else if (this.data.address == "") {
                     this.showMsg = true
                     this.errorMsg = "通讯地址填写错误，请填写完整，再跳转到下一页"
