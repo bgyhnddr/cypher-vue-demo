@@ -72,7 +72,7 @@
                     wechat: "",
                     IDType: "",
                     IDNumber: "",
-                    headHref: "",
+                    headHref: "/static/TestIMG/default_headImg.png",
                 },
                 employmentIDAndTerm: {
                     employmentGuid: "",
@@ -233,18 +233,18 @@
 </script>
 <style>
     /*底部距离*/
-
+    
     .weui_tab_bd {
         padding-bottom: 0;
     }
-
+    
     .brandauthorization-bac {
         background: url(/static/TestIMG/PowerOfAttorney-bac.png) no-repeat;
         background-size: 100%;
         width: 100%;
         margin: 3% auto;
     }
-
+    
     .brandauthorizations {
         width: 75%;
         margin: auto;
@@ -252,84 +252,82 @@
         font-size: 0.3em;
         color: #3f3a36;
     }
-
+    
     .brandauthorization-img .brand-logo img {
         width: 57%;
         height: auto;
     }
-
+    
     .brandauthorization-img h3 {
         font-family: " 微软雅黑";
     }
-
+    
     .authorization {
         width: 57%;
         height: auto;
     }
-
+    
     .brandauthorization-img {
         text-align: center;
     }
-
+    
     table.personal-identity {
         font-family: "微软雅黑";
         width: 100%;
         margin: auto;
     }
-
+    
     table.personal-identity tbody tr td {
         font-family: "微软雅黑";
-          text-align: left;
+        text-align: left;
     }
-
+    
     table.personal-identity tbody tr td img {
-        width:58px;
+        width: 58px;
         height: auto;
         margin-right: 0;
         min-height: 76px;
         min-width: 46px;
-
     }
-
+    
     .color-gray {
         color: #57534d;
     }
-
+    
     .set-agent {
         font-family: "微软雅黑";
         text-align: center;
     }
-
+    
     .set-agent label {
         font-size: 12px!important;
         color: #36bdaf;
         font-family: "微软雅黑";
     }
-
+    
     .allow-agent {
         text-align: center;
         font-family: "微软雅黑";
     }
-
+    
     .agent-message {
-      margin: 8% 0 0 0;
+        margin: 8% 0 0 0;
         text-align: left;
     }
-
+    
     .agent-message p {
         text-align: left;
         font-family: "微软雅黑";
     }
-
+    
     .agent-unit {
         font-family: "微软雅黑";
         text-align: right;
         margin-bottom: 42%
     }
-    .agent-height{
-
-    margin: 8% 0px 10%;
-    height: 38px
-
+    
+    .agent-height {
+        margin: 8% 0px 10%;
+        height: 38px
     }
 </style>
