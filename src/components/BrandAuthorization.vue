@@ -4,7 +4,7 @@
     <div class="brandauthorizations">
       <div class="brandauthorization-img">
         <p class="brand-logo">
-          <img class="vux-x-img ximg-demo" src="/static/TestIMG/logo.png" alt="品牌logo" />
+          <img class="vux-x-img ximg-demo" src="/static/TestIMG/bleman_cert_logo.jpg" alt="品牌logo" />
         </p>
         <p>
           <img src="/static/TestIMG/authorization.png" class="authorization" />
