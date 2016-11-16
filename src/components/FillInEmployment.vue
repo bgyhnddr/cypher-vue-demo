@@ -4,8 +4,8 @@
             <h3>代理申请表</h3>
             <div v-if="!showNextFillModel">
                 <div class="ApplyFor-agent-message">
-                    <p>上级代理&nbsp;:&nbsp;{{employmentData.employerName}}上级授权号{{employmentData.agentGuid}}</p>
-
+                    <p>上级授权号&nbsp;:&nbsp;{{employmentData.guid}}</p>
+                    <p>上级代理&nbsp;:&nbsp;{{employmentData.employerName}}</p>
                     <p>您当前代理级别为&nbsp;:&nbsp;<label>{{employmentData.brandRoleName}}</label></p>
                 </div>
                 <div class="ApplyFor-agent-header" style="display:none"> <img class="vux-x-img ximg-demo" :name.sync="meta.headImg" src="/static/TestIMG/upload.png" /></div>
@@ -54,6 +54,7 @@
         Cell,
         Alert
     } from 'vux'
+    import uuid from 'node-uuid'
     import authAPI from '../api/auth'
     import applyEmploymentAPI from '../api/applyEmployment'
     import filterAddress from '../extend/filter-address'
@@ -99,7 +100,8 @@
                     agentGuid: "",
                     brandRoleName: "",
                     brandInfo: {},
-                    employerName: {}
+                    employerName: {},
+                    guid: "",
                 },
                 showNextFillModel: false,
                 IDTypeList: ['身份证', '回乡证', '护照'],
@@ -111,6 +113,8 @@
         methods: {
             initDate() {
                 var that = this
+                var guid = uuid.v1()
+                this.employmentData.guid = guid
                 var employmentGuid = this.$route.params.publishEmploymentID
                 console.log(employmentGuid)
                 applyEmploymentAPI.getPublishEmploymentInfo({
