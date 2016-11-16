@@ -3,10 +3,10 @@
   <loading :show="isLoading" position="absolute"></loading>
   <view-box v-ref:view-box>
     <!--header slot-->
-    <div class="vux-demo-header-box wapmain-header" slot="header" >
+    <div class="vux-demo-header-box wapmain-header" slot="header">
       <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
       <div slot="left" v-if="ShowBack" class="onclick-back">
-        <button @click="onClickBack" >返回</button>
+        <button @click="onClickBack">返回</button>
       </div>
     </div>
     <!--default slot-->
@@ -232,13 +232,14 @@ export default {
           return
         } else if (SecPath == "CertificateInfo") {
           if (this.$route.params.locate == "account") {
-            this.$route.router.go('/accountManagement/MyCertificate/' + this.$route.params.account + '/' + this.$route.params.locate)
+            this.$route.router.go('/accountManagement/MyCertificate/' + this.$route.params.from + '/' + this.$route.params.locate)
             return
-          } else if (this.$route.params.locate == "audit") {
-            this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.account + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/' + this.$route.params.locate)
+          } else if (this.$route.params.locate == "auditInfo") {
+            this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/audit')
             return
           } else if (this.$route.params.locate == "history")
-            this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.account + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/' + this.$route.params.locate)
+            console.log(this.$route.path)
+            this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/history')
           return
         } else if (SecPath == "checkPwd") {
           this.$route.router.go('/accountManagement')
@@ -258,80 +259,82 @@ export default {
 <style>
 body,
 html {
-    height: 100%;
-    width: 100%;
-    overflow-x: hidden;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
-    background-color: #fbf9fe;
+  background-color: #fbf9fe;
 }
+
 .view {
-    transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .fate-enter,
 .fate-leave {
-    opacity: 0;
+  opacity: 0;
 }
 
 .onclick-back {
-    position: absolute;
-    top: 21%;
-    left: 4%;
-    font-size: 14px;
-    font-family: "微软雅黑";
-    width: 20%;
-    height: 61%;
-    line-height: 2em;
-    background: url("/static/TestIMG/back.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-    padding-left: 7%;
+  position: absolute;
+  top: 21%;
+  left: 4%;
+  font-size: 14px;
+  font-family: "微软雅黑";
+  width: 20%;
+  height: 61%;
+  line-height: 2em;
+  background: url("/static/TestIMG/back.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding-left: 7%;
 }
 
 .onclick-back button {
-    font-size: 14px;
-    font-family: "微软雅黑";
-    background: none;
-    border: 0;
-    color: #fff;
+  font-size: 14px;
+  font-family: "微软雅黑";
+  background: none;
+  border: 0;
+  color: #fff;
 }
 
 .view {
-    transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .fate-enter,
 .fate-leave {
-    opacity: 0;
+  opacity: 0;
 }
-.wapmain-header{
-position: relative;
 
+.wapmain-header {
+  position: relative;
 }
+
 .onclick-back {
-    position: absolute;
-    top: 21%;
-    left: 4%;
-    font-size: 14px;
-    font-family: "微软雅黑";
-    width: 20%;
-    height: 61%;
-    line-height: 2em;
-    background: url("/static/TestIMG/back.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-    padding-left: 7%;
-    border: 0;
-    color: #fff;
+  position: absolute;
+  top: 21%;
+  left: 4%;
+  font-size: 14px;
+  font-family: "微软雅黑";
+  width: 20%;
+  height: 61%;
+  line-height: 2em;
+  background: url("/static/TestIMG/back.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding-left: 7%;
+  border: 0;
+  color: #fff;
 }
 
 .onclick-back button {
-    font-size: 14px;
-    font-family: "微软雅黑";
-    background: none;
-    border: 0;
-    color: #fff;
+  font-size: 14px;
+  font-family: "微软雅黑";
+  background: none;
+  border: 0;
+  color: #fff;
 }
 </style>
