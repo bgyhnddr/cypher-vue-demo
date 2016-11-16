@@ -47,7 +47,7 @@ export default {
       this.backText = "返回"
       if (this.$route.path === '/index') {
         this.ShowBack = false
-        return 'Home'
+        return '登录'
       } else if (this.$route.path === '/auth/login') {
         document.body.style.background = '#fff'
         this.ShowBack = false
