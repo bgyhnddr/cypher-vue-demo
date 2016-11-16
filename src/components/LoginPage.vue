@@ -4,7 +4,7 @@
 		<div>
 			<div class="vux-center login-header">
 				<img class="vux-x-img ximg-demo vux-center" alt="头像" src="/static/TestIMG/brand_logo_href.png" />
-                     <p>贝利龙</p>
+                <p>贝利龙</p>
 			</div>
 			<div class="login-message">
 				<div class="user">
