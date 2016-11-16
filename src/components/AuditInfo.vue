@@ -19,17 +19,23 @@
           <div slot="icon">授权品牌：
             <label>adminbrand</label>
           </div>
-          <x-button v-if="!Toggle" type="default" class="auditinfo-view" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/'+this.$route.params.locate+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID}">查看授权证书</x-button>
+          <x-button v-if="!Toggle" type="default" class="auditinfo-view" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/'+this.$route.params.locate+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">授权上级：
             <label>{{auditInfo.employer}}</label>
           </div>
-          <x-button type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/'+this.$route.params.locate+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID}">查看授权证书</x-button>
+          <x-button v-if="Toggle" type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/auditInfo'+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
+          <x-button v-if="!Toggle" type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/history'+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">姓名：
             <label>{{auditInfo.name}}</label>
+          </div>
+        </cell>
+        <cell>
+          <div slot="icon">{{auditInfo.IDType}}:
+            <label>{{auditInfo.IDNumber}}</label>
           </div>
         </cell>
         <cell>
@@ -127,7 +133,9 @@ export default {
         address: "",
         addressDetail: "",
         deadline: "",
-        headImg: ""
+        headImg: "",
+        IDType: "",
+        IDNumber: ""
       }
     }
   },
@@ -177,6 +185,12 @@ export default {
                   break
                 case "addressDetail":
                   that.auditInfo.addressDetail = result[item]['value']
+                  break
+                case "IDType":
+                  that.auditInfo.IDType = result[item]['value']
+                  break
+                case "IDNumber":
+                  that.auditInfo.IDNumber = result[item]['value']
                   break
                 case "employer":
                   if (that.$route.params.locate == 'history') {

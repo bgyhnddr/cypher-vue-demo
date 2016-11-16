@@ -116,7 +116,7 @@ export default {
         return '我的证书'
       } else if (this.$route.name === 'CertificateInfo') {
         this.ShowBack = true
-        return 'adminBrand'
+        return '授权证书'
       } else if (this.$route.path === '/employManagement/currentList') {
         this.ShowBack = true
         document.body.style.background = '#f2f2f2'
@@ -242,7 +242,6 @@ export default {
             this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/audit')
             return
           } else if (this.$route.params.locate == "history")
-            console.log(this.$route.path)
             this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/history')
             return
           }
