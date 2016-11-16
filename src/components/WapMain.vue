@@ -3,10 +3,10 @@
   <loading :show="isLoading" position="absolute"></loading>
   <view-box v-ref:view-box>
     <!--header slot-->
-    <div class="vux-demo-header-box" slot="header">
+    <div class="vux-demo-header-box wapmain-header" slot="header" >
       <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
-      <div slot="left" v-if="ShowBack">
-        <button @click="onClickBack" class="onclick-back">返回</button>
+      <div slot="left" v-if="ShowBack" class="onclick-back">
+        <button @click="onClickBack" >返回</button>
       </div>
     </div>
     <!--default slot-->
@@ -306,7 +306,10 @@ body {
 .fate-leave {
     opacity: 0;
 }
+.wapmain-header{
+position: relative;
 
+}
 .onclick-back {
     position: absolute;
     top: 21%;
