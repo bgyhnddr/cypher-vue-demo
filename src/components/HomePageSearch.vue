@@ -46,42 +46,42 @@
                 userLevel: null,
                 funcList: [{
                     name: '发起招募',
-                    iconhref: '/static/icon/initiate.png',
+                    iconhref: '/static/TestIMG/initiate.png',
                     link: '/employManagement/chooseEmployableRoles',
                     isShow: true
                 }, {
                     name: '当前招募',
-                    iconhref: '/static/icon/current.png',
+                    iconhref: '/static/TestIMG/current.png',
                     link: null,
                     isShow: true
                 }, {
                     name: '成员审核',
-                    iconhref: '/static/icon/audit.png',
+                    iconhref: '/static/TestIMG/audit.png',
                     link: '/employManagement/audit',
                     isShow: true
                 }, {
                     name: '招募历史',
-                    iconhref: '/static/icon/history.png',
+                    iconhref: '/static/TestIMG/history.png',
                     link: '/employManagement/employmentHistory',
                     isShow: true
                 }, {
                     name: '我的证书',
-                    iconhref: '/static/icon/user.png',
-                    link: null, //TODO 
+                    iconhref: '/static/TestIMG/certificate.png',
+                    link: null, //TODO
                     isShow: true
                 }, {
                     name: '修改密码',
-                    iconhref: '/static/icon/password.png',
+                    iconhref: '/static/TestIMG/ModifyThePassword.png',
                     link: '/auth/changepwd',
                     isShow: true
                 }, {
                     name: '修改手机号',
-                    iconhref: '',
+                    iconhref: '/static/TestIMG/ModifyThePhone.png',
                     link: null,
                     isShow: true
                 }, {
                     name: '修改微信号',
-                    iconhref: '',
+                    iconhref: '/static/TestIMG/ModifyTheWeixin.png',
                     link: null,
                     isShow: true
                 }],
@@ -161,11 +161,11 @@
     .function-search .weui_cell {
         padding: 9px
     }
-    
+
     .function-search .weui_cell_hd {
         width: 0;
     }
-    
+
     .function-search input.weui_input {
         width: 97%;
         background: #fff;
@@ -173,18 +173,18 @@
         padding-left: 2%;
         height: 2.1em;
         font-family: "微软雅黑";
-        font-size: 15px;
+      font-size: 4.7vw;/*15px*/
         color: #9b9c9c;
         border: 1px solid #d3d1d1;
     }
-    
+
     .function-search-button {
         position: absolute;
         z-index: 10000000;
         right: 9%;
         top: 23%;
     }
-    
+
     .function-search-button button.weui_btn.weui_btn_primary {
         width: 10%;
         line-height: 2.0;
@@ -192,43 +192,43 @@
         background-size: 100%;
         background-repeat: no-repeat;
     }
-    
+
     .function-search-button .weui_btn:after {
         border: 0;
     }
-    
+
     .function-search .weui_icon_warn:before {
-        font-size: 14px;
+        font-size: 4.5vw;/*14px*/
         color: #f43530;
     }
-    
+
     .function-search-list {
         background: #fff;
         border-top: 1px solid #d3d1d1;
         border-bottom: 1px solid #d3d1d1;
     }
-    
+
     .function-search-list h1 {
         color: #393a3f;
-        font-size: 15px;
+      font-size: 4.7vw;/*15px*/
         font-family: "微软雅黑";
         padding: 2% 4%;
         font-weight: normal;
     }
-    
+
     .function-search-list .weui_cell:before {
         border-top: 0
     }
-    
+
     .function-search-list .weui_cell {
         border-top: 1px solid #d3d1d1;
         padding: 7px 3% 4px 3%;
     }
-    
+
     .function-search-list .weui_cell_hd {
         width: 11%;
     }
-    
+
     .function-search-list img {
         width: 80%
     }

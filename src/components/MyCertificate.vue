@@ -8,7 +8,7 @@
 
 <div class="certificate-messages ">
     <group>
-        <div>      
+        <div>
             <cell><div slot="icon">用户名：<label>{{auditInfo.account}}</label></div></cell>
             <cell>
                 <div slot="icon">授权品牌：<label>adminbrand</label></div>
@@ -102,43 +102,43 @@
         text-align: center;
         margin-top: 2%;
     }
-    
+
     .certificate-header button {
         border: 0;
         background-size: 100%;
         width: 54%;
     }
-    
+
     .certificate-header button img {
         width: 100%;
         height: auto;
     }
-    
+
     .certificate-header p {
         color: #595959;
-        font-size: 14px;
+        font-size: 4.5vw;/*14px*/
     }
-    
+
     .certificate-messages {
         position: relative;
         width: 89%;
         margin: 7% auto;
     }
-    
+
     .certificate-messages .weui_cell:before {
         border-top: 0
     }
-    
+
     .certificate-messages .weui_cell {
         border-bottom: 1px solid #d3d1d1;
         padding: 9px 0;
     }
-    
+
     .certificate-messages .weui_btn {
         padding-left: 0;
         padding-right: 0;
     }
-    
+
     .certificate-messages .certificate-view,
     .certificate-messages .certificate-views {
         position: absolute;
@@ -147,26 +147,26 @@
         width: 33%;
         background: #5091d5;
         color: #fff;
-        font-size: 12px;
+        font-size: 3.9vw;/*12px*/
         border-radius: 0;
         font-family: "微软雅黑";
     }
-    
+
     .certificate-messages .certificate-view {
-        top: -33px;
+        top: -93%;
     }
-    
+
     .certificate-messages .certificate-views {
         top: 4px;
     }
-    
+
     .certificate-messages .weui_cell_hd {
         width: 100%;
-        font-size: 14px;
+      font-size: 4.5vw;/*14px*/
         color: #000;
         font-family: "微软雅黑";
     }
-    
+
     .certificate-messages .weui_cell_hd label {
         color: #595959;
     }

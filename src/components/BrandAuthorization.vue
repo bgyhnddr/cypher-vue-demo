@@ -3,7 +3,7 @@
     <div class="brandauthorization-bac" v-if="showBrandAuthorizationModel">
         <div class="brandauthorizations">
             <div class="brandauthorization-img">
-                <p class="brand-logo"><img class="vux-x-img ximg-demo" src="/static/TestIMG/brand_logo_href.png" alt="品牌logo" /></p>
+                <p class="brand-logo"><img class="vux-x-img ximg-demo" src="/static/TestIMG/logo.png" alt="品牌logo" /></p>
                 <p><img src="/static/TestIMG/authorization.png" class="authorization" /></p>
             </div>
             <div>
@@ -14,7 +14,7 @@
                         <tr>
                             <td width="60px">姓名:</td>
                             <td class="color-gray">{{agentInfo.name}}</td>
-                            <td rowspan="4" align="right" ><img class="vux-x-img ximg-demo" alt="授权者头像" :src.sync="agentInfo.headHref" /></td>
+                            <td rowspan="4" style="text-align:right"><img class="vux-x-img ximg-demo" alt="授权者头像" :src.sync="agentInfo.headHref" /></td>
                         </tr>
                         <tr>
                             <td> 微信:</td>
@@ -249,12 +249,16 @@
         width: 75%;
         margin: auto;
         padding: 13% 0%;
-        font-size: 0.3em;
+        font-size: 3vw;
         color: #3f3a36;
     }
+      .brandauthorizations h3{
+  font-size: 3vw;
+
+      }
 
     .brandauthorization-img .brand-logo img {
-        width: 57%;
+        width:54%;
         height: auto;
     }
 
@@ -301,7 +305,7 @@
     }
 
     .set-agent label {
-        font-size: 12px!important;
+        font-size: 3.9vw!important;/*12px*/
         color: #36bdaf;
         font-family: "微软雅黑";
     }

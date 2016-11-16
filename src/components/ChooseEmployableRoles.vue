@@ -107,16 +107,16 @@
     .choose-bac {
         margin-top: 7%;
     }
-    
+
     .choose-bac .weui_btn+.weui_btn {
         margin-top: 7px;
     }
-    
+
     .choose-bac button.weui_btn.weui_btn_primary {
         width: 89%;
         line-height: 2.2;
         background: #3970aa;
-        font-size: 17px;
+        font-size: 5.2vw;/*17px*/
         border-radius: 3px;
         font-family: "微软雅黑";
     }

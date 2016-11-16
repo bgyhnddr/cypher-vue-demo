@@ -7,7 +7,7 @@
                     <td width="22%"> <img class="vux-x-img ximg-demo" src="/static/TestIMG/brand_logo_href.png" alt="用户头像" /></td>
                     <td>{{user.brandName}}</td>
                     <td> </td>
-                    <td>
+                    <td style="display:none">
                         <p>存款&nbsp;:&nbsp;<label>金额数</label></p>
                         <p>存货&nbsp;:&nbsp;<label>存货数量</p></label>
                     </td>
@@ -174,7 +174,7 @@
     .vux-demo-header-box button {}
 
     span.headerTransition-transition {
-        font-size: 14px;
+        font-size: 4.5vw;/*14px*/
     }
 
     div.icon_btn {
@@ -218,7 +218,7 @@
         padding-left: 2%;
         height: 2.1em;
         font-family: "微软雅黑";
-        font-size: 15px;
+      font-size: 4.7vw;
         color: #9b9c9c;
         border: 1px solid #d3d1d1;
     }
@@ -243,7 +243,7 @@
     }
 
     .search .weui_icon_warn:before {
-        font-size: 14px;
+        font-size: 4.5vw;/*14px*/
         color: #f43530;
     }
     /*九宫格*/
@@ -257,8 +257,8 @@
     .homepage-icon .vux-flexbox-item .flex-demo {
         border-right: 1px solid #d3d1d1;
         border-bottom: 1px solid #d3d1d1;
-        padding: 16% 0 25% 0;
-        font-size: 14px;
+
+        font-size: 4.5vw;/*14px*/
         color: #292832;
     }
 
@@ -266,6 +266,8 @@
         font-family: "微软雅黑";
         font-weight: normal;
         margin-top: -5%;
+        color: #292832;
+font-size: 4.5vw;
     }
 
     .homepage-icon .vux-flexbox-item:last-child .flex-demo h4 {
@@ -282,12 +284,33 @@
     .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo,
     .homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo {
         border-bottom: 0;
+
+    }
+    .homepage-icon .vux-flexbox-item:nth-child(3) .flex-demo button img,
+    .homepage-icon .vux-flexbox-item:nth-child(4) .flex-demo button img,
+    .homepage-icon .vux-flexbox-item:nth-child(5) .flex-demo button img,
+    .homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo button img,
+    .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo button img,
+    .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo button img,
+    .homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo button img{
+      -webkit-filter: grayscale(1);/* Webkit */
+      filter:gray;/* IE6-9 */
+      filter: grayscale(1);/* W3C */
+
+
     }
 
     .homepage-icon .vux-flexbox-item button {
         background: #fff;
         border: 0;
         width: 100%;
+          padding: 16% 0 25% 0;
+    }
+    .homepage-icon .vux-flexbox-item:nth-child(1) button:active,
+    .homepage-icon .vux-flexbox-item:nth-child(2) button:active{
+      background: #eaeaea;
+
+
     }
 
     .homepage-icon .vux-flexbox-item button img {

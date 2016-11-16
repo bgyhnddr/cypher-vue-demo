@@ -79,7 +79,7 @@ export default {
 
 .checkpasswork-input .weui_input {
   font-family: "微软雅黑";
-  font-size: 14px;
+  font-size: 4.5vw;/*14px*/
   color: #aeaeae;
 }
 
@@ -93,13 +93,13 @@ export default {
 
 .checkpasswork-input .weui_dialog_bd {
   color: #000000;
-  font-size: 17px;
+    font-size: 5.2vw;/*17px*/
   font-family: "微软雅黑";
   margin-top: 5%;
 }
 
 .checkpasswork-input .weui_btn_dialog.primary {
-  font-size: 16px;
+    font-size: 4.9vw;/*16px*/
   color: #fff;
 }
 

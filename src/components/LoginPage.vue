@@ -3,19 +3,19 @@
 	<div @keyup.enter="submitLogin">
 			<div>
                 <div class="vux-center login-header">
-                  <img class="vux-x-img ximg-demo vux-center" alt="头像" src="http://img2.imgtn.bdimg.com/it/u=1672707696,3957209627&fm=21&gp=0.jpg"/>
+                  <img class="vux-x-img ximg-demo vux-center" alt="头像" src="/static/TestIMG/brand_logo_href.png"/>
                      <p>品牌商名称</p>
                 </div>
    <div class="login-message">
 <div class="user">
-<img src="../icon/user.png" />
+<img src="/static/TestIMG/user.png" />
 </div>
 <div class="input-boder">
                 <group>
                     <x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入手机号/微信号" is-type="china-name"></x-input>
                 </group>
 <div class="password">
-<img src="../icon/password.png" />
+<img src="/static/TestIMG/password.png" />
 </div></div>
 <div class="input-boder">
                 <group>
@@ -131,7 +131,7 @@
     .login-header p {
         display: block;
         color: #292832;
-        font-size: 18px;
+          font-size: 5.3vw;/*18px*/
     }
     /*登录框*/
 
@@ -154,7 +154,7 @@
 
     .weui_cells {
         margin-top: 0;
-        font-size: 14px;
+          font-size: 4.5vw;/*16px*/
         color: #aeaeae;
         font-family: "微软雅黑";
     }
@@ -177,22 +177,24 @@
     }
 
     .user {
-        position: absolute;
-        z-index: 10000;
-        top: 1%;
-        left: 2%;
+			position: absolute;
+	    z-index: 10000;
+	    top: 9%;
+	    left: 3%;
+	    width: 19%;
     }
 
     .password {
-        position: absolute;
-        z-index: 10000;
-        bottom: -8%;
-        left: 2%;
+			position: absolute;
+z-index: 10000;
+bottom: -2%;
+left: 3%;
+    width: 21%;
     }
 
     .user img,
     .password img {
-        width: 100%;
+          width: 51%;
         height: auto;
     }
     /*登录*/
@@ -202,7 +204,7 @@
         line-height: 2.2;
         background: #21c36d;
         font-family: "微软雅黑";
-        font-size: 17px;
+        font-size: 5.2vw;/*17px*/
         border-radius: 3px;
     }
 
@@ -234,7 +236,7 @@
         font-family: "微软雅黑";
         color: #1191e3;
         border: 0;
-        font-size: 13px;
+            font-size: 4.1vw;/*13px*/
         background: none;
         text-decoration: underline;
     }
