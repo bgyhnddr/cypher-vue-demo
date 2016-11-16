@@ -4,7 +4,7 @@
         <table border="0" class="platform-message" cellspacing=0 cellpadding=0>
             <tbody>
                 <tr>
-                    <td width="22%"> <img class="vux-x-img ximg-demo" src="/static/TestIMG/brand_logo_href.png" alt="用户头像" /></td>
+                    <td width="22%"> <img class="vux-x-img ximg-demo" src="/static/TestIMG/bleman_logo.jpg" alt="用户头像" /></td>
                     <td>{{user.brandName}}</td>
                     <td> </td>
                     <td>

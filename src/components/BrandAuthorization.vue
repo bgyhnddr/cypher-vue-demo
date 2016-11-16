@@ -3,7 +3,7 @@
     <div class="brandauthorization-bac" v-if="showBrandAuthorizationModel">
         <div class="brandauthorizations">
             <div class="brandauthorization-img">
-                <p class="brand-logo"><img class="vux-x-img ximg-demo" src="/static/TestIMG/brand_logo_href.png" alt="品牌logo" /></p>
+                <p class="brand-logo"><img class="vux-x-img ximg-demo" src="/static/TestIMG/bleman_cert_logo.jpg" alt="品牌logo" /></p>
                 <p><img src="/static/TestIMG/authorization.png" class="authorization" /></p>
             </div>
             <div>
