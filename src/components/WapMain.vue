@@ -5,12 +5,10 @@
     <!--header slot-->
     <div class="vux-demo-header-box wapmain-header" slot="header">
       <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
-      <div slot="left" v-if="ShowBack" class="onclick-back">
-        <button @click="onClickBack">返回</button>
-      </div>
+      <div slot="left" v-if="ShowBack" class="onclick-back" @click="onClickBack">{{backText}}</div>
     </div>
     <!--default slot-->
-    <router-view class="view" transition="fate" transition-mode="out-in"></router-view>
+    <router-view></router-view>
   </view-box>
 </div>
 </template>
@@ -212,7 +210,6 @@ export default {
             this.$route.router.go('/employManagement/employmentHistory')
             return
           }
-
         } else if (SecPath == "employmentHistory") {
           this.$route.router.go('/employManagement')
           return
@@ -239,7 +236,7 @@ export default {
             return
           } else if (this.$route.params.locate == "history")
             console.log(this.$route.path)
-            this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/history')
+          this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/history')
           return
         } else if (SecPath == "checkPwd") {
           this.$route.router.go('/accountManagement')
