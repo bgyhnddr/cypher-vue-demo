@@ -116,7 +116,7 @@
                 console.log("开始搜索")
                 var reg = /^[\u4e00-\u9fa5]*$/ //中文
 
-                if (this.keyword == null) {
+                if (this.keyword == null || this.keyword == '') {
                     this.show = true
                     this.errorMsg = "搜索框内容不能为空"
                 } else if (!reg.test(this.keyword)) {

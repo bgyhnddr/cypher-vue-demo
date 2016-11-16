@@ -3,7 +3,7 @@
 <div class="changewechat-input">
         <group title ="新的微信号">
             <x-input class="weui_cell_primary" :value.sync="wechat" placeholder="输入新的微信号" type="text" :show-clear=false 
-            :min="6" :max="20" :required="false" v-ref:wechat></x-input>
+            :min="6" :max="20" v-ref:wechat></x-input>
             <x-button type="primary" @click="confirm">确认修改</x-button>
             <alert :show.sync="showMsg" @on-hide="onHide()" button-text="确认">您已经成功修改微信号</alert>
             <alert :show.sync="showRemind" button-text="确认">{{errorMsg}}</alert>
