@@ -82,11 +82,10 @@ export default {
           console.log("event" + "==========" + flag)
           this.ShowBack = flag
         })
-        return this.$route.params.brandName + "——代理授权申请"
+        return "代理招募"
       } else if (this.$route.name === 'EmploymentSubmission') {
         this.ShowBack = false
-        return this.$route.params.brandName + "——代理授权申请"
-
+        return "代理招募"
       } else if (this.$route.path === '/employManagement/audit') {
         this.ShowBack = true
         document.body.style.background = '#f2f2f2'

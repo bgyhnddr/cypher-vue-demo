@@ -215,6 +215,7 @@
             },
             submit() {
                 var that = this
+                var commitFlag = true
                     //将data.provinceAndRegion 转换成中文字符串
                 this.data.address = filterAddress(this.data.addressTemp, AddressChinaData)
                 console.log(JSON.stringify(this.data))
@@ -226,9 +227,11 @@
                 if (this.data.IDType == "") {
                     this.showMsg = true
                     this.errorMsg = "证件类型未填写，请填写完整，再跳转到下一页"
+                    commitFlag = false
                 } else if (!this.$refs.idnumber.valid) {
                     this.showMsg = true
                     this.errorMsg = "证件号填写错误，请填写完整，再跳转到下一页"
+                    commitFlag = false
                 } else if (this.$refs.idnumber.valid) {
                     var reg1 = /^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$/ //身份证
                     var reg2 = /^[A-Z]\d{10}$/ //回乡证
@@ -236,17 +239,22 @@
                     if (this.data.IDType == "身份证" && !reg1.test(this.data.idnumber)) {
                         this.showMsg = true
                         this.errorMsg = "证件号填写错误，请填写完整，再跳转到下一页"
+                        commitFlag = false
                     } else if (this.data.IDType == "回乡证" && !reg2.test(this.data.idnumber)) {
                         this.showMsg = true
                         this.errorMsg = "证件号填写错误，请填写完整，再跳转到下一页"
+                        commitFlag = false
                     }
                 } else if (this.data.address == "") {
                     this.showMsg = true
                     this.errorMsg = "通讯地址填写错误，请填写完整，再跳转到下一页"
+                    commitFlag = false
                 } else if (this.data.addressDetail == "") {
                     this.showMsg = true
                     this.errorMsg = "通讯地址填写错误，请填写完整，再跳转到下一页"
-                } else {
+                    commitFlag = false
+                }
+                if(commitFlag){
                     var deadline = endDate.Format('yyyy-MM-dd hh:mm:ss')
                     console.log(deadline)
 
@@ -281,12 +289,12 @@
     .clean {
         clean: both
     }
-    
+
     .fillin {
         width: 90%;
         margin: auto;
     }
-    
+
     .fillin h3 {
         text-align: center;
         color: #852d25;
@@ -294,54 +302,54 @@
         font-size: 18px;
         margin-top: 1%;
     }
-    
+
     .ApplyFor-agent-message {
         font-family: "微软雅黑";
         font-size: 14px;
         color: #000;
         margin-top: 1%;
     }
-    
+
     .ApplyFor-agent-message label {
         font-size: 14px;
         color: #fd5e5e;
     }
-    
+
     .ApplyFor-agent-header {
         text-align: center;
         margin-top: 2%;
     }
-    
+
     .ApplyFor-agent-header button {
         width: 100%;
         background: none;
         border: 0;
     }
-    
+
     .ApplyFor-agent-header img {
         width: 31%;
         height: auto;
     }
-    
+
     .ApplyFor-agent-input .weui_cell {
         padding: 2% 0;
     }
-    
+
     .ApplyFor-agent-input .weui_cell:before {
         border-top: 0
     }
-    
+
     .ApplyFor-agent-input label.weui_label {
         color: #000;
         font-size: 15px;
         font-family: "微软雅黑";
         display: inline;
     }
-    
+
     .ApplyFor-agent-input .weui_cell_hd {
         width: 21%;
     }
-    
+
     .applicant-name .weui_cell_primary,
     .applicant-weixin .weui_cell_primary,
     .applicant-phone .weui_cell_primary {
@@ -349,7 +357,7 @@
         border: 1px solid #a8a8a8;
         padding: 2% 0;
     }
-    
+
     .applicant-name .weui_cell_primary input,
     .applicant-weixin .weui_cell_primary input,
     .applicant-phone .weui_cell_primary input {
@@ -358,42 +366,42 @@
         font-size: 14px;
         font-family: "微软雅黑";
     }
-    
+
     .applicants {
         font-size: 12px;
         color: #d22d23;
         font-family: "微软雅黑";
     }
-    
+
     .fillin button.weui_btn.weui_btn_primary {
         width: 100%;
         margin-top: 5%;
     }
-    
+
     .fillin .weui_icon_warn:before {
         font-size: 14px;
         color: #f43530;
     }
     /*证件信息*/
-    
+
     .certificate {
         margin-top: 3%;
     }
-    
+
     .certificate .weui_cell {
         padding: 2% 0;
     }
-    
+
     .certificate .weui_cell_hd {
         width: auto;
     }
-    
+
     .weui_cell_select .weui_cell_bd:after {
         transform: rotate(135deg);
         top: 44%;
         right: 11px;
     }
-    
+
     .certificate .weui_cell_select {
         padding-top: 0!important;
         padding-bottom: 0!important;
@@ -403,25 +411,25 @@
         float: left;
         border: 1px solid #d3d1d1;
     }
-    
+
     .certificate .weui_cell_select .weui_select {
         padding-left: 4%;
         font-family: "微软雅黑";
         padding-right: 23%;
     }
-    
+
     .certificate .weui_input {
         font-family: "微软雅黑";
         padding-left: 2%;
     }
-    
+
     .certificate .weui_cells_title {
         padding: 0;
         font-size: 15px;
         font-family: "微软雅黑";
         color: #000;
     }
-    
+
     .certificate .weui_cell_ft.weui_cell_primary.with_arrow {
         text-align: left;
         padding-left: 2%;
@@ -431,7 +439,7 @@
         border: 1px solid #d3d1d1;
         position: relative;
     }
-    
+
     .certificate-input {
         background: #fff;
         height: 1.7em;
@@ -440,11 +448,11 @@
         border: 1px solid #d3d1d1;
         padding-left: 2%;
     }
-    
+
     .certificate span.vux-popup-picker-value {
         width: 89%;
     }
-    
+
     .certificate .weui_cell_ft.with_arrow:after {
         transform: rotate(135deg);
         height: 6px;
@@ -456,22 +464,22 @@
         top: -1px;
         margin-left: .3em;
     }
-    
+
     .certificate textarea.weui_textarea {
         border: 1px solid #d3d1d1;
         width: 97%;
         padding-left: 2%;
     }
-    
+
     .certificate .weui_textarea_counter {
         margin-top: 4%;
     }
-    
+
     .certificate [class*=" weui_icon_"]:before,
     [class^=weui_icon_]:before {
         margin-right: 0.5em;
     }
-    
+
     .certificate .weui_cell_ft.weui_cell_primary.with_arrow span:nth-child(2) {
         position: absolute;
         left: 5%;
