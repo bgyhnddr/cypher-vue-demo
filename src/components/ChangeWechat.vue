@@ -60,9 +60,6 @@ export default {
             that.errorMsg = err
           })
 
-        }).catch(function(err) {
-          that.showMsg = true
-          that.errorMsg = err
         })
       }
     },
