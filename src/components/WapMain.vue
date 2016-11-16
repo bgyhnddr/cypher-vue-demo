@@ -8,7 +8,7 @@
       <div slot="left" v-if="ShowBack" class="onclick-back" @click="onClickBack">{{backText}}</div>
     </div>
     <!--default slot-->
-    <router-view class="view" transition="fate" transition-mode="out-in"></router-view>
+    <router-view></router-view>
   </view-box>
 </div>
 </template>
