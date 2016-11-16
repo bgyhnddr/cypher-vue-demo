@@ -299,20 +299,21 @@
         text-align: center;
         color: #852d25;
         font-family: "微软雅黑";
-        font-size: 18px;
+        font-size: 5.3vw;/*18px*/
         margin-top: 1%;
     }
 
     .ApplyFor-agent-message {
         font-family: "微软雅黑";
-        font-size: 14px;
+        font-size: 4.5vw;/*14px*/
         color: #000;
         margin-top: 1%;
     }
 
     .ApplyFor-agent-message label {
-        font-size: 14px;
+        font-size: 4.5vw;/*14px*/
         color: #fd5e5e;
+        font-weight: bold;
     }
 
     .ApplyFor-agent-header {
@@ -341,7 +342,7 @@
 
     .ApplyFor-agent-input label.weui_label {
         color: #000;
-        font-size: 15px;
+      font-size: 4.7vw;/*15px*/
         font-family: "微软雅黑";
         display: inline;
     }
@@ -353,9 +354,10 @@
     .applicant-name .weui_cell_primary,
     .applicant-weixin .weui_cell_primary,
     .applicant-phone .weui_cell_primary {
-        background: #fff;
-        border: 1px solid #a8a8a8;
-        padding: 2% 0;
+      background: #fff;
+    border: 1px solid #d3d1d1;
+    padding: 8px 0;
+    border-radius: 2px;
     }
 
     .applicant-name .weui_cell_primary input,
@@ -363,12 +365,12 @@
     .applicant-phone .weui_cell_primary input {
         padding-left: 2%;
         color: #aeaeae;
-        font-size: 14px;
+        font-size: 4.5vw;/*14px*/
         font-family: "微软雅黑";
     }
 
     .applicants {
-        font-size: 12px;
+          font-size: 3.9vw;/*12px*/
         color: #d22d23;
         font-family: "微软雅黑";
     }
@@ -379,7 +381,7 @@
     }
 
     .fillin .weui_icon_warn:before {
-        font-size: 14px;
+        font-size: 4.5vw;/*14px*/
         color: #f43530;
     }
     /*证件信息*/
@@ -425,7 +427,7 @@
 
     .certificate .weui_cells_title {
         padding: 0;
-        font-size: 15px;
+      font-size: 4.7vw;/*15px*/
         font-family: "微软雅黑";
         color: #000;
     }

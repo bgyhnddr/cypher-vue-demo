@@ -84,7 +84,7 @@
 </script>
 <style>
 .audit-list {
-   
+
 }
 .audit-list  .weui_btn{
     position: absolute;
@@ -95,7 +95,13 @@ background: #5091d5;
 border-radius:0;
     color: #fff;
     font-family: "微软雅黑";
-font-size: 14px
+font-size: 4.5vw;/*14px*/
+    border-radius: 2px;
+}
+.audit-list .weui_btn:after{
+
+    border-radius: 0px;
+
 }
 .audit-list .weui_cell{
     background: #fff;
@@ -107,7 +113,7 @@ font-size: 14px
 }
 .audit-list .weui_cells {
     color: #000000;
-    font-size: 14px;
+    font-size: 4.5vw;/*14px*/
     font-family: "微软雅黑";
 }
 .audit-list .weui_cell .weui_cell_hd{
@@ -136,7 +142,7 @@ position: absolute;
 .audit-choose .weui_cell_select .weui_select{
     height: 23px;
     line-height: 22px;
-    font-size: 13px;
+    font-size: 4.1vw;/*13px*/
     font-family: "微软雅黑";
 padding-right: 14px;
     background: #fff;
