@@ -5,9 +5,7 @@
     <!--header slot-->
     <div class="vux-demo-header-box wapmain-header" slot="header">
       <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
-      <div slot="left" v-if="ShowBack" class="onclick-back">
-        <button @click="onClickBack">{{backText}}</button>
-      </div>
+      <div slot="left" v-if="ShowBack" class="onclick-back" @click="onClickBack">{{backText}}</div>
     </div>
     <!--default slot-->
     <router-view class="view" transition="fate" transition-mode="out-in"></router-view>
@@ -77,7 +75,7 @@ export default {
         return '选择招募代理级别'
       } else if (this.$route.name === 'BrandAuthorization') {
         this.ShowBack = true
-        return this.$route.params.brandName
+        return '分享招募'
       } else if (this.$route.name === 'FillInEmployment') {
         document.body.style.background = '#f2f2f2'
         this.ShowBack = false
@@ -85,12 +83,11 @@ export default {
           console.log("event" + "==========" + flag)
           this.ShowBack = flag
         })
-        return this.$route.params.brandName + "——代理授权申请"
+        return "代理招募"
       } else if (this.$route.name === 'EmploymentSubmission') {
         document.body.style.background = '#fff'
         this.ShowBack = false
-        return this.$route.params.brandName + "——代理授权申请"
-
+        return "代理招募"
       } else if (this.$route.path === '/employManagement/audit') {
         this.ShowBack = true
         document.body.style.background = '#f2f2f2'
