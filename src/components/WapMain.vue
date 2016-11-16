@@ -75,7 +75,7 @@ export default {
         return '选择招募代理级别'
       } else if (this.$route.name === 'BrandAuthorization') {
         this.ShowBack = true
-        return this.$route.params.brandName
+        return '分享招募'
       } else if (this.$route.name === 'FillInEmployment') {
         document.body.style.background = '#f2f2f2'
         this.ShowBack = false

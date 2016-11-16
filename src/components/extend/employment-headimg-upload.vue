@@ -5,7 +5,7 @@
 			<button  @click="chooseFile" class="btn btn-default btn-xs">
                 <img v-show="isShowImg" src="/static/TestIMG/upload.png"  />
                 <img v-show="!isShowImg" :src.sync="href"  />
-            </button> 
+            </button>
 		</div>
 	</div>
 </template>
@@ -43,7 +43,7 @@
                 file: "",
                 uploadRequest: undefined,
                 isShowImg: true,
-                href: null
+                href: "/static/TestIMG/default_headImg.png"
             }
         },
         computed: {
