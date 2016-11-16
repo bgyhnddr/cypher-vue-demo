@@ -64,6 +64,7 @@ export default {
         document.body.style.background = '#f2f2f2'
         return
       } else if (this.$route.name === 'HomePageSearch') {
+        document.body.style.background = '#f2f2f2'
         this.ShowBack = true
         return
       } else if (this.$route.path === '/employManagement') {
@@ -86,6 +87,7 @@ export default {
         })
         return this.$route.params.brandName + "——代理授权申请"
       } else if (this.$route.name === 'EmploymentSubmission') {
+        document.body.style.background = '#fff'
         this.ShowBack = false
         return this.$route.params.brandName + "——代理授权申请"
 
@@ -96,13 +98,16 @@ export default {
       } else if (this.$route.name === 'AuditInfo') {
         this.ShowBack = true
         if (this.$route.params.locate == 'audit') {
+          document.body.style.background = '#f2f2f2'
           return '审核详情'
         } else if (this.$route.params.locate == 'history') {
-          return '招募详情'
           document.body.style.background = '#f2f2f2'
+          return '招募详情'
+
         }
       } else if (this.$route.path === '/employManagement/employmentHistory') {
         this.ShowBack = true
+        document.body.style.background = '#f2f2f2'
         return '招募历史'
       } else if (this.$route.path === '/accountManagement') {
         this.ShowBack = true
@@ -121,18 +126,20 @@ export default {
         return '当前招募'
       } else if (this.$route.name === 'CurrentInfo') {
         this.ShowBack = true
+        document.body.style.background = '#f2f2f2'
         return '查看详情'
       } else if (this.$route.name === 'adminbrand') {
         document.body.style.background = '#fff'
         this.ShowBack = true
         return 'adminBrand'
       } else if (this.$route.name === 'CheckPwd') {
+        document.body.style.background = '#fff'
         this.ShowBack = true
         return '使用登录密码'
       } else if (this.$route.name === 'PhoneVerification') {
         this.ShowBack = true
         return '发送验证码'
-      } else if (this.$route.name === 'ResetPwd') {
+      } else if (this.$route.name === 'resetpwd') {
         this.ShowBack = true
         return '重置密码'
       } else if (this.$route.path === 'changeWechat') {
@@ -145,6 +152,7 @@ export default {
         this.ShowBack = true
         return '修改手机号'
       }
+
     }
   },
   methods: {

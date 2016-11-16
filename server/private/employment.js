@@ -18,6 +18,11 @@ var exec = {
         include: [{
           model: brand_role,
         }],
+        order: [
+          [{
+            model: brand_role
+          }, 'level', 'ASC']
+        ]
       }),
       employable_rule.count({
         where: {

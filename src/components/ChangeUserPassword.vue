@@ -122,7 +122,7 @@
 
     .change-password .weui_label {
         color: #595959;
-        font-size: 15px;
+      font-size: 4.7vw;/*15px*/
         font-family: "微软雅黑";
         width: 100%!important;
         display: inline-block;
@@ -139,7 +139,7 @@
     }
 
     .change-password .weui_icon_warn:before {
-        font-size: 16px;
+        font-size: 4.9vw;/*16px*/
         color: #f43530;
     }
 		.forget-buttons{
@@ -153,7 +153,7 @@
 				font-family: "微软雅黑";
 				color: #1191e3;
 				border: 0;
-				font-size: 13px;
+				 font-size: 4.1vw;/*13px*/
 				background: none;
 				text-decoration: underline;
 		}

@@ -116,20 +116,20 @@
     .My-account {
         margin-top: 2%;
     }
-    
+
     .My-account .weui_cell {
         background: #fff;
         margin-top: 1%;
-        padding: 1% 5%;
+        padding: 2px 5%;
         border-top: 0!important;
-        font-size: 15px;
+      font-size: 4.7vw;
         font-family: "微软雅黑";
     }
-    
+
     .My-account img {
         width: 77%;
     }
-    
+
     .My-account .weui_cell:before {
         border-top: 0!important
     }

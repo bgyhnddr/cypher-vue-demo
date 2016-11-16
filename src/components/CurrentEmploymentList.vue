@@ -140,22 +140,22 @@
         padding: 3px 15px 3px 15px;
         line-height: 1.2em;
     }
-    
+
     .current-list .weui_cell:before {
         border-top: 0;
     }
-    
+
     .current-list .weui_cell_bd.weui_cell_primary span {
         line-height: 1.7em;
-        font-size: 14px;
+        font-size: 4.5vw;/*14px*/
         font-family: "微软雅黑";
         display: block;
     }
-    
+
     .current-list .weui_cell_bd.weui_cell_primary span:nth-chlid(1) {
         line-height: 1.3em;
     }
-    
+
     .current-list .weui_cell_bd.weui_cell_primary:after {
         content: " ";
         display: inline-block;
@@ -173,29 +173,29 @@
         right: 15px;
         margin-top: -3px;
     }
-    
+
     .current-bac .weui_cells.vux-no-group-title {
         position: absolute;
         z-index: 1000;
         top: 12px;
         right: 16px;
     }
-    
+
     .current-bac .weui_cell.weui_cell_select {
         padding: 0;
     }
-    
+
     .current-bac .weui_cell_select .weui_select {
         height: 23px;
         line-height: 22px;
-        font-size: 13px;
+       font-size: 4.1vw;/*13px*/
         font-family: "微软雅黑";
         padding-right: 14px;
         background: #fff;
         border: 1px solid #d3d1d1;
         padding-left: 1px;
     }
-    
+
     .current-bac .weui_cell_select .weui_cell_bd:after {
         transform: rotate(135deg);
         top: 44%;
