@@ -116,7 +116,7 @@
 
     .certificate-header p {
         color: #595959;
-        font-size: 14px;
+        font-size: 4.5vw;/*14px*/
     }
 
     .certificate-messages {
@@ -147,13 +147,13 @@
         width: 33%;
         background: #5091d5;
         color: #fff;
-        font-size: 12px;
+        font-size: 3.9vw;/*12px*/
         border-radius: 0;
         font-family: "微软雅黑";
     }
 
     .certificate-messages .certificate-view {
-        top: -33px;
+        top: -93%;
     }
 
     .certificate-messages .certificate-views {
@@ -162,7 +162,7 @@
 
     .certificate-messages .weui_cell_hd {
         width: 100%;
-        font-size: 14px;
+      font-size: 4.5vw;/*14px*/
         color: #000;
         font-family: "微软雅黑";
     }

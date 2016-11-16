@@ -81,8 +81,8 @@ export default {
         term_from: "",
         term_to: "",
         headImg: "",
-        IDType:"",
-        IDNumber:""
+        IDType: "",
+        IDNumber: ""
       }
     }
   },
@@ -177,8 +177,12 @@ export default {
   width: 75%;
   margin: auto;
   padding: 13% 0%;
-  font-size: 0.3em;
+  font-size: 3vw;
   color: #3f3a36;
+}
+
+.brandauthorizations h3 {
+  font-size: 3vw;
 }
 
 .brandauthorization-img .brand-logo img {
@@ -228,7 +232,8 @@ table.personal-identity tbody tr td img {
 }
 
 .set-agent label {
-  font-size: 12px!important;
+  font-size: 3.9vw!important;
+  /*12px*/
   color: #36bdaf;
   font-family: "微软雅黑";
 }

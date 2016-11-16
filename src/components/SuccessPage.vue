@@ -1,9 +1,9 @@
 <template>
-    <div class="Application-is-successful ">
+    <div class="Application-is-successfuls ">
         <img src="/static/TestIMG/successful.png"/>
-        <p>成功修改密码</p>
-        <p>密码立即生效，请重新登录！</p>
-        <p>*倒计时{{time}}s将自动跳转至登录页面</p>
+        <p>成功修改密码</br>
+        密码立即生效，请重新登录！</p>
+        <p>*倒计时<span>{{time}}s</span>将自动跳转至登录页面</p>
     </div>
 </template>
 <script>
@@ -40,37 +40,34 @@
     }
 </script>
 <style>
-    .Application-is-successful {
+    .Application-is-successfuls {
         text-align: center;
         margin-top: 13%;
         font-family: "微软雅黑";
     }
-    
-    .Application-is-successful img {
+
+    .Application-is-successfuls img {
         width: 19%;
         height: auto;
     }
-    
-    .Application-is-successful p:nth-child(2) {
-        font-size: 18px;
+
+    .Application-is-successfuls p:nth-child(2) {
+      font-size: 5.3vw;/*18px*/
+
         color: #852d25;
         font-weight: bold;
         font-family: "微软雅黑";
     }
-    
-    .Application-is-successful p:nth-child(3) {
-        font-size: 12px;
-        color: #000000;
-        margin-top: 8%;
+
+    .Application-is-successfuls p:nth-child(3) {
+        font-size: 3.9vw;/*12px*/
+      color: #000000;
+      margin-top: 4%;
     }
-    
-    .Application-is-successful p:nth-child(3) span {
-        color: #852d25;
+
+    .Application-is-successfuls p:nth-child(3) span {
+        color: #f4604b;
     }
-    
-    .Application-is-successful p:nth-child(4) {
-        font-size: 12px;
-        color: #000000;
-        margin-top: 2%;
-    }
+
+
 </style>
