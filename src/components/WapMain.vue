@@ -6,7 +6,7 @@
     <div class="vux-demo-header-box" slot="header">
       <x-header :left-options="leftOptions" transition="headerTransition" :title="title" @on-click-title="scrollTop"></x-header>
 
-      <div slot="left" class="onclick-back" v-if="ShowBack">
+      <div slot="left" v-if="ShowBack">
         <button @click="onClickBack">{{backText}}</button>
 
       </div>
@@ -429,6 +429,8 @@
         background-repeat: no-repeat;
         background-size: contain;
         padding-left: 7%;
+    border: 0;
+    color: #fff;
     }
     
     .onclick-back button {
