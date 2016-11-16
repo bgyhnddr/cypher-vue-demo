@@ -106,9 +106,4 @@ export default {
 .checkpasswork-input .weui_dialog {
   width: 92%;
 }
-
-.checkpasswork-input .weui_icon_success:before {
-  font-size: 15px;
-  color: #09bb07;
-}
 </style>
