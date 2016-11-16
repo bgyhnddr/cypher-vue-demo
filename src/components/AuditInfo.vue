@@ -34,6 +34,11 @@
           </div>
         </cell>
         <cell>
+          <div slot="icon">{{auditInfo.IDType}}:
+            <label>{{auditInfo.IDNumber}}</label>
+          </div>
+        </cell>
+        <cell>
           <div slot="icon">微信号：
             <label>{{auditInfo.wechat}}</label>
           </div>
@@ -126,7 +131,9 @@ export default {
         address: "",
         addressDetail: "",
         deadline: "",
-        headImg: ""
+        headImg: "",
+        IDType: "",
+        IDNumber: ""
       }
     }
   },
@@ -177,6 +184,12 @@ export default {
                 case "addressDetail":
                   that.auditInfo.addressDetail = result[item]['value']
                   break
+                case "IDType":
+                  that.auditInfo.IDType = result[item]['value']
+                  break
+                case "IDNumber":
+                  that.auditInfo.IDNumber = result[item]['value']
+                  break
                 case "employer":
                   if (that.$route.params.locate == 'history') {
                     that.auditInfo.employer = result[item]['value']
@@ -190,7 +203,7 @@ export default {
           that.auditInfo.time = result[0].employment.employer_time
           that.auditInfo.employer = result[0].employment.employer_user_account
           that.auditInfo.employee = result[0].employment.employee_user_account
-        } else{
+        } else {
           that.auditInfo.employee = that.auditInfo.cellphone
         }
       }).catch(function(err) {
