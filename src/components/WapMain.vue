@@ -130,7 +130,7 @@ export default {
       } else if (this.$route.name === 'PhoneVerification') {
         this.ShowBack = true
         return '发送验证码'
-      } else if (this.$route.name === 'ResetPwd') {
+      } else if (this.$route.name === 'resetpwd') {
         this.ShowBack = true
         return '重置密码'
       } else if (this.$route.path === 'changeWechat') {

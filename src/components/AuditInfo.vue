@@ -243,25 +243,6 @@ export default {
     },
     onChange(val) {
       this.termNum = val
-        // var date = new Date(this.auditInfo.time)
-        // var year = parseInt(date.getFullYear())
-        // var month = parseInt(date.getMonth() + 1)
-        // var day = parseInt(date.getDate())
-
-      // val = parseInt(val)
-      //
-      // if (val > 12) {
-      //   var num = parseInt(val / 12)
-      //   if (!(val % 12)) {
-      //     this.term = (year + (num)) + '-' + (month + val - 12 * (num)) + '-' + day
-      //   } else {
-      //     this.term = (year + (num + 1)) + '-' + (month + val - 12 * (num + 1)) + '-' + day
-      //   }
-      // } else if (month + val > 12) {
-      //   this.term = (year + 1) + '-' + (month + val - 12) + '-' + day
-      // } else {
-      //   this.term = year + '-' + (month + val) + '-' + day
-      // }
     }
   },
   ready() {
