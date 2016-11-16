@@ -96,8 +96,6 @@ var exec = {
         var employmentData = req.body.employmentData
         var deadline = req.body.deadline
 
-        var uuid = require('node-uuid')
-        var guid = uuid.v1()
         var employment = require('../../db/models/employment')
         var employment_detail = require('../../db/models/employment_detail')
         var brand_role = require('../../db/models/brand_role')
@@ -156,7 +154,7 @@ var exec = {
                         user.create({ account: data.cellphone, password: pwd }, { transaction: t }),
                         user_role.create({ user_account: data.cellphone, role_code: 'user' }, { transaction: t }),
                         employment.create({
-                            guid: guid,
+                            guid: employmentData.guid,
                             publish_employment_guid: employmentData.publishEmploymentInfo.guid,
                             employer_user_account: employmentData.publishEmploymentInfo.employer_user_account,
                             brand_role_code: employmentData.publishEmploymentInfo.brand_role_code,
@@ -168,15 +166,15 @@ var exec = {
                             status: "未审核"
                         }, { transaction: t }),
                         employment_detail.bulkCreate([
-                            { employment_guid: guid, key: 'headImg', value: data['headImg'] },
-                            { employment_guid: guid, key: 'name', value: data['name'] },
-                            { employment_guid: guid, key: 'wechat', value: data['wechat'] },
-                            { employment_guid: guid, key: 'wechat', value: data['wechat'] },
-                            { employment_guid: guid, key: 'cellphone', value: data['cellphone'] },
-                            { employment_guid: guid, key: 'IDType', value: data['IDType'] },
-                            { employment_guid: guid, key: 'IDNumber', value: data['IDNumber'] },
-                            { employment_guid: guid, key: 'address', value: data['address'] },
-                            { employment_guid: guid, key: 'addressDetail', value: data['addressDetail'] }
+                            { employment_guid: employmentData.guid, key: 'headImg', value: data['headImg'] },
+                            { employment_guid: employmentData.guid, key: 'name', value: data['name'] },
+                            { employment_guid: employmentData.guid, key: 'wechat', value: data['wechat'] },
+                            { employment_guid: employmentData.guid, key: 'wechat', value: data['wechat'] },
+                            { employment_guid: employmentData.guid, key: 'cellphone', value: data['cellphone'] },
+                            { employment_guid: employmentData.guid, key: 'IDType', value: data['IDType'] },
+                            { employment_guid: employmentData.guid, key: 'IDNumber', value: data['IDNumber'] },
+                            { employment_guid: employmentData.guid, key: 'address', value: data['address'] },
+                            { employment_guid: employmentData.guid, key: 'addressDetail', value: data['addressDetail'] }
                         ], { transaction: t })
                     ]).then(function() {
                         t.commit()
