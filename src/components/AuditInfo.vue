@@ -55,7 +55,7 @@
         </cell>
         <div class="auditinfo-choose ">
           <x-number v-if="Toggle" title="授权期限：" :value="12" :min="1" @on-change="onChange"></x-number>
-          <p v-if="Toggle" class="months">月</p>
+          <p v-if="Toggle" class="months">个月</p>
           <!-- <selector v-if="Toggle" :value.sync="value" title="授权期限" :options="List" @on-change="onChange" placeholder="请选择期限"></selector><p v-if="Toggle">月</p> -->
         </div>
         <div style="height:60px"></div>
@@ -398,6 +398,7 @@ input.weui_btn {
   position: absolute;
   left: 78px;
   top: 11%;
+  width: 100%
 }
 
 .auditinfo-choose .weui_cell_hd label {
@@ -426,14 +427,41 @@ input.weui_btn {
 .auditinfo-choose .months {
   display: inline-block;
   position: absolute;
-  top: 18%;
-  left: 208px;
+  top: 17%;
+  left: 179px;
+  font-size: 4.5vw;
 }
 
 .auditinfo-choose .vux-number-selector-plus,
 .auditinfo-choose .vux-number-selector-sub {
-  background: #fff;
+
+      width: 4%;
+      padding: 6px 10px;
+      border-radius: 6px;
   /*月份添加背景色*/
+}
+.auditinfo-choose .vux-number-selector-plus{
+ background: #21c36d;
+
+
+}
+.auditinfo-choose .vux-number-selector-sub{
+ background: #ea4c4c;
+     margin-right: 4%;
+         padding: 2px 11px 8px 6px!important
+
+
+}
+.auditinfo-choose  .vux-number-selector{
+  font-size: 28px;
+line-height: 19px;
+color: #fff;
+}
+.auditinfo-choose .vux-number-selector-plus, .auditinfo-choose .vux-number-selector-sub{
+  margin-top: -2px;
+  width: 5%;
+    padding: 5px 11px 5px 6px;
+    border-radius: 6px;
 }
 
 .auditinfo-choose .weui_cell {
@@ -441,9 +469,10 @@ input.weui_btn {
 }
 
 .auditinfo-choose .vux-number-input {
-  font-size: 13px;
-  color: #666;
-  font-family: "微软雅黑";
+  font-size: 4.9vw;
+  color: #000;
+  font-family: "\5FAE\8F6F\96C5\9ED1";
+  margin-right: 16%;
 }
 
 

@@ -269,8 +269,9 @@ export default {
 }
 
 .brandauthorization-img .brand-logo img {
-  width: 54%;
+  width: 62%;
   height: auto;
+  margin: 4% auto 2%;
 }
 
 .brandauthorization-img h3 {
