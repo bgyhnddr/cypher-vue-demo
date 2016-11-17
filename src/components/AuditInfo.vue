@@ -17,7 +17,7 @@
         </cell>
         <cell>
           <div slot="icon">授权品牌：
-            <label>adminbrand</label>
+            <label>{{auditInfo.Brand}}</label>
           </div>
           <x-button v-if="!Toggle" type="default" class="auditinfo-view" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/'+this.$route.params.locate+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
         </cell>
@@ -135,7 +135,8 @@ export default {
         deadline: "",
         headImg: "",
         IDType: "",
-        IDNumber: ""
+        IDNumber: "",
+        Brand: ""
       }
     }
   },
@@ -164,6 +165,15 @@ export default {
         account: that.$route.params.account,
         locate: that.$route.params.locate,
       }).then(function(result) {
+        var LocateFrom = that.$route.params.locate
+        var LoacteAccount = that.$route.params.account
+        if (LocateFrom == 'history' || LocateFrom == 'account' || LocateFrom == 'auditInfo') {
+          that.auditInfo.Brand = result.GetBrand.name
+          if (LoacteAccount == 'admin') {
+            that.auditInfo.employer = that.auditInfo.account
+          }
+          result = result.Getdetail
+        }
         for (var item in result) {
           for (var meta in result[item]) {
             if (meta == 'key') {
@@ -202,6 +212,7 @@ export default {
           }
         }
         if (that.$route.params.locate == 'audit') {
+          that.auditInfo.Brand = result[0].employment.brand.name
           that.auditInfo.time = result[0].employment.employer_time
           that.auditInfo.employer = result[0].employment.employer_user_account
           that.auditInfo.employee = result[0].employment.employee_user_account
