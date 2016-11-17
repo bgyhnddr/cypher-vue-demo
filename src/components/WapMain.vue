@@ -135,7 +135,7 @@ export default {
         return '使用登录密码'
       } else if (this.$route.name === 'PhoneVerification') {
         this.ShowBack = true
-        return '发送验证码'
+        return '忘记密码'
       } else if (this.$route.name === 'resetpwd') {
         this.ShowBack = true
         return '重置密码'

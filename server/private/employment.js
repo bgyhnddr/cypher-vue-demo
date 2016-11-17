@@ -213,18 +213,39 @@ var exec = {
         }
       })
     } else if (locate == 'history' || locate == 'account' || locate == 'auditInfo') {
-      return agent_detail.findAll({
-        include: [{
-          model: agent,
-          where: {
-            user_account: account
-          },
+      return Promise.all([
+        agent_detail.findAll({
           include: [{
-            model: agent_brand_role,
-          }, {
-            model: employment_term
+            model: agent,
+            where: {
+              user_account: account
+            },
+            include: [{
+              model: agent_brand_role,
+            }, {
+              model: employment_term
+            }]
           }]
-        }]
+        }),
+        employment.findOne({
+          where: {
+            employee_user_account: account
+          }
+        }),
+        brand.findOne({
+          where: {
+            guid: "brand1"
+          }
+        }),
+      ]).then(function(result) {
+        var Getdetail = result[0]
+        var Getemployment = result[1]
+        var GetBrand = result[2]
+        return {
+          Getdetail: Getdetail,
+          Getemployment: Getemployment,
+          GetBrand: GetBrand
+        }
       })
     }
 
