@@ -273,6 +273,8 @@ a.vux-header-back.headerTransition-transition {
 	width: 100%;
 	text-align: center;
 	color: #979797;
-	font-size: 1vw
+	font-size: 1vw;
+	font-family: "微软雅黑";
+	    line-height: 2.5em;
 }
 </style>
