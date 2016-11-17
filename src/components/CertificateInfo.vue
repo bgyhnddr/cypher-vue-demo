@@ -4,7 +4,7 @@
     <div class="brandauthorizations">
       <div class="brandauthorization-img">
         <p class="brand-logo">
-          <img class="vux-x-img ximg-demo" alt="品牌logo" src="/static/TestIMG/brand_logo_href.png" />
+          <img class="vux-x-img ximg-demo" alt="品牌logo" src="/static/TestIMG/logo.png" />
         </p>
         <p>
           <img src="/static/TestIMG/authorization.png" class="authorization" />
@@ -44,7 +44,8 @@
           <label>{{auditInfo.Brand}}</label>
           <label>旗下产品</label>
         </div>
-        <div v-if="AdminFlag" class="agent-height">
+        <div class="agent-height">
+        <div v-if="AdminFlag" >
           <div class="agent-message">
             <p>授权编号
               <label>{{auditInfo.AuthorizationNum}}</label>
@@ -54,7 +55,7 @@
               <label>{{auditInfo.term_to}}</label>
             </p>
           </div>
-        </div>
+        </div></div>
         <p class="agent-unit ">授权单位
           <label class="color-gray">{{auditInfo.Brand}}</label>
         </p>
@@ -239,6 +240,7 @@ table.personal-identity tbody tr td img {
   margin-right: 0;
   min-height: 76px;
   min-width: 46px;
+      max-height: 84px;
 }
 
 .color-gray {
