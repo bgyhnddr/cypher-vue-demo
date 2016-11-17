@@ -199,7 +199,7 @@ export default {
 .password {
 	position: absolute;
 	z-index: 10000;
-	bottom: -2%;
+	top: 60%;
 	left: 3%;
 	width: 21%;
 }
