@@ -23,7 +23,7 @@
   </div>
   <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
 </div>
-   <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -117,15 +117,8 @@ export default {
       })
     },
     search() {
-      console.log("开始搜索")
-      var reg = /^[\u4e00-\u9fa5]*$/ //中文
-
       if (this.keyword == null || this.keyword == '') {
-        this.show = true
-        this.errorMsg = "搜索框内容不能为空"
-      } else if (!reg.test(this.keyword)) {
-        this.show = true
-        this.errorMsg = "填写格式错误，请填写中文"
+        return
       } else {
         this.showResult = false
         this.filter(this.keyword)
@@ -189,7 +182,7 @@ export default {
     font-family: "微软雅黑";
     font-size: 4.7vw;
     /*15px*/
-  color: #393a3f;
+    color: #393a3f;
     border: 1px solid #d3d1d1;
 }
 
@@ -197,8 +190,8 @@ export default {
     position: absolute;
     z-index: 10000000;
     right: 3%;
-  top: 23%;
-  width: 10%;
+    top: 23%;
+    width: 10%;
 }
 
 .function-search-button button.weui_btn.weui_btn_primary {
@@ -246,4 +239,5 @@ export default {
 
 .function-search-list img {
     width: 80%;
-}</style>
+}
+</style>
