@@ -111,6 +111,7 @@ import {
   XNumber
 } from 'vux'
 import employAPI from '../api/employment'
+import sendSMS from '../api/sendSMS'
 export default {
   data() {
     return {
@@ -231,8 +232,16 @@ export default {
           auditID: that.auditID,
           termNum: that.termNum
         }).then(function(result) {
-          that.alertMsg = "已通过"
-          that.showAlert = true
+          sendSMS.SendSMS({
+            cellphone: that.auditInfo.cellphone,
+            mode: "SendPassAuditMessage"
+          }).then(function(result) {
+            that.alertMsg = "已通过"
+            that.showAlert = true
+          }).catch(function(err) {
+            console.log(err)
+          })
+
         }).catch(function(err) {
           console.log(err)
           that.serveMsg = err
@@ -249,8 +258,16 @@ export default {
         auditID: that.auditID,
         reason: that.reason
       }).then(function(result) {
-        that.alertMsg = "已拒绝"
-        that.showAlert = true
+        sendSMS.SendSMS({
+          cellphone: that.auditInfo.cellphone,
+          mode: "SendRejectAuditMessage"
+        }).then(function(result) {
+          that.alertMsg = "已拒绝"
+          that.showAlert = true
+        }).catch(function(err) {
+          console.log(err)
+        })
+
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err

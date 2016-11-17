@@ -32,6 +32,7 @@
 <script>
 import authAPI from '../api/auth'
 import VueRouter from 'vue-router'
+import sendSMS from '../api/sendSMS'
 import {
 	Toast,
 	XInput,
@@ -84,25 +85,44 @@ export default {
 		GetVerificationCode() {
 			var that = this
 			if (that.cellphone || that.UserPhone) {
-				authAPI.GetVerificationCode({
-					phone: that.cellphone
-				}).then(function(result) {
-					that.showErr = false
-					that.show = true
-					that.SetInterval()
-
-					console.log(result)
-				}).catch(function(err) {
-					console.log(err)
-					that.showErr = true
-					if (!isNaN(parseInt(err))) {
-						that.errmsg = "获取过于频繁"
-						that.CodeTime = 60 - err
+				sendSMS.SendSMS({
+						cellphone: that.cellphone,
+						mode: "SendVerificationCode"
+					}).then(function(result) {
+						that.showErr = false
+						that.show = true
 						that.SetInterval()
-					} else {
-						that.errmsg = err
-					}
-				})
+						console.log(result)
+					}).catch(function(err) {
+						console.log(err)
+						that.showErr = true
+						if (!isNaN(parseInt(err))) {
+							that.errmsg = "获取过于频繁"
+							that.CodeTime = 60 - err
+							that.SetInterval()
+						} else {
+							that.errmsg = err
+						}
+					})
+					// authAPI.GetVerificationCode({
+					// 	phone: that.cellphone
+					// }).then(function(result) {
+					// 	that.showErr = false
+					// 	that.show = true
+					// 	that.SetInterval()
+					//
+					// 	console.log(result)
+					// }).catch(function(err) {
+					// 	console.log(err)
+					// 	that.showErr = true
+					// 	if (!isNaN(parseInt(err))) {
+					// 		that.errmsg = "获取过于频繁"
+					// 		that.CodeTime = 60 - err
+					// 		that.SetInterval()
+					// 	} else {
+					// 		that.errmsg = err
+					// 	}
+					// })
 			}
 
 		},
