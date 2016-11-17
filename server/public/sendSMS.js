@@ -42,48 +42,46 @@ var exec = {
               if (TimePass < 60) {
                 reject(TimePass)
               } else {
-                // soap.createClient(url, function(err, client) {
-                //   client.sendSMS(args, function(err, result) {
-                //     console.log(result)
-                //     VerificationInfo.phone = cellphone
-                //     VerificationInfo.code = Randnum
-                //     VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
-                //     req.session.VerificationInfo = VerificationInfo
-                //     console.log(req.session.VerificationInfo)
-                //     resolve("success")
-                //   })
-                // })
-                VerificationInfo.phone = cellphone
-                VerificationInfo.code = Randnum
-                VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
-                req.session.VerificationInfo = VerificationInfo
-                console.log(req.session.VerificationInfo)
-                resolve("success")
+                soap.createClient(url, function(err, client) {
+                  client.sendSMS(args, function(err, result) {
+                    console.log(result)
+                    VerificationInfo.phone = cellphone
+                    VerificationInfo.code = Randnum
+                    VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
+                    req.session.VerificationInfo = VerificationInfo
+                    console.log(req.session.VerificationInfo)
+                    resolve("success")
+                  })
+                })
+                // VerificationInfo.phone = cellphone
+                // VerificationInfo.code = Randnum
+                // VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
+                // req.session.VerificationInfo = VerificationInfo
+                // console.log(req.session.VerificationInfo)
+                // resolve("success")
               }
             } else {
-              // soap.createClient(url, function(err, client) {
-              //   client.sendSMS(args, function(err, result) {
-              //     console.log(result)
-              //     VerificationInfo.phone = cellphone
-              //     VerificationInfo.code = Randnum
-              //     VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
-              //     req.session.VerificationInfo = VerificationInfo
-              //     console.log(req.session.VerificationInfo)
-              //     resolve("success")
-              //   })
-              // })
-              VerificationInfo.phone = cellphone
-              VerificationInfo.code = Randnum
-              VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
-              req.session.VerificationInfo = VerificationInfo
-              console.log(req.session.VerificationInfo)
-              resolve("success")
+              soap.createClient(url, function(err, client) {
+                client.sendSMS(args, function(err, result) {
+                  console.log(result)
+                  VerificationInfo.phone = cellphone
+                  VerificationInfo.code = Randnum
+                  VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
+                  req.session.VerificationInfo = VerificationInfo
+                  console.log(req.session.VerificationInfo)
+                  resolve("success")
+                })
+              })
+              // VerificationInfo.phone = cellphone
+              // VerificationInfo.code = Randnum
+              // VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
+              // req.session.VerificationInfo = VerificationInfo
+              // console.log(req.session.VerificationInfo)
+              // resolve("success")
             }
           })
         }
       })
-
-
     } else if (mode == "SendPassAuditMessage") {
       //发送通过审核短信
       user.findOne({
@@ -91,16 +89,30 @@ var exec = {
           account: cellphone
         }
       }).then(function(result) {
-        args.arg4 = "【Cypher】您的审核已通过，账号："+cellphone+",密码："+result.password
-        console.log(args)
-        // soap.createClient(url, function(err, client) {
-        //   client.sendSMS(args, function(err, result) {
-        //     console.log(result)
-        //     resolve("success")
-        //   })
-        // })
+        args.arg4 = "【Cypher】您的审核已通过，账号：" + cellphone + ",密码：" + result.password
+        return new Promise((resolve, reject) => {
+          // console.log(args.arg4)
+          // resolve("success")
+          soap.createClient(url, function(err, client) {
+            client.sendSMS(args, function(err, result) {
+              console.log(result)
+              resolve("success")
+            })
+          })
+        })
       })
-
+    }else if(mode == "SendRejectAuditMessage"){
+      args.arg4 = "【Cypher】您的审核未被通过"
+      return new Promise((resolve, reject) => {
+        // console.log(args.arg4)
+        // resolve("success")
+        soap.createClient(url, function(err, client) {
+          client.sendSMS(args, function(err, result) {
+            console.log(result)
+            resolve("success")
+          })
+        })
+      })
     }
 
   },
