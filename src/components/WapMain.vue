@@ -100,7 +100,6 @@ export default {
         } else if (this.$route.params.locate == 'history') {
           document.body.style.background = '#f2f2f2'
           return '招募详情'
-
         }
       } else if (this.$route.path === '/employManagement/employmentHistory') {
         this.ShowBack = true
@@ -149,7 +148,6 @@ export default {
         this.ShowBack = true
         return '修改手机号'
       }
-
     }
   },
   methods: {
@@ -244,16 +242,16 @@ export default {
           } else if (this.$route.params.locate == "history")
             this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/history')
             return
+          } else if (SecPath == "checkPwd") {
+            this.$route.router.go('/accountManagement')
+            return
+          } else if (SecPath == "changeWechat") {
+            this.$route.router.go('/accountManagement')
+            return
+          } else if (SecPath == "changeCellPhone") {
+            this.$route.router.go('/accountManagement')
+            return
           }
-        } else if (SecPath == "checkPwd") {
-          this.$route.router.go('/accountManagement')
-          return
-        } else if (SecPath == "changeWechat") {
-          this.$route.router.go('/accountManagement/checkPwd/wechat')
-          return
-        } else if (SecPath == "changeCellPhone") {
-          this.$route.router.go('/accountManagement/checkPwd/phone')
-          return
         }
       }
   }
