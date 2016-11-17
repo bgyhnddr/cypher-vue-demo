@@ -1,5 +1,6 @@
 ﻿<template>
 <div>
+  <div class="homePage-bac">
   <group>
     <table border="0" class="platform-message" cellspacing=0 cellpadding=0>
       <tbody>
@@ -42,11 +43,10 @@
         </flexbox-item>
       </flexbox>
     </div>
-    <p>CopyRight © 2016 ShareWin. All Rights Reserved</p>
-    <p>珠海市赛孚科技有限公司 版权所有</p>
-    <p>粤ICP备14056388号</p>
+    <p class="homepage-footer">© 2016 ShareWin.me 粤ICP备14056388号</p>
+
     <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
-  </div>
+  </div></div>
 </template>
 
 <script>
@@ -191,6 +191,9 @@ export default {
 }
 </script>
 <style lang="less">
+.homePage-bac .weui_cells{
+  margin-top: 0
+}
 /*返回按钮*/
 
 .vux-demo-header-box button {}
@@ -206,13 +209,15 @@ div.icon_btn {
 
 table.platform-message {
     width: 94%;
-    margin: 5% auto auto;
+    margin: 3% auto auto;
     color: #292832;
+    font-size: 4.7vw;
+    font-family: "微软雅黑";
 }
 
 table.platform-message img {
-    width: 4em;
-    height: 4em;
+  width: 3.3em;
+height: 3.3em;
     border-radius: 50%;
     border: 2px solid #fff;
 }
@@ -237,7 +242,7 @@ table.platform-message p:nth-child(1) {
     background: #fff;
     margin: auto;
     padding-left: 2%;
-    height: 2.1em;
+        height: 2.3em;
     font-family: "微软雅黑";
     font-size: 4.7vw;
     color: #9b9c9c;
@@ -249,10 +254,11 @@ table.platform-message p:nth-child(1) {
     z-index: 10000000;
     right: 4%;
     top: 23%;
+    width: 10%;
 }
 
 .search-button button.weui_btn.weui_btn_primary {
-    width: 10%;
+
     line-height: 2.0;
     background: url("/static/TestIMG/search.png");
     background-size: 100%;
@@ -275,12 +281,11 @@ table.platform-message p:nth-child(1) {
 }
 
 .homepage-icon .vux-flexbox-item .flex-demo {
-    border-right: 1px solid #d3d1d1;
+  border-right: 1px solid #d3d1d1;
     border-bottom: 1px solid #d3d1d1;
-
     font-size: 4.5vw;
-    /*14px*/
     color: #292832;
+    background: #fff;
 }
 
 .homepage-icon .vux-flexbox-item .flex-demo h4 {
@@ -319,12 +324,32 @@ table.platform-message p:nth-child(1) {
     /* W3C */
 
 }
+.homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo button img {
 
+    width: 61%!important;
+}
+.homepage-icon .vux-flexbox-item:nth-child(3) .flex-demo,
+.homepage-icon .vux-flexbox-item:nth-child(4) .flex-demo,
+.homepage-icon .vux-flexbox-item:nth-child(5) .flex-demo,
+.homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo,
+.homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo,
+.homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo{
+
+  background: url(/static/TestIMG/construction.png) 50% 92%  no-repeat;
+  background-size: 67%;
+
+
+}
+.homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo button {
+    padding-bottom: 24%;
+
+
+}
 .homepage-icon .vux-flexbox-item button {
-    background: #fff;
+    background:none;
     border: 0;
     width: 100%;
-    padding: 16% 0 25%;
+    padding: 14% 0 25% 0;
 }
 .homepage-icon .vux-flexbox-item:nth-child(1) button:active,
 .homepage-icon .vux-flexbox-item:nth-child(2) button:active {
@@ -334,5 +359,18 @@ table.platform-message p:nth-child(1) {
 
 .homepage-icon .vux-flexbox-item button img {
     width: 39%;
+}
+.homepage-footer{
+
+  width: 100%;
+  text-align: center;
+  color: #979797;
+  font-size: 1vw;
+  font-family: "微软雅黑";
+      line-height: 2.5em;
+}
+
+.weui_cells{
+  margin-top: 0
 }
 </style>

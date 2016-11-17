@@ -139,7 +139,7 @@ export default {
       } else if (this.$route.name === 'resetpwd') {
         this.ShowBack = true
         return '重置密码'
-      } else if (this.$route.path === 'changeWechat') {
+      } else if (this.$route.path === '/accountManagement/changeWechat') {
         this.ShowBack = true
         return '修改微信号'
       } else if (this.$route.path === '/auth/SuccessPage') {
