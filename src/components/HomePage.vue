@@ -309,13 +309,18 @@ table.platform-message p:nth-child(1) {
     border-bottom: 0;
 
 }
-.homepage-icon .vux-flexbox-item:nth-child(3) .flex-demo button img,
-.homepage-icon .vux-flexbox-item:nth-child(4) .flex-demo button img,
+.homepage-icon .vux-flexbox-item:nth-child(5) .flex-demo h4 ,
+.homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo h4 ,
+.homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo h4 ,
+.homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo h4 {
+color:gray
+
+}
 .homepage-icon .vux-flexbox-item:nth-child(5) .flex-demo button img,
 .homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo button img,
 .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo button img,
-.homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo button img,
-.homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo button img {
+.homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo button img
+ {
     -webkit-filter: grayscale(1);
     /* Webkit */
     filter:gray;
@@ -328,8 +333,7 @@ table.platform-message p:nth-child(1) {
 
     width: 61%!important;
 }
-.homepage-icon .vux-flexbox-item:nth-child(3) .flex-demo,
-.homepage-icon .vux-flexbox-item:nth-child(4) .flex-demo,
+
 .homepage-icon .vux-flexbox-item:nth-child(5) .flex-demo,
 .homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo,
 .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo,
@@ -363,11 +367,11 @@ table.platform-message p:nth-child(1) {
 .homepage-footer{
 
   width: 100%;
-  text-align: center;
-  color: #979797;
-  font-size: 1vw;
-  font-family: "微软雅黑";
-      line-height: 2.5em;
+	text-align: center;
+	color: #979797;
+	font-size: 3vw;
+	font-family: "微软雅黑";
+	line-height: 2.5em;
 }
 
 .weui_cells{
