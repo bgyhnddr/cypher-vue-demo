@@ -43,7 +43,7 @@
         </flexbox-item>
       </flexbox>
     </div>
-    <p class="homepage-footer">CopyRight © 2016 ShareWin. All Rights Reserved</p>
+    <p class="homepage-footer">© 2016 ShareWin.me 粤ICP备14056388号</p>
 
     <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
   </div></div>
@@ -368,5 +368,9 @@ table.platform-message p:nth-child(1) {
   font-size: 1vw;
   font-family: "微软雅黑";
       line-height: 2.5em;
+}
+
+.weui_cells{
+  margin-top: 0
 }
 </style>
