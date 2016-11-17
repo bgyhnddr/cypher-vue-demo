@@ -2,9 +2,9 @@
 <div>
   <div class="checkpasswork-input">
     <group>
-      <x-input class="weui_cell_primary" :value.sync="pwd" placeholder="输入登录密码" type="password" :show-clear=false :equal-with="password"></x-input>
+      <x-input class="weui_cell_primary" :value.sync="pwd" placeholder="输入登录密码" type="password" :show-clear=false :equal-with="password" :required="false"></x-input>
+      <p v-if="showMsg">{{errorMsg}}</p>
       <x-button type="primary" @click="cheakPwd">下一步</x-button>
-      <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
     </group>
   </div>
 </div>
@@ -26,6 +26,11 @@ export default {
       pwd: "",
       showMsg: false,
       errorMsg: null
+    }
+  },
+  watch: {
+    pwd(){
+      this.showMsg = false
     }
   },
   components: {
