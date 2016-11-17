@@ -20,6 +20,7 @@
         </div>
       </a>
     </group>
+    <p v-if="showNullMsg">暂无此服务，敬请期待</p>
   </div>
   <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
 </div>
@@ -90,7 +91,8 @@ export default {
       }],
       show: false,
       errorMsg: null,
-      showResult: false
+      showResult: false,
+      showNullMsg:false
     }
   },
   methods: {
@@ -125,6 +127,7 @@ export default {
       }
     },
     filter(keyword) {
+      var countShowItem = 0
       //根据级别选择显示功能
       if (this.userLevel == "0") {
         for (var item in this.funcList) {
@@ -155,7 +158,18 @@ export default {
           this.funcList[item].isShow = false
         }
       }
-      this.showResult = true
+
+      for (var item in this.funcList) {
+        if (this.funcList[item].isShow) {
+          countShowItem++
+        }
+      }
+
+      if(countShowItem == 0){
+        this.showNullMsg = true
+      }else{
+        this.showResult = true
+      }
       console.log(JSON.stringify(this.funcList))
     }
   },
