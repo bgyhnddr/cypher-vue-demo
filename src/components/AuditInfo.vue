@@ -17,19 +17,25 @@
         </cell>
         <cell>
           <div slot="icon">授权品牌：
-            <label>adminbrand</label>
+            <label>{{auditInfo.Brand}}</label>
           </div>
-          <x-button v-if="!Toggle" type="default" class="auditinfo-view" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/'+this.$route.params.locate+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID}">查看授权证书</x-button>
+          <x-button v-if="!Toggle" type="default" class="auditinfo-view" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/'+this.$route.params.locate+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">授权上级：
             <label>{{auditInfo.employer}}</label>
           </div>
-          <x-button type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/'+this.$route.params.locate+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID}">查看授权证书</x-button>
+          <x-button v-if="Toggle" type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/auditInfo'+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
+          <x-button v-if="!Toggle" type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/history'+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">姓名：
             <label>{{auditInfo.name}}</label>
+          </div>
+        </cell>
+        <cell>
+          <div slot="icon">{{auditInfo.IDType}}:
+            <label>{{auditInfo.IDNumber}}</label>
           </div>
         </cell>
         <cell>
@@ -127,7 +133,10 @@ export default {
         address: "",
         addressDetail: "",
         deadline: "",
-        headImg: ""
+        headImg: "",
+        IDType: "",
+        IDNumber: "",
+        Brand: ""
       }
     }
   },
@@ -156,6 +165,15 @@ export default {
         account: that.$route.params.account,
         locate: that.$route.params.locate,
       }).then(function(result) {
+        var LocateFrom = that.$route.params.locate
+        var LoacteAccount = that.$route.params.account
+        if (LocateFrom == 'history' || LocateFrom == 'account' || LocateFrom == 'auditInfo') {
+          that.auditInfo.Brand = result.GetBrand.name
+          if (LoacteAccount == 'admin') {
+            that.auditInfo.employer = that.auditInfo.account
+          }
+          result = result.Getdetail
+        }
         for (var item in result) {
           for (var meta in result[item]) {
             if (meta == 'key') {
@@ -178,6 +196,12 @@ export default {
                 case "addressDetail":
                   that.auditInfo.addressDetail = result[item]['value']
                   break
+                case "IDType":
+                  that.auditInfo.IDType = result[item]['value']
+                  break
+                case "IDNumber":
+                  that.auditInfo.IDNumber = result[item]['value']
+                  break
                 case "employer":
                   if (that.$route.params.locate == 'history') {
                     that.auditInfo.employer = result[item]['value']
@@ -188,6 +212,7 @@ export default {
           }
         }
         if (that.$route.params.locate == 'audit') {
+          that.auditInfo.Brand = result[0].employment.brand.name
           that.auditInfo.time = result[0].employment.employer_time
           that.auditInfo.employer = result[0].employment.employer_user_account
           that.auditInfo.employee = result[0].employment.employee_user_account

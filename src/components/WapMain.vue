@@ -75,7 +75,7 @@ export default {
         return '选择招募代理级别'
       } else if (this.$route.name === 'BrandAuthorization') {
         this.ShowBack = true
-        return this.$route.params.brandName
+        return '分享招募'
       } else if (this.$route.name === 'FillInEmployment') {
         document.body.style.background = '#f2f2f2'
         this.ShowBack = false
@@ -83,12 +83,11 @@ export default {
           console.log("event" + "==========" + flag)
           this.ShowBack = flag
         })
-        return this.$route.params.brandName + "——代理授权申请"
+        return "代理申请"
       } else if (this.$route.name === 'EmploymentSubmission') {
         document.body.style.background = '#fff'
         this.ShowBack = false
-        return this.$route.params.brandName + "——代理授权申请"
-
+        return "代理申请"
       } else if (this.$route.path === '/employManagement/audit') {
         this.ShowBack = true
         document.body.style.background = '#f2f2f2'
@@ -117,7 +116,7 @@ export default {
         return '我的证书'
       } else if (this.$route.name === 'CertificateInfo') {
         this.ShowBack = true
-        return 'adminBrand'
+        return '授权证书'
       } else if (this.$route.path === '/employManagement/currentList') {
         this.ShowBack = true
         document.body.style.background = '#f2f2f2'
@@ -136,7 +135,7 @@ export default {
         return '使用登录密码'
       } else if (this.$route.name === 'PhoneVerification') {
         this.ShowBack = true
-        return '发送验证码'
+        return '忘记密码'
       } else if (this.$route.name === 'resetpwd') {
         this.ShowBack = true
         return '重置密码'
@@ -243,7 +242,6 @@ export default {
             this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/audit')
             return
           } else if (this.$route.params.locate == "history")
-            console.log(this.$route.path)
           this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/history')
           return
         } else if (SecPath == "checkPwd") {

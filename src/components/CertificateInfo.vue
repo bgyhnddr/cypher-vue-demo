@@ -37,17 +37,17 @@
 
         </table>
         <div class="set-agent ">为
-          <label>adminBrand</label>
+          <label>{{auditInfo.Brand}}</label>
           <label>{{auditInfo.agent_level}}</label>
         </div>
         <div class="allow-agent">允许其在网络上销售
-          <label>adminBrand</label>
+          <label>{{auditInfo.Brand}}</label>
           <label>旗下产品</label>
         </div>
-        <div class="agent-height">
+        <div v-if="AdminFlag" class="agent-height">
           <div class="agent-message">
             <p>授权编号
-              <label>A111</label>
+              <label>{{auditInfo.AuthorizationNum}}</label>
             </p>
             <p>授权期限
               <label>{{auditInfo.term_from}}</label>至
@@ -56,7 +56,7 @@
           </div>
         </div>
         <p class="agent-unit ">授权单位
-          <label class="color-gray">A公司</label>
+          <label class="color-gray">{{auditInfo.Brand}}</label>
         </p>
 
       </div>
@@ -69,6 +69,7 @@ import employAPI from '../api/employment'
 export default {
   data() {
     return {
+      AdminFlag:"",
       auditInfo: {
         account: "",
         employer: "",
@@ -82,7 +83,9 @@ export default {
         term_to: "",
         headImg: "",
         IDType: "",
-        IDNumber: ""
+        IDNumber: "",
+        AuthorizationNum: "",
+        Brand: ""
       }
     }
   },
@@ -93,8 +96,18 @@ export default {
         account: that.$route.params.account,
         locate: that.$route.params.locate,
       }).then(function(result) {
-        that.auditInfo.term_from = result[0].agent.employment_term.term_from
-        that.auditInfo.term_to = result[0].agent.employment_term.term_to
+        var LocateFrom = that.$route.params.locate
+        var LoacteAccount = that.$route.params.account
+        if (LocateFrom == 'history' || LocateFrom == 'account' || LocateFrom == 'auditInfo') {
+          that.auditInfo.Brand = result.GetBrand.name
+          if (LoacteAccount != 'admin') {
+            that.auditInfo.AuthorizationNum = result.Getemployment.guid.substring(result.Getemployment.guid.length - 12, result.Getemployment.guid.length)
+            that.auditInfo.term_from = result.Getdetail[0].agent.employment_term.term_from
+            that.auditInfo.term_to = result.Getdetail[0].agent.employment_term.term_to
+          }
+          result = result.Getdetail
+        }
+
         switch (result[0].agent.agent_brand_role.brand_role_code) {
           case "brand_role1":
             that.auditInfo.agent_level = "品牌商"
@@ -156,6 +169,11 @@ export default {
   ready() {
     this.getInfo()
     this.auditInfo.account = this.$route.params.account
+    if (this.$route.params.account == 'admin') {
+      this.AdminFlag = false
+    } else {
+      this.AdminFlag = true
+    }
   }
 }
 </script>

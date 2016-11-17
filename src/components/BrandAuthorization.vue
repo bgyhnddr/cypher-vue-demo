@@ -228,17 +228,13 @@ export default {
         account: account
       }).then(function(result) {
         console.log(JSON.stringify(result))
-        that.employmentIDAndTerm.employmentGuid = result[0].guid
+        that.employmentIDAndTerm.employmentGuid = result[0].guid.split('-')[4]
         that.employmentIDAndTerm.start = new Date(result[1].employment_term.term_from).Format("yyyy 年 MM 月 dd 日")
         that.employmentIDAndTerm.deadline = new Date(result[1].employment_term.term_to).Format("yyyy 年 MM 月 dd 日")
-        that.showShareUrl()
       }).catch(function(err) {
         that.showMsg = true
         that.errorMsg = err
       })
-    },
-    showShareUrl(employmentGuid) {
-      console.log("填写资料跳转地址：" + '/employManagement/fillInEmployment/' + this.$route.params.publishEmploymentID + '/' + this.employmentData.name)
     }
   },
   ready() {
