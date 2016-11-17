@@ -199,7 +199,7 @@ export default {
           this.$route.router.go('/employManagement')
           return
         } else if (SecPath == "brandAuthorization") {
-          this.$route.router.go('/employManagement/chooseEmployableRoles')
+          this.$route.router.go('/employManagement')
           return
         } else if (SecPath == "fillInEmployment") {
           this.$broadcast('goFillEmployment1')
