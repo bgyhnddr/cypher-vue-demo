@@ -37,7 +37,7 @@
                     <x-button type="warn" v-link="{ path: '/auth/regist' }">账户注册</x-button>
                 </flexbox-item></div>-->
 		</flexbox>
-   <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+   		<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 		<div>
 			<toast :show.sync="show" :time="1000" type="warn">{{errmsg}}</toast>
 		</div>
@@ -143,7 +143,6 @@ export default {
 	/*18px*/
 }
 
-
 /*登录框*/
 
 .input-boder {
@@ -230,6 +229,11 @@ button.weui_btn.weui_btn_primary:active {
 .weui_icon_warn:before {
 	font-size: 18px;
 	color: #f43530;
+}
+
+.weui_icon_toast {
+    margin: 22px 0 0 27px;
+    display: block;
 }
 
 
