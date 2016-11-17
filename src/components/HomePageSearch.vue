@@ -23,6 +23,7 @@
   </div>
   <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
 </div>
+   <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -172,7 +173,7 @@ export default {
 </script>
 <style lang="less">
 .function-search .weui_cell {
-    padding: 9px;
+    padding: 9px 2%;
 }
 
 .function-search .weui_cell_hd {
@@ -188,19 +189,20 @@ export default {
     font-family: "微软雅黑";
     font-size: 4.7vw;
     /*15px*/
-    color: #9b9c9c;
+  color: #393a3f;
     border: 1px solid #d3d1d1;
 }
 
 .function-search-button {
     position: absolute;
     z-index: 10000000;
-    right: 9%;
-    top: 23%;
+    right: 3%;
+  top: 23%;
+  width: 10%;
 }
 
 .function-search-button button.weui_btn.weui_btn_primary {
-    width: 10%;
+
     line-height: 2.0;
     background: url("/static/TestIMG/search.png");
     background-size: 100%;

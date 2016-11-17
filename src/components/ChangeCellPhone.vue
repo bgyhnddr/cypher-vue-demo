@@ -2,10 +2,10 @@
 <div>
   <div class="changepcellphone-input">
     <group title="新手机号">
-      <x-input class="weui_cell_primary" title="+86" keyboard="number" :value.sync="cellphone" placeholder="输入新手机号" :show-clear=false is-type="china-mobile" :required="false" v-ref:cellphone></x-input>
+      <x-input class="weui_cell_primary" title="+86" keyboard="number" :value.sync="cellphone" placeholder="输入新手机号" :show-clear="false" :required="false" v-ref:cellphone></x-input>
+      <p v-if="showRemind">{{errorMsg}}</p>
       <x-button type="primary" @click="confirm">确认修改</x-button>
       <alert :show.sync="showMsg" @on-hide="onHide()" button-text="确认">您已经成功修改手机号</alert>
-      <alert :show.sync="showRemind" button-text="确认">{{errorMsg}}</alert>
     </group>
   </div>
 </div>
@@ -36,12 +36,18 @@ export default {
     XButton,
     Alert
   },
+  watch: {
+    cellphone() {
+      this.showRemind = false
+    }
+  },
   methods: {
     confirm() {
       var that = this
+      var reg = /^[1][358][0-9]{9}$/  //手机号
 
       //检测手机号输入是否正确
-      if (!this.$refs.cellphone.valid) {
+      if (!reg.test(this.cellphone)) {
         that.showRemind = true
         that.errorMsg = "手机号填写错误，请重新输入"
       } else {
