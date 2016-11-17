@@ -169,7 +169,6 @@ var exec = {
                             { employment_guid: employmentData.guid, key: 'headImg', value: data['headImg'] },
                             { employment_guid: employmentData.guid, key: 'name', value: data['name'] },
                             { employment_guid: employmentData.guid, key: 'wechat', value: data['wechat'] },
-                            { employment_guid: employmentData.guid, key: 'wechat', value: data['wechat'] },
                             { employment_guid: employmentData.guid, key: 'cellphone', value: data['cellphone'] },
                             { employment_guid: employmentData.guid, key: 'IDType', value: data['IDType'] },
                             { employment_guid: employmentData.guid, key: 'IDNumber', value: data['IDNumber'] },
