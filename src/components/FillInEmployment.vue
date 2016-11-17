@@ -463,7 +463,10 @@ export default {
 .certificate .weui_cell_hd {
   width: auto;
 }
+.certificate .weui_cell:before{
+border-top:0;
 
+}
 .weui_cell_select .weui_cell_bd:after {
   transform: rotate(135deg);
   top: 44%;
@@ -484,11 +487,14 @@ export default {
   padding-left: 4%;
   font-family: "微软雅黑";
   padding-right: 23%;
+
+    font-size: 4.5vw;
 }
 
 .certificate .weui_input {
   font-family: "微软雅黑";
   padding-left: 2%;
+      font-size: 4.5vw;
 }
 
 .certificate .weui_cells_title {
@@ -538,6 +544,7 @@ export default {
   border: 1px solid #d3d1d1;
   width: 97%;
   padding-left: 2%;
+      font-size: 4.5vw;
 }
 
 .certificate .weui_textarea_counter {
@@ -552,5 +559,8 @@ export default {
 .certificate .weui_cell_ft.weui_cell_primary.with_arrow span:nth-child(2) {
   position: absolute;
   left: 5%;
+  font-size: 4.5vw;
+  top: 11%;
+  font-family: "微软雅黑";
 }
 </style>
