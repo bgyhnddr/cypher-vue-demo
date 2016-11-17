@@ -258,16 +258,6 @@ export default {
         auditID: that.auditID,
         reason: that.reason
       }).then(function(result) {
-          // sendSMS.SendSMS({
-          //   cellphone:that.auditInfo.cellphone,
-          //   mode:"SendRejectAuditMessage"
-          // }).then(function(result) {
-          //   that.alertMsg = "已拒绝"
-          //   that.showAlert = true
-          // }).catch(function(err) {
-          //   console.log(err)
-          // })
-
         sendSMS.SendSMS({
           cellphone: that.auditInfo.cellphone,
           mode: "SendRejectAuditMessage"
