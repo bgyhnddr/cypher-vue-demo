@@ -12,11 +12,11 @@ var exec = {
       }
     }).then(function(result) {
       if (result == null) {
-        return Promise.reject("账号不存在")
+        return Promise.reject("账号不存在或密码错误")
       } else {
         console.log(result.password)
         if (result.password != password) {
-          return Promise.reject("密码错误")
+          return Promise.reject("账号不存在或密码错误")
         } else {
           var user_role = require('../../db/models/user_role')
           var role_permission = require('../../db/models/role_permission')
