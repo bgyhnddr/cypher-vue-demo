@@ -32,7 +32,7 @@ var exec = {
       }
     }).then(function(result) {
       if(result != null){
-        return Promise.reject("您所输入的微信号已被注册，请重新输入")
+        return Promise.reject("该微信号已被注册，请重新输入")
       }else{
         return agent.findOne({
             where: {
@@ -40,7 +40,7 @@ var exec = {
             }
         }).then(function(result) {
             if (result == null) {
-                return Promise.reject("获取个人资料读取出错")
+                return Promise.reject("修改微信号失败")
             } else {
                 return agent_detail.findOne({
                     where: {
@@ -49,7 +49,7 @@ var exec = {
                     }
                 }).then(function(result) {
                     if (result == null) {
-                        return Promise.reject("获取个人资料读取出错")
+                        return Promise.reject("修改微信号失败")
                     } else {
                         result.value = wechat
                         return result.save()
