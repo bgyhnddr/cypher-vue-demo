@@ -275,12 +275,11 @@ table.platform-message p:nth-child(1) {
 }
 
 .homepage-icon .vux-flexbox-item .flex-demo {
-    border-right: 1px solid #d3d1d1;
+  border-right: 1px solid #d3d1d1;
     border-bottom: 1px solid #d3d1d1;
-
     font-size: 4.5vw;
-    /*14px*/
     color: #292832;
+    background: #fff;
 }
 
 .homepage-icon .vux-flexbox-item .flex-demo h4 {
@@ -321,10 +320,10 @@ table.platform-message p:nth-child(1) {
 }
 
 .homepage-icon .vux-flexbox-item button {
-    background: #fff;
+    background:none;
     border: 0;
     width: 100%;
-    padding: 16% 0 25%;
+    padding: 14% 0 25% 0;
 }
 .homepage-icon .vux-flexbox-item:nth-child(1) button:active,
 .homepage-icon .vux-flexbox-item:nth-child(2) button:active {

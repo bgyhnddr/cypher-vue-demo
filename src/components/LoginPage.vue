@@ -4,7 +4,7 @@
 		<div>
 			<div class="vux-center login-header">
 				<img class="vux-x-img ximg-demo vux-center" alt="头像" src="/static/TestIMG/brand_logo_href.png" />
-				<p>品牌商名称</p>
+				<p>Cara Cara</p>
 			</div>
 			<div class="login-message">
 				<div class="user">
@@ -12,7 +12,7 @@
 				</div>
 				<div class="input-boder">
 					<group>
-						<x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入手机号/微信号" is-type="china-name"></x-input>
+						<x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入手机号" is-type="china-name"></x-input>
 					</group>
 					<div class="password">
 						<img src="/static/TestIMG/password.png" />
@@ -37,10 +37,11 @@
                     <x-button type="warn" v-link="{ path: '/auth/regist' }">账户注册</x-button>
                 </flexbox-item></div>-->
 		</flexbox>
-
+   <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 		<div>
 			<toast :show.sync="show" :time="1000" type="warn">{{errmsg}}</toast>
 		</div>
+
 	</div>
 </div>
 </template>
@@ -113,14 +114,15 @@ export default {
 
 .login-bac {
 	font-family: "微软雅黑";
-	background-color: #fff;
+
 }
 
 
 /*品牌商logo*/
 
 .login-header {
-	background: #ebebeb;
+	background:url("/static/TestIMG/logo_header.png") no-repeat;
+	background-size: cover;
 	padding: 6%;
 	text-align: center;
 	display: block;
@@ -136,7 +138,7 @@ export default {
 
 .login-header p {
 	display: block;
-	color: #292832;
+	color: #fff;
 	font-size: 5.3vw;
 	/*18px*/
 }
@@ -157,11 +159,11 @@ export default {
 	position: relative;
 }
 
-.weui_cell {
-	padding: 9px 15px;
+.login-bac .weui_cell {
+    padding: 4% 15px;
 }
 
-.weui_cells {
+.login-bac .weui_cells {
 	margin-top: 0;
 	font-size: 4.5vw;
 	/*16px*/
@@ -255,7 +257,7 @@ a.vux-header-back.headerTransition-transition {
 	font-family: "微软雅黑";
 	color: #1191e3;
 	border: 0;
-	font-size: 4.1vw;
+	font-size: 4.9vw;
 	/*13px*/
 	background: none;
 	text-decoration: underline;
@@ -263,5 +265,14 @@ a.vux-header-back.headerTransition-transition {
 
 .forget-button .weui_btn:after {
 	border: 0
+}
+.login-footer{
+
+	position: fixed;
+	bottom:0;
+	width: 100%;
+	text-align: center;
+	color: #979797;
+	font-size: 1vw
 }
 </style>
