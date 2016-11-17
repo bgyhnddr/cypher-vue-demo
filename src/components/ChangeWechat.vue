@@ -61,7 +61,7 @@ export default {
               that.showMsg = true
             }
           }).catch(function(err) {
-            that.showMsg = true
+            that.showRemind = true
             that.errorMsg = err
           })
 
