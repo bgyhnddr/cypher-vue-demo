@@ -4,7 +4,7 @@
             <h3>代理申请表</h3>
             <div v-if="!showNextFillModel">
                 <div class="ApplyFor-agent-message">
-                    <p>上级授权号&nbsp;:&nbsp;{{employmentData.guid}}</p>
+                    <p>上级授权号&nbsp;:&nbsp;{{employmentData.showGuid}}</p>
                     <p>上级代理&nbsp;:&nbsp;{{employmentData.employerName}}</p>
                     <p>您当前代理级别为&nbsp;:&nbsp;<label>{{employmentData.brandRoleName}}</label></p>
                 </div>
@@ -27,7 +27,7 @@
                 <div class="certificate ">
                     <group>
                         <selector placeholder="-证件类型-" :options="IDTypeList" :value.sync="data.IDType"></selector>
-                        <x-input class="weui_cell_primary certificate-input" keyboard="number" placeholder="输入证件号" :value.sync="data.IDNumber" :show-clear=false v-ref:IDNumber></x-input>
+                        <x-input class="weui_cell_primary certificate-input" keyboard="number" placeholder="输入证件号" :min="6" :max="30"  :value.sync="data.IDNumber" :show-clear=false v-ref:IDNumber></x-input>
                         <div class="clean"></div>
                     </group>
                     <group title="通讯地址">
@@ -102,6 +102,7 @@
                     brandInfo: {},
                     employerName: {},
                     guid: "",
+                    showGuid:"",
                 },
                 showNextFillModel: false,
                 IDTypeList: ['身份证', '回乡证', '护照'],
@@ -115,6 +116,7 @@
                 var that = this
                 var guid = uuid.v1()
                 this.employmentData.guid = guid
+                this.employmentData.showGuid = guid.split("-")[4]
                 var employmentGuid = this.$route.params.publishEmploymentID
                 console.log(employmentGuid)
                 applyEmploymentAPI.getPublishEmploymentInfo({
@@ -215,6 +217,7 @@
             },
             submit() {
                 var that = this
+                var commitFlag = true
                     //将data.provinceAndRegion 转换成中文字符串
                 this.data.address = filterAddress(this.data.addressTemp, AddressChinaData)
                 console.log(JSON.stringify(this.data))
@@ -226,27 +229,34 @@
                 if (this.data.IDType == "") {
                     this.showMsg = true
                     this.errorMsg = "证件类型未填写，请填写完整，再跳转到下一页"
+                    commitFlag = false
                 } else if (!this.$refs.idnumber.valid) {
                     this.showMsg = true
                     this.errorMsg = "证件号填写错误，请填写完整，再跳转到下一页"
+                    commitFlag = false
                 } else if (this.$refs.idnumber.valid) {
                     var reg1 = /^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$/ //身份证
                     var reg2 = /^[A-Z]\d{10}$/ //回乡证
                         //护照
-                    if (this.data.IDType == "身份证" && !reg1.test(this.data.idnumber)) {
+                    if (this.data.IDType == "身份证" && !reg1.test(this.data.IDNumber)) {
                         this.showMsg = true
-                        this.errorMsg = "证件号填写错误，请填写完整，再跳转到下一页"
-                    } else if (this.data.IDType == "回乡证" && !reg2.test(this.data.idnumber)) {
+                        this.errorMsg = "身份证填写错误，请填写完整，再跳转到下一页"
+                        commitFlag = false
+                    } else if (this.data.IDType == "回乡证" && !reg2.test(this.data.IDNumber)) {
                         this.showMsg = true
-                        this.errorMsg = "证件号填写错误，请填写完整，再跳转到下一页"
+                        this.errorMsg = "回乡证填写错误，请填写完整，再跳转到下一页"
+                        commitFlag = false
                     }
                 } else if (this.data.address == "") {
                     this.showMsg = true
                     this.errorMsg = "通讯地址填写错误，请填写完整，再跳转到下一页"
+                    commitFlag = false
                 } else if (this.data.addressDetail == "") {
                     this.showMsg = true
                     this.errorMsg = "通讯地址填写错误，请填写完整，再跳转到下一页"
-                } else {
+                    commitFlag = false
+                }
+                if(commitFlag){
                     var deadline = endDate.Format('yyyy-MM-dd hh:mm:ss')
                     console.log(deadline)
 

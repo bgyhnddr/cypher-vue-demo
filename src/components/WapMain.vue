@@ -75,7 +75,7 @@ export default {
         return '选择招募代理级别'
       } else if (this.$route.name === 'BrandAuthorization') {
         this.ShowBack = true
-        return this.$route.params.brandName
+        return '分享招募'
       } else if (this.$route.name === 'FillInEmployment') {
         document.body.style.background = '#f2f2f2'
         this.ShowBack = false
@@ -83,12 +83,11 @@ export default {
           console.log("event" + "==========" + flag)
           this.ShowBack = flag
         })
-        return this.$route.params.brandName + "——代理授权申请"
+        return "代理申请"
       } else if (this.$route.name === 'EmploymentSubmission') {
         document.body.style.background = '#fff'
         this.ShowBack = false
-        return this.$route.params.brandName + "——代理授权申请"
-
+        return "代理申请"
       } else if (this.$route.path === '/employManagement/audit') {
         this.ShowBack = true
         document.body.style.background = '#f2f2f2'

@@ -139,7 +139,7 @@ var exec = {
             if (result[2] == null) {
                 return Promise.reject("找不到审核人的信息")
             } else if (result[0] != null || result[1] != null) {
-                return Promise.reject("您已提交过申请或者已成为该品牌成员，提交申请失败")
+                return Promise.reject("您的手机号已提交申请或已成为该品牌成员，申请失败")
             } else {
 
                 var pwd = "";
@@ -183,7 +183,7 @@ var exec = {
                     }).catch(function(err) {
                         // err 是事务回调中使用promise链中的异常结果
                         t.rollback()
-                        return Promise.reject("提交申请失败")
+                        return Promise.reject("后台数据添加异常，申请失败")
                     })
 
                 })
