@@ -94,7 +94,7 @@ export default {
         start: "",
         deadline: ""
       },
-      showEmploymentIDAndTerm: true,
+      showEmploymentIDAndTerm: false,
       showBrandAuthorizationModel: false,
       showMsg: false,
       errorMsg: null
@@ -131,7 +131,6 @@ export default {
               that.getRoleName(result.name)
               that.showBrandAuthorizationModel = true
             } else {
-              console.log("非招募跳转地址：" + '/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
               that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
             }
           })
@@ -175,10 +174,8 @@ export default {
         console.log(JSON.stringify(result))
         that.brand_role_name = result.brand_role.name
 
-        if (result.brand_role.level == "0") {
-          that.showEmploymentIDAndTerm = false
-        } else {
-          //获取授权编号 & 授权期
+        if (result.brand_role.level != "0") {
+          that.showEmploymentIDAndTerm = true
           that.getEmploymentGuidAndTerm(account)
         }
       }).catch(function(err) {
@@ -269,8 +266,9 @@ export default {
 }
 
 .brandauthorization-img .brand-logo img {
-  width: 54%;
+  width: 62%;
   height: auto;
+  margin: 4% auto 2%;
 }
 
 .brandauthorization-img h3 {

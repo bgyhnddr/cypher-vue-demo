@@ -37,13 +37,14 @@
                     <x-button type="warn" v-link="{ path: '/auth/regist' }">账户注册</x-button>
                 </flexbox-item></div>-->
 		</flexbox>
-   		<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+
 		<div>
 			<toast :show.sync="show" :time="1000" type="warn">{{errmsg}}</toast>
 		</div>
 
 	</div>
 </div>
+ <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -102,6 +103,7 @@ export default {
 		//this.$els.account.focus()
 	}
 }
+
 </script>
 <style>
 .login_zindex {
@@ -114,6 +116,7 @@ export default {
 
 .login-bac {
 	font-family: "微软雅黑";
+	    min-height: 460px;
 
 }
 
@@ -164,7 +167,7 @@ export default {
 
 .login-bac .weui_cells {
 	margin-top: 0;
-	font-size: 4.5vw;
+	font-size: 1em;
 	/*16px*/
 	color: #aeaeae;
 	font-family: "微软雅黑";
@@ -272,13 +275,18 @@ a.vux-header-back.headerTransition-transition {
 }
 .login-footer{
 
-	position: fixed;
-	bottom:0;
+
+
 	width: 100%;
 	text-align: center;
 	color: #979797;
-	font-size: 1vw;
+	font-size: 3vw;
 	font-family: "微软雅黑";
-	    line-height: 2.5em;
+	line-height: 2.5em;
 }
+.login-message input{
+height: auto;
+
+}
+
 </style>
