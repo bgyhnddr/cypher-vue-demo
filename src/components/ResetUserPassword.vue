@@ -16,7 +16,7 @@
 			</flexbox-item>
 		</flexbox>
 		<div>
-			<alert :show.sync="showAlert" @on-hide="onHide" button-Text="确定">账号不存</alert>
+			<alert :show.sync="showAlert" @on-hide="onHide" button-Text="确定">账号不存在</alert>
 			<!--<toast :show.sync="show1" :time="1000" @on-hide="onHide">修改成功</toast>-->
 			<!--<toast :show.sync="show2" :time="1000" @on-hide="onHide" type="warn">{{errmsg}}</toast>      -->
 		</div>
