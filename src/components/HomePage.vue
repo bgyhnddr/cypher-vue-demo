@@ -1,52 +1,53 @@
 ﻿<template>
 <div>
   <div class="homePage-bac">
-  <group>
-    <table border="0" class="platform-message" cellspacing=0 cellpadding=0>
-      <tbody>
-        <tr>
-          <td width="22%">
-            <img class="vux-x-img ximg-demo" src="/static/TestIMG/brand_logo_href.png" alt="用户头像" />
-          </td>
-          <td>{{user.brandName}}</td>
-          <td> </td>
-          <td style="display:none">
-            <p>存款&nbsp;:&nbsp;
-              <label>金额数</label>
-            </p>
-            <p>存货&nbsp;:&nbsp;
-              <label>存货数量</p>
-            </label>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </group>
-  <group>
-    <div class="search">
-      <x-input class="weui_cell_primary" title="" :value.sync="keyword" placeholder="输入需要查看的功能名称" :show-clear=false :required="false"></x-input>
-      <div class="search-button">
-        <button class="weui_btn weui_btn_primary" @click="search">.</button>
+    <group>
+      <table border="0" class="platform-message" cellspacing=0 cellpadding=0>
+        <tbody>
+          <tr>
+            <td width="22%">
+              <img class="vux-x-img ximg-demo" src="/static/TestIMG/brand_logo_href.png" alt="用户头像" />
+            </td>
+            <td>{{user.brandName}}</td>
+            <td> </td>
+            <td style="display:none">
+              <p>存款&nbsp;:&nbsp;
+                <label>金额数</label>
+              </p>
+              <p>存货&nbsp;:&nbsp;
+                <label>存货数量</p>
+              </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </group>
+    <group>
+      <div class="search">
+        <x-input class="weui_cell_primary" title="" :value.sync="keyword" placeholder="输入需要查看的功能名称" :show-clear=false :required="false"></x-input>
+        <div class="search-button">
+          <button class="weui_btn weui_btn_primary" @click="search">.</button>
+        </div>
       </div>
-    </div>
-  </group>
-  <div>
-    <div class="homepage-icon">
-      <flexbox :gutter="0" wrap="wrap">
-        <flexbox-item :span="1/3" v-for="item in btn_list">
-          <div class="flex-demo">
-            <button @click="goto(item)">
-              <img :src.sync="item.iconhref" alt="icon" v-show="item.isShow">
-              <h4 class="weui_media_title">{{item.title}}</h4>
-            </button>
-          </div>
-        </flexbox-item>
-      </flexbox>
-    </div>
-    <p class="homepage-footer">© 2016 ShareWin.me 粤ICP备14056388号</p>
+    </group>
+    <div>
+      <div class="homepage-icon">
+        <flexbox :gutter="0" wrap="wrap">
+          <flexbox-item :span="1/3" v-for="item in btn_list">
+            <div class="flex-demo">
+              <button @click="goto(item)">
+                <img :src.sync="item.iconhref" alt="icon" v-show="item.isShow">
+                <h4 class="weui_media_title">{{item.title}}</h4>
+              </button>
+            </div>
+          </flexbox-item>
+        </flexbox>
+      </div>
+      <p class="homepage-footer">© 2016 ShareWin.me 粤ICP备14056388号</p>
 
-    <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
-  </div></div>
+      <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -136,17 +137,9 @@ export default {
       })
     },
     search() {
-      console.log("开始搜索")
-      var reg = /^[\u4e00-\u9fa5]*$/ //全中文
-
       if (this.keyword == null || this.keyword == '') {
-        this.show = true
-        this.errorMsg = "搜索框内容不能为空"
-      } else if (!reg.test(this.keyword)) {
-        this.show = true
-        this.errorMsg = "填写格式错误，请填写中文"
+        return
       } else {
-        // window.alert("填暂不开放")
         this.$route.router.go('/homePage/search/' + this.keyword)
       }
     },
@@ -191,8 +184,8 @@ export default {
 }
 </script>
 <style lang="less">
-.homePage-bac .weui_cells{
-  margin-top: 0
+.homePage-bac .weui_cells {
+    margin-top: 0;
 }
 /*返回按钮*/
 
@@ -216,8 +209,8 @@ table.platform-message {
 }
 
 table.platform-message img {
-  width: 3.3em;
-height: 3.3em;
+    width: 3.3em;
+    height: 3.3em;
     border-radius: 50%;
     border: 2px solid #fff;
 }
@@ -242,7 +235,7 @@ table.platform-message p:nth-child(1) {
     background: #fff;
     margin: auto;
     padding-left: 2%;
-        height: 2.3em;
+    height: 2.3em;
     font-family: "微软雅黑";
     font-size: 4.7vw;
     color: #9b9c9c;
@@ -281,7 +274,7 @@ table.platform-message p:nth-child(1) {
 }
 
 .homepage-icon .vux-flexbox-item .flex-demo {
-  border-right: 1px solid #d3d1d1;
+    border-right: 1px solid #d3d1d1;
     border-bottom: 1px solid #d3d1d1;
     font-size: 4.5vw;
     color: #292832;
@@ -309,18 +302,16 @@ table.platform-message p:nth-child(1) {
     border-bottom: 0;
 
 }
-.homepage-icon .vux-flexbox-item:nth-child(5) .flex-demo h4 ,
-.homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo h4 ,
-.homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo h4 ,
+.homepage-icon .vux-flexbox-item:nth-child(5) .flex-demo h4,
+.homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo h4,
+.homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo h4,
 .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo h4 {
-color:gray
-
+    color: gray;
 }
 .homepage-icon .vux-flexbox-item:nth-child(5) .flex-demo button img,
 .homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo button img,
 .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo button img,
-.homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo button img
- {
+.homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo button img {
     -webkit-filter: grayscale(1);
     /* Webkit */
     filter:gray;
@@ -333,27 +324,24 @@ color:gray
 
     width: 61%!important;
 }
-
 .homepage-icon .vux-flexbox-item:nth-child(5) .flex-demo,
 .homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo,
 .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo,
-.homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo{
+.homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo {
 
-  background: url(/static/TestIMG/construction.png) 50% 92%  no-repeat;
-  background-size: 67%;
-
+    background: url("/static/TestIMG/construction.png") 50% 92% no-repeat;
+    background-size: 67%;
 
 }
 .homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo button {
     padding-bottom: 24%;
 
-
 }
 .homepage-icon .vux-flexbox-item button {
-    background:none;
+    background: none;
     border: 0;
     width: 100%;
-    padding: 14% 0 25% 0;
+    padding: 14% 0 25%;
 }
 .homepage-icon .vux-flexbox-item:nth-child(1) button:active,
 .homepage-icon .vux-flexbox-item:nth-child(2) button:active {
@@ -364,17 +352,17 @@ color:gray
 .homepage-icon .vux-flexbox-item button img {
     width: 39%;
 }
-.homepage-footer{
+.homepage-footer {
 
-  width: 100%;
-	text-align: center;
-	color: #979797;
-	font-size: 3vw;
-	font-family: "微软雅黑";
-	line-height: 2.5em;
+    width: 100%;
+    text-align: center;
+    color: #979797;
+    font-size: 3vw;
+    font-family: "微软雅黑";
+    line-height: 2.5em;
 }
 
-.weui_cells{
-  margin-top: 0
+.weui_cells {
+    margin-top: 0;
 }
 </style>

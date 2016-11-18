@@ -1,8 +1,8 @@
 ﻿<template>
 <div>
   <div class="checkpasswork-input">
-    <group>
-      <x-input class="weui_cell_primary" :value.sync="pwd" placeholder="输入登录密码" type="password" :show-clear=false :equal-with="password" :required="false"></x-input>
+    <group title="输入登录密码">
+      <x-input class="weui_cell_primary" :value.sync="pwd" placeholder="请输入登录密码" type="password" :show-clear=false :equal-with="password" :required="false"></x-input>
       <p v-if="showMsg">{{errorMsg}}</p>
       <x-button type="primary" @click="cheakPwd">下一步</x-button>
     </group>
