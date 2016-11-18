@@ -17,7 +17,6 @@
         </div>
       </a>
     </group>
-    <p v-if="showErrorMsg">暂无当前招募</p>
     <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
   </div>
 </div>
@@ -55,8 +54,7 @@ export default {
         value: "等级由低到高"
       }],
       showMsg: false,
-      errorMsg: null,
-      showErrorMsg: false
+      errorMsg: null
     }
   },
   methods: {
@@ -64,69 +62,71 @@ export default {
       var that = this
         //获取用户account
       authAPI.getUser().then(function(result) {
-          console.log("用户账号:" + result.name)
-            //改变列表内容
-          employmentAPI.getCurrentList({
-            key: val,
-            user_account: result.name
-          }).then(function(result) {
-              if (result.length == 0) {
-                that.showErrorMsg = true
+        console.log("用户账号:" + result.name)
+          //改变列表内容
+        employmentAPI.getCurrentList({
+          key: val,
+          user_account: result.name
+        }).then(function(result) {
+          if (result.length == 0) {
+            that.showMsg = true
+            that.errorMsg = "暂无记录"
+          } else {
+            var delectItemList = []
+            var showItemList = []
+            for (var item in result) {
+              // 筛选已经超过2小时的招募
+              if (new Date() >= new Date(new Date(result[item].create_time).getTime() + 2 * 3600 * 1000)) {
+                delectItemList.push(result[item].guid)
               } else {
-                var delectItemList = []
-                var showItemList = []
-                for (var item in result) {
-                  // 筛选已经超过2小时的招募
-                  if (new Date() >= new Date(new Date(result[item].create_time).getTime() + 2 * 3600 * 1000)) {
-                    delectItemList.push(result[item].guid)
-                  } else {
-                    showItemList.push(result[item])
-                  }
-                }
-
-                if (showItemList.length == 0) {
-                  that.showErrorMsg = true
-                } else {
-                  that.data = showItemList
-                }
-                // 关闭时间已经超过2小时的招募
-                if(delectItemList.length !=0){
-                  console.log("清除时间已经超过2小时的招募")
-                  employmentAPI.closeOverduePublishEmployment({
-                    delectItemList: delectItemList
-                  })
-                }
+                showItemList.push(result[item])
+              }
             }
-          })
+
+            if (showItemList.length == 0) {
+              that.showMsg = true
+              that.errorMsg = "暂无记录"
+            } else {
+              that.data = showItemList
+            }
+            // 关闭时间已经超过2小时的招募
+            if (delectItemList.length != 0) {
+              console.log("清除时间已经超过2小时的招募")
+              employmentAPI.closeOverduePublishEmployment({
+                delectItemList: delectItemList
+              })
+            }
+          }
+        })
       })
-  },
-  onChange(val) {
-    if (val == '') {
-      val = "timeDesc"
-    }
-    console.log(val)
-    this.getData(val)
-  },
-  calculateRemainingTime(item) {
-    var createTime = item.create_time
-    var startDate = new Date(createTime)
-    var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
+    },
+    onChange(val) {
+      if (val == '') {
+        val = "timeDesc"
+      }
+      console.log(val)
+      this.getData(val)
+    },
+    calculateRemainingTime(item) {
+      var createTime = item.create_time
+      var startDate = new Date(createTime)
+      var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
 
-    var remainingSec = endDate.getTime() - new Date().getTime()
+      var remainingSec = endDate.getTime() - new Date().getTime()
 
-    var hour = parseInt(remainingSec / 3600 / 1000)
-    var min = parseInt((remainingSec - hour * 3600 * 1000) / (1000 * 60))
-    var sec = parseInt((remainingSec - hour * 3600 * 1000 - min * 1000 * 60) / 1000)
+      var hour = parseInt(remainingSec / 3600 / 1000)
+      var min = parseInt((remainingSec - hour * 3600 * 1000) / (1000 * 60))
+      var sec = parseInt((remainingSec - hour * 3600 * 1000 - min * 1000 * 60) / 1000)
 
-    if (hour == 0) {
-      return min + " 分钟 " + sec + " 秒"
-    } else if (hour == 0 && min == 0) {
-      return sec + " 秒"
-    } else {
-      return hour + " 小时 " + min + " 分钟 " + sec + " 秒"
+      if (hour == 0) {
+        return min + " 分钟 " + sec + " 秒"
+      } else if (hour == 0 && min == 0) {
+        return sec + " 秒"
+      } else {
+        return hour + " 小时 " + min + " 分钟 " + sec + " 秒"
+      }
     }
   }
-}
 }
 </script>
 <style>
