@@ -83,17 +83,19 @@ export default {
                     showItemList.push(result[item])
                   }
                 }
-                console.log(JSON.stringify(showItemList))
+
                 if (showItemList.length == 0) {
                   that.showErrorMsg = true
                 } else {
                   that.data = showItemList
                 }
                 // 关闭时间已经超过2小时的招募
-                console.log("清除时间已经超过2小时的招募")
-                employmentAPI.closeOverduePublishEmployment({
-                  delectItemList: delectItemList
-                })
+                if(delectItemList.length !=0){
+                  console.log("清除时间已经超过2小时的招募")
+                  employmentAPI.closeOverduePublishEmployment({
+                    delectItemList: delectItemList
+                  })
+                }
             }
           })
       })
