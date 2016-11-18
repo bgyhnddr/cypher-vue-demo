@@ -60,6 +60,7 @@ import {
 } from 'vux'
 import authAPI from '../api/auth'
 import employmentAPI from '../api/employment'
+var request = require('../extend/http-request')
 
 
 export default {
@@ -86,12 +87,24 @@ export default {
         title: '货品销售',
         link: '',
         iconhref: '/static/TestIMG/sell.png',
-        isShow: true
+        isShow: true,
+        callback: function() {
+          window.wx.scanQRCode({
+            needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+            scanType: ["qrCode", "barCode"]
+          })
+        }
       }, {
         title: '货品查验',
         link: '',
         iconhref: '/static/TestIMG/inspection.png',
-        isShow: true
+        isShow: true,
+        callback: function() {
+          window.wx.scanQRCode({
+            needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+            scanType: ["qrCode", "barCode"]
+          })
+        }
       }, {
         title: '订货管理',
         link: '',
@@ -135,6 +148,7 @@ export default {
         that.user.userInfo = result
         that.getAgentInfo(result.name)
       })
+      this.getJsConfig()
     },
     search() {
       if (this.keyword == null || this.keyword == '') {
@@ -167,6 +181,10 @@ export default {
       })
     },
     goto(item) {
+      if (item.callback) {
+        item.callback()
+        return
+      }
       if (item.link == "") {
         if (item.title == "") {
           return
@@ -176,6 +194,14 @@ export default {
       } else {
         this.$route.router.go(item.link)
       }
+    },
+    getJsConfig() {
+      request.post('/wechat/getJsConfig', {
+        list: ['scanQRCode'],
+        url: window.location.href
+      }).then((result) => {
+        window.wx.config(result)
+      })
     }
   },
   ready() {
