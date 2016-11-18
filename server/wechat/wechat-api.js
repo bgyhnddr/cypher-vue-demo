@@ -1,10 +1,11 @@
 var exec = {
   getJsConfig(req, res, next, api, wechatapi) {
     var list = req.body.list
+    var url = req.body.url
     param = {
       debug: false,
       jsApiList: list,
-      url: req.url
+      url: url
     }
     return new Promise((resolve, reject) => {
       wechatapi.getJsConfig(param, function(err, result) {
