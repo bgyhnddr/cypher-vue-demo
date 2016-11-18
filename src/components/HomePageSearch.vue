@@ -11,7 +11,7 @@
   <div class="function-search-list">
     <h1>功能</h1>
     <group>
-      <a class="weui_cell"  v-if="showResult" v-for="item in funcList" v-link="item.link" v-show="item.isShow">
+      <a class="weui_cell" :show.sync="showResult" v-for="item in funcList" v-link="item.link" v-show="item.isShow">
         <div class="weui_cell_hd">
           <img :src.sync="item.iconhref" />
         </div>
