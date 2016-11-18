@@ -12,7 +12,6 @@
     <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
     <confirm :show.sync="showCheck" title="" confirm-text="确认" cancel-text="取消" @on-confirm="closeEmployment">
       <p style="text-align:center;">是否关闭当前招募？</p>
-      <button @click="onHideConfirm">X</button>
     </confirm>
   </div>
 </div>
@@ -98,9 +97,6 @@ export default {
         that.showMsg = true
         that.errorMsg = err
       })
-    },
-    onHideConfirm() {
-      this.showCheck = false
     }
   },
   ready() {
