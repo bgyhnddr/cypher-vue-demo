@@ -29,7 +29,7 @@
 		<div class="forget-button">
 			<x-button mini v-link="{path: '/auth/PhoneVerification/login'}">忘记密码？</x-button>
 		</div>
-		<p v-if="show">{{errmsg}}</p>
+		<p v-if="show" class="login-error">{{errmsg}}</p>
 		<flexbox style="margin-top:20px">
 			<flexbox-item>
 				<x-button type="primary" @click="submitLogin">登录</x-button>
@@ -109,6 +109,14 @@ export default {
 }
 </script>
 <style>
+.login-error{
+
+	width: 89%;
+			margin: auto ;
+			color: #d22d23;
+			font-family: "微软雅黑";
+			font-size: 4.1vw;
+}
 .login_zindex {
 	z-index: 10000000 !important;
 }
