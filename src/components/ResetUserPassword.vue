@@ -1,4 +1,5 @@
 <template>
+	<div style="    min-height: 440px;">
 <div @keyup.enter="ChangePwd">
 	<div>
 		<div class="resetuser-password">
@@ -22,8 +23,9 @@
 			<!--<toast :show.sync="show1" :time="1000" @on-hide="onHide">修改成功</toast>-->
 			<!--<toast :show.sync="show2" :time="1000" @on-hide="onHide" type="warn">{{errmsg}}</toast>      -->
 		</div>
-	</div>
+	</div></div>
 </div>
+ <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
