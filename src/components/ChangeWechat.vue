@@ -144,9 +144,9 @@ margin-top: 9%
 .changewechat-input .weui_dialog {
   width: 92%;
 }
-.changewechat-input .weui_cell_primary{
+/*.changewechat-input .weui_cell_primary{
 
   font-size: initial;
 line-height: initial;
-}
+}*/
 </style>

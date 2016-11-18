@@ -143,11 +143,11 @@ border-top: 0
 .checkpasswork-input .weui_dialog {
   width: 92%;
 }
-.checkpasswork-input .weui_cell_primary{
+/*.checkpasswork-input .weui_cell_primary{
 
   font-size: initial;
 line-height: initial;
-}
+}*/
 .checkpasswork-input .vux-flex-row{
   margin-top: 5px!important;
 }
