@@ -151,8 +151,13 @@ export default {
       this.getJsConfig()
     },
     search() {
+      var reg = /^[\u4e00-\u9fa5]*$/ //全中文
       if (this.keyword == null || this.keyword == '') {
-        return
+         this.show = true
+         this.errorMsg = "搜索框内容不能为空"
+      } else if (!reg.test(this.keyword)) {
+        this.show = true
+        this.errorMsg = "填写格式错误，请填写中文"
       } else {
         this.$route.router.go('/homePage/search/' + this.keyword)
       }
