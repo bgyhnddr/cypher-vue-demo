@@ -3,12 +3,13 @@
   <div class="changewechat-input">
     <group title="新的微信号">
       <x-input class="weui_cell_primary" :value.sync="wechat" placeholder="输入新的微信号" type="text" :show-clear="false" :required="false" v-ref:wechat></x-input>
-      <p v-if="showRemind">{{errorMsg}}</p>
+      <p v-if="showRemind" class="wechat-error">{{errorMsg}}</p>
       <x-button type="primary" @click="confirm">确认修改</x-button>
       <alert :show.sync="showMsg" @on-hide="onHide()" button-text="确认">您已成功修改微信号<button @click="onHide()">X</button></alert>
     </group>
   </div>
 </div>
+<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -76,11 +77,27 @@ export default {
 }
 </script>
 <style>
+.changewechat-input button.weui_btn.weui_btn_primary{
+margin-top: 9%
+
+}
+.changewechat-input {
+
+    min-height: 460px;
+}
+.changewechat-input  .wechat-error{
+
+  width: 89%;
+      margin: auto ;
+      color: #d22d23;
+      font-family: "微软雅黑";
+      font-size: 4.1vw;
+}
 .changewechat-input .weui_cell {
   border: 1px solid #d3d1d1;
   width: 83%;
-  margin: 0 auto 13% auto;
-  padding: 9px 3%;
+  margin: 0 auto;
+  padding:7px 3%;
   border-radius: 3px;
 }
 
@@ -126,5 +143,10 @@ export default {
 
 .changewechat-input .weui_dialog {
   width: 92%;
+}
+.changewechat-input .weui_cell_primary{
+
+  font-size: initial;
+line-height: initial;
 }
 </style>
