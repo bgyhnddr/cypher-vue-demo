@@ -1,14 +1,16 @@
 ﻿<template>
 <div>
   <div class="changepcellphone-input">
-    <group title="新手机号">
+    <group>
+      <p class="checkPwd-title">输入新手机号</p>
       <x-input class="weui_cell_primary" title="+86" keyboard="number" :value.sync="cellphone" placeholder="输入新手机号" :show-clear="false" :required="false" v-ref:cellphone></x-input>
-      <p v-if="showRemind">{{errorMsg}}</p>
+      <p v-if="showRemind" class="phone-error">{{errorMsg}}</p>
       <x-button type="primary" @click="confirm">确认修改</x-button>
       <alert :show.sync="showMsg" @on-hide="onHide()" button-text="确认">您已经成功修改手机号</alert>
     </group>
   </div>
 </div>
+ <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -76,6 +78,22 @@ export default {
 }
 </script>
 <style>
+.changepcellphone-input button.weui_btn.weui_btn_primary{
+margin-top: 9%
+
+}
+.phone-error{
+  width: 89%;
+  color: rgb(210, 45, 35);
+  font-family: 微软雅黑;
+  font-size: 4.1vw;
+  margin: auto;
+
+}
+.changepcellphone-input{
+    min-height: 460px;
+
+}
 .changepcellphone-input .weui_label {
   font-size: 15px;
   color: #000;
@@ -83,20 +101,22 @@ export default {
 }
 
 .changepcellphone-input .weui_input {
-  width: 93%;
-  border: 0;
-  outline: 0;
-  -webkit-appearance: none;
-  background-color: transparent;
-  font-size: inherit;
-  color: inherit;
-  height: 2.5em;
-  line-height: 2em;
-  border: 1px solid #d3d1d1;
-  font-family: "微软雅黑";
-  padding-left: 5%;
-  color: #aeaeae;
-  font-size: 4.5vw;
+  width: 92%;
+      border: 0;
+      outline: 0;
+      -webkit-appearance: none;
+      background-color: transparent;
+      font-size: inherit;
+      color: inherit;
+      height: inherit;
+      line-height: inherit;
+      border: 1px solid #d3d1d1;
+      font-family: "\5FAE\8F6F\96C5\9ED1";
+      padding-left: 5%;
+      color: #aeaeae;
+      font-size: 4.5vw;
+      padding: 8px 3%;
+      border-radius: 3px;
   /*14px*/
 }
 
@@ -124,5 +144,15 @@ export default {
 
 .changepcellphone-input .weui_dialog {
   width: 92%;
+}
+.changepcellphone-input .weui_cell:before{
+border-top:0
+
+}
+.changepcellphone-input .weui_cell{
+
+  padding: 5px 15px;
+    
+
 }
 </style>

@@ -21,7 +21,7 @@
       </a>
     </group>
   </div>
-  <p v-if="showNullMsg">暂无此服务，敬请期待</p>
+  <p v-if="showNullMsg" class="search-none">暂无此功能，敬请期待</p>
   <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
 </div>
 <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
@@ -253,5 +253,13 @@ export default {
 
 .function-search-list img {
     width: 80%;
+}
+p.search-none {
+    width: 95%;
+    margin: 50% auto;
+    color: #999;
+    text-align: center;
+
+    font-size: 5.2vw;
 }
 </style>

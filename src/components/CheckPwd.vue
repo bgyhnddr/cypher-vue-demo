@@ -1,13 +1,15 @@
 ﻿<template>
 <div>
   <div class="checkpasswork-input">
-    <group title="输入登录密码">
+    <group>
+      <p class="checkPwd-title">输入登录密码</p>
       <x-input class="weui_cell_primary" :value.sync="pwd" placeholder="请输入登录密码" type="password" :show-clear=false :equal-with="password" :required="false"></x-input>
-      <p v-if="showMsg">{{errorMsg}}</p>
+      <p v-if="showMsg" class="pwd-error ">{{errorMsg}}</p>
       <x-button type="primary" @click="cheakPwd">下一步</x-button>
     </group>
   </div>
 </div>
+ <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -70,16 +72,41 @@ export default {
 }
 </script>
 <style>
+.checkpasswork-input button.weui_btn.weui_btn_primary{
+margin-top: 9%
+
+}
+.checkpasswork-input {
+    min-height: 460px;
+}
+.checkPwd-title {
+    margin: 20% auto 2%;
+    width: 90%;
+    color: #000000;
+    font-size: 4.7vw;
+    font-family: "微软雅黑";
+}
+.checkpasswork-input .pwd-error {
+  width: 89%;
+      margin: auto ;
+      color: #d22d23;
+      font-family: "微软雅黑";
+      font-size: 4.1vw;
+
+}
 .checkpasswork-input .weui_cell {
   border: 1px solid #d3d1d1;
   width: 83%;
-  margin: 20% auto 13% auto;
-  padding: 9px 3%;
+  margin: 0 auto 0 auto;
+  padding: 7px 3%;
   border-radius: 3px;
 }
 
 .checkpasswork-input .weui_cell_hd {
   width: 0
+}
+.checkpasswork-input .weui_cell:before{
+border-top: 0
 }
 
 .checkpasswork-input .weui_input {
@@ -87,6 +114,8 @@ export default {
   font-size: 4.5vw;
   /*14px*/
   color: #aeaeae;
+  line-height: inherit;
+    height: auto;
 }
 
 .checkpasswork-input .weui_dialog_ft {
@@ -113,5 +142,13 @@ export default {
 
 .checkpasswork-input .weui_dialog {
   width: 92%;
+}
+.checkpasswork-input .weui_cell_primary{
+
+  font-size: initial;
+line-height: initial;
+}
+.checkpasswork-input .vux-flex-row{
+  margin-top: 5px!important;
 }
 </style>

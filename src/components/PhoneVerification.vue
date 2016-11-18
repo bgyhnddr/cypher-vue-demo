@@ -1,11 +1,12 @@
 ﻿<template>
+	<div style="    min-height: 440px;">
 <div @keyup.enter="CommitVerification">
 	<div>
 		<div class="change-password">
 			<group v-if="!UserPhone">
 				<x-input title="手机号" :value.sync="cellphone" placeholder="请输入手机号" :required="false"></x-input>
 			</group>
-			<p v-if="UserPhone">请输入{{GetPhone}}短信验证码</p>
+			<p v-if="UserPhone" class="Message-authentication " >请输入{{GetPhone}}短信验证码</p>
 			<div class=" phone-button">
 				<group class="weui_cells_form">
 					<x-input title="验证码" class="weui_vcode" :value.sync="VerificationCode" placeholder="请输入验证码" :required="false">
@@ -26,7 +27,8 @@
 			<toast :show.sync="show" :time="1000" type="default">验证码已发送</toast>
 		</div>
 	</div>
-</div>
+</div></div>
+<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -219,5 +221,13 @@ export default {
 	font-size: 13px;
 	color: #d22d23;
 	font-family: "微软雅黑";
+}
+.Message-authentication{
+	color: #aeaeae;
+	text-align: center;
+	margin-bottom: 4%;
+	font-size: 4.7vw;
+	font-family: "微软雅黑";
+
 }
 </style>
