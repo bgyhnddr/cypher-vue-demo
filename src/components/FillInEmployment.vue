@@ -15,20 +15,20 @@
       </div>
       <div class="ApplyFor-agent-header">
         <employment-headimg-upload :file-id.sync="data.headImg"></employment-headimg-upload>
-        <p v-if="errorRemind.headImg">请上传头像</p>
+        <p v-if="errorRemind.headImg" class="fliin-error">请上传头像</p>
       </div>
       <div class="ApplyFor-agent-input">
         <group>
           <x-input class="weui_cell_primary  applicant-name" title="申请人&nbsp;:&nbsp;" :name.sync="meta.name" :value.sync="data.name" placeholder="申请人姓名" :show-clear="false" :required="false"></x-input>
         </group>
         <p class="applicants">*姓名一经审批将不得修改，请慎重填写</p>
-        <p v-if="errorRemind.name">申请人请填写中文</p>
+        <p v-if="errorRemind.name" class="fliin-error">申请人请填写中文</p>
         <x-input class="weui_cell_primary applicant-weixin" type="text" title="微信号&nbsp;:&nbsp;" :name.sync="meta.wechat" :value.sync="data.wechat" placeholder="6-20个字母，数字，下划线或减号" :show-clear="false" :required="false"></x-input>
-        <p v-if="errorRemind.wechat">微信号填写错误</p>
+        <p v-if="errorRemind.wechat" class="fliin-error">微信号填写错误</p>
         </group>
         <group>
           <x-input class="weui_cell_primary applicant-phone" keyboard="number" title="手机号&nbsp;:&nbsp;" :value.sync="data.cellphone" placeholder="请输入手机号码" :show-clear="false" :required="false"></x-input>
-          <p v-if="errorRemind.cellphone">手机号填写错误</p>
+          <p v-if="errorRemind.cellphone" class="fliin-error">手机号填写错误</p>
         </group>
       </div>
       <button class="weui_btn weui_btn_primary" :class="classes" @click="goFillEmployment2">下一步</button>
@@ -42,11 +42,11 @@
           <div class="clean"></div>
         </group>
         <group title="通讯地址">
-          <address title="" :value.sync="data.addressTemp" :list="addressData" placeholder="--省份--，--城市--，--地区--"></address>
+          <address title="" :value.sync="data.addressTemp" :list="addressData" placeholder="--省份--&nbsp;&nbsp;--城市--&nbsp;&nbsp;--地区--"></address>
         </group>
         <group>
           <x-textarea :name.sync="meta.addressDetail" :max="50" placeholder="请填写详细地址" :value.sync="data.addressDetail"></x-textarea>
-          <p v-if="errorRemind.address">通讯地址填写错误</p>
+          <p v-if="errorRemind.address" class="fliin-error">通讯地址填写错误</p>
         </group>
         <button class="weui_btn weui_btn_primary" :class="classes" @click="submit">确认申请</button>
       </div>
@@ -349,7 +349,7 @@ export default {
 
 .fillin {
   width: 90%;
-  margin: auto;
+    margin: 0 auto 10%;
 }
 
 .fillin h3 {
@@ -378,7 +378,8 @@ export default {
 
 .ApplyFor-agent-header {
   text-align: center;
-  margin-top: 2%;
+  width: 28%;
+  margin: auto;
 }
 
 .ApplyFor-agent-header button {
@@ -388,8 +389,9 @@ export default {
 }
 
 .ApplyFor-agent-header img {
-  width: 31%;
+  width: 100%;
   height: auto;
+  margin-top: 5%;
 }
 
 .ApplyFor-agent-input .weui_cell {
@@ -429,6 +431,7 @@ export default {
   font-size: 4.5vw;
   /*14px*/
   font-family: "微软雅黑";
+  height: auto;
 }
 
 .applicants {
@@ -545,6 +548,7 @@ border-top:0;
   width: 97%;
   padding-left: 2%;
       font-size: 4.5vw;
+          padding-top: 1%;
 }
 
 .certificate .weui_textarea_counter {
@@ -562,5 +566,22 @@ border-top:0;
   font-size: 4.5vw;
   top: 11%;
   font-family: "微软雅黑";
+}
+/*错误*/
+.fliin-error{
+  font-size: 3.9vw;
+  color: #d22d23;
+  font-family: "微软雅黑"
+
+}
+.certificate:first-child p {
+  font-family: "微软雅黑";
+  width: 100%;
+  clear: both;
+  font-family: "\5FAE\8F6F\96C5\9ED1";
+  font-size: 3.9vw;
+  color: #d22d23;
+  text-align: right
+
 }
 </style>
