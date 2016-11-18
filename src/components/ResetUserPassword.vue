@@ -85,7 +85,7 @@ export default {
 						that.serverMsg = err
 					})
 				} else {
-					that.serverMsg = '密码不一��
+					that.serverMsg = '密码不一致'
 				}
 			}
 		}
