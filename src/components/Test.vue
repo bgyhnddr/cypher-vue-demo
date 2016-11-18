@@ -1,9 +1,9 @@
 <template>
 <button @click="scan">
   扫一扫</button>
-</template>
-<img src="imgId" alt="" />
 <button @click="choose">上传</button>
+<img :src="imgId" alt="" />
+</template>
 <script>
 var request = require('../extend/http-request')
 export default {
@@ -37,7 +37,7 @@ export default {
         success: function(res) {
           that.imgId = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
           wx.uploadImage({
-            localId: imgId, // 需要上传的图片的本地ID，由chooseImage接口获得
+            localId: that.imgId, // 需要上传的图片的本地ID，由chooseImage接口获得
             isShowProgressTips: 1, // 默认为1，显示进度提示
             success: function(res) {
               var serverId = res.serverId; // 返回图片的服务器端ID
