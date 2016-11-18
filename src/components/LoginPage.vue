@@ -12,7 +12,7 @@
 				</div>
 				<div class="input-boder">
 					<group>
-						<x-input title="账号" :value.sync="loginInfo.account" placeholder="请输入手机号" :required="false" @on-change="change"></x-input>
+						<x-input title="账号" :value.sync="loginInfo.account" placeholder="请输入手机号/平台账号" :required="false" @on-change="change"></x-input>
 					</group>
 					<div class="password">
 						<img src="/static/TestIMG/password.png" />
