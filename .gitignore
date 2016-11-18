@@ -8,3 +8,4 @@ test/e2e/reports
 upload/
 db/data/
 *副本*
+src/components/gobacks/*
