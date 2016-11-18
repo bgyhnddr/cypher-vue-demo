@@ -145,7 +145,7 @@ export default {
 .certificate-header button {
   border: 0;
   background-size: 100%;
-  width: 54%;
+    width: 28%;
 }
 
 .certificate-header button img {
@@ -211,5 +211,9 @@ export default {
 
 .certificate-messages .weui_cell_hd label {
   color: #595959;
+}
+.certificate-messages .weui_cell:nth-child(7){
+    border-bottom: 0;
+
 }
 </style>
