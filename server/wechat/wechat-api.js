@@ -1,6 +1,6 @@
 var exec = {
   getJsConfig(req, res, next, api, wechatapi) {
-    var list = req.body.listvar
+    var list = req.body.list
     param = {
       debug: false,
       jsApiList: list,
