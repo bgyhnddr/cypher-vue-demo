@@ -83,7 +83,7 @@ margin-top: 9%
 }
 .changewechat-input {
 
-    min-height: 460px;
+    min-height: 440px;
 }
 .changewechat-input  .wechat-error{
 
