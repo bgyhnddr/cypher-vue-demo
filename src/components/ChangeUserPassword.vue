@@ -1,4 +1,5 @@
 ﻿<template>
+	<div style="    min-height: 440px;">
 <div @keyup.enter="ChangePwd">
 	<div>
 		<div class="change-password">
@@ -13,13 +14,14 @@
 				<!--<x-input title="请输入新的6位数的支付密码" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
 				<x-input title="确认密码" :value.sync="pwd.insure_password" type="password" placeholder="请再次输入新的支付密码" :required="false" @on-change="change"></x-input>
 			</group>
-			<div>
-				<div class="forget-buttons">
-					<x-button mini v-link="{path: '/auth/PhoneVerification/account'}">忘记原密码？</x-button>
-				</div>
+			<p v-if="show2" class="password-error">{{errmsg}}</p>
+
+		</div>
+		<div>
+			<div class="forget-buttons">
+				<x-button mini v-link="{path: '/auth/PhoneVerification/account'}">忘记原密码？</x-button>
 			</div>
 		</div>
-		<p v-if="show2">{{errmsg}}</p>
 		<flexbox style="margin-top:20px">
 			<flexbox-item>
 				<x-button type="primary" @click="ChangePwd">完成</x-button>
@@ -30,7 +32,8 @@
 			<!-- <toast :show.sync="show2" :time="1000" @on-hide="onHide" type="warn">{{errmsg}}</toast> -->
 		</div>
 	</div>
-</div>
+</div></div>
+<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -108,6 +111,14 @@ export default {
 }
 </script>
 <style>
+.change-password .password-error{
+
+	width: 100%;
+			margin: auto ;
+			color: #d22d23;
+			font-family: "微软雅黑";
+			font-size: 4.1vw;
+}
 .login_zindex {
 	z-index: 10000000 !important;
 }
@@ -120,15 +131,20 @@ export default {
 	width: 89%;
 	margin: 7% auto;
 }
+.change-password .weui_cell {
 
+  width: 92%;
+  margin: 0 auto;
+  padding:7px 3%;
+  border-radius: 3px;
+}
 .change-password .weui_cell_hd {
 	width: 27%;
 }
 
 .change-password .weui_label {
 	color: #595959;
-	font-size: 4.7vw;
-	/*15px*/
+	font-size: 4.7vw!important;
 	font-family: "微软雅黑";
 	width: 100%!important;
 	display: inline-block;
@@ -142,6 +158,7 @@ export default {
 
 .change-password .weui_cells input.weui_input {
 	font-family: "微软雅黑";
+	    font-size: 4.5vw;
 }
 
 .change-password .weui_icon_warn:before {
@@ -151,22 +168,27 @@ export default {
 }
 
 .forget-buttons {
-	width: 100%;
-	margin: -5px -10px 0 auto;
+	width: 95%;
+	margin: -5px auto 0 auto;
 	text-align: right;
+
 }
 
 .forget-buttons button.weui_btn.weui_btn_mini.weui_btn_default {
 	font-family: "微软雅黑";
 	color: #1191e3;
 	border: 0;
-	font-size: 4.1vw;
-	/*13px*/
+    font-size: 4.9vw;
+	/*16px*/
 	background: none;
 	text-decoration: underline;
 }
 
 .forget-buttons .weui_btn:after {
 	border: 0
+}
+.change-password .vux-flex-row{
+
+	    margin-top: 5px!important;
 }
 </style>
