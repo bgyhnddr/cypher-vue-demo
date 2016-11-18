@@ -8,9 +8,9 @@
       </div>
     </group>
   </div>
-  <div class="function-search-list">
+  <div class="function-search-list" v-if="showResult">
     <h1>功能</h1>
-    <group v-if="showResult">
+    <group >
       <a class="weui_cell" v-for="item in funcList" v-link="item.link" v-show="item.isShow">
         <div class="weui_cell_hd">
           <img :src.sync="item.iconhref" />
@@ -20,8 +20,8 @@
         </div>
       </a>
     </group>
-    <p v-if="showNullMsg">暂无此服务，敬请期待</p>
   </div>
+  <p v-if="showNullMsg">暂无此服务，敬请期待</p>
   <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
 </div>
 <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
