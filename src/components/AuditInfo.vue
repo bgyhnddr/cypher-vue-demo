@@ -76,7 +76,7 @@
 </div>
 <div class="auditinfo-backto ">
   <dialog :show.sync="show" class="dialog-demo">
-    <button @click="show=false" class="close-button"></button>
+    <!-- <button @click="show=false" class="close-button"></button> -->
     <group title="打回理由">
       <x-textarea :value.sync="reason" placeholder="填写打回理由" :show-counter="false"></x-textarea>
     </group>
@@ -92,7 +92,7 @@
 </div>
 <div>
 
-  <alert :show.sync="showAlert" @on-hide="onHide" button-Text="继续审核"><button v-if="showAlert" @click="onHide">X</button>{{alertMsg}}</alert>
+  <alert :show.sync="showAlert" @on-hide="onHide" button-Text="继续审核">{{alertMsg}}</alert>
   <!-- <toast :show.sync="showAlert" :time="1000" @on-hide="onHide" type="text">{{alertMsg}}</toast> -->
 </div>
 </div>
