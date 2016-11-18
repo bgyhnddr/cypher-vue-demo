@@ -12,7 +12,7 @@
 				</div>
 				<div class="input-boder">
 					<group>
-						<x-input title="账号" :value.sync="loginInfo.account" name="username" placeholder="请输入手机号" is-type="china-name"></x-input>
+						<x-input title="账号" :value.sync="loginInfo.account" placeholder="请输入手机号" :required="false" @on-change="change"></x-input>
 					</group>
 					<div class="password">
 						<img src="/static/TestIMG/password.png" />
@@ -21,7 +21,7 @@
 				<div class="input-boder">
 					<group>
 						<!--<x-input title="请输入6位数字" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
-						<x-input title="密码" :value.sync="loginInfo.password" type="password" placeholder="请输入密码" :equal-with="password"></x-input>
+						<x-input title="密码" :value.sync="loginInfo.password" type="password" placeholder="请输入密码" :required="false" @on-change="change"></x-input>
 					</group>
 				</div>
 			</div>
@@ -29,6 +29,7 @@
 		<div class="forget-button">
 			<x-button mini v-link="{path: '/auth/PhoneVerification/login'}">忘记密码？</x-button>
 		</div>
+		<p v-if="show">{{errmsg}}</p>
 		<flexbox style="margin-top:20px">
 			<flexbox-item>
 				<x-button type="primary" @click="submitLogin">登录</x-button>
@@ -37,14 +38,14 @@
                     <x-button type="warn" v-link="{ path: '/auth/regist' }">账户注册</x-button>
                 </flexbox-item></div>-->
 		</flexbox>
-
+<!--
 		<div>
 			<toast :show.sync="show" :time="1000" type="warn">{{errmsg}}</toast>
-		</div>
+		</div> -->
 
 	</div>
 </div>
- <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -83,6 +84,9 @@ export default {
 		valid() {
 			return this.loginInfo.account && this.loginInfo.password
 		},
+		change(val){
+				this.show = false
+		},
 		submitLogin() {
 			var that = this
 			if (that.valid()) {
@@ -103,7 +107,6 @@ export default {
 		//this.$els.account.focus()
 	}
 }
-
 </script>
 <style>
 .login_zindex {
@@ -116,15 +119,14 @@ export default {
 
 .login-bac {
 	font-family: "微软雅黑";
-	    min-height: 460px;
-
+	min-height: 460px;
 }
 
 
 /*品牌商logo*/
 
 .login-header {
-	background:url("/static/TestIMG/logo_header.png") no-repeat;
+	background: url("/static/TestIMG/logo_header.png") no-repeat;
 	background-size: cover;
 	padding: 6%;
 	text-align: center;
@@ -163,7 +165,7 @@ export default {
 }
 
 .login-bac .weui_cell {
-    padding: 4% 15px;
+	padding: 4% 15px;
 }
 
 .login-bac .weui_cells {
@@ -269,10 +271,8 @@ a.vux-header-back.headerTransition-transition {
 .forget-button .weui_btn:after {
 	border: 0
 }
-.login-footer{
 
-
-
+.login-footer {
 	width: 100%;
 	text-align: center;
 	color: #979797;
@@ -280,9 +280,8 @@ a.vux-header-back.headerTransition-transition {
 	font-family: "微软雅黑";
 	line-height: 2.5em;
 }
-.login-message input{
-height: auto;
 
+.login-message input {
+	height: auto;
 }
-
 </style>
