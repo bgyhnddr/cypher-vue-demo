@@ -91,13 +91,16 @@
   </dialog>
 </div>
 <div>
-  <toast :show.sync="showAlert" :time="1000" @on-hide="onHide" type="text">{{alertMsg}}</toast>
+
+  <alert :show.sync="showAlert" @on-hide="onHide" button-Text="继续审核"><button v-if="showAlert" @click="onHide">X</button>{{alertMsg}}</alert>
+  <!-- <toast :show.sync="showAlert" :time="1000" @on-hide="onHide" type="text">{{alertMsg}}</toast> -->
 </div>
 </div>
 </template>
 
 <script>
 import {
+  Alert,
   Cell,
   Group,
   Flexbox,
@@ -142,6 +145,7 @@ export default {
     }
   },
   components: {
+    Alert,
     Group,
     Cell,
     Flexbox,
@@ -226,6 +230,8 @@ export default {
       })
     },
     PassAudit() {
+      // this.alertMsg = "您已完成审核"
+      // this.showAlert = true
       var that = this
       if (that.valid()) {
         employAPI.passAudit({
@@ -236,7 +242,7 @@ export default {
             cellphone: that.auditInfo.cellphone,
             mode: "SendPassAuditMessage"
           }).then(function(result) {
-            that.alertMsg = "已通过"
+            that.alertMsg = "您已完成审核"
             that.showAlert = true
           }).catch(function(err) {
             console.log(err)
@@ -252,6 +258,9 @@ export default {
       }
     },
     rejectAudit() {
+      // this.show = false
+      // this.alertMsg = "您已完成审核"
+      // this.showAlert = true
       var that = this
       console.log(that.reason)
       employAPI.rejectAudit({
@@ -262,7 +271,8 @@ export default {
           cellphone: that.auditInfo.cellphone,
           mode: "SendRejectAuditMessage"
         }).then(function(result) {
-          that.alertMsg = "已拒绝"
+          that.show = false
+          that.alertMsg = "您已完成审核"
           that.showAlert = true
         }).catch(function(err) {
           console.log(err)
