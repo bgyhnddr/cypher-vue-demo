@@ -3,12 +3,10 @@
 	<div>
 		<div class="change-password">
 			<group>
-				<!--<x-input title="请输�位数的支付密� type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
-				<x-input title="新密� :value.sync="pwd.new_password" type="password" placeholder="请输入新密码" :required="false"></x-input>
+				<x-input title="新密码":value.sync="pwd.new_password" type="password" placeholder="请输入新密码" :required="false"></x-input>
 			</group>
 			<group>
-				<!--<x-input title="请输入新�位数的支付密� type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
-				<x-input title="确认密码" :value.sync="pwd.insure_password" type="password" placeholder="请再次输入新的支付密� :required="false"></x-input>
+				<x-input title="确认密码" :value.sync="pwd.insure_password" type="password" placeholder="请再次输入新密码" :required="false"></x-input>
 			</group>
 		</div>
 		<p>{{serverMsg}}</p>
@@ -18,7 +16,7 @@
 			</flexbox-item>
 		</flexbox>
 		<div>
-			<alert :show.sync="showAlert" @on-hide="onHide" button-Text="确定">账号不存�/alert>
+			<alert :show.sync="showAlert" @on-hide="onHide" button-Text="确定">账号不存</alert>
 			<!--<toast :show.sync="show1" :time="1000" @on-hide="onHide">修改成功</toast>-->
 			<!--<toast :show.sync="show2" :time="1000" @on-hide="onHide" type="warn">{{errmsg}}</toast>      -->
 		</div>
@@ -87,7 +85,7 @@ export default {
 						that.serverMsg = err
 					})
 				} else {
-					that.serverMsg = '密码不一�
+					that.serverMsg = '密码不一��
 				}
 			}
 		}
