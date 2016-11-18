@@ -5,7 +5,7 @@
       <x-input class="weui_cell_primary" :value.sync="wechat" placeholder="输入新的微信号" type="text" :show-clear="false" :required="false" v-ref:wechat></x-input>
       <p v-if="showRemind">{{errorMsg}}</p>
       <x-button type="primary" @click="confirm">确认修改</x-button>
-      <alert :show.sync="showMsg" @on-hide="onHide()" button-text="确认">您已经成功修改微信号</alert>
+      <alert :show.sync="showMsg" @on-hide="onHide()" button-text="确认">您已成功修改微信号<button @click="onHide()">X</button></alert>
     </group>
   </div>
 </div>

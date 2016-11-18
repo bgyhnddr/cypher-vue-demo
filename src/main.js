@@ -1,9 +1,16 @@
-﻿import Vue from 'vue'
+﻿
+import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
-import { configRouter } from './vue-router/route-config'
-import { disableHistoryBack } from './extend/disable-history-back'
-import { dateformat } from './extend/date-format'
+import {
+  configRouter
+} from './vue-router/route-config'
+import {
+  disableHistoryBack
+} from './extend/disable-history-back'
+import {
+  dateformat
+} from './extend/date-format'
 
 import timei from './extend/vue-resource-timeout'
 import authCallback from './extend/auth-callback'
@@ -18,131 +25,149 @@ dateformat()
 disableHistoryBack()
 
 window.state = {
-    userInfo: { name: "", permissions: [] },
-    showLoginModal: false
+  userInfo: {
+    name: "",
+    permissions: []
+  },
+  showLoginModal: false
 }
 
 window.actions = {
-        logout: function() {
-            window.state.userInfo = { name: "", permissions: [] }
-        }
+    logout: function() {
+      window.state.userInfo = {
+        name: "",
+        permissions: []
+      }
     }
-    /* eslint-disable no-new */
+  }
+  /* eslint-disable no-new */
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-    history: false
+  history: false
 })
 
 configRouter(router)
 
 router.beforeEach((tran) => {
-    var path = tran.to.path
-    var name = tran.to.name
+  var path = tran.to.path
+  var name = tran.to.name
 
-    var FirstPath = path.split('/')[1]
-    var SecPath = path.split('/')[2]
+  var FirstPath = path.split('/')[1]
+  var SecPath = path.split('/')[2]
 
-    if (FirstPath == "employManagement") {
-        switch (SecPath) {
-            case "fillInEmployment":
-            case "employmentSubmission":
-            case "brandAuthorization":
-                tran.next()
-                return
-        }
-    } else if (FirstPath == "auth") {
-        switch (SecPath) {
-            case "PhoneVerification":
-            case "resetpwd":
-            case "SuccessPage":
-                tran.next()
-                return
-        }
+  if (FirstPath == "employManagement") {
+    switch (SecPath) {
+      case "fillInEmployment":
+      case "employmentSubmission":
+      case "brandAuthorization":
+        tran.next()
+        return
     }
-
-    // switch (name) {
-    //     case "FillInEmployment":
-    //     case "EmploymentSubmission":
-    //     case "PhoneVerification":
-    //     case "resetpwd":
-    //     case "BrandAuthorization":
-    //     case "SuccessPage":
-    //         tran.next()
-    //         return
-    // }
-
-    function CheckInfo() {
-        if (checkPermission(['agentInfo', 'employment'])) {
-            authAPI.CheckUserBrand().then(function(result) {
-                if (result) {
-                    tran.next()
-                } else {
-                    window.alert('品牌权限不足')
-                    router.go({ path: path.replace(path, '/index') })
-                }
-            })
-
-        } else {
-            window.alert('权限不足')
-            router.go({ path: path.replace(path, '/index') })
-        }
+  } else if (FirstPath == "auth") {
+    switch (SecPath) {
+      case "PhoneVerification":
+      case "resetpwd":
+      case "SuccessPage":
+        tran.next()
+        return
     }
+  } else if (FirstPath == "test") {
+    tran.next()
+    return
+  }
 
-    authAPI.getUser().then(function(result) {
-        window.state.userInfo = { name: result.name, permissions: result.permissions }
-        if (result.name) {
-            if (FirstPath == "employManagement") {
-                switch (SecPath) {
-                    case undefined:
-                    case "chooseEmployableRoles":
-                    case "audit":
-                    case "auditInfo":
-                    case "employmentHistory":
-                    case "currentList":
-                    case "currentInfo":
-                        CheckInfo()
-                        break
-                }
-            } else if (FirstPath == "accountManagement") {
-                switch (SecPath) {
-                    case undefined:
-                    case "MyCertificate":
-                    case "CertificateInfo":
-                    case "checkPwd":
-                    case "changeWechat":
-                    case "changeCellPhone":
-                        tran.next()
-                        break
-                }
-            } else if (FirstPath == "homePage") {
-                switch (SecPath) {
-                    case undefined:
-                    case "search":
-                        CheckInfo()
-                        break
-                }
-            } else if (FirstPath == "auth") {
-                switch (SecPath) {
-                    case "login":
-                        router.go('homePage')
-                        break
-                    case "changepwd":
-                        tran.next()
-                        break
+  // switch (name) {
+  //     case "FillInEmployment":
+  //     case "EmploymentSubmission":
+  //     case "PhoneVerification":
+  //     case "resetpwd":
+  //     case "BrandAuthorization":
+  //     case "SuccessPage":
+  //         tran.next()
+  //         return
+  // }
 
-                }
-            } else if (path == '/index') {
-                router.go('homePage')
-            }
+  function CheckInfo() {
+    if (checkPermission(['agentInfo', 'employment'])) {
+      authAPI.CheckUserBrand().then(function(result) {
+        if (result) {
+          tran.next()
         } else {
-            if (path == '/index' || path == '/auth/login') {
-                tran.next()
-            } else {
-                router.go({ path: path.replace(path, '/index') })
-            }
+          window.alert('品牌权限不足')
+          router.go({
+            path: path.replace(path, '/index')
+          })
         }
-    })
+      })
+
+    } else {
+      window.alert('权限不足')
+      router.go({
+        path: path.replace(path, '/index')
+      })
+    }
+  }
+
+  authAPI.getUser().then(function(result) {
+    window.state.userInfo = {
+      name: result.name,
+      permissions: result.permissions
+    }
+    if (result.name) {
+      if (FirstPath == "employManagement") {
+        switch (SecPath) {
+          case undefined:
+          case "chooseEmployableRoles":
+          case "audit":
+          case "auditInfo":
+          case "employmentHistory":
+          case "currentList":
+          case "currentInfo":
+            CheckInfo()
+            break
+        }
+      } else if (FirstPath == "accountManagement") {
+        switch (SecPath) {
+          case undefined:
+          case "MyCertificate":
+          case "CertificateInfo":
+          case "checkPwd":
+          case "changeWechat":
+          case "changeCellPhone":
+            tran.next()
+            break
+        }
+      } else if (FirstPath == "homePage") {
+        switch (SecPath) {
+          case undefined:
+          case "search":
+            CheckInfo()
+            break
+        }
+      } else if (FirstPath == "auth") {
+        switch (SecPath) {
+          case "login":
+            router.go('homePage')
+            break
+          case "changepwd":
+            tran.next()
+            break
+
+        }
+      } else if (path == '/index') {
+        router.go('homePage')
+      }
+    } else {
+      if (path == '/index' || path == '/auth/login') {
+        tran.next()
+      } else {
+        router.go({
+          path: path.replace(path, '/index')
+        })
+      }
+    }
+  })
 })
 
 router.start(App, 'app');
