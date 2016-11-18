@@ -1,8 +1,8 @@
 ﻿<template>
-	<div style="    min-height: 440px;">
+	<div style="min-height: 440px;">
 <div @keyup.enter="CommitVerification">
 	<div>
-		<div class="change-password">
+		<div class="change-passwords">
 			<group v-if="!UserPhone">
 				<x-input title="手机号" :value.sync="cellphone" placeholder="请输入手机号" :required="false"></x-input>
 			</group>
@@ -14,7 +14,7 @@
 					</x-input>
 				</group>
 				<!-- <p v-if="showTime">{{TimeLeft}}秒重新发送</p> -->
-				<p v-if="showErr">{{errmsg}}</p>
+				<p v-if="showErr" class="phone-error">{{errmsg}}</p>
 				</group>
 			</div>
 		</div>
@@ -151,6 +151,15 @@ export default {
 }
 </script>
 <style>
+.phone-error{
+
+	width: 100%;
+			margin: auto ;
+			color: #d22d23;
+			font-family: "微软雅黑";
+			font-size: 4.1vw;
+
+}
 .login_zindex {
 	z-index: 10000000 !important;
 }
@@ -159,16 +168,16 @@ export default {
 	z-index: 10000001 !important;
 }
 
-.change-password {
+.change-passwords {
 	width: 89%;
 	margin: 7% auto 5% auto;
 }
 
-.change-password .weui_cell_hd {
+.change-passwords .weui_cell_hd {
 	width: 22%
 }
 
-.change-password .weui_label {
+.change-passwords .weui_label {
 	color: #595959;
 	font-size: 4.7vw;
 	/*15px*/
@@ -177,17 +186,19 @@ export default {
 	display: inline-block;
 }
 
-.change-password .weui_cells {
+.change-passwords .weui_cells {
 	border: 1px solid #d3d1d1;
 	margin-bottom: 2%;
 	border-radius: 3px;
 }
 
-.change-password .weui_cells input.weui_input {
+.change-passwords .weui_cells input.weui_input {
 	font-family: "微软雅黑";
+	font-size: 4.5vw;/*14px*/
+
 }
 
-.change-password .weui_icon_warn:before {
+.change-passwords .weui_icon_warn:before {
 	font-size: 16px;
 	color: #f43530;
 }

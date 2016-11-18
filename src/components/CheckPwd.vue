@@ -151,4 +151,5 @@ line-height: initial;
 .checkpasswork-input .vux-flex-row{
   margin-top: 5px!important;
 }
+
 </style>
