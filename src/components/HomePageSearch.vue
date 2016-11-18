@@ -2,7 +2,7 @@
 <div>
   <div class="function-search">
     <group>
-      <x-input class="weui_cell_primary" title='' :value.sync="keyword" :show-clear=false :required="false"></x-input>
+      <x-input class="weui_cell_primary" title='' placeholder="输入需要查看的功能名称" :value.sync="keyword" :show-clear=false :required="false"></x-input>
       <div class="function-search-button">
         <button class="weui_btn weui_btn_primary" @click="search">.</button>
       </div>
@@ -10,8 +10,8 @@
   </div>
   <div class="function-search-list">
     <h1>功能</h1>
-    <group>
-      <a class="weui_cell" :show.sync="showResult" v-for="item in funcList" v-link="item.link" v-show="item.isShow">
+    <group v-if="showResult">
+      <a class="weui_cell"  v-for="item in funcList" v-link="item.link" v-show="item.isShow">
         <div class="weui_cell_hd">
           <img :src.sync="item.iconhref" />
         </div>
@@ -121,6 +121,7 @@ export default {
       if (this.keyword == null || this.keyword == '') {
         this.show = true
         this.errorMsg = "搜索框内容不能为空"
+        this.showResult = false
       } else if (!reg.test(this.keyword)) {
         this.show = true
         this.errorMsg = "输入错误，请填写中文关键字"
