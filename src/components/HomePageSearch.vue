@@ -8,10 +8,10 @@
       </div>
     </group>
   </div>
-  <div class="function-search-list" v-if="showResult">
+  <div class="function-search-list">
     <h1>功能</h1>
-    <group >
-      <a class="weui_cell" v-for="item in funcList" v-link="item.link" v-show="item.isShow">
+    <group>
+      <a class="weui_cell"  v-if="showResult" v-for="item in funcList" v-link="item.link" v-show="item.isShow">
         <div class="weui_cell_hd">
           <img :src.sync="item.iconhref" />
         </div>
@@ -21,7 +21,6 @@
       </a>
     </group>
   </div>
-  <p v-if="showNullMsg" class="search-none">暂无此功能，敬请期待</p>
   <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
 </div>
 <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
@@ -91,8 +90,7 @@ export default {
       }],
       show: false,
       errorMsg: null,
-      showResult: false,
-      showNullMsg:false
+      showResult: false
     }
   },
   methods: {
@@ -119,8 +117,14 @@ export default {
       })
     },
     search() {
+      var reg = /^[\u4e00-\u9fa5]*$/ //全中文
       if (this.keyword == null || this.keyword == '') {
-        return
+        this.show = true
+        this.errorMsg = "搜索框内容不能为空"
+      } else if (!reg.test(this.keyword)) {
+        this.show = true
+        this.errorMsg = "输入错误，请填写中文关键字"
+        this.showResult = false
       } else {
         this.showResult = false
         this.filter(this.keyword)
@@ -128,7 +132,7 @@ export default {
     },
     filter(keyword) {
       var countShowItem = 0
-      //根据级别选择显示功能
+        //根据级别选择显示功能
       if (this.userLevel == "0") {
         for (var item in this.funcList) {
           if (this.funcList[item]['name'] == '成员审核') {
@@ -158,19 +162,7 @@ export default {
           this.funcList[item].isShow = false
         }
       }
-
-      for (var item in this.funcList) {
-        if (this.funcList[item].isShow) {
-          countShowItem++
-        }
-      }
-
-      if(countShowItem == 0){
-        this.showNullMsg = true
-      }else{
-        this.showResult = true
-      }
-      console.log(JSON.stringify(this.funcList))
+      this.showResult = true
     }
   },
   ready() {

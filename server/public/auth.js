@@ -190,8 +190,13 @@ var exec = {
         account: account
       }
     }).then(function(result) {
-      result.password = pwd
-      return result.save()
+      if(result==null){
+        return Promise.reject("账户不存在")
+      }else{
+        result.password = pwd
+        req.session.VerificationInfo = undefined
+        return result.save()
+      }
     }).then(function() {
       return "success"
     })
