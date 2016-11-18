@@ -114,13 +114,13 @@
 </script>
 <style lang="less">
     .My-account {
-        margin-top: 2%;
+        margin-top: 1%;
     }
 
     .My-account .weui_cell {
         background: #fff;
-        margin-top: 1%;
-        padding: 2px 5%;
+        margin-top: 2%;
+  padding: 2px 5% 0 5%;
         border-top: 0!important;
       font-size: 4.7vw;
         font-family: "微软雅黑";

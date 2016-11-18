@@ -76,7 +76,7 @@
 </div>
 <div class="auditinfo-backto ">
   <dialog :show.sync="show" class="dialog-demo">
-    <button @click="show=false">X</button>
+    <button @click="show=false" class="close-button"></button>
     <group title="打回理由">
       <x-textarea :value.sync="reason" placeholder="填写打回理由" :show-counter="false"></x-textarea>
     </group>
@@ -415,7 +415,8 @@ input.weui_btn {
   position: absolute;
   left: 78px;
   top: 11%;
-  width: 100%
+  width: 100%;
+      margin-left: 2%;
 }
 
 .auditinfo-choose .weui_cell_hd label {
@@ -440,59 +441,63 @@ input.weui_btn {
 .auditinfo-choose .weui_cell_select .weui_cell_bd:after {
   right: 45%;
 }
-
+/*按钮*/
 .auditinfo-choose .months {
   display: inline-block;
   position: absolute;
-  top: 17%;
-  left: 179px;
+  top: 22%;
+      left: 188px;
   font-size: 4.5vw;
 }
 
-.auditinfo-choose .vux-number-selector-plus,
-.auditinfo-choose .vux-number-selector-sub {
 
-      width: 4%;
-      padding: 6px 10px;
-      border-radius: 6px;
-  /*月份添加背景色*/
-}
-.auditinfo-choose .vux-number-selector-plus{
- background: #21c36d;
+.vux-number-selector-sub{
+  border: none;
+    padding:0;
+  border-radius: 0px;
+  margin-right: 4%;
+  background: #ea4c4c;
 
 
 }
-.auditinfo-choose .vux-number-selector-sub{
- background: #ea4c4c;
-     margin-right: 4%;
-         padding: 2px 11px 8px 6px!important
-
+.vux-number-selector-sub:active{
+  background: #d03636;
+  border: 0
 
 }
-.auditinfo-choose  .vux-number-selector{
-  font-size: 28px;
-line-height: 19px;
-color: #fff;
-}
-.auditinfo-choose .vux-number-selector-plus, .auditinfo-choose .vux-number-selector-sub{
-  margin-top: -2px;
-  width: 5%;
-    padding: 5px 11px 5px 6px;
-    border-radius: 6px;
-}
+.vux-number-selector-plus:active{
+  background: #1eaf62;
+  border: 0
 
-.auditinfo-choose .weui_cell {
-  border-bottom: 0
 }
+.vux-number-selector{
 
+  width: 11%;
+      text-align: center;
+border-radius: 5px;
+line-height: 33px;
+height: auto;
+color: #fff
+}
+.vux-number-selector-plus{
+
+  background:#21c36d;
+  padding: 0;
+  margin: 0;
+    border: none;
+}
 .auditinfo-choose .vux-number-input {
   font-size: 4.9vw;
   color: #000;
   font-family: "\5FAE\8F6F\96C5\9ED1";
-  margin-right: 16%;
+  margin-right: 14%;
+      margin-top: 2px;
+          border: 1px solid #d3d1d1;
 }
+.auditinfo-choose .weui_cell{
 
-
+  border-bottom:0
+}
 /*打回弹窗*/
 
 .auditinfo-backto .weui_dialog {
@@ -554,5 +559,18 @@ color: #fff;
 
 .auditinfo-backto .vux-flexbox .vux-flexbox-item {
   margin-left: 5px;
+}
+.close-button{
+  border: 0;
+
+  position: absolute;
+      right: 4%;
+  width: 8%;
+  top: 4%;
+  min-height: 29px;
+  background: url(/static/TestIMG/close.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+
 }
 </style>

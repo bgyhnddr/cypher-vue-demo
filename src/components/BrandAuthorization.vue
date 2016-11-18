@@ -60,7 +60,7 @@
       </div>
     </div>
   </div>
-  <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
+  <alert :show.sync="showRemindMsg" button-text="确认" @on-hide="onHide">{{remindMsg}}</alert>
 </div>
 </template>
 <script>
@@ -94,10 +94,13 @@ export default {
         start: "",
         deadline: ""
       },
+      loginUser: null,
       showEmploymentIDAndTerm: false,
       showBrandAuthorizationModel: false,
       showMsg: false,
-      errorMsg: null
+      errorMsg: null,
+      showRemindMsg: false,
+      remindMsg: null
     }
   },
   methods: {
@@ -106,6 +109,12 @@ export default {
       var that = this
       var publishEmploymentID = this.$route.params.publishEmploymentID
 
+      authAPI.getUser().then(function(result) {
+        if (result.name != undefined) { //申请者
+          that.loginUser = result.name
+        }
+      })
+
       //获取发起招募信息
       applyEmploymentAPI.getPublishEmploymentInfo({
         employmentGuid: publishEmploymentID
@@ -113,32 +122,36 @@ export default {
         console.log(JSON.stringify(result))
         that.publishEmploymentData = result
 
+        //招募已关闭
+        if (result.status == false) {
+          that.showRemindMsg = true
+          that.remindMsg = "招募已关闭"
+          return
+        }
+
         //招募失效
         var startDate = new Date(result.create_time)
         var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
         if (endDate <= new Date()) {
-          that.showMsg = true
-          that.errorMsg = "招募已失效"
-          that.$route.router.go('/auth/login')
+          that.showRemindMsg = true
+          that.remindMsg = "招募已失效"
+          return
         } else {
           //判断用户类型
           that.getBrandInfo()
-          authAPI.getUser().then(function(result) {
-            if (result.name == that.publishEmploymentData.employer_user_account) {
-              //获取自己的资料
-              that.getAgentInfo(result.name)
-                //获取自己的代理等级名称 & 获取授权编号 & 授权期
-              that.getRoleName(result.name)
-              that.showBrandAuthorizationModel = true
-            } else {
-              that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
-            }
-          })
+          if (that.loginUser == that.publishEmploymentData.employer_user_account) {
+            //获取自己的资料
+            that.getAgentInfo(that.loginUser)
+              //获取自己的代理等级名称 & 获取授权编号 & 授权期
+            that.getRoleName(that.loginUser)
+            that.showBrandAuthorizationModel = true
+          } else {
+            that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
+          }
         }
       }).catch(function(err) {
-        that.showMsg = true
-        that.errorMsg = err
-        that.$route.router.go('/employManagement/chooseEmployableRoles')
+        that.showRemindMsg = true
+        that.remindMsg = err
       })
     },
     getBrandInfo() {
@@ -162,8 +175,8 @@ export default {
         }
 
       }).catch(function(err) {
-        that.showMsg = true
-        that.errorMsg = err
+        that.showRemindMsg = true
+        that.remindMsg = err
       })
     },
     getRoleName(account) {
@@ -179,8 +192,8 @@ export default {
           that.getEmploymentGuidAndTerm(account)
         }
       }).catch(function(err) {
-        that.showMsg = true
-        that.errorMsg = err
+        that.showRemindMsg = true
+        that.remindMsg = err
       })
     },
     getAgentInfo(account) {
@@ -215,8 +228,8 @@ export default {
           }
         }
       }).catch(function(err) {
-        that.showMsg = true
-        that.errorMsg = err
+        that.showRemindMsg = true
+        that.remindMsg = err
       })
     },
     getEmploymentGuidAndTerm(account) {
@@ -229,9 +242,16 @@ export default {
         that.employmentIDAndTerm.start = new Date(result[1].employment_term.term_from).Format("yyyy 年 MM 月 dd 日")
         that.employmentIDAndTerm.deadline = new Date(result[1].employment_term.term_to).Format("yyyy 年 MM 月 dd 日")
       }).catch(function(err) {
-        that.showMsg = true
-        that.errorMsg = err
+        that.showRemindMsg = true
+        that.remindMsg = err
       })
+    },
+    onHide() {
+      if (this.loginUser == null) {
+        this.$route.router.go('/auth/login')
+      } else {
+        this.$route.router.go('/employManagement/chooseEmployableRoles')
+      }
     }
   },
   ready() {

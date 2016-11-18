@@ -3,12 +3,12 @@
 	<div>
 		<div class="change-password">
 			<group v-if="!UserPhone">
-				<x-input title="手机号" :value.sync="cellphone" placeholder="请输入手机号" is-type="china-mobile" v-ref:cellphone></x-input>
+				<x-input title="手机号" :value.sync="cellphone" placeholder="请输入手机号" :required="false"></x-input>
 			</group>
 			<p v-if="UserPhone">请输入{{GetPhone}}短信验证码</p>
 			<div class=" phone-button">
 				<group class="weui_cells_form">
-					<x-input title="验证码" class="weui_vcode" :value.sync="VerificationCode" placeholder="请输入验证码">
+					<x-input title="验证码" class="weui_vcode" :value.sync="VerificationCode" placeholder="请输入验证码" :required="false">
 						<x-button slot="right" type="default" @click="GetVerificationCode" :disabled="disable">{{btnMsg}}</x-button>
 					</x-input>
 				</group>
@@ -104,25 +104,6 @@ export default {
 							that.errmsg = err
 						}
 					})
-					// authAPI.GetVerificationCode({
-					// 	phone: that.cellphone
-					// }).then(function(result) {
-					// 	that.showErr = false
-					// 	that.show = true
-					// 	that.SetInterval()
-					//
-					// 	console.log(result)
-					// }).catch(function(err) {
-					// 	console.log(err)
-					// 	that.showErr = true
-					// 	if (!isNaN(parseInt(err))) {
-					// 		that.errmsg = "获取过于频繁"
-					// 		that.CodeTime = 60 - err
-					// 		that.SetInterval()
-					// 	} else {
-					// 		that.errmsg = err
-					// 	}
-					// })
 			}
 
 		},
@@ -145,6 +126,14 @@ export default {
 			}
 
 		}
+	},
+	watch:{
+			cellphone(){
+				this.showErr = false
+			},
+			VerificationCode(){
+				this.showErr = false
+			}
 	},
 	ready() {
 		if (this.$route.params.locate == 'account') {
