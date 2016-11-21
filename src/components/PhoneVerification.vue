@@ -2,7 +2,7 @@
 <div style="min-height: 440px;">
 	<div @keyup.enter="CommitVerification">
 		<div>
-			<div class="change-passwords">
+			<div class="change-password">
 				<group v-if="!UserPhone">
 					<x-input title="手机号" :value.sync="cellphone" placeholder="请输入手机号" :required="false"></x-input>
 				</group>
@@ -14,32 +14,22 @@
 						</x-input>
 					</group>
 					<!-- <p v-if="showTime">{{TimeLeft}}秒重新发送</p> -->
-					<p v-if="showErr" class="phone-error">{{errmsg}}</p>
+					<p v-if="showErr">{{errmsg}}</p>
 					</group>
-					<p v-if="UserPhone" class="Message-authentication ">请输入{{GetPhone}}短信验证码</p>
-					<div class=" phone-button">
-						<group class="weui_cells_form">
-							<x-input title="验证码" class="weui_vcode" :value.sync="VerificationCode" placeholder="请输入验证码" :required="false">
-								<x-button slot="right" type="default" @click="GetVerificationCode" :disabled="disable">{{btnMsg}}</x-button>
-							</x-input>
-						</group>
-						<!-- <p v-if="showTime">{{TimeLeft}}秒重新发送</p> -->
-						<p v-if="showErr">{{errmsg}}</p>
-						</group>
-					</div>
 				</div>
-				<flexbox style="margin-top:20px">
-					<flexbox-item>
-						<x-button type="primary" @click="CommitVerification ">完成</x-button>
-					</flexbox-item>
-				</flexbox>
-				<div>
-					<toast :show.sync="show" :time="1000" type="default">验证码已发送</toast>
-				</div>
+			</div>
+			<flexbox style="margin-top:20px">
+				<flexbox-item>
+					<x-button type="primary" @click="CommitVerification ">完成</x-button>
+				</flexbox-item>
+			</flexbox>
+			<div>
+				<toast :show.sync="show" :time="1000" type="default">验证码已发送</toast>
 			</div>
 		</div>
 	</div>
-	<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+</div>
+<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -162,14 +152,15 @@ export default {
 }
 </script>
 <style>
-.phone-error {
-	width: 100%;
-	margin: auto;
-	color: #d22d23;
-	font-family: "微软雅黑";
-	font-size: 4.1vw;
-}
+.phone-error{
 
+	width: 100%;
+			margin: auto ;
+			color: #d22d23;
+			font-family: "微软雅黑";
+			font-size: 4.1vw;
+
+}
 .login_zindex {
 	z-index: 10000000 !important;
 }
@@ -204,8 +195,8 @@ export default {
 
 .change-passwords .weui_cells input.weui_input {
 	font-family: "微软雅黑";
-	font-size: 4.5vw;
-	/*14px*/
+	font-size: 4.5vw;/*14px*/
+
 }
 
 .change-passwords .weui_icon_warn:before {
