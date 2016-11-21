@@ -11,8 +11,8 @@ export default {
     getRoleName(params) {
         return httpRequest.post(path + 'getRoleName', params)
     },
-    getAgentInfo(params) {
-        return httpRequest.post(path + 'getAgentInfo', params)
+    getAgentInfo() {
+        return httpRequest.post(path + 'getAgentInfo')
     },
     getAuditList(params) {
         return httpRequest.post(path + 'getAuditList', params)
@@ -50,7 +50,7 @@ export default {
     getPublishEmploymentInfo(params) {
         return httpRequest.post(path + 'getPublishEmploymentInfo', params)
     },
-    getEmploymentInfo(params) {
-        return httpRequest.post(path + 'getEmploymentInfo', params)
+    getEmploymentInfo() {
+        return httpRequest.post(path + 'getEmploymentInfo')
     },
 }
