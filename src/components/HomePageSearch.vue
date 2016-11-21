@@ -1,5 +1,5 @@
 ﻿<template>
-<div>
+<div class="function-search-bac">
   <div class="function-search">
     <group>
       <x-input class="weui_cell_primary" title='' placeholder="输入需要查看的功能名称" :value.sync="keyword" :show-clear=false :required="false"></x-input>
@@ -24,7 +24,7 @@
   <p v-if="showNullMsg" class="search-none">暂无此功能，敬请期待</p>
   <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
 </div>
-<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -173,6 +173,10 @@ export default {
 }
 </script>
 <style lang="less">
+.function-search-bac{
+    min-height: 460px;
+
+}
 .function-search .weui_cell {
     padding: 9px 2%;
 }

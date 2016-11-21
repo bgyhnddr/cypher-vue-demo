@@ -1,4 +1,5 @@
 ﻿<template>
+  <div class="auditinfo-bac">
 <div>
   <div class="auditinfo-header">
     <div class="vux-center">
@@ -58,10 +59,10 @@
           <p v-if="Toggle" class="months">个月</p>
           <!-- <selector v-if="Toggle" :value.sync="value" title="授权期限" :options="List" @on-change="onChange" placeholder="请选择期限"></selector><p v-if="Toggle">月</p> -->
         </div>
-        <div style="height:60px"></div>
+
+
       </div>
-      <div style="height:60px"></div>
-  </div>
+
   </group>
 </div>
 <div class="auditinfo-button">
@@ -100,6 +101,9 @@
   <!-- <toast :show.sync="showAlert" :time="1000" @on-hide="onHide" type="text">{{alertMsg}}</toast> -->
 </div><div>
 </div>
+</div></div></div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+<div style="height:20px"></div>
 </template>
 
 <script>
@@ -313,6 +317,9 @@ export default {
 }
 </script>
 <style>
+.auditinfo-bac {
+      min-height: 450px;
+}
 .auditinfo-header {
   text-align: center;
   margin-top: 2%;
@@ -341,6 +348,10 @@ export default {
 .auditinfo-message .weui_cell {
   border-bottom: 1px solid #d3d1d1;
   padding: 9px 0;
+}
+.auditinfo-message .weui_cell:nth-child(8){
+border-bottom:0
+
 }
 
 .auditinfo-message .weui_btn {
@@ -420,7 +431,7 @@ input.weui_btn {
 
 .auditinfo-choose {
   position: relative;
-  margin-top: 3%;
+  margin: 3% 0;
 }
 
 .auditinfo-choose .weui_cell_hd {}

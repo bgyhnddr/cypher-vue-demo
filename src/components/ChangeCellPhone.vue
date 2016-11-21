@@ -10,7 +10,7 @@
     </group>
   </div>
 </div>
- <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+ <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -152,7 +152,7 @@ border-top:0
 .changepcellphone-input .weui_cell{
 
   padding: 5px 15px;
-    
+
 
 }
 </style>

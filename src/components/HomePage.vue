@@ -43,11 +43,12 @@
           </flexbox-item>
         </flexbox>
       </div>
-      <p class="homepage-footer">© 2016 ShareWin.me 粤ICP备14056388号</p>
+
 
       <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
     </div>
   </div>
+    <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -215,6 +216,9 @@ export default {
 }
 </script>
 <style lang="less">
+.homePage-bac {
+    min-height: 460px;
+}
 .homePage-bac .weui_cells {
     margin-top: 0;
 }
@@ -391,6 +395,7 @@ table.platform-message p:nth-child(1) {
     font-size: 3vw;
     font-family: "微软雅黑";
     line-height: 2.5em;
+    margin-bottom: 10%;
 }
 
 .weui_cells {

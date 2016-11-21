@@ -53,6 +53,7 @@
     </div>
     <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
   </div>
+    <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 <script>
 import {
@@ -349,7 +350,8 @@ export default {
 
 .fillin {
   width: 90%;
-    margin: 0 auto 10%;
+    margin: 0 auto 3%;
+    min-height: 460px;
 }
 
 .fillin h3 {
@@ -553,6 +555,8 @@ border-top:0;
 
 .certificate .weui_textarea_counter {
   margin-top: 4%;
+  font-family: "微软雅黑";
+font-size: 4.5vw;
 }
 
 .certificate [class*=" weui_icon_"]:before,

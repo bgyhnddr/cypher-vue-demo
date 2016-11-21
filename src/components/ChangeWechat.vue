@@ -1,4 +1,5 @@
 ﻿<template>
+  <div class="changewechat-bac">
 <div>
   <div class="changewechat-input">
     <group title="新的微信号">
@@ -8,8 +9,8 @@
       <alert :show.sync="showMsg" @on-hide="onHide()" button-text="确认">您已成功修改微信号</alert>
     </group>
   </div>
-</div>
-<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+</div></div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -76,15 +77,16 @@ export default {
   }
 }
 </script>
+
 <style>
+.changewechat-bac{
+    min-height: 396px;
+}
 .changewechat-input button.weui_btn.weui_btn_primary{
 margin-top: 9%
 
 }
-.changewechat-input {
 
-    min-height: 440px;
-}
 .changewechat-input  .wechat-error{
 
   width: 89%;
@@ -117,6 +119,7 @@ margin-top: 9%
   color: #000;
   font-size: 4.7vw;
   /*15px*/
+      margin: 20% auto 2%;
 }
 
 .changewechat-input .weui_dialog_ft {

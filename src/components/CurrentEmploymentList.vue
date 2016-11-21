@@ -20,6 +20,7 @@
     <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
   </div>
 </div>
+  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -130,6 +131,9 @@ export default {
 }
 </script>
 <style>
+.current-list {
+    min-height: 460px;
+}
 .current-list a.current-list-list {
   background: #fff;
   margin: 3% 0;
