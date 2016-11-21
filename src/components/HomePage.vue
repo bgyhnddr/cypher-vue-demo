@@ -161,7 +161,6 @@ export default {
     getAgentInfo() {
       var that = this
       employmentAPI.getAgentInfo().then(function(result) {
-        console.log(JSON.stringify(result))
         that.user.agentInfo = result
       }).catch(function(err) {
         this.show = true
@@ -169,7 +168,6 @@ export default {
       })
 
       employmentAPI.getBrandInfo().then(function(result) {
-        console.log(JSON.stringify(result))
         that.user.brandName = result.name
       }).catch(function(err) {
         this.show = true
