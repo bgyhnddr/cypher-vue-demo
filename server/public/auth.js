@@ -3,46 +3,60 @@ var exec = {
     var account = req.body.account
     var password = req.body.password
 
-    var user = require('../../db/models/user')
 
-    return user.findOne({
-      attributes: ['account', 'password'],
-      where: {
-        account: account
-      }
-    }).then(function(result) {
+    var user = require('../../db/models/user')
+    var agent = require('../../db/models/agent')
+    var agent_detail = require('../../db/models/agent_detail')
+    var user_role = require('../../db/models/user_role')
+    var role = require('../../db/models/role')
+    var role_permission = require('../../db/models/role_permission')
+
+    agent.belongsTo(user)
+    agent.hasMany(agent_detail)
+    user.hasMany(user_role)
+    user_role.belongsTo(role)
+    role.hasMany(role_permission)
+    return agent.findOne({
+      include: [{
+        model: agent_detail,
+        where: {
+          $or: [{
+            key: 'cellphone',
+            value: account
+          }, {
+            key: 'wechat',
+            value: account
+          }]
+        }
+      }, {
+        model: user,
+        include: {
+          model: user_role,
+          include: {
+            model: role,
+            include: role_permission
+          }
+        }
+      }]
+    }).then((result) => {
       if (result == null) {
         return Promise.reject("账号不存在或密码错误")
       } else {
-        console.log(result.password)
-        if (result.password != password) {
+        if (result.user.password != password) {
           return Promise.reject("账号不存在或密码错误")
         } else {
-          var user_role = require('../../db/models/user_role')
-          var role_permission = require('../../db/models/role_permission')
-
-          role_permission.belongsTo(user_role, {
-            foreignKey: 'role_code',
-            targetKey: 'role_code',
-            constraints: false
+          var permissions = []
+          var userInfo = {}
+          result.user.user_roles.forEach((o) => {
+            o.role.role_permissions.forEach((p) => {
+              permissions.push(p.permission_code)
+            })
           })
-          return role_permission.findAll({
-            include: [{
-              model: user_role,
-              where: {
-                user_account: result.account
-              }
-            }]
-          })
+          userInfo.name = result.user.account
+          userInfo.permissions = permissions
+          req.session.userInfo = userInfo
+          return req.session.userInfo
         }
-      }
-    }).then(function(result) {
-      if (result != null) {
-        var userInfo = {}
-        userInfo.name = account
-        userInfo.permissions = result.map(o => o.permission_code)
-        req.session.userInfo = userInfo
-        return req.session.userInfo
       }
     })
   },
@@ -142,21 +156,6 @@ var exec = {
       }
     })
   },
-  GetSMSBalance(req, res, next) {
-    var soap = require('soap')
-    var phone = req.body.phone
-    var url = 'http://sdk4report.eucp.b2m.cn:8080/sdk/SDKService?wsdl'
-    var args = {
-      arg0: "6SDK-EMY-6688-KIXRR",
-      arg1: "709394"
-    }
-    soap.WSDL.prototype.ignoredNamespaces = ['xs', 'xsd']
-    soap.createClient(url, function(err, client) {
-      client.getBalance(args, function(err, result) {
-        console.log(result)
-      })
-    })
-  },
   CommitVerification(req, res, next) {
     var phone = req.body.phone
     var code = req.body.code
@@ -190,9 +189,9 @@ var exec = {
         account: account
       }
     }).then(function(result) {
-      if(result==null){
-        return Promise.reject("账户不存在")
-      }else{
+      if (result == null) {
+        return Promise.reject("账户不存期")
+      } else {
         result.password = pwd
         req.session.VerificationInfo = undefined
         return result.save()

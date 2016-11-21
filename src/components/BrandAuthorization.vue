@@ -141,9 +141,9 @@ export default {
           that.getBrandInfo()
           if (that.loginUser == that.publishEmploymentData.employer_user_account) {
             //获取自己的资料
-            that.getAgentInfo(that.loginUser)
+            that.getAgentInfo()
               //获取自己的代理等级名称 & 获取授权编号 & 授权期
-            that.getRoleName(that.loginUser)
+            that.getRoleName()
             that.showBrandAuthorizationModel = true
           } else {
             that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
@@ -179,28 +179,24 @@ export default {
         that.remindMsg = err
       })
     },
-    getRoleName(account) {
+    getRoleName() {
       var that = this
-      agentInfoAPI.getBrandRoleInfo({
-        user_account: account
-      }).then(function(result) {
+      agentInfoAPI.getBrandRoleInfo().then(function(result) {
         console.log(JSON.stringify(result))
         that.brand_role_name = result.brand_role.name
 
         if (result.brand_role.level != "0") {
           that.showEmploymentIDAndTerm = true
-          that.getEmploymentGuidAndTerm(account)
+          that.getEmploymentGuidAndTerm()
         }
       }).catch(function(err) {
         that.showRemindMsg = true
         that.remindMsg = err
       })
     },
-    getAgentInfo(account) {
+    getAgentInfo() {
       var that = this
-      employmentAPI.getAgentInfo({
-        user_account: account
-      }).then(function(result) {
+      employmentAPI.getAgentInfo().then(function(result) {
         console.log(JSON.stringify(result))
         that.agentInfo = result
 
@@ -232,11 +228,9 @@ export default {
         that.remindMsg = err
       })
     },
-    getEmploymentGuidAndTerm(account) {
+    getEmploymentGuidAndTerm() {
       var that = this
-      employmentAPI.getEmploymentInfo({
-        account: account
-      }).then(function(result) {
+      employmentAPI.getEmploymentInfo().then(function(result) {
         console.log(JSON.stringify(result))
         that.employmentIDAndTerm.employmentGuid = result[0].guid.split('-')[4]
         that.employmentIDAndTerm.start = new Date(result[1].employment_term.term_from).Format("yyyy 年 MM 月 dd 日")

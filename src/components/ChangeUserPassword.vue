@@ -139,7 +139,7 @@ export default {
   border-radius: 3px;
 }
 .change-password .weui_cell_hd {
-	width: 27%;
+	width: 28%;
 }
 
 .change-password .weui_label {

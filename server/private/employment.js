@@ -10,37 +10,32 @@ var exec = {
       constraints: false
     })
 
-    return Promise.all([
-      employable_rule.findAll({
-        where: {
-          employer_brand_role_code: brand_role_code,
-        },
-        include: [{
-          model: brand_role,
-        }],
-        order: [
-          [{
-            model: brand_role
-          }, 'level', 'ASC']
-        ]
-      }),
-      employable_rule.count({
-        where: {
-          employer_brand_role_code: brand_role_code,
+    return employable_rule.findAll({
+      where: {
+        employer_brand_role_code: brand_role_code,
+      },
+      include: [{
+        model: brand_role,
+      }],
+      order: [
+        [{
+          model: brand_role
+        }, 'level', 'ASC']
+      ]
+    }).then(function(result) {
+      if (result.length > 0) {
+        return {
+          employableRoles: result,
+          roleCount: result.length
         }
-      })
-    ]).then(function(result) {
-      var employableRoles = result[0]
-      var roleCount = result[1]
-      return {
-        employableRoles: employableRoles,
-        roleCount: roleCount
+      } else {
+        return Promise.reject("您目前暂无可招募代理角色")
       }
     })
 
   },
   getBrandInfo(req, res, next) {
-    var user_account = req.body.user_account
+    var user_account = req.session.userInfo.name
 
     var agent = require('../../db/models/agent')
     var agent_brand_role = require('../../db/models/agent_brand_role')
@@ -107,7 +102,7 @@ var exec = {
 
   },
   getAgentInfo(req, res, next) {
-    var user_account = req.body.user_account
+    var user_account = req.session.userInfo.name
 
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
@@ -457,7 +452,7 @@ var exec = {
   },
   getCurrentList(req, res, next) {
     var selectMsg = req.body.key
-    var user_account = req.body.user_account
+    var user_account = req.session.userInfo.name
     var select = null
 
     var brand_role = require('../../db/models/brand_role')
@@ -614,7 +609,7 @@ var exec = {
 
   },
   getEmploymentInfo(req, res, next) {
-    var user_account = req.body.account
+    var user_account = req.session.userInfo.name
 
     var employment = require('../../db/models/employment')
     var agent = require('../../db/models/agent')

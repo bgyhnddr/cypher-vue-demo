@@ -21,6 +21,11 @@
           <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/account'+'/#'+'/#'+'/'+this.auditInfo.account}">查看授权证书</x-button>
         </cell>
         <cell>
+          <div slot="icon">授权等级：
+            <label>{{auditInfo.agent_level}}</label>
+          </div>
+        </cell>
+        <cell v-if="auditInfo.employerFlag">
           <div slot="icon">授权上级：
             <label>{{auditInfo.employer}}</label>
           </div>
@@ -72,7 +77,9 @@ export default {
         address: "",
         addressDetail: "",
         headImg: null,
-        Brand:""
+        Brand: "",
+        agent_level:"",
+        employerFlag:true
       }
     }
   },
@@ -95,9 +102,29 @@ export default {
           that.auditInfo.Brand = result.GetBrand.name
           if (LoacteAccount == 'admin') {
             that.auditInfo.employer = that.auditInfo.account
+            that.auditInfo.employerFlag = false
           }
           result = result.Getdetail
         }
+
+        switch (result[0].agent.agent_brand_role.brand_role_code) {
+          case "brand_role1":
+            that.auditInfo.agent_level = "品牌商"
+            break
+          case "brand_role2":
+            that.auditInfo.agent_level = "总代理"
+            break
+          case "brand_role3":
+            that.auditInfo.agent_level = "二级代理"
+            break
+          case "brand_role4":
+            that.auditInfo.agent_level = "特约销售员"
+            break
+          case "brand_role5":
+            that.auditInfo.agent_level = "销售员"
+            break
+        }
+
         for (var item in result) {
           for (var meta in result[item]) {
             if (meta == 'key') {
@@ -145,7 +172,7 @@ export default {
 .certificate-header button {
   border: 0;
   background-size: 100%;
-    width: 28%;
+  width: 28%;
 }
 
 .certificate-header button img {
@@ -212,8 +239,8 @@ export default {
 .certificate-messages .weui_cell_hd label {
   color: #595959;
 }
-.certificate-messages .weui_cell:nth-child(7){
-    border-bottom: 0;
 
+.certificate-messages .weui_cell:nth-child(7) {
+  border-bottom: 0;
 }
 </style>

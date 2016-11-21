@@ -92,9 +92,13 @@
 </div>
 <div>
 
+<div class="completely">
+
+
+
   <alert :show.sync="showAlert" @on-hide="onHide" button-Text="继续审核">{{alertMsg}}</alert>
   <!-- <toast :show.sync="showAlert" :time="1000" @on-hide="onHide" type="text">{{alertMsg}}</toast> -->
-</div>
+</div><div>
 </div>
 </template>
 
@@ -174,6 +178,7 @@ export default {
         var LoacteAccount = that.$route.params.account
         if (LocateFrom == 'history' || LocateFrom == 'account' || LocateFrom == 'auditInfo') {
           that.auditInfo.Brand = result.GetBrand.name
+          that.auditInfo.employee = result.Getemployment.employee_user_account
           if (LoacteAccount == 'admin') {
             that.auditInfo.employer = that.auditInfo.account
           }
@@ -221,8 +226,6 @@ export default {
           that.auditInfo.time = result[0].employment.employer_time
           that.auditInfo.employer = result[0].employment.employer_user_account
           that.auditInfo.employee = result[0].employment.employee_user_account
-        } else {
-          that.auditInfo.employee = that.auditInfo.cellphone
         }
       }).catch(function(err) {
         console.log(err)
@@ -242,7 +245,7 @@ export default {
             cellphone: that.auditInfo.cellphone,
             mode: "SendPassAuditMessage"
           }).then(function(result) {
-            that.alertMsg = "您已完成审核"
+            that.alertMsg = "您已完成审核!"
             that.showAlert = true
           }).catch(function(err) {
             console.log(err)
@@ -581,6 +584,26 @@ color: #fff
   background: url(/static/TestIMG/close.png);
   background-repeat: no-repeat;
   background-size: contain;
+
+}
+/*弹窗*/
+.completely  .weui_dialog{
+    padding: 4%;
+
+}
+.completely .weui_dialog_bd{
+
+  color: #000000;
+font-size: 5.2vw;
+font-family: "微软雅黑";
+}
+.completely .weui_btn_dialog.primary {
+  color: #fff;
+width: 98%;
+background: #fd5e5e;
+line-height: 37px;
+border-radius: 3px;
+margin-bottom: 3%;
 
 }
 </style>

@@ -45,7 +45,6 @@ export default {
   data() {
     return {
       keyword: null,
-      userInfo: {},
       userLevel: null,
       funcList: [{
         name: '发起招募',
@@ -98,15 +97,8 @@ export default {
       var that = this
       this.keyword = this.$route.params.keyword
 
-      //获取用户角色
-      authAPI.getUser().then(function(result) {
-        that.userInfo = result
-        console.log("用户账号:" + that.userInfo.name)
-
         //根据级别选择显示功能
-        agentInfoAPI.getBrandRoleInfo({
-          user_account: that.userInfo.name
-        }).then(function(result) {
+        agentInfoAPI.getBrandRoleInfo().then(function(result) {
           console.log(JSON.stringify(result))
           that.userLevel = result.brand_role.level
           that.filter(that.$route.params.keyword)
@@ -114,7 +106,6 @@ export default {
           this.show = true
           this.errorMsg = err
         })
-      })
     },
     search() {
       var reg = /^[\u4e00-\u9fa5]*$/ //全中文

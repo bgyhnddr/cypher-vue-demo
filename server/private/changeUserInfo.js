@@ -1,7 +1,7 @@
 var exec = {
   checkPwd(req, res, next) {
     var pwd = req.body.pwd
-    var user_account = req.body.user_account
+    var user_account = req.session.userInfo.name
 
     var user = require('../../db/models/user')
 
@@ -19,146 +19,105 @@ var exec = {
     })
   },
   changeWechat(req, res, next) {
-    var user_account = req.body.user_account
+    var user_account = req.session.userInfo.name
     var wechat = req.body.wechat
 
+    var user = require('../../db/models/user')
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
 
-    return agent_detail.findOne({
+    user.hasOne(agent)
+    agent.hasMany(agent_detail)
+
+    return agent_detail.findAll({
       where: {
-        key: "wechat",
-        value: wechat
+        $and: {
+          key: "wechat",
+          value: wechat
+        }
       }
-    }).then(function(result) {
-      if(result != null){
-        return Promise.reject("该微信号已被注册，请重新输入")
-      }else{
-        return agent.findOne({
+    }).then((result) => {
+      if (result.length > 0) {
+        return Promise.reject("该微信号已存在")
+      } else {
+        return result
+      }
+    }).then(() => {
+      return user.findOne({
+        include: {
+          model: agent,
+          include: {
+            model: agent_detail,
             where: {
-                user_account: user_account
+              key: "wechat"
             }
-        }).then(function(result) {
-            if (result == null) {
-                return Promise.reject("修改微信号失败")
-            } else {
-                return agent_detail.findOne({
-                    where: {
-                        agent_guid: result.guid,
-                        key: 'wechat'
-                    }
-                }).then(function(result) {
-                    if (result == null) {
-                        return Promise.reject("修改微信号失败")
-                    } else {
-                        result.value = wechat
-                        return result.save()
-                    }
-                }).then(function(result) {
-                    return true
-                })
-            }
-        })
+          }
+        },
+        where: {
+          account: user_account
+        }
+      })
+    }).then((result) => {
+      if (result != null) {
+        var ad = result.agent.agent_details[0]
+        ad.value = wechat
+        return ad.save()
+      } else {
+        return Promise.reject("查找个人信息出错，请再尝试")
       }
+    }).then(function() {
+      return true
     })
   },
   changeCellphone(req, res, next) {
-    var user_account = req.body.user_account
+    var user_account = req.session.userInfo.name
     var cellphone = req.body.cellphone
 
     var user = require('../../db/models/user')
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
-    var sequelize = require('../../db/sequelize')
-    var user_role = require('../../db/models/user_role')
 
-    return agent.findOne({
+    user.hasOne(agent)
+    agent.hasMany(agent_detail)
+
+    return agent_detail.findAll({
       where: {
-        user_account: user_account
+        $and: {
+          key: "cellphone",
+          value: cellphone
+        }
       }
-    }).then(function(result) {
-      if (result == null) {
-        return Promise.reject("查找您的信息出现异常，请稍后再试")
+    }).then((result) => {
+      if (result.length > 0) {
+        return Promise.reject("该手机号已存在")
       } else {
-        return Promise.all([
-          user.findOne({
+        return result
+      }
+    }).then(() => {
+      return user.findOne({
+        include: {
+          model: agent,
+          include: {
+            model: agent_detail,
             where: {
-              account: user_account
-            }
-          }),
-          user_role.findOne({
-            where: {
-              user_account: user_account
-            }
-          }),
-          agent_detail.findOne({
-            where: {
-              agent_guid: result.guid,
-              key: 'cellphone'
-            }
-          }),
-          result,
-          //查找是否修改的手机号有相同的account
-          user.findOne({
-            where: {
-              account: cellphone
-            }
-          }),
-        ]).then(function(result) {
-          if (result[0] == null || result[1] == null || result[2] == null || result[3] == null) {
-            return Promise.reject("查找您的信息出现异常，请稍后再试")
-          } else {
-            if (result[4] != null) {
-              return Promise.reject("您所输入的手机号已被注册，请重新输入")
-            } else {
-              return sequelize.transaction().then(function(t) {
-                return Promise.all([
-                  //修改user表 account
-                  user.create({
-                    account: cellphone,
-                    password: result[0].password
-                  }, {
-                    transaction: t
-                  }).then(function(result) {
-                    user.destroy({
-                      where: {
-                        account: user_account
-                      }
-                    })
-                  }),
-                  //修改user_role表 user_account
-                  result[1].update({
-                    user_account: cellphone
-                  }, {
-                    transaction: t
-                  }),
-                  //修改agent_detail表中资料的手机号
-                  result[2].update({
-                    value: cellphone
-                  }, {
-                    transaction: t
-                  }),
-                  //修改agent表中资料的手机号
-                  result[3].update({
-                    user_account: cellphone
-                  }, {
-                    transaction: t
-                  })
-                ]).then(function(result) {
-                  t.commit()
-                  req.session.userInfo.name = cellphone
-                  return true
-                }).catch(function(err) {
-                  // err 是事务回调中使用promise链中的异常结果
-                  t.rollback()
-                  return Promise.reject("修改手机号失败")
-                })
-
-              })
+              key: "cellphone"
             }
           }
-        })
+        },
+        where: {
+          account: user_account
+        }
+      })
+    }).then((result) => {
+      if (result != null) {
+        var ad = result.agent.agent_details[0]
+        ad.value = cellphone
+        return ad.save()
+      } else {
+        return Promise.reject("查找个人信息出错，请再尝试")
       }
+    }).then(function() {
+      return true
     })
   }
 }
