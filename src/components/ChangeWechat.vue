@@ -78,7 +78,7 @@ margin-top: 9%
 }
 .changewechat-input {
 
-    min-height: 460px;
+    min-height: 440px;
 }
 .changewechat-input  .wechat-error{
 
@@ -139,9 +139,9 @@ margin-top: 9%
 .changewechat-input .weui_dialog {
   width: 92%;
 }
-.changewechat-input .weui_cell_primary{
+/*.changewechat-input .weui_cell_primary{
 
   font-size: initial;
 line-height: initial;
-}
+}*/
 </style>

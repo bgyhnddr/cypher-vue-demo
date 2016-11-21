@@ -1,7 +1,8 @@
 <template>
+	<div style="    min-height: 440px;">
 <div @keyup.enter="ChangePwd">
 	<div>
-		<div class="change-password">
+		<div class="resetuser-password">
 			<group>
 				<!--<x-input title="请输入6位数的支付密码" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
 				<x-input title="新密码" :value.sync="pwd.new_password" type="password" placeholder="请输入新密码" :required="false"></x-input>
@@ -11,7 +12,7 @@
 				<x-input title="确认密码" :value.sync="pwd.insure_password" type="password" placeholder="请再次输入新密码" :required="false"></x-input>
 			</group>
 		</div>
-		<p>{{serverMsg}}</p>
+		<p class="resetuser-error">{{serverMsg}}</p>
 		<flexbox style="margin-top:20px">
 			<flexbox-item>
 				<x-button type="primary" @click="ChangePwd">完成</x-button>
@@ -22,8 +23,9 @@
 			<!--<toast :show.sync="show1" :time="1000" @on-hide="onHide">修改成功</toast>-->
 			<!--<toast :show.sync="show2" :time="1000" @on-hide="onHide" type="warn">{{errmsg}}</toast>      -->
 		</div>
-	</div>
+	</div></div>
 </div>
+ <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -96,7 +98,7 @@ export default {
 		var that = this
 		authAPI.getAccount().then(function(result) {
 				if (result.phone == null) {
-					that.showAlert = true
+				that.showAlert = true
 				} else {
 					that.account = result.phone
 					console.log(result)
@@ -107,6 +109,13 @@ export default {
 }
 </script>
 <style>
+.resetuser-error{
+	width: 89%;
+			margin: auto ;
+			color: #d22d23;
+			font-family: "微软雅黑";
+			font-size: 4.1vw;
+}
 .login_zindex {
 	z-index: 10000000 !important;
 }
@@ -115,34 +124,44 @@ export default {
 	z-index: 10000001 !important;
 }
 
-.change-password {
+.resetuser-password {
 	width: 89%;
-	margin: 7% auto;
+    margin: 7% auto 0 auto;
 }
 
-.change-password .weui_cell_hd {
+.resetuser-password .weui_cell_hd {
 	width: 27%;
 }
 
-.change-password .weui_label {
+.resetuser-password .weui_label {
 	color: #595959;
 	font-size: 15px;
 	font-family: "微软雅黑";
 	width: 100%!important;
 	display: inline-block;
 }
+.resetuser-password  .weui_cell {
 
-.change-password .weui_cells {
+  width: 94%;
+  margin: 0 auto 0 auto;
+  padding: 7px 3%;
+  border-radius: 3px;
+}
+.resetuser-password .weui_cells {
 	border: 1px solid #d3d1d1;
 	margin-bottom: 2%;
 	border-radius: 3px;
 }
 
-.change-password .weui_cells input.weui_input {
+.resetuser-password .weui_cells input.weui_input {
 	font-family: "微软雅黑";
+	font-size: 4.5vw;
+color: #aeaeae;
+line-height: inherit;
+height: auto;
 }
 
-.change-password .weui_icon_warn:before {
+.resetuser-password .weui_icon_warn:before {
 	font-size: 16px;
 	color: #f43530;
 }

@@ -286,6 +286,9 @@ padding: 1px 3px;
     .history-choose .weui_cell_ft{
 
     padding-left: 20%;
+    color: #4d4d4d;
+font-size: 4.5vw;
+font-family: "微软雅黑";
     }
     .history-choose  .weui_cell_ft.with_arrow:after{
   display:none
