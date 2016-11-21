@@ -12,7 +12,7 @@
 			</group>
 			<group>
 				<!--<x-input title="请输入新的6位数的支付密码" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
-				<x-input title="确认密码" :value.sync="pwd.insure_password" type="password" placeholder="请再次输入新的支付密码" :required="false" @on-change="change"></x-input>
+				<x-input title="确认密码" :value.sync="pwd.insure_password" type="password" placeholder="请再次输入新密码" :required="false" @on-change="change"></x-input>
 			</group>
 			<p v-if="show2" class="password-error">{{errmsg}}</p>
 
