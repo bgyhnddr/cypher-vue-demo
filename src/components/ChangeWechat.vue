@@ -52,10 +52,7 @@ export default {
         that.showRemind = true
         that.errorMsg = "微信号必须以字母开头，由6-20个字母，数字，下划线或减号组成的字符串"
       } else {
-        authAPI.getUser().then(function(result) {
-
           changeUserInfoAPI.changeWechat({
-            user_account: result.name,
             wechat: that.wechat
           }).then(function(result) {
             if (result == true) {
@@ -65,8 +62,6 @@ export default {
             that.showRemind = true
             that.errorMsg = err
           })
-
-        })
       }
     },
     onHide() {

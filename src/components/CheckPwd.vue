@@ -9,7 +9,7 @@
     </group>
   </div>
 </div>
- <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -31,7 +31,7 @@ export default {
     }
   },
   watch: {
-    pwd(){
+    pwd() {
       this.showMsg = false
     }
   },
@@ -44,56 +44,50 @@ export default {
   methods: {
     cheakPwd() {
       var that = this
-      console.log("检测 密码")
-      console.log(that.pwd)
-
-      authAPI.getUser().then(function(result) {
-
-        changeUserInfoAPI.checkPwd({
-          user_account: result.name,
-          pwd: that.pwd
-        }).then(function(result) {
-          if (result == true) {
-            console.log(result)
-            if (that.$route.params.from == 'wechat') {
-              that.$route.router.go('/accountManagement/changeWechat')
-            } else if (that.$route.params.from == 'phone') {
-              that.$route.router.go('/accountManagement/changeCellPhone')
-            }
+      changeUserInfoAPI.checkPwd({
+        pwd: that.pwd
+      }).then(function(result) {
+        if (result == true) {
+          console.log(result)
+          if (that.$route.params.from == 'wechat') {
+            that.$route.router.go('/accountManagement/changeWechat')
+          } else if (that.$route.params.from == 'phone') {
+            that.$route.router.go('/accountManagement/changeCellPhone')
           }
-        }).catch(function(err) {
-          that.showMsg = true
-          that.errorMsg = err
-        })
-
+        }
+      }).catch(function(err) {
+        that.showMsg = true
+        that.errorMsg = err
       })
     }
   }
 }
 </script>
 <style>
-.checkpasswork-input button.weui_btn.weui_btn_primary{
-margin-top: 9%
+.checkpasswork-input button.weui_btn.weui_btn_primary {
+  margin-top: 9%
+}
 
-}
 .checkpasswork-input {
-    min-height: 460px;
+  min-height: 460px;
 }
+
 .checkPwd-title {
-    margin: 20% auto 2%;
-    width: 90%;
-    color: #000000;
-    font-size: 4.7vw;
-    font-family: "微软雅黑";
+  margin: 20% auto 2%;
+  width: 90%;
+  color: #000000;
+  font-size: 4.7vw;
+  font-family: "微软雅黑";
 }
+
 .checkpasswork-input .pwd-error {
   width: 89%;
-      margin: auto ;
-      color: #d22d23;
-      font-family: "微软雅黑";
-      font-size: 4.1vw;
-
+  margin: auto;
+  color: #d22d23;
+  font-family: "微软雅黑";
+  font-size: 4.1vw;
 }
+
 .checkpasswork-input .weui_cell {
   border: 1px solid #d3d1d1;
   width: 83%;
@@ -105,8 +99,9 @@ margin-top: 9%
 .checkpasswork-input .weui_cell_hd {
   width: 0
 }
-.checkpasswork-input .weui_cell:before{
-border-top: 0
+
+.checkpasswork-input .weui_cell:before {
+  border-top: 0
 }
 
 .checkpasswork-input .weui_input {
@@ -115,7 +110,7 @@ border-top: 0
   /*14px*/
   color: #aeaeae;
   line-height: inherit;
-    height: auto;
+  height: auto;
 }
 
 .checkpasswork-input .weui_dialog_ft {
@@ -143,12 +138,13 @@ border-top: 0
 .checkpasswork-input .weui_dialog {
   width: 92%;
 }
-.checkpasswork-input .weui_cell_primary{
 
+.checkpasswork-input .weui_cell_primary {
   font-size: initial;
-line-height: initial;
+  line-height: initial;
 }
-.checkpasswork-input .vux-flex-row{
+
+.checkpasswork-input .vux-flex-row {
   margin-top: 5px!important;
 }
 </style>
