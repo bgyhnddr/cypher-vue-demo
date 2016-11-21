@@ -531,6 +531,7 @@ border-top:0;
 
 .certificate span.vux-popup-picker-value {
   width: 89%;
+  font-size: 4.5vw;
 }
 
 .certificate .weui_cell_ft.with_arrow:after {
