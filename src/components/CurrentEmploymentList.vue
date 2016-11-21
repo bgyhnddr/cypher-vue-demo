@@ -20,6 +20,7 @@
     <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
   </div>
 </div>
+  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -87,7 +88,6 @@ export default {
             }
             // 关闭时间已经超过2小时的招募
             if (delectItemList.length != 0) {
-              console.log("清除时间已经超过2小时的招募")
               employmentAPI.closeOverduePublishEmployment({
                 delectItemList: delectItemList
               })
@@ -99,7 +99,6 @@ export default {
       if (val == '') {
         val = "timeDesc"
       }
-      console.log(val)
       this.getData(val)
     },
     calculateRemainingTime(item) {
@@ -125,6 +124,9 @@ export default {
 }
 </script>
 <style>
+.current-list {
+    min-height: 460px;
+}
 .current-list a.current-list-list {
   background: #fff;
   margin: 3% 0;

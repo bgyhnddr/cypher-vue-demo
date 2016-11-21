@@ -1,5 +1,6 @@
 ﻿<template>
-<div>
+
+<div class="certificate-bac">
   <div class="certificate-header">
     <div class="vux-center">
       <headimg-upload :file-id.sync="auditInfo.headImg"></headimg-upload>
@@ -55,6 +56,7 @@
     </group>
   </div>
 </div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -164,9 +166,13 @@ export default {
 }
 </script>
 <style>
+.certificate-bac{
+ min-height: 460px;
+
+}
 .certificate-header {
   text-align: center;
-  margin-top: 2%;
+    padding-top: 2%;
 }
 
 .certificate-header button {
@@ -189,7 +195,7 @@ export default {
 .certificate-messages {
   position: relative;
   width: 89%;
-  margin: 7% auto;
+  margin: 7% auto 0;
 }
 
 .certificate-messages .weui_cell:before {

@@ -45,6 +45,7 @@
     <alert :show.sync="showAlert" @on-hide="onHide">无记录</alert>
     <toast :show.sync="showToast" :time="1000" type="text">{{errMsg}}</toast>
   </div>
+  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -155,6 +156,9 @@
     }
 </script>
 <style>
+.history-message {
+    min-height: 460px;
+}
     .history-button {
         position: absolute;
         z-index: 1000;

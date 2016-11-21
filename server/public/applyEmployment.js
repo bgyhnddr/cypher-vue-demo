@@ -119,18 +119,29 @@ var exec = {
         include: [{
           model: employment_detail,
           where: {
-            key: "cellphone",
-            value: data.cellphone
+            $or: [{
+              key: "cellphone",
+              value: data.cellphone
+            }, {
+              key: "wechat",
+              value: data.wechat
+            }]
           },
         }]
       }),
       //查找是否已注册成为代理
       agent_detail.findOne({
         where: {
-          key: "cellphone",
-          value: data.cellphone
+          $or: [{
+            key: "cellphone",
+            value: data.cellphone
+          }, {
+            key: "wechat",
+            value: data.wechat
+          }]
         }
       }),
+
       //查找品牌商account
       agent.findOne({
         include: [{
@@ -148,7 +159,7 @@ var exec = {
         return Promise.reject("找不到审核人的信息")
       } else if (result[0] != null) {
         if (result[0].status == "未审核" || result[0].audit_result == "已通过" || result[1] != null) {
-          return Promise.reject("您的手机号已提交申请或已成为该品牌成员，申请失败")
+          return Promise.reject("您已提交申请或已成为该品牌成员，申请失败")
         }
       }
 

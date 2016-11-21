@@ -1,5 +1,5 @@
 ﻿<template>
-<div>
+<div class="function-search-bac">
   <div class="function-search">
     <group>
       <x-input class="weui_cell_primary" title='' placeholder="输入需要查看的功能名称" :value.sync="keyword" :show-clear=false :required="false"></x-input>
@@ -23,7 +23,7 @@
   </div>
   <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
 </div>
-<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -97,15 +97,14 @@ export default {
       var that = this
       this.keyword = this.$route.params.keyword
 
-        //根据级别选择显示功能
-        agentInfoAPI.getBrandRoleInfo().then(function(result) {
-          console.log(JSON.stringify(result))
-          that.userLevel = result.brand_role.level
-          that.filter(that.$route.params.keyword)
-        }).catch(function(err) {
-          this.show = true
-          this.errorMsg = err
-        })
+      //根据级别选择显示功能
+      agentInfoAPI.getBrandRoleInfo().then(function(result) {
+        that.userLevel = result.brand_role.level
+        that.filter(that.$route.params.keyword)
+      }).catch(function(err) {
+        this.show = true
+        this.errorMsg = err
+      })
     },
     search() {
       var reg = /^[\u4e00-\u9fa5]*$/ //全中文
@@ -124,8 +123,14 @@ export default {
     },
     filter(keyword) {
       var countShowItem = 0
-        //根据级别选择显示功能
-      if (this.userLevel == "0") {
+
+      //恢复全部为显示
+      for (var item in this.funcList) {
+        this.funcList[item].isShow = true
+      }
+
+      //根据级别选择显示功能
+      if (this.userLevel != "0") {
         for (var item in this.funcList) {
           if (this.funcList[item]['name'] == '成员审核') {
             this.funcList[item].isShow = false
@@ -136,15 +141,11 @@ export default {
       }
       if (this.userLevel == "4") {
         for (var item in this.funcList) {
-          if (this.funcList[item]['name'] == '发起招募') {
+          if (this.funcList[item]['name'] == '发起招募' || this.funcList[item].isShow == false) {
             this.funcList[item].isShow = false
           } else {
             this.funcList[item].isShow = true
           }
-        }
-      } else {
-        for (var item in this.funcList) {
-          this.funcList[item].isShow = true
         }
       }
 
@@ -163,6 +164,10 @@ export default {
 }
 </script>
 <style lang="less">
+.function-search-bac{
+    min-height: 460px;
+
+}
 .function-search .weui_cell {
     padding: 9px 2%;
 }

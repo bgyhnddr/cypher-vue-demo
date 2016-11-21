@@ -58,6 +58,7 @@
     </div>
     <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
 </div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -87,7 +88,6 @@
                 var that = this
                 authAPI.getUser().then(function(result) {
                     that.user.user_info = result
-                    console.log("用户账号:" + that.user.user_info.name)
                 })
             }
         },
@@ -99,6 +99,7 @@
 <style lang="less">
     .My-account {
         margin-top: 1%;
+            min-height: 456px;
     }
 
     .My-account .weui_cell {

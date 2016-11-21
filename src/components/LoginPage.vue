@@ -26,10 +26,11 @@
 				</div>
 			</div>
 		</div>
+			<p v-if="show" class="login-error">{{errmsg}}</p>
 		<div class="forget-button">
 			<x-button mini v-link="{path: '/auth/PhoneVerification/login'}">忘记密码？</x-button>
 		</div>
-		<p v-if="show" class="login-error">{{errmsg}}</p>
+
 		<flexbox style="margin-top:20px">
 			<flexbox-item>
 				<x-button type="primary" @click="submitLogin">登录</x-button>
@@ -45,7 +46,7 @@
 
 	</div>
 </div>
-<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -284,13 +285,14 @@ a.vux-header-back.headerTransition-transition {
 	border: 0
 }
 
-.login-footer {
+.all-footer {
 	width: 100%;
 	text-align: center;
 	color: #979797;
 	font-size: 3vw;
 	font-family: "微软雅黑";
 	line-height: 2.5em;
+	    margin-bottom: 10%;
 }
 
 .login-message input {

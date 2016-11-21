@@ -7,6 +7,7 @@
     </div>
     <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
 </div>
+  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -39,7 +40,6 @@
         methods: {
             chooseBrandRole() {
                 var that = this
-                console.log("招募者的角色" + that.userinfo.brand_role.code)
                 employmentAPI.getEmployableRoles({
                     brand_role_code: that.userinfo.brand_role.code
                 }).then(function(result) {
@@ -57,7 +57,6 @@
             getPersonalInfo() {
                 var that = this
                 agentInfoAPI.getBrandRoleInfo().then(function(result) {
-                    console.log(JSON.stringify(result))
                     that.brandName = result.name
                     that.userinfo = result
                     that.chooseBrandRole()
@@ -69,7 +68,6 @@
             chooseRole(roleCode) {
                 //创建发起招募
                 var that = this
-                console.log(roleCode)
                 var employer = this.userinfo.brand_role.agent_brand_role.agent.user_account
                 var brandGuid = this.userinfo.brand_role.brand_guid
 
@@ -79,7 +77,6 @@
                     roleCode: roleCode,
                     createTime: new Date().Format('yyyy-MM-dd hh:mm:ss')
                 }).then(function(result) {
-                    console.log(JSON.stringify(result))
                         //跳转证书页
                     that.$route.router.go('/employManagement/brandAuthorization/' + result + '/' + that.brandName)
                 }).catch(function(err) {
@@ -98,6 +95,7 @@
 <style lang="less">
     .choose-bac {
         margin-top: 7%;
+        min-height: 435px;
     }
 
     .choose-bac .weui_btn+.weui_btn {

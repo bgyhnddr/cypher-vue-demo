@@ -1,5 +1,5 @@
 <template>
-	<div style="    min-height: 440px;">
+	<div style="    min-height: 435px;">
 <div @keyup.enter="ChangePwd">
 	<div>
 		<div class="resetuser-password">
@@ -23,7 +23,7 @@
 		</div>
 	</div></div>
 </div>
- <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+ <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
