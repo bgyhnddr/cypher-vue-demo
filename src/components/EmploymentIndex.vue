@@ -100,13 +100,8 @@
         methods: {
             getPersonalInfo() {
                 var that = this
-                    agentInfoAPI.getBrandRoleInfo({
-                        user_account: that.user.user_info.name
-                    }).then(function(result) {
-                        console.log(JSON.stringify(result))
-
+                    agentInfoAPI.getBrandRoleInfo().then(function(result) {
                         employmentAPI.getAuditList().then(function(result) {
-                            console.log(result.length)
                             if (result.length != 0) {
                                 that.auditListLength = result.length
                             } else {
@@ -116,7 +111,7 @@
                             this.showMsg = true
                             this.errorMsg = err
                         })
-
+                        
                         if (result.brand_role.level == "0") {
                             that.showAuditClick = true
                         }
