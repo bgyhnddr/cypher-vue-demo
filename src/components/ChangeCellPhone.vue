@@ -53,10 +53,7 @@ export default {
         that.showRemind = true
         that.errorMsg = "手机号填写错误，请重新输入"
       } else {
-        authAPI.getUser().then(function(userinfo) {
-
           changeUserInfoAPI.changeCellphone({
-            user_account: userinfo.name,
             cellphone: that.cellphone
           }).then(function(result) {
             if (result == true) {
@@ -66,8 +63,6 @@ export default {
             that.showRemind = true
             that.errorMsg = err
           })
-
-        })
       }
     },
     onHide() {

@@ -61,13 +61,9 @@ export default {
   methods: {
     getData(val) {
       var that = this
-        //获取用户account
-      authAPI.getUser().then(function(result) {
-        console.log("用户账号:" + result.name)
           //改变列表内容
         employmentAPI.getCurrentList({
-          key: val,
-          user_account: result.name
+          key: val
         }).then(function(result) {
           if (result.length == 0) {
             that.showMsg = true
@@ -99,7 +95,6 @@ export default {
             }
           }
         })
-      })
     },
     onChange(val) {
       if (val == '') {

@@ -9,6 +9,9 @@ export default {
         return httpRequest.post(path + 'SendSMS', params)
     },
     GetBalance() {
-        return httpRequest.post(path + 'GetBalance', params)
+        return httpRequest.post(path + 'GetBalance')
+    },
+    GetUserPhone(){
+      return httpRequest.post(path + 'GetUserPhone')
     }
 }

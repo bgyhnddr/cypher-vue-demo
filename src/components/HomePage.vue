@@ -134,7 +134,6 @@ export default {
       }],
       keyword: null,
       user: {
-        userInfo: {},
         agentInfo: {},
         brandName: null
       },
@@ -145,10 +144,7 @@ export default {
   methods: {
     init() {
       var that = this
-      authAPI.getUser().then(function(result) {
-        that.user.userInfo = result
-        that.getAgentInfo(result.name)
-      })
+      that.getAgentInfo()
       this.getJsConfig()
     },
     search() {
@@ -163,12 +159,10 @@ export default {
         this.$route.router.go('/homePage/search/' + this.keyword)
       }
     },
-    getAgentInfo(user_account) {
+    getAgentInfo() {
       var that = this
       console.log(this.user.userInfo.name)
-      employmentAPI.getAgentInfo({
-        user_account: user_account
-      }).then(function(result) {
+      employmentAPI.getAgentInfo().then(function(result) {
         console.log(JSON.stringify(result))
         that.user.agentInfo = result
       }).catch(function(err) {
@@ -176,9 +170,7 @@ export default {
         this.errorMsg = err
       })
 
-      employmentAPI.getBrandInfo({
-        user_account: user_account
-      }).then(function(result) {
+      employmentAPI.getBrandInfo().then(function(result) {
         console.log(JSON.stringify(result))
         that.user.brandName = result.name
       }).catch(function(err) {

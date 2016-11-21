@@ -77,14 +77,7 @@
         data() {
             return {
                 user: {
-                    user_info: {},
-                    brand_info: {
-                        brand_role: {
-                            agent_brand_role: {
-                                agent: {}
-                            }
-                        }
-                    }
+                    user_info: {}
                 },
                 showMsg: false,
                 errorMsg: null
@@ -96,15 +89,6 @@
                 authAPI.getUser().then(function(result) {
                     that.user.user_info = result
                     console.log("用户账号:" + that.user.user_info.name)
-
-                    agentInfoAPI.getBrandRoleInfo({
-                        user_account: that.user.user_info.name
-                    }).then(function(result) {
-                        console.log(JSON.stringify(result))
-                    }).catch(function(err) {
-                        that.showMsg = true
-                        that.errorMsg = err
-                    })
                 })
             }
         },

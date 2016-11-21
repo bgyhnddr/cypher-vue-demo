@@ -40,7 +40,7 @@ var exec = {
 
   },
   getBrandInfo(req, res, next) {
-    var user_account = req.body.user_account
+    var user_account = req.session.userInfo.name
 
     var agent = require('../../db/models/agent')
     var agent_brand_role = require('../../db/models/agent_brand_role')
@@ -107,7 +107,7 @@ var exec = {
 
   },
   getAgentInfo(req, res, next) {
-    var user_account = req.body.user_account
+    var user_account = req.session.userInfo.name
 
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
@@ -457,7 +457,7 @@ var exec = {
   },
   getCurrentList(req, res, next) {
     var selectMsg = req.body.key
-    var user_account = req.body.user_account
+    var user_account = req.session.userInfo.name
     var select = null
 
     var brand_role = require('../../db/models/brand_role')
@@ -614,7 +614,7 @@ var exec = {
 
   },
   getEmploymentInfo(req, res, next) {
-    var user_account = req.body.account
+    var user_account = req.session.userInfo.name
 
     var employment = require('../../db/models/employment')
     var agent = require('../../db/models/agent')

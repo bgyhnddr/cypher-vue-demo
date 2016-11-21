@@ -57,22 +57,14 @@
             },
             getPersonalInfo() {
                 var that = this
-                authAPI.getUser().then(function(result) {
-
-                    var user_account = result.name
-                    console.log("获取用户账号:" + user_account)
-
-                    agentInfoAPI.getBrandRoleInfo({
-                        user_account: user_account
-                    }).then(function(result) {
-                        console.log(JSON.stringify(result))
-                        that.brandName = result.name
-                        that.userinfo = result
-                        that.chooseBrandRole()
-                    }).catch(function(err) {
-                        that.showMsg = true
-                        that.errorMsg = err
-                    })
+                agentInfoAPI.getBrandRoleInfo().then(function(result) {
+                    console.log(JSON.stringify(result))
+                    that.brandName = result.name
+                    that.userinfo = result
+                    that.chooseBrandRole()
+                }).catch(function(err) {
+                    that.showMsg = true
+                    that.errorMsg = err
                 })
             },
             chooseRole(roleCode) {

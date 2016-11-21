@@ -182,6 +182,7 @@ export default {
         var LoacteAccount = that.$route.params.account
         if (LocateFrom == 'history' || LocateFrom == 'account' || LocateFrom == 'auditInfo') {
           that.auditInfo.Brand = result.GetBrand.name
+          that.auditInfo.employee = result.Getemployment.employee_user_account
           if (LoacteAccount == 'admin') {
             that.auditInfo.employer = that.auditInfo.account
           }
@@ -229,8 +230,6 @@ export default {
           that.auditInfo.time = result[0].employment.employer_time
           that.auditInfo.employer = result[0].employment.employer_user_account
           that.auditInfo.employee = result[0].employment.employee_user_account
-        } else {
-          that.auditInfo.employee = that.auditInfo.cellphone
         }
       }).catch(function(err) {
         console.log(err)
