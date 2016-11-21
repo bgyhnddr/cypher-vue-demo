@@ -1,33 +1,34 @@
 ﻿<template>
-	<div style="    min-height: 440px;">
-<div @keyup.enter="CommitVerification">
-	<div>
-		<div class="change-password">
-			<group v-if="!UserPhone">
-				<x-input title="手机号" :value.sync="cellphone" placeholder="请输入手机号" :required="false"></x-input>
-			</group>
-			<p v-if="UserPhone" class="Message-authentication " >请输入{{GetPhone}}短信验证码</p>
-			<div class=" phone-button">
-				<group class="weui_cells_form">
-					<x-input title="验证码" class="weui_vcode" :value.sync="VerificationCode" placeholder="请输入验证码" :required="false">
-						<x-button slot="right" type="default" @click="GetVerificationCode" :disabled="disable">{{btnMsg}}</x-button>
-					</x-input>
+<div style="    min-height: 440px;">
+	<div @keyup.enter="CommitVerification">
+		<div>
+			<div class="change-password">
+				<group v-if="!UserPhone">
+					<x-input title="手机号" :value.sync="cellphone" placeholder="请输入手机号" :required="false"></x-input>
 				</group>
-				<!-- <p v-if="showTime">{{TimeLeft}}秒重新发送</p> -->
-				<p v-if="showErr">{{errmsg}}</p>
-				</group>
+				<p v-if="UserPhone" class="Message-authentication ">请输入{{GetPhone}}短信验证码</p>
+				<div class=" phone-button">
+					<group class="weui_cells_form">
+						<x-input title="验证码" class="weui_vcode" :value.sync="VerificationCode" placeholder="请输入验证码" :required="false">
+							<x-button slot="right" type="default" @click="GetVerificationCode" :disabled="disable">{{btnMsg}}</x-button>
+						</x-input>
+					</group>
+					<!-- <p v-if="showTime">{{TimeLeft}}秒重新发送</p> -->
+					<p v-if="showErr">{{errmsg}}</p>
+					</group>
+				</div>
+			</div>
+			<flexbox style="margin-top:20px">
+				<flexbox-item>
+					<x-button type="primary" @click="CommitVerification ">完成</x-button>
+				</flexbox-item>
+			</flexbox>
+			<div>
+				<toast :show.sync="show" :time="1000" type="default">验证码已发送</toast>
 			</div>
 		</div>
-		<flexbox style="margin-top:20px">
-			<flexbox-item>
-				<x-button type="primary" @click="CommitVerification ">完成</x-button>
-			</flexbox-item>
-		</flexbox>
-		<div>
-			<toast :show.sync="show" :time="1000" type="default">验证码已发送</toast>
-		</div>
 	</div>
-</div></div>
+</div>
 <div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
@@ -88,24 +89,24 @@ export default {
 			var that = this
 			if (that.cellphone || that.UserPhone) {
 				sendSMS.SendSMS({
-						cellphone: that.cellphone,
-						mode: "SendVerificationCode"
-					}).then(function(result) {
-						that.showErr = false
-						that.show = true
+					cellphone: that.cellphone,
+					mode: "SendVerificationCode"
+				}).then(function(result) {
+					that.showErr = false
+					that.show = true
+					that.SetInterval()
+					console.log(result)
+				}).catch(function(err) {
+					console.log(err)
+					that.showErr = true
+					if (!isNaN(parseInt(err))) {
+						that.errmsg = "获取过于频繁"
+						that.CodeTime = 60 - err
 						that.SetInterval()
-						console.log(result)
-					}).catch(function(err) {
-						console.log(err)
-						that.showErr = true
-						if (!isNaN(parseInt(err))) {
-							that.errmsg = "获取过于频繁"
-							that.CodeTime = 60 - err
-							that.SetInterval()
-						} else {
-							that.errmsg = err
-						}
-					})
+					} else {
+						that.errmsg = err
+					}
+				})
 			}
 
 		},
@@ -129,21 +130,21 @@ export default {
 
 		}
 	},
-	watch:{
-			cellphone(){
-				this.showErr = false
-			},
-			VerificationCode(){
-				this.showErr = false
-			}
+	watch: {
+		cellphone() {
+			this.showErr = false
+		},
+		VerificationCode() {
+			this.showErr = false
+		}
 	},
 	ready() {
 		if (this.$route.params.locate == 'account') {
 			var that = this
 			that.UserPhone = true
-			authAPI.getUser().then(function(result) {
-				that.GetPhone = result.name.substring(0, 3) + '****' + result.name.substring(8, 11)
-				that.cellphone = result.name
+			sendSMS.GetUserPhone().then(function(result) {
+				that.GetPhone = result.value.substring(0, 3) + '****' + result.value.substring(8, 11)
+				that.cellphone = result.value
 			})
 		}
 		// this.$els.cellphone.focus()
@@ -222,12 +223,12 @@ export default {
 	color: #d22d23;
 	font-family: "微软雅黑";
 }
-.Message-authentication{
+
+.Message-authentication {
 	color: #aeaeae;
 	text-align: center;
 	margin-bottom: 4%;
 	font-size: 4.7vw;
 	font-family: "微软雅黑";
-
 }
 </style>

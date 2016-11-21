@@ -116,6 +116,26 @@ var exec = {
     }
 
   },
+  GetUserPhone(req, res, next) {
+    var userInfo = req.session.userInfo
+    var agent = require('../../db/models/agent')
+    var agent_detail = require('../../db/models/agent_detail')
+
+    agent_detail.belongsTo(agent)
+
+    return agent_detail.findOne({
+      where:{
+        key:'cellphone'
+      },
+      include: [{
+        model: agent,
+        where: {
+          user_account: userInfo.name
+        }
+      }]
+    })
+
+  },
   GetBalance(req, res, next) {
     var soap = require('soap')
     var phone = req.body.cellphone
