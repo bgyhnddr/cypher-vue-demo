@@ -107,7 +107,7 @@ var exec = {
 
   },
   getAgentInfo(req, res, next) {
-    var user_account = req.body.user_account
+    var user_account = req.session.userInfo.name
 
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
@@ -614,7 +614,7 @@ var exec = {
 
   },
   getEmploymentInfo(req, res, next) {
-    var user_account = req.body.account
+    var user_account = req.session.userInfo.name
 
     var employment = require('../../db/models/employment')
     var agent = require('../../db/models/agent')
