@@ -126,7 +126,7 @@ export default {
     filter(keyword) {
       var countShowItem = 0
         //根据级别选择显示功能
-      if (this.userLevel == "0") {
+      if (this.userLevel != "0") {
         for (var item in this.funcList) {
           if (this.funcList[item]['name'] == '成员审核') {
             this.funcList[item].isShow = false
@@ -137,15 +137,11 @@ export default {
       }
       if (this.userLevel == "4") {
         for (var item in this.funcList) {
-          if (this.funcList[item]['name'] == '发起招募') {
+          if (this.funcList[item]['name'] == '发起招募' || this.funcList[item].isShow == false) {
             this.funcList[item].isShow = false
           } else {
             this.funcList[item].isShow = true
           }
-        }
-      } else {
-        for (var item in this.funcList) {
-          this.funcList[item].isShow = true
         }
       }
 
