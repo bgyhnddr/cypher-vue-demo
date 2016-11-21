@@ -10,31 +10,26 @@ var exec = {
       constraints: false
     })
 
-    return Promise.all([
-      employable_rule.findAll({
-        where: {
-          employer_brand_role_code: brand_role_code,
-        },
-        include: [{
-          model: brand_role,
-        }],
-        order: [
-          [{
-            model: brand_role
-          }, 'level', 'ASC']
-        ]
-      }),
-      employable_rule.count({
-        where: {
-          employer_brand_role_code: brand_role_code,
+    return employable_rule.findAll({
+      where: {
+        employer_brand_role_code: brand_role_code,
+      },
+      include: [{
+        model: brand_role,
+      }],
+      order: [
+        [{
+          model: brand_role
+        }, 'level', 'ASC']
+      ]
+    }).then(function(result) {
+      if (result.length > 0) {
+        return {
+          employableRoles: result,
+          roleCount: result.length
         }
-      })
-    ]).then(function(result) {
-      var employableRoles = result[0]
-      var roleCount = result[1]
-      return {
-        employableRoles: employableRoles,
-        roleCount: roleCount
+      } else {
+        return Promise.reject("您目前暂无可招募代理角色")
       }
     })
 
