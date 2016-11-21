@@ -53,7 +53,6 @@ export default {
       employmentAPI.getCurrentInfo({
         guid: guid
       }).then(function(result) {
-        console.log(JSON.stringify(result))
         that.data = result
         that.calculateRemainingTime(result)
         that.count(result)
@@ -63,9 +62,7 @@ export default {
       })
     },
     calculateRemainingTime(item) {
-      console.log("剩余时间")
       var createTime = item.create_time
-      console.log(item.create_time)
       var startDate = new Date(createTime)
       var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
 
@@ -87,7 +84,6 @@ export default {
       this.applicantNum = (item.employments != null) ? item.employments.length : 0
     },
     closeEmployment() {
-      console.log("关闭当前招募")
       var that = this
       employmentAPI.closeEmployment({
         guid: this.$route.params.guid

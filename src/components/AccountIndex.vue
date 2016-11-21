@@ -87,7 +87,6 @@
                 var that = this
                 authAPI.getUser().then(function(result) {
                     that.user.user_info = result
-                    console.log("用户账号:" + that.user.user_info.name)
                 })
             }
         },

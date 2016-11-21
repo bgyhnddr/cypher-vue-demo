@@ -105,7 +105,6 @@ export default {
   },
   methods: {
     initData() {
-      console.log("显示发起招募证书")
       var that = this
       var publishEmploymentID = this.$route.params.publishEmploymentID
 
@@ -119,7 +118,6 @@ export default {
       applyEmploymentAPI.getPublishEmploymentInfo({
         employmentGuid: publishEmploymentID
       }).then(function(result) {
-        console.log(JSON.stringify(result))
         that.publishEmploymentData = result
 
         //招募已关闭
@@ -156,19 +154,16 @@ export default {
     },
     getBrandInfo() {
       var that = this
-      console.log("正在获取品牌资料")
 
       applyEmploymentAPI.getBrandInfo({
         user_account: this.publishEmploymentData.employer_user_account
       }).then(function(result) {
-        console.log(JSON.stringify(result))
         that.employmentData = result
 
         for (var item in result.brand_details) {
           for (var meta in result.brand_details[item]) {
             //key = "companyName"
             if (meta == 'key' && result.brand_details[item][meta] == 'companyName') {
-              console.log(result.brand_details[item]['value'])
               that.company_name = result.brand_details[item]['value']
             }
           }
@@ -182,7 +177,6 @@ export default {
     getRoleName() {
       var that = this
       agentInfoAPI.getBrandRoleInfo().then(function(result) {
-        console.log(JSON.stringify(result))
         that.brand_role_name = result.brand_role.name
 
         if (result.brand_role.level != "0") {
@@ -197,7 +191,6 @@ export default {
     getAgentInfo() {
       var that = this
       employmentAPI.getAgentInfo().then(function(result) {
-        console.log(JSON.stringify(result))
         that.agentInfo = result
 
         for (var item in result.agent_details) {
@@ -231,7 +224,6 @@ export default {
     getEmploymentGuidAndTerm() {
       var that = this
       employmentAPI.getEmploymentInfo().then(function(result) {
-        console.log(JSON.stringify(result))
         that.employmentIDAndTerm.employmentGuid = result[0].guid.split('-')[4]
         that.employmentIDAndTerm.start = new Date(result[1].employment_term.term_from).Format("yyyy 年 MM 月 dd 日")
         that.employmentIDAndTerm.deadline = new Date(result[1].employment_term.term_to).Format("yyyy 年 MM 月 dd 日")

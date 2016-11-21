@@ -48,7 +48,6 @@ export default {
         pwd: that.pwd
       }).then(function(result) {
         if (result == true) {
-          console.log(result)
           if (that.$route.params.from == 'wechat') {
             that.$route.router.go('/accountManagement/changeWechat')
           } else if (that.$route.params.from == 'phone') {

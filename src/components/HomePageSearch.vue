@@ -98,15 +98,14 @@ export default {
       var that = this
       this.keyword = this.$route.params.keyword
 
-        //根据级别选择显示功能
-        agentInfoAPI.getBrandRoleInfo().then(function(result) {
-          console.log(JSON.stringify(result))
-          that.userLevel = result.brand_role.level
-          that.filter(that.$route.params.keyword)
-        }).catch(function(err) {
-          this.show = true
-          this.errorMsg = err
-        })
+      //根据级别选择显示功能
+      agentInfoAPI.getBrandRoleInfo().then(function(result) {
+        that.userLevel = result.brand_role.level
+        that.filter(that.$route.params.keyword)
+      }).catch(function(err) {
+        this.show = true
+        this.errorMsg = err
+      })
     },
     search() {
       var reg = /^[\u4e00-\u9fa5]*$/ //全中文
@@ -125,7 +124,13 @@ export default {
     },
     filter(keyword) {
       var countShowItem = 0
-        //根据级别选择显示功能
+
+      //恢复全部为显示
+      for (var item in this.funcList) {
+        this.funcList[item].isShow = true
+      }
+
+      //根据级别选择显示功能
       if (this.userLevel != "0") {
         for (var item in this.funcList) {
           if (this.funcList[item]['name'] == '成员审核') {

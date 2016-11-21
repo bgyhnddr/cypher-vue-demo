@@ -87,7 +87,6 @@ export default {
             }
             // 关闭时间已经超过2小时的招募
             if (delectItemList.length != 0) {
-              console.log("清除时间已经超过2小时的招募")
               employmentAPI.closeOverduePublishEmployment({
                 delectItemList: delectItemList
               })
@@ -99,7 +98,6 @@ export default {
       if (val == '') {
         val = "timeDesc"
       }
-      console.log(val)
       this.getData(val)
     },
     calculateRemainingTime(item) {

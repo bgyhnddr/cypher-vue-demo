@@ -165,12 +165,9 @@ export default {
       this.employmentData.guid = guid
       this.employmentData.showGuid = guid.split("-")[4]
       var employmentGuid = this.$route.params.publishEmploymentID
-      console.log(employmentGuid)
       applyEmploymentAPI.getPublishEmploymentInfo({
         employmentGuid: employmentGuid
       }).then(function(result) {
-        console.log(JSON.stringify(result))
-
         //招募失效
         var startDate = new Date(result.create_time)
         var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
@@ -191,12 +188,10 @@ export default {
     },
     getEmploymentInfo(user_account) {
       var that = this
-      console.log("正在获取品牌资料:" + user_account)
       applyEmploymentAPI.getBrandInfo({
         user_account: user_account
       }).then(function(result) {
         that.employmentData.brandInfo = result
-        console.log(JSON.stringify(that.employmentData))
 
         that.getEmploymentBrandRole()
       }).catch(function(err) {
@@ -206,13 +201,11 @@ export default {
     },
     getEmploymentBrandRole() {
       var that = this
-      console.log("正在获取申请等级")
       applyEmploymentAPI.getRoleName({
         brand_guid: this.employmentData.brandInfo.guid,
         brand_role_code: this.employmentData.publishEmploymentInfo.brand_role_code
       }).then(function(result) {
         that.employmentData.brandRoleName = result.name
-        console.log(JSON.stringify(result))
       }).catch(function(err) {
         that.showMsg = true
         that.errorMsg = err
@@ -220,17 +213,14 @@ export default {
     },
     getAgentGuid(user_account) {
       var that = this
-      console.log("获取招募者资料:" + user_account)
       applyEmploymentAPI.getAgentInfo({
         user_account: user_account
       }).then(function(result) {
-        console.log(JSON.stringify(result))
         that.employmentData.agentGuid = result.guid
 
         for (var item in result.agent_details) {
           for (var meta in result.agent_details[item]) {
             if (meta == 'key' && result.agent_details[item][meta] == 'name') {
-              console.log(result.agent_details[item]['value'])
               that.employmentData.employerName = result.agent_details[item]['value']
             }
           }
@@ -241,7 +231,6 @@ export default {
       })
     },
     goFillEmployment2() {
-      console.log("打开第二部分表格")
       var showNextPage = true
       var reg = /^[a-zA-Z]+[a-zA-Z0-9_]*$/ //微信号
       var reg2 = /[\u4e00-\u9fa5]/ //中文
@@ -273,7 +262,6 @@ export default {
       var commitFlag = true
         //将data.provinceAndRegion 转换成中文字符串
       this.data.address = filterAddress(this.data.addressTemp, AddressChinaData)
-      console.log(JSON.stringify(this.data))
 
       var startDate = new Date(this.employmentData.publishEmploymentInfo.create_time)
       var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
@@ -313,7 +301,6 @@ export default {
       }
       if (commitFlag) {
         var deadline = endDate.Format('yyyy-MM-dd hh:mm:ss')
-        console.log(deadline)
 
         applyEmploymentAPI.submitApplication({
           meta: this.meta,
@@ -321,7 +308,6 @@ export default {
           employmentData: this.employmentData,
           deadline: deadline
         }).then(function(result) {
-          console.log("提交成功")
           that.$route.router.go('/employManagement/employmentSubmission/' + that.employmentData.brandInfo.name)
         }).catch(function(err) {
           that.showMsg = true
@@ -332,7 +318,6 @@ export default {
   },
   events: {
     goFillEmployment1() {
-      console.log("打开第一部分表格")
       this.$dispatch('fillInEmployment_goBack', false)
       this.showNextFillModel = false
     }
