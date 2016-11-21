@@ -100,10 +100,6 @@
         methods: {
             getPersonalInfo() {
                 var that = this
-                authAPI.getUser().then(function(result) {
-                    that.user.user_info = result
-                    console.log("用户账号:" + that.user.user_info.name)
-
                     agentInfoAPI.getBrandRoleInfo({
                         user_account: that.user.user_info.name
                     }).then(function(result) {
@@ -133,7 +129,7 @@
                         this.showMsg = true
                         this.errorMsg = err
                     })
-                })
+
             }
         },
         ready() {
