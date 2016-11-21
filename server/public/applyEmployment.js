@@ -151,7 +151,7 @@ var exec = {
 
                 return sequelize.transaction().then(function(t) {
                     return Promise.all([
-                        user.create({ account: data.cellphone, password: pwd }, { transaction: t }),
+                        user.create({ account: data.cellphone, password: pwd ,cellphone: data.cellphone}, { transaction: t }),
                         user_role.create({ user_account: data.cellphone, role_code: 'user' }, { transaction: t }),
                         employment.create({
                             guid: employmentData.guid,

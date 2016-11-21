@@ -5,7 +5,8 @@ var user = sequelize.define(
     'user', {
         id: { type: Sequelize.INTEGER, autoIncrement: true, unique: true },
         account: { type: Sequelize.STRING, primaryKey: true },
-        password: Sequelize.STRING
+        password: Sequelize.STRING,
+        cellphone: Sequelize.STRING
     }, {
         underscored: true
     })

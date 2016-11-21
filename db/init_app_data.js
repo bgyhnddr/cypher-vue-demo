@@ -13,7 +13,7 @@ var agent_detail = require('./models/agent_detail')
 
 module.exports = function() {
     return Promise.all([
-        user.upsert({ account: 'admin', password: "admin" }), //品牌商
+        user.upsert({ account: 'admin', password: "admin" , cellphone: "13326699111"}), //品牌商
 
         user_role.upsert({ user_account: "admin", role_code: "user" }),
 

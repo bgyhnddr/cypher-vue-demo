@@ -31,33 +31,33 @@ var exec = {
         value: wechat
       }
     }).then(function(result) {
-      if(result != null){
+      if (result != null) {
         return Promise.reject("该微信号已被注册，请重新输入")
-      }else{
+      } else {
         return agent.findOne({
-            where: {
-                user_account: user_account
-            }
+          where: {
+            user_account: user_account
+          }
         }).then(function(result) {
-            if (result == null) {
+          if (result == null) {
+            return Promise.reject("修改微信号失败")
+          } else {
+            return agent_detail.findOne({
+              where: {
+                agent_guid: result.guid,
+                key: 'wechat'
+              }
+            }).then(function(result) {
+              if (result == null) {
                 return Promise.reject("修改微信号失败")
-            } else {
-                return agent_detail.findOne({
-                    where: {
-                        agent_guid: result.guid,
-                        key: 'wechat'
-                    }
-                }).then(function(result) {
-                    if (result == null) {
-                        return Promise.reject("修改微信号失败")
-                    } else {
-                        result.value = wechat
-                        return result.save()
-                    }
-                }).then(function(result) {
-                    return true
-                })
-            }
+              } else {
+                result.value = wechat
+                return result.save()
+              }
+            }).then(function(result) {
+              return true
+            })
+          }
         })
       }
     })
@@ -86,67 +86,41 @@ var exec = {
               account: user_account
             }
           }),
-          user_role.findOne({
-            where: {
-              user_account: user_account
-            }
-          }),
           agent_detail.findOne({
             where: {
               agent_guid: result.guid,
               key: 'cellphone'
             }
           }),
-          result,
-          //查找是否修改的手机号有相同的account
+          //查找是否修改的手机号有相同的cellphone
           user.findOne({
             where: {
-              account: cellphone
+              cellphone: cellphone
             }
           }),
         ]).then(function(result) {
-          if (result[0] == null || result[1] == null || result[2] == null || result[3] == null) {
+          if (result[0] == null || result[1] == null ) {
             return Promise.reject("查找您的信息出现异常，请稍后再试")
           } else {
-            if (result[4] != null) {
+            if (result[2] != null) {
               return Promise.reject("您所输入的手机号已被注册，请重新输入")
             } else {
               return sequelize.transaction().then(function(t) {
                 return Promise.all([
-                  //修改user表 account
-                  user.create({
-                    account: cellphone,
-                    password: result[0].password
-                  }, {
-                    transaction: t
-                  }).then(function(result) {
-                    user.destroy({
-                      where: {
-                        account: user_account
-                      }
-                    })
-                  }),
-                  //修改user_role表 user_account
-                  result[1].update({
-                    user_account: cellphone
+                  //修改user表 cellphone
+                  result[0].update({
+                    cellphone: cellphone
                   }, {
                     transaction: t
                   }),
                   //修改agent_detail表中资料的手机号
-                  result[2].update({
+                  result[1].update({
                     value: cellphone
                   }, {
                     transaction: t
                   }),
-                  //修改agent表中资料的手机号
-                  result[3].update({
-                    user_account: cellphone
-                  }, {
-                    transaction: t
-                  })
                 ]).then(function(result) {
                   t.commit()
-                  req.session.userInfo.name = cellphone
                   return true
                 }).catch(function(err) {
                   // err 是事务回调中使用promise链中的异常结果
