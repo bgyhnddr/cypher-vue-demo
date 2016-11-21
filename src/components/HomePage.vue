@@ -160,7 +160,6 @@ export default {
     },
     getAgentInfo() {
       var that = this
-      console.log(this.user.userInfo.name)
       employmentAPI.getAgentInfo().then(function(result) {
         console.log(JSON.stringify(result))
         that.user.agentInfo = result
