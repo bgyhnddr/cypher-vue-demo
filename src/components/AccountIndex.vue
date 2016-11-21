@@ -58,6 +58,7 @@
     </div>
     <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
 </div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -98,6 +99,7 @@
 <style lang="less">
     .My-account {
         margin-top: 1%;
+            min-height: 456px;
     }
 
     .My-account .weui_cell {

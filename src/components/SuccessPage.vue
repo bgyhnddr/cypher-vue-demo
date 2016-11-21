@@ -5,6 +5,7 @@
         密码立即生效，请重新登录！</p>
         <p>*倒计时<span>{{time}}s</span>将自动跳转至登录页面</p>
     </div>
+    <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 <script>
     import authAPI from '../api/auth'
@@ -44,6 +45,7 @@
         text-align: center;
         margin-top: 13%;
         font-family: "微软雅黑";
+        min-height: 418px;
     }
 
     .Application-is-successfuls img {

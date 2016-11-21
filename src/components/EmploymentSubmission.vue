@@ -5,6 +5,7 @@
         <p>账户密码【<span>{{pwd}}</span>】</p>
         <p>*审核通过后可使用此密码登录，请妥善保管</p>
     </div>
+      <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 <script>
     import applyEmploymentAPI from '../api/applyEmployment'
@@ -37,6 +38,7 @@
     text-align: center;
     margin-top: 13%;
 font-family: "微软雅黑";
+min-height: 419px;
 }
 .Application-is-successful img{
 width: 19%;

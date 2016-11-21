@@ -1,7 +1,9 @@
 ﻿<template>
-<div style="min-height: 440px;">
+
+<div style="min-height: 435px;">
 	<div @keyup.enter="CommitVerification">
 		<div>
+
 			<div class="change-password">
 				<group v-if="!UserPhone">
 					<x-input title="手机号" :value.sync="cellphone" placeholder="请输入手机号" :required="false"></x-input>
@@ -14,8 +16,9 @@
 						</x-input>
 					</group>
 					<!-- <p v-if="showTime">{{TimeLeft}}秒重新发送</p> -->
-					<p v-if="showErr">{{errmsg}}</p>
+					<p v-if="showErr"  class="phone-error">{{errmsg}}</p>
 					</group>
+
 				</div>
 			</div>
 			<flexbox style="margin-top:20px">
@@ -28,8 +31,13 @@
 			</div>
 		</div>
 	</div>
-</div>
-<div class="login-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+
+
+</div></div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+
+
+
 </template>
 
 <script>

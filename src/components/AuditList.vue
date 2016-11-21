@@ -20,6 +20,7 @@
     <alert :show.sync="show">无记录</alert>
   </div>
 </div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -95,7 +96,9 @@ export default {
 }
 </script>
 <style>
-.audit-list {}
+.audit-list {
+    min-height: 460px;
+}
 
 .audit-list .weui_btn {
   position: absolute;

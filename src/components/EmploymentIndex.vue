@@ -61,6 +61,7 @@
         </group>
         <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
 	</div>
+  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -136,6 +137,7 @@
     .employmentindex-bac {
         font-family: "微软雅黑";
         background-color: #f2f2f2;
+            min-height: 460px;
     }
     /*顶栏*/
 

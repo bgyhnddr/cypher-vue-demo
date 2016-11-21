@@ -15,6 +15,7 @@
     </confirm>
   </div>
 </div>
+  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -103,7 +104,8 @@ export default {
 <style>
 .currnt-info {
   width: 89%;
-  margin: 5% auto;
+  margin: 5% auto 0;
+      min-height: 444px;
 }
 
 .currnt-info span {
