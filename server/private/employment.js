@@ -457,7 +457,7 @@ var exec = {
   },
   getCurrentList(req, res, next) {
     var selectMsg = req.body.key
-    var user_account = req.body.user_account
+    var user_account = req.session.userInfo.name
     var select = null
 
     var brand_role = require('../../db/models/brand_role')
