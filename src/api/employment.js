@@ -5,8 +5,8 @@ export default {
     getEmployableRoles(params) {
         return httpRequest.post(path + 'getEmployableRoles', params)
     },
-    getBrandInfo(params) {
-        return httpRequest.post(path + 'getBrandInfo', params)
+    getBrandInfo() {
+        return httpRequest.post(path + 'getBrandInfo')
     },
     getRoleName(params) {
         return httpRequest.post(path + 'getRoleName', params)

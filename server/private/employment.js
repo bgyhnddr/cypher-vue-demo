@@ -40,7 +40,7 @@ var exec = {
 
   },
   getBrandInfo(req, res, next) {
-    var user_account = req.body.user_account
+    var user_account = req.session.userInfo.name
 
     var agent = require('../../db/models/agent')
     var agent_brand_role = require('../../db/models/agent_brand_role')
