@@ -43,6 +43,25 @@ var exec = {
                 reject(TimePass)
               } else {
                 soap.createClient(url, function(err, client) {
+                    client.sendSMS(args, function(err, result) {
+                      console.log(result)
+                      VerificationInfo.phone = cellphone
+                      VerificationInfo.code = Randnum
+                      VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
+                      req.session.VerificationInfo = VerificationInfo
+                      console.log(req.session.VerificationInfo)
+                      resolve("success")
+                    })
+                  })
+                  // VerificationInfo.phone = cellphone
+                  // VerificationInfo.code = Randnum
+                  // VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
+                  // req.session.VerificationInfo = VerificationInfo
+                  // console.log(req.session.VerificationInfo)
+                  // resolve("success")
+              }
+            } else {
+              soap.createClient(url, function(err, client) {
                   client.sendSMS(args, function(err, result) {
                     console.log(result)
                     VerificationInfo.phone = cellphone
@@ -59,25 +78,6 @@ var exec = {
                 // req.session.VerificationInfo = VerificationInfo
                 // console.log(req.session.VerificationInfo)
                 // resolve("success")
-              }
-            } else {
-              soap.createClient(url, function(err, client) {
-                client.sendSMS(args, function(err, result) {
-                  console.log(result)
-                  VerificationInfo.phone = cellphone
-                  VerificationInfo.code = Randnum
-                  VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
-                  req.session.VerificationInfo = VerificationInfo
-                  console.log(req.session.VerificationInfo)
-                  resolve("success")
-                })
-              })
-              // VerificationInfo.phone = cellphone
-              // VerificationInfo.code = Randnum
-              // VerificationInfo.time = new Date().getTime().toString().substring(0, 10)
-              // req.session.VerificationInfo = VerificationInfo
-              // console.log(req.session.VerificationInfo)
-              // resolve("success")
             }
           })
         }
@@ -101,7 +101,7 @@ var exec = {
           })
         })
       })
-    }else if(mode == "SendRejectAuditMessage"){
+    } else if (mode == "SendRejectAuditMessage") {
       args.arg4 = "【Cypher】您的审核未被通过"
       return new Promise((resolve, reject) => {
         // console.log(args.arg4)
@@ -117,7 +117,19 @@ var exec = {
 
   },
   GetBalance(req, res, next) {
-    return "success"
+    var soap = require('soap')
+    var phone = req.body.cellphone
+    var url = 'http://sdk4report.eucp.b2m.cn:8080/sdk/SDKService?wsdl'
+    var args = {
+      arg0: "6SDK-EMY-6688-KIXRR",
+      arg1: "709394"
+    }
+    soap.WSDL.prototype.ignoredNamespaces = ['xs', 'xsd']
+    soap.createClient(url, function(err, client) {
+      client.getBalance(args, function(err, result) {
+        console.log(result)
+      })
+    })
   }
 }
 
