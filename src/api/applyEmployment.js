@@ -20,4 +20,7 @@ export default {
     getPublishEmploymentInfo(params) {
         return httpRequest.post(path + 'getPublishEmploymentInfo', params)
     },
+    checkBeforeSubmit(params) {
+        return httpRequest.post(path + 'checkBeforeSubmit', params)
+    },
 }
