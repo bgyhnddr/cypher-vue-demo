@@ -13,19 +13,26 @@ var exec = {
       })
     })
   },
-  saveAttachment(req) {
-    var crypto = require('crypto')
-    var fs = require('fs')
-
-    var rs = fs.createReadStream('upload/files/6e51cf7a10d7b9c225e142bbf3498bb1')
-
-    var hash = crypto.createHash('md5')
-    rs.on('data', hash.update.bind(hash))
-
+  saveAttachment(req, res, next, api, wechatapi) {
+    // var crypto = require('crypto')
+    // var fs = require('fs')
+    // var rs = fs.createReadStream('upload/files/6e51cf7a10d7b9c225e142bbf3498bb1')
+    //
+    // var hash = crypto.createHash('md5')
+    // rs.on('data', hash.update.bind(hash))
+    //
+    // return new Promise((resolve) => {
+    //   rs.on('end', function() {
+    //     var d = hash.digest('hex')
+    //     console.log(d)
+    //     resolve(d)
+    //   })
+    // })
     return new Promise((resolve) => {
-      rs.on('end', function() {
-        console.log(hash.digest('hex'))
-        resolve(hash.digest('hex'))
+      wechatapi.uploadMedia('upload/files/6e51cf7a10d7b9c225e142bbf3498bb1', "image", function(err, result) {
+        console.log(result)
+        resolve(result)
+
       })
     })
   }
