@@ -250,7 +250,7 @@ export default {
       var showNextPage = true
       var reg = /^[a-zA-Z]+[a-zA-Z0-9_]*$/ //微信号
       var reg2 = /[\u4e00-\u9fa5]/ //中文
-      var reg3 = /^[1][358][0-9]{9}$/ //手机号
+      var reg3 = /^(\+?0?86\-?)?1[345789]\d{9}$/ //手机号
 
       if (!reg2.test(this.data.name)) {
         this.errorRemind.name = true
