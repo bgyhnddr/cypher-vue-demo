@@ -8,8 +8,12 @@ var exec = {
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
     var user = require('../../db/models/user')
+    var brand_role = require('../../db/models/brand_role')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
     agent.belongsTo(user)
     agent.hasMany(agent_detail)
+    agent.hasOne(agent_brand_role)
+    agent_brand_role.belongsTo(brand_role)
     var args = {
       arg0: "6SDK-EMY-6688-KIXRR",
       arg1: "709394",
@@ -43,7 +47,7 @@ var exec = {
           for (var i = 0; i < 6; i++) {
             Randnum += Math.floor(Math.random() * 10);
           }
-          args.arg4 = "【Cypher】验证码：" + Randnum
+          args.arg4 = "【分得】验证码：" + Randnum + ",您的账户：" + cellphone + "正在进行密码重置，如非本人操作，切勿将验证码告知他人！唯一热线：400-9999-633"
           return new Promise((resolve, reject) => {
             if (req.session.VerificationInfo) {
               var codeTime = req.session.VerificationInfo.time
@@ -94,28 +98,31 @@ var exec = {
     } else if (mode == "SendPassAuditMessage") {
       //发送通过审核短信
       return agent.findOne({
-        include: [{
+        include: [user, {
           model: agent_detail,
           where: {
             key: 'cellphone',
             value: cellphone
           }
-        },user]
+        }, {
+          model: agent_brand_role,
+          include: brand_role
+        }]
       }).then(function(result) {
-        args.arg4 = "【Cypher】您的审核已通过，账号：" + cellphone + ",密码：" + result.user.password
-        return new Promise((resolve, reject) => {
-          // console.log(args.arg4)
-          // resolve("success")
-          soap.createClient(url, function(err, client) {
-            client.sendSMS(args, function(err, result) {
-              console.log(result)
-              resolve("success")
+          args.arg4 = "【分得】尊敬的客户，您的代理资格：(" + result.agent_brand_role.brand_role.name + ")已通过审核，账户：,"+cellphone+"，初始密码：" + result.user.password
+          return new Promise((resolve, reject) => {
+            // console.log(args.arg4)
+            // resolve("success")
+            soap.createClient(url, function(err, client) {
+              client.sendSMS(args, function(err, result) {
+                console.log(result)
+                resolve("success")
+              })
             })
           })
-        })
       })
     } else if (mode == "SendRejectAuditMessage") {
-      args.arg4 = "【Cypher】您的审核未被通过"
+      args.arg4 = "【分得】尊敬的客户，您的代理资格尚未审核通过"
       return new Promise((resolve, reject) => {
         // console.log(args.arg4)
         // resolve("success")

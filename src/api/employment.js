@@ -23,6 +23,9 @@ export default {
   getAgentDetail(params) {
     return httpRequest.post(path + 'getAgentDetail', params)
   },
+  getBrandDetail(params){
+    return httpRequest.post(path + 'getBrandDetail', params)
+  },
   passAudit(params) {
     return httpRequest.post(path + 'passAudit', params)
   },

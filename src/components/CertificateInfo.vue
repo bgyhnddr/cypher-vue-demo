@@ -73,27 +73,25 @@ export default {
       agentInfo: {
         account: "",
         brand: "",
-        brand_role:"",
+        brand_role: "",
         employer: "",
-        AuthorizationID:"",
-        term_from:"",
-        term_to:"",
+        AuthorizationID: "",
+        term_from: "",
+        term_to: "",
         agent_detail: {}
       }
     }
   },
   methods: {
-    getInfo() {
+    getAgentInfo() {
       var that = this
       employAPI.getAgentDetail({
         account: that.$route.params.account,
-        role:that.$route.params.from
+        role: that.$route.params.from
       }).then(function(result) {
-        if(that.$route.params.account != 'admin'){
-          that.agentInfo.term_from = result.employment_term.term_from
-          that.agentInfo.term_to = result.employment_term.term_to
-          that.agentInfo.AuthorizationID = result.user.employment.guid.substring(result.user.employment.guid.length - 12, result.user.employment.guid.length)
-        }
+        that.agentInfo.term_from = result.employment_term.term_from
+        that.agentInfo.term_to = result.employment_term.term_to
+        that.agentInfo.AuthorizationID = result.user.employment.guid.substring(result.user.employment.guid.length - 12, result.user.employment.guid.length)
         that.agentInfo.agent_detail = result.agent_detail
         that.agentInfo.brand = result.user.employment.brand.name
         that.agentInfo.brand_role = result.agent_brand_role.brand_role.name
@@ -102,14 +100,29 @@ export default {
         console.log(err)
         that.serveMsg = err
       })
+    },
+    getBrandDetail() {
+      var that = this
+      employAPI.getBrandDetail({
+        account: that.$route.params.account
+      }).then(function(result) {
+        console.log(result)
+        that.agentInfo.agent_detail = result.agent_detail
+        that.agentInfo.brand = result.agent_brand_role.brand_role.brand.name
+        that.agentInfo.brand_role = result.agent_brand_role.brand_role.name
+      }).catch(function(err) {
+        console.log(err)
+        that.serveMsg = err
+      })
     }
   },
   ready() {
-    this.getInfo()
     this.agentInfo.account = this.$route.params.account
     if (this.$route.params.account == 'admin') {
+      this.getBrandDetail()
       this.AdminFlag = false
     } else {
+      this.getAgentInfo()
       this.AdminFlag = true
     }
   }
