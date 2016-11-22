@@ -80,7 +80,6 @@ export default {
         document.body.style.background = '#f2f2f2'
         this.ShowBack = false
         this.$on('fillInEmployment_goBack', function(flag) {
-          console.log("event" + "==========" + flag)
           this.ShowBack = flag
         })
         return "代理申请"
