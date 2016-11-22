@@ -188,7 +188,7 @@ export default {
               //招募已关闭
             if (result.status == false || endDate <= new Date()) {
               that.showMsg = true
-              that.errorMsg = "招募已关闭"
+              that.errorMsg = "招募已关闭，请关闭本页面"
             } else {
               that.getEmploymentInfo(result.employer_user_account)
               that.getAgentGuid(result.employer_user_account)
@@ -280,7 +280,7 @@ export default {
             that.showNextFillModel = true
           }
         }).catch(function(err) {
-          if (err == "招募已关闭") {
+          if (err == "招募已关闭，请关闭本页面") {
             that.showMsg = true
             that.errorMsg = err
           } else {
@@ -346,7 +346,7 @@ export default {
         }).then(function(result) {
           that.$route.router.go('/employManagement/employmentSubmission/' + that.employmentData.brandInfo.name)
         }).catch(function(err) {
-          if (err == "招募已关闭") {
+          if (err == "招募已关闭，请关闭本页面") {
             that.showMsg = true
             that.errorMsg = err
           } else {

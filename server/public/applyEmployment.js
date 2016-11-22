@@ -185,7 +185,7 @@ var exec = {
           } else if (result[3] == null) {
             return Promise.reject("招募信息读取出错")
           } else if (result[3].status == false || overtime) {
-            return Promise.reject("招募已关闭")
+            return Promise.reject("招募已关闭，请关闭本页面")
           } else {
             var pwd = "";
             for (var i = 0; i < 8; i++) {
@@ -359,7 +359,7 @@ var exec = {
       } else if (result[2] == null) {
         return Promise.reject("招募信息读取出错")
       } else if (result[2].status == false || overtime) {
-        return Promise.reject("招募已关闭")
+        return Promise.reject("招募已关闭，请关闭本页面")
       } else {
         return true
       }
