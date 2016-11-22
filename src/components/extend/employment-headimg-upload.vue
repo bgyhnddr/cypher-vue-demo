@@ -3,8 +3,7 @@
 	<input v-model="file" @change="upload" v-el:uploadinput v-show="false" type="file" />
 	<div v-if="!readonly">
 		<button @click="chooseFile" class="btn btn-default btn-xs">
-			<img v-show="isShowImg" src="/static/TestIMG/upload.png" />
-			<img v-show="!isShowImg" :src.sync="href" />
+			<img :src="href" />
 		</button>
 	</div>
 </div>
@@ -43,13 +42,16 @@ export default {
 		return {
 			file: "",
 			uploadRequest: undefined,
-			isShowImg: true,
 			href: "/static/TestIMG/default_headImg.png"
 		}
 	},
 	computed: {
 		href() {
-			return "/service/public/upload/getAttachment?id=" + this.fileId
+			if(this.fileId>0){
+				return "/service/public/upload/getAttachment?id=" + this.fileId
+			}else{
+				return "/static/TestIMG/upload.png"
+			}
 		},
 		isWechat() {
 			var ua = window.navigator.userAgent
@@ -81,7 +83,6 @@ export default {
 								media_id: serverId
 							}).then((result) => {
 								that.fileId = result.id
-								that.isShowImg = false
 								that.$emit("uploaded", that.fileId)
 							})
 						}
@@ -107,7 +108,6 @@ export default {
 				if (result.body) {
 					that.fileId = result.body.id
 					that.fileName = result.body.name
-					that.isShowImg = false
 					that.$emit("uploaded", that.fileId)
 				}
 			}).catch(function(error) {

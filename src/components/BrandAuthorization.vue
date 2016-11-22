@@ -106,57 +106,54 @@ export default {
   methods: {
     initData() {
       var that = this
+      var account = null
       var publishEmploymentID = this.$route.params.publishEmploymentID
 
       authAPI.getUser().then(function(result) {
-        if (result.name != undefined) { //申请者
+        if (result.name != undefined) { //登录状态
+          account = result.name
           that.loginUser = result.name
-        }
-      })
 
-      //获取发起招募信息
-      applyEmploymentAPI.getPublishEmploymentInfo({
-        employmentGuid: publishEmploymentID
-      }).then(function(result) {
-        that.publishEmploymentData = result
+          //获取发起招募信息
+          applyEmploymentAPI.getPublishEmploymentInfo({
+            employmentGuid: publishEmploymentID
+          }).then(function(result) {
+            that.publishEmploymentData = result
 
-        //招募已关闭
-        if (result.status == false) {
-          that.showRemindMsg = true
-          that.remindMsg = "招募已关闭"
-          return
-        }
+            that.getBrandInfo(result.employer_user_account)
+            if (account == that.publishEmploymentData.employer_user_account) { //判断是否发起人
 
-        //招募失效
-        var startDate = new Date(result.create_time)
-        var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
-        if (endDate <= new Date()) {
-          that.showRemindMsg = true
-          that.remindMsg = "招募已失效"
-          return
-        } else {
-          //判断用户类型
-          that.getBrandInfo()
-          if (that.loginUser == that.publishEmploymentData.employer_user_account) {
-            //获取自己的资料
-            that.getAgentInfo()
-              //获取自己的代理等级名称 & 获取授权编号 & 授权期
-            that.getRoleName()
-            that.showBrandAuthorizationModel = true
-          } else {
-            that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
-          }
+              var startDate = new Date(result.create_time)
+              var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
+
+              if (result.status == false || endDate <= new Date()) {
+                that.showRemindMsg = true
+                that.remindMsg = "招募已关闭"
+              } else {
+                //获取自己的资料
+                that.getAgentInfo()
+                  //获取自己的代理等级名称 & 获取授权编号 & 授权期
+                that.getRoleName()
+                that.showBrandAuthorizationModel = true
+              }
+            } else { //非发起人状态
+              that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
+            }
+          }).catch(function(err) {
+            that.showRemindMsg = true
+            that.remindMsg = err
+            this.$route.router.go('/employManagement')
+          })
+        } else { //非登录状态
+          that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
         }
-      }).catch(function(err) {
-        that.showRemindMsg = true
-        that.remindMsg = err
       })
     },
-    getBrandInfo() {
+    getBrandInfo(employerUsesrAccount) {
       var that = this
 
       applyEmploymentAPI.getBrandInfo({
-        user_account: this.publishEmploymentData.employer_user_account
+        user_account: employerUsesrAccount
       }).then(function(result) {
         that.employmentData = result
 
@@ -236,7 +233,7 @@ export default {
       if (this.loginUser == null) {
         this.$route.router.go('/auth/login')
       } else {
-        this.$route.router.go('/employManagement/chooseEmployableRoles')
+        this.$route.router.go('/employManagement')
       }
     }
   },

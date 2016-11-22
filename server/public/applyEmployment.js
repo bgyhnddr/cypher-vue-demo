@@ -95,6 +95,7 @@ var exec = {
     var data = req.body.data
     var employmentData = req.body.employmentData
     var deadline = req.body.deadline
+    var publishEmploymentGuid = req.body.publishEmploymentGuid
 
     var uuid = require('node-uuid')
     var guid = uuid.v1()
@@ -108,6 +109,7 @@ var exec = {
     var agent_detail = require('../../db/models/agent_detail')
     var agent_brand_role = require('../../db/models/agent_brand_role')
     var sequelize = require('../../db/sequelize')
+    var publish_employment = require('../../db/models/publish_employment')
 
     agent.hasOne(agent_brand_role)
     agent_brand_role.belongsTo(brand_role)
@@ -153,14 +155,33 @@ var exec = {
             },
           }],
         }]
+      }),
+
+      //查找发起招募信息
+      publish_employment.findOne({
+        where: {
+          guid: publishEmploymentGuid
+        }
       })
     ]).then(function(result) {
-      if (result[2] == null) {
-        return Promise.reject("找不到审核人的信息")
+      var overtime = false
+      
+      if(result[3] != null){
+        var startDate = new Date(result[3].create_time)
+        var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
+        if ( endDate <= new Date()) {
+          overtime = true
+        }
+      }
+
+      if (result[2] == null ||result[3] == null) {
+        return Promise.reject("招募信息读取出错")
       } else if (result[0] != null) {
         if (result[0].status == "未审核" || result[0].audit_result == "已通过" || result[1] != null) {
           return Promise.reject("您已提交申请或已成为该品牌成员，申请失败")
         }
+      } else if (result[3].status == false || overtime ) {
+        return Promise.reject("招募已关闭")
       }
 
       var pwd = "";
