@@ -51,9 +51,10 @@
         <button class="weui_btn weui_btn_primary" :class="classes" @click="submit">确认申请</button>
       </div>
     </div>
-    <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
+    <alert :show.sync="showMsg" button-text="确认" @on-hide="onHide">{{errorMsg}}</alert>
+    <alert :show.sync="showSubmitMsg" button-text="确认">{{submitMsg}}</alert>
   </div>
-    <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 <script>
 import {
@@ -156,35 +157,48 @@ export default {
         IDNumber: false,
         IDNumberErrorMsg: null,
         address: false
-      }
+      },
+      loginUser: null,
+      showSubmitMsg: false,
+      submitMsg: null,
     }
   },
   methods: {
     initDate() {
       var that = this
-      var guid = uuid.v1()
-      this.employmentData.guid = guid
-      this.employmentData.showGuid = guid.split("-")[4]
-      var employmentGuid = this.$route.params.publishEmploymentID
-      applyEmploymentAPI.getPublishEmploymentInfo({
-        employmentGuid: employmentGuid
-      }).then(function(result) {
-        //招募失效
-        var startDate = new Date(result.create_time)
-        var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
-        if (endDate <= new Date()) {
-          that.showMsg = true
-          that.errorMsg = "招募已失效"
-          that.$route.router.go('/auth/login')
-        } else {
+      var publishEmploymentID = this.$route.params.publishEmploymentID
+      authAPI.getUser().then(function(result) {
+        that.loginUser = result.name
+
+        applyEmploymentAPI.getPublishEmploymentInfo({
+          employmentGuid: publishEmploymentID
+        }).then(function(result) {
           that.employmentData.publishEmploymentInfo = result
 
-          that.getEmploymentInfo(result.employer_user_account)
-          that.getAgentGuid(result.employer_user_account)
-        }
-      }).catch(function(err) {
-        that.showMsg = true
-        that.errorMsg = err
+          if (that.loginUser == result.employer_user_account) { //是发起人
+            that.$route.router.go('/employManagement/brandAuthorization/' + publishEmploymentID + '/' + that.brandName)
+          } else { //非发起人或者未登录
+
+            var guid = uuid.v1()
+            that.employmentData.guid = guid
+            that.employmentData.showGuid = guid.split("-")[4]
+
+            var startDate = new Date(result.create_time)
+            var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
+              //招募已关闭
+            if (result.status == false || endDate <= new Date()) {
+              that.showMsg = true
+              that.errorMsg = "招募已关闭"
+            } else {
+              that.getEmploymentInfo(result.employer_user_account)
+              that.getAgentGuid(result.employer_user_account)
+            }
+          }
+        }).catch(function(err) {
+          that.showMsg = true
+          that.errorMsg = err
+        })
+
       })
     },
     getEmploymentInfo(user_account) {
@@ -253,6 +267,11 @@ export default {
         this.errorRemind.headImg = true
         showNextPage = false
       }
+
+      //测试是否手机号与微信号已经被注册
+
+
+
       if (showNextPage) {
         this.$dispatch('fillInEmployment_goBack', true)
         this.showNextFillModel = true
@@ -268,11 +287,11 @@ export default {
       var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
 
       //检查未填写完整的值
-      if (this.data.IDType == "" ) {
+      if (this.data.IDType == "") {
         this.errorRemind.IDNumber = true
         this.errorRemind.IDNumberErrorMsg = "证件类型未勾选"
         commitFlag = false
-      }else if (this.$refs.idnumber.valid) {
+      } else if (this.$refs.idnumber.valid) {
         var reg1 = /^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$/ //身份证
         var reg2 = /^[A-Z]\d{10}$/ //回乡证
         var reg3 = /^[a-zA-Z0-9]{6,30}$/ //长度
@@ -285,7 +304,7 @@ export default {
           this.errorRemind.IDNumber = true
           this.errorRemind.IDNumberErrorMsg = "回乡证填写错误"
           commitFlag = false
-        } else if(this.data.IDType == "护照" && !reg3.test(this.data.IDNumber)){
+        } else if (this.data.IDType == "护照" && !reg3.test(this.data.IDNumber)) {
           this.errorRemind.IDNumber = true
           this.errorRemind.IDNumberErrorMsg = "护照填写错误"
           commitFlag = false
@@ -307,13 +326,26 @@ export default {
           meta: this.meta,
           data: this.data,
           employmentData: this.employmentData,
-          deadline: deadline
+          deadline: deadline,
+          publishEmploymentGuid: this.employmentData.publishEmploymentInfo.guid
         }).then(function(result) {
           that.$route.router.go('/employManagement/employmentSubmission/' + that.employmentData.brandInfo.name)
         }).catch(function(err) {
-          that.showMsg = true
-          that.errorMsg = err
+          if (err == "招募已关闭") {
+            that.showMsg = true
+            that.errorMsg = err
+          } else {
+            that.showSubmitMsg = true
+            that.submitMsg = err
+          }
         })
+      }
+    },
+    onHide() {
+      if (this.loginUser == null) {
+        this.$route.router.go('/auth/login')
+      } else {
+        this.$route.router.go('/employManagement')
       }
     }
   },
@@ -335,8 +367,8 @@ export default {
 
 .fillin {
   width: 90%;
-    margin: 0 auto;
-    min-height: 485px;
+  margin: 0 auto;
+  min-height: 485px;
 }
 
 .fillin h3 {
@@ -453,10 +485,11 @@ export default {
 .certificate .weui_cell_hd {
   width: auto;
 }
-.certificate .weui_cell:before{
-border-top:0;
 
+.certificate .weui_cell:before {
+  border-top: 0;
 }
+
 .weui_cell_select .weui_cell_bd:after {
   transform: rotate(135deg);
   top: 44%;
@@ -477,14 +510,13 @@ border-top:0;
   padding-left: 4%;
   font-family: "微软雅黑";
   padding-right: 23%;
-
-    font-size: 4.5vw;
+  font-size: 4.5vw;
 }
 
 .certificate .weui_input {
   font-family: "微软雅黑";
   padding-left: 2%;
-      font-size: 4.5vw;
+  font-size: 4.5vw;
 }
 
 .certificate .weui_cells_title {
@@ -535,14 +567,14 @@ border-top:0;
   border: 1px solid #d3d1d1;
   width: 97%;
   padding-left: 2%;
-      font-size: 4.5vw;
-          padding-top: 1%;
+  font-size: 4.5vw;
+  padding-top: 1%;
 }
 
 .certificate .weui_textarea_counter {
   margin-top: 4%;
   font-family: "微软雅黑";
-font-size: 4.5vw;
+  font-size: 4.5vw;
 }
 
 .certificate [class*=" weui_icon_"]:before,
@@ -557,13 +589,16 @@ font-size: 4.5vw;
   top: 11%;
   font-family: "微软雅黑";
 }
+
+
 /*错误*/
-.fliin-error{
+
+.fliin-error {
   font-size: 3.9vw;
   color: #d22d23;
   font-family: "微软雅黑"
-
 }
+
 .certificate:first-child p {
   font-family: "微软雅黑";
   width: 100%;
@@ -572,6 +607,5 @@ font-size: 4.5vw;
   font-size: 3.9vw;
   color: #d22d23;
   text-align: right
-
 }
 </style>
