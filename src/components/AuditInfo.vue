@@ -2,7 +2,7 @@
 <div>
   <div class="auditinfo-header">
     <div class="vux-center">
-      <img class="vux-x-img ximg-demo vux-center" alt="头像" :src.sync="auditInfo.headImg" />
+      <img class="vux-x-img ximg-demo vux-center" alt="头像" :src="'/service/public/upload/getAttachment?id='+auditInfo.employment_detail.headImg" />
       </p>
       <!-- <img class="vux-x-img ximg-demo vux-center" alt="头像"  src="/static/TestIMG/grantee.jpg" /></p> -->
     </div>
@@ -17,40 +17,40 @@
         </cell>
         <cell>
           <div slot="icon">授权品牌：
-            <label>{{auditInfo.Brand}}</label>
+            <label>{{auditInfo.brand}}</label>
           </div>
           <x-button v-if="!Toggle" type="default" class="auditinfo-view" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/'+this.$route.params.locate+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">授权上级：
-            <label>{{auditInfo.employer}}</label>
+            <label>{{auditInfo.agent.agent_detail.name}}</label>
           </div>
           <x-button v-if="Toggle" type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/auditInfo'+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
           <x-button v-if="!Toggle" type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/history'+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">姓名：
-            <label>{{auditInfo.name}}</label>
+            <label>{{auditInfo.employment_detail.name}}</label>
           </div>
         </cell>
         <cell>
-          <div slot="icon">{{auditInfo.IDType}}:
-            <label>{{auditInfo.IDNumber}}</label>
+          <div slot="icon">{{auditInfo.employment_detail.IDType}}:
+            <label>{{auditInfo.employment_detail.IDNumber}}</label>
           </div>
         </cell>
         <cell>
           <div slot="icon">微信号：
-            <label>{{auditInfo.wechat}}</label>
+            <label>{{auditInfo.employment_detail.wechat}}</label>
           </div>
         </cell>
         <cell>
           <div slot="icon">手机号：
-            <label>{{auditInfo.cellphone}}</label>
+            <label>{{auditInfo.employment_detail.cellphone}}</label>
           </div>
         </cell>
         <cell>
           <div slot="icon">地址：
-            <label>{{auditInfo.address}}{{auditInfo.addressDetail}}</label>
+            <label>{{auditInfo.employment_detail.address}}{{auditInfo.employment_detail.addressDetail}}</label>
           </div>
         </cell>
         <div class="auditinfo-choose ">
@@ -92,14 +92,15 @@
 </div>
 <div>
 
-<div class="completely">
+  <div class="completely">
 
 
 
-  <alert :show.sync="showAlert" @on-hide="onHide" button-Text="继续审核">{{alertMsg}}</alert>
-  <!-- <toast :show.sync="showAlert" :time="1000" @on-hide="onHide" type="text">{{alertMsg}}</toast> -->
-</div><div>
-</div>
+    <alert :show.sync="showAlert" @on-hide="onHide" button-Text="继续审核">{{alertMsg}}</alert>
+    <!-- <toast :show.sync="showAlert" :time="1000" @on-hide="onHide" type="text">{{alertMsg}}</toast> -->
+  </div>
+  <div>
+  </div>
 </template>
 
 <script>
@@ -131,20 +132,15 @@ export default {
       reason: "",
       termNum: "12",
       auditInfo: {
-        account: "",
-        employee: "",
-        time: "",
-        employer: "",
-        name: "",
-        wechat: "",
-        cellphone: "",
-        address: "",
-        addressDetail: "",
-        deadline: "",
-        headImg: "",
-        IDType: "",
-        IDNumber: "",
-        Brand: ""
+        account:"",
+        brand:"",
+        employer:"",
+        employment_detail: {
+        },
+        agent: {
+          agent_detail: {
+          }
+        }
       }
     }
   },
@@ -171,62 +167,15 @@ export default {
       employAPI.getAuditInfo({
         auditID: that.auditID,
         brandID: that.$route.params.brandID,
-        account: that.$route.params.account,
-        locate: that.$route.params.locate,
+        account: that.$route.params.account
       }).then(function(result) {
         var LocateFrom = that.$route.params.locate
         var LoacteAccount = that.$route.params.account
-        if (LocateFrom == 'history' || LocateFrom == 'account' || LocateFrom == 'auditInfo') {
-          that.auditInfo.Brand = result.GetBrand.name
-          that.auditInfo.employee = result.Getemployment.employee_user_account
-          if (LoacteAccount == 'admin') {
-            that.auditInfo.employer = that.auditInfo.account
-          }
-          result = result.Getdetail
-        }
-        for (var item in result) {
-          for (var meta in result[item]) {
-            if (meta == 'key') {
-              switch (result[item][meta]) {
-                case "headImg":
-                  that.auditInfo.headImg = "/service/public/upload/getAttachment?id=" + result[item]['value']
-                  break
-                case "name":
-                  that.auditInfo.name = result[item]['value']
-                  break
-                case "wechat":
-                  that.auditInfo.wechat = result[item]['value']
-                  break
-                case "cellphone":
-                  that.auditInfo.cellphone = result[item]['value']
-                  break
-                case "address":
-                  that.auditInfo.address = result[item]['value']
-                  break
-                case "addressDetail":
-                  that.auditInfo.addressDetail = result[item]['value']
-                  break
-                case "IDType":
-                  that.auditInfo.IDType = result[item]['value']
-                  break
-                case "IDNumber":
-                  that.auditInfo.IDNumber = result[item]['value']
-                  break
-                case "employer":
-                  if (that.$route.params.locate == 'history') {
-                    that.auditInfo.employer = result[item]['value']
-                  }
-                  break
-              }
-            }
-          }
-        }
-        if (that.$route.params.locate == 'audit') {
-          that.auditInfo.Brand = result[0].employment.brand.name
-          that.auditInfo.time = result[0].employment.employer_time
-          that.auditInfo.employer = result[0].employment.employer_user_account
-          that.auditInfo.employee = result[0].employment.employee_user_account
-        }
+        that.auditInfo.employment_detail = result.employment_detail
+        that.auditInfo.agent.agent_detail = result.user.agent.agent_detail
+        that.auditInfo.account = result.employee_user_account
+        that.auditInfo.employer = result.employer_user_account
+        that.auditInfo.brand = result.brand.name
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err
@@ -242,7 +191,7 @@ export default {
           termNum: that.termNum
         }).then(function(result) {
           sendSMS.SendSMS({
-            cellphone: that.auditInfo.cellphone,
+            cellphone: that.auditInfo.employment_detail.cellphone,
             mode: "SendPassAuditMessage"
           }).then(function(result) {
             that.alertMsg = "您已完成审核!"
@@ -271,7 +220,7 @@ export default {
         reason: that.reason
       }).then(function(result) {
         sendSMS.SendSMS({
-          cellphone: that.auditInfo.cellphone,
+          cellphone: that.auditInfo.employment_detail.cellphone,
           mode: "SendRejectAuditMessage"
         }).then(function(result) {
           that.show = false
@@ -429,7 +378,7 @@ input.weui_btn {
   left: 78px;
   top: 11%;
   width: 100%;
-      margin-left: 2%;
+  margin-left: 2%;
 }
 
 .auditinfo-choose .weui_cell_hd label {
@@ -454,63 +403,66 @@ input.weui_btn {
 .auditinfo-choose .weui_cell_select .weui_cell_bd:after {
   right: 45%;
 }
+
+
 /*按钮*/
+
 .auditinfo-choose .months {
   display: inline-block;
   position: absolute;
   top: 22%;
-      left: 188px;
+  left: 188px;
   font-size: 4.5vw;
 }
 
-
-.vux-number-selector-sub{
+.vux-number-selector-sub {
   border: none;
-    padding:0;
+  padding: 0;
   border-radius: 0px;
   margin-right: 4%;
   background: #ea4c4c;
-
-
 }
-.vux-number-selector-sub:active{
+
+.vux-number-selector-sub:active {
   background: #d03636;
   border: 0
-
 }
-.vux-number-selector-plus:active{
+
+.vux-number-selector-plus:active {
   background: #1eaf62;
   border: 0
-
 }
-.vux-number-selector{
 
+.vux-number-selector {
   width: 11%;
-      text-align: center;
-border-radius: 5px;
-line-height: 33px;
-height: auto;
-color: #fff
+  text-align: center;
+  border-radius: 5px;
+  line-height: 33px;
+  height: auto;
+  color: #fff
 }
-.vux-number-selector-plus{
 
-  background:#21c36d;
+.vux-number-selector-plus {
+  background: #21c36d;
   padding: 0;
   margin: 0;
-    border: none;
+  border: none;
 }
+
 .auditinfo-choose .vux-number-input {
   font-size: 4.9vw;
   color: #000;
   font-family: "\5FAE\8F6F\96C5\9ED1";
   margin-right: 14%;
-      margin-top: 2px;
-          border: 1px solid #d3d1d1;
+  margin-top: 2px;
+  border: 1px solid #d3d1d1;
 }
-.auditinfo-choose .weui_cell{
 
-  border-bottom:0
+.auditinfo-choose .weui_cell {
+  border-bottom: 0
 }
+
+
 /*打回弹窗*/
 
 .auditinfo-backto .weui_dialog {
@@ -573,37 +525,38 @@ color: #fff
 .auditinfo-backto .vux-flexbox .vux-flexbox-item {
   margin-left: 5px;
 }
-.close-button{
-  border: 0;
 
+.close-button {
+  border: 0;
   position: absolute;
-      right: 4%;
+  right: 4%;
   width: 8%;
   top: 4%;
   min-height: 29px;
   background: url(/static/TestIMG/close.png);
   background-repeat: no-repeat;
   background-size: contain;
-
 }
+
+
 /*弹窗*/
-.completely  .weui_dialog{
-    padding: 4%;
 
+.completely .weui_dialog {
+  padding: 4%;
 }
-.completely .weui_dialog_bd{
 
+.completely .weui_dialog_bd {
   color: #000000;
-font-size: 5.2vw;
-font-family: "微软雅黑";
+  font-size: 5.2vw;
+  font-family: "微软雅黑";
 }
+
 .completely .weui_btn_dialog.primary {
   color: #fff;
-width: 98%;
-background: #fd5e5e;
-line-height: 37px;
-border-radius: 3px;
-margin-bottom: 3%;
-
+  width: 98%;
+  background: #fd5e5e;
+  line-height: 37px;
+  border-radius: 3px;
+  margin-bottom: 3%;
 }
 </style>

@@ -2,7 +2,7 @@
 <div>
   <div class="certificate-header">
     <div class="vux-center">
-      <headimg-upload :file-id.sync="auditInfo.headImg"></headimg-upload>
+      <headimg-upload :file-id.sync="agentInfo.headImg"></headimg-upload>
     </div>
   </div>
 
@@ -11,44 +11,44 @@
       <div>
         <cell>
           <div slot="icon">用户名：
-            <label>{{auditInfo.account}}</label>
+            <label>{{agentInfo.account}}</label>
           </div>
         </cell>
         <cell>
           <div slot="icon">授权品牌：
-            <label>{{auditInfo.Brand}}</label>
+            <label>{{agentInfo.brand}}</label>
           </div>
-          <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/account'+'/#'+'/#'+'/'+this.auditInfo.account}">查看授权证书</x-button>
+          <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+this.agentInfo.account+'/account'+'/#'+'/#'+'/'+this.agentInfo.account}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">授权等级：
-            <label>{{auditInfo.agent_level}}</label>
+            <label>{{agentInfo.brand_role}}</label>
           </div>
         </cell>
-        <cell v-if="auditInfo.employerFlag">
+        <cell v-if="agentInfo.employerFlag">
           <div slot="icon">授权上级：
-            <label>{{auditInfo.employer}}</label>
+            <label>{{agentInfo.employer}}</label>
           </div>
-          <x-button type="default" class="certificate-views " v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/account'+'/#'+'/#'+'/'+this.auditInfo.account}">查看授权证书</x-button>
+          <x-button type="default" class="certificate-views " v-link="{path: '/accountManagement/CertificateInfo/'+this.agentInfo.employer_account+'/account'+'/#'+'/#'+'/'+this.agentInfo.account}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">姓名：
-            <label>{{auditInfo.name}}</label>
+            <label>{{agentInfo.agent_detail.name}}</label>
           </div>
         </cell>
         <cell>
           <div slot="icon">微信号：
-            <label>{{auditInfo.wechat}}</label>
+            <label>{{agentInfo.agent_detail.wechat}}</label>
           </div>
         </cell>
         <cell>
           <div slot="icon">手机号：
-            <label>{{auditInfo.cellphone}}</label>
+            <label>{{agentInfo.agent_detail.cellphone}}</label>
           </div>
         </cell>
         <cell>
           <div slot="icon">地址：
-            <label>{{auditInfo.address}}{{auditInfo.addressDetail}}</label>
+            <label>{{agentInfo.agent_detail.address}}{{agentInfo.agent_detail.addressDetail}}</label>
           </div>
         </cell>
       </div>
@@ -68,18 +68,15 @@ import HeadimgUpload from './extend/change-headimg'
 export default {
   data() {
     return {
-      auditInfo: {
-        account: "",
-        employer: "",
-        name: "",
-        wechat: "",
-        cellphone: "",
-        address: "",
-        addressDetail: "",
-        headImg: null,
-        Brand: "",
-        agent_level:"",
-        employerFlag:true
+      agentInfo: {
+        employerFlag:false,
+        headImg:null,
+        account:"",
+        brand:"",
+        brand_role:"",
+        employer:"",
+        employer_account:"",
+        agent_detail: {}
       }
     }
   },
@@ -92,65 +89,16 @@ export default {
   methods: {
     getInfo() {
       var that = this
-      employAPI.getAuditInfo({
+      employAPI.getAgentDetail({
         account: that.$route.params.account,
-        locate: that.$route.params.locate,
+        locate:that.$route.params.locate
       }).then(function(result) {
-        var LocateFrom = that.$route.params.locate
-        var LoacteAccount = that.$route.params.account
-        if (LocateFrom == 'history' || LocateFrom == 'account' || LocateFrom == 'auditInfo') {
-          that.auditInfo.Brand = result.GetBrand.name
-          if (LoacteAccount == 'admin') {
-            that.auditInfo.employer = that.auditInfo.account
-            that.auditInfo.employerFlag = false
-          }
-          result = result.Getdetail
-        }
-
-        switch (result[0].agent.agent_brand_role.brand_role_code) {
-          case "brand_role1":
-            that.auditInfo.agent_level = "品牌商"
-            break
-          case "brand_role2":
-            that.auditInfo.agent_level = "总代理"
-            break
-          case "brand_role3":
-            that.auditInfo.agent_level = "二级代理"
-            break
-          case "brand_role4":
-            that.auditInfo.agent_level = "特约销售员"
-            break
-          case "brand_role5":
-            that.auditInfo.agent_level = "销售员"
-            break
-        }
-
-        for (var item in result) {
-          for (var meta in result[item]) {
-            if (meta == 'key') {
-              switch (result[item][meta]) {
-                case "name":
-                  that.auditInfo.name = result[item]['value']
-                  break
-                case "wechat":
-                  that.auditInfo.wechat = result[item]['value']
-                  break
-                case "cellphone":
-                  that.auditInfo.cellphone = result[item]['value']
-                  break
-                case "address":
-                  that.auditInfo.address = result[item]['value']
-                  break
-                case "addressDetail":
-                  that.auditInfo.addressDetail = result[item]['value']
-                  break
-                case "employer":
-                  that.auditInfo.employer = result[item]['value']
-                  break
-              }
-            }
-          }
-        }
+        that.agentInfo.account = result.user.account
+        that.agentInfo.agent_detail = result.agent_detail
+        that.agentInfo.brand = result.user.employment.brand.name
+        that.agentInfo.brand_role = result.agent_brand_role.brand_role.name
+        that.agentInfo.employer = result.user.employment.user.agent.agent_detail.name
+        that.agentInfo.employer_account = result.user.employment.employer_user_account
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err
@@ -158,8 +106,10 @@ export default {
     }
   },
   ready() {
+    if(this.$route.params.account != 'admin'){
+      this.agentInfo.employerFlag = true
+    }
     this.getInfo()
-    this.auditInfo.account = this.$route.params.account
   }
 }
 </script>

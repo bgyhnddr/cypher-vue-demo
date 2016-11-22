@@ -5,7 +5,10 @@ var exec = {
     var mode = req.body.mode
     var cellphone = req.body.cellphone
     var user = require('../../db/models/user')
-    var agent = require('../../db/models/user')
+    var agent = require('../../db/models/agent')
+    var agent_detail = require('../../db/models/agent_detail')
+    var user = require('../../db/models/user')
+    agent.belongsTo(user)
     agent.hasMany(agent_detail)
     var args = {
       arg0: "6SDK-EMY-6688-KIXRR",
@@ -97,9 +100,9 @@ var exec = {
             key: 'cellphone',
             value: cellphone
           }
-        }]
+        },user]
       }).then(function(result) {
-        args.arg4 = "【Cypher】您的审核已通过，账号：" + cellphone + ",密码：" + result.password
+        args.arg4 = "【Cypher】您的审核已通过，账号：" + cellphone + ",密码：" + result.user.password
         return new Promise((resolve, reject) => {
           // console.log(args.arg4)
           // resolve("success")
