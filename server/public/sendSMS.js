@@ -5,6 +5,11 @@ var exec = {
     var mode = req.body.mode
     var cellphone = req.body.cellphone
     var user = require('../../db/models/user')
+    var agent = require('../../db/models/agent')
+    var agent_detail = require('../../db/models/agent_detail')
+    var user = require('../../db/models/user')
+    agent.belongsTo(user)
+    agent.hasMany(agent_detail)
     var args = {
       arg0: "6SDK-EMY-6688-KIXRR",
       arg1: "709394",
@@ -19,10 +24,14 @@ var exec = {
     soap.WSDL.prototype.ignoredNamespaces = ['xs', 'xsd']
     if (mode == "SendVerificationCode") {
       //获取验证码
-      return user.findOne({
-        where: {
-          account: cellphone
-        }
+      return agent.findOne({
+        include: [{
+          model: agent_detail,
+          where: {
+            key: 'cellphone',
+            value: cellphone
+          }
+        }]
       }).then(function(result) {
         if (result == null) {
           return Promise.reject("账号不存在")
@@ -84,12 +93,16 @@ var exec = {
       })
     } else if (mode == "SendPassAuditMessage") {
       //发送通过审核短信
-      user.findOne({
-        where: {
-          account: cellphone
-        }
+      return agent.findOne({
+        include: [{
+          model: agent_detail,
+          where: {
+            key: 'cellphone',
+            value: cellphone
+          }
+        },user]
       }).then(function(result) {
-        args.arg4 = "【Cypher】您的审核已通过，账号：" + cellphone + ",密码：" + result.password
+        args.arg4 = "【Cypher】您的审核已通过，账号：" + cellphone + ",密码：" + result.user.password
         return new Promise((resolve, reject) => {
           // console.log(args.arg4)
           // resolve("success")
@@ -124,8 +137,8 @@ var exec = {
     agent_detail.belongsTo(agent)
 
     return agent_detail.findOne({
-      where:{
-        key:'cellphone'
+      where: {
+        key: 'cellphone'
       },
       include: [{
         model: agent,

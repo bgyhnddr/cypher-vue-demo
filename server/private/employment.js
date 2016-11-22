@@ -174,76 +174,127 @@ var exec = {
   },
   getAuditInfo(req, res, next) {
     var auditID = req.body.auditID
-    var brandID = req.body.brandID
-    var account = req.body.account
-    var locate = req.body.locate
-
     var employment = require('../../db/models/employment')
+    var user = require('../../db/models/user')
     var employment_detail = require('../../db/models/employment_detail')
     var brand = require('../../db/models/brand')
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
-    var agent_brand_role = require('../../db/models/agent_brand_role')
-    var employment_term = require('../../db/models/employment_term')
 
-    employment_detail.belongsTo(employment)
-    agent_detail.belongsTo(agent)
-    agent.hasOne(agent_brand_role)
-    agent.hasOne(employment_term)
     employment.belongsTo(brand)
+    employment.hasMany(employment_detail)
+    employment.belongsTo(user, {
+      foreignKey: "employer_user_account"
+    })
+    user.hasOne(agent)
+    agent.hasMany(agent_detail)
 
-    if (locate == 'audit') {
-      return employment_detail.findAll({
-        include: {
-          model: employment,
-          where: {
-            guid: auditID
-          },
+    return employment.findOne({
+      where: {
+        guid: auditID
+      },
+      include: [brand,
+        employment_detail, {
+          model: user,
           include: {
-            model: brand,
-            where: {
-              guid: brandID
-            }
-          }
-        }
-      })
-    } else if (locate == 'history' || locate == 'account' || locate == 'auditInfo') {
-      return Promise.all([
-        agent_detail.findAll({
-          include: [{
             model: agent,
-            where: {
-              user_account: account
-            },
-            include: [{
-              model: agent_brand_role,
-            }, {
-              model: employment_term
-            }]
-          }]
-        }),
-        employment.findOne({
-          where: {
-            employee_user_account: account
+            include: agent_detail
           }
-        }),
-        brand.findOne({
-          where: {
-            guid: "brand1"
-          }
-        }),
-      ]).then(function(result) {
-        var Getdetail = result[0]
-        var Getemployment = result[1]
-        var GetBrand = result[2]
-        return {
-          Getdetail: Getdetail,
-          Getemployment: Getemployment,
-          GetBrand: GetBrand
         }
+      ]
+    }).then((result) => {
+      var obj = result.toJSON()
+      obj.employment_detail = {}
+      obj.employment_details.forEach((d) => {
+        obj.employment_detail[d.key] = d.value
+      })
+
+      obj.user.agent.agent_detail = {}
+      obj.user.agent.agent_details.forEach((d) => {
+        obj.user.agent.agent_detail[d.key] = d.value
+      })
+      delete obj.employment_details
+      delete obj.user.agent.agent_details
+      return obj
+    })
+  },
+  getAgentDetail(req, res, next) {
+    var account = req.body.account
+    var role = req.body.role
+    var locate = req.body.locate
+    var employment = require('../../db/models/employment')
+    var employment_term = require('../../db/models/employment_term')
+    var user = require('../../db/models/user')
+    var brand = require('../../db/models/brand')
+    var brand_role = require('../../db/models/brand_role')
+    var agent = require('../../db/models/agent')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
+    var agent_detail = require('../../db/models/agent_detail')
+
+    employment.belongsTo(brand)
+    employment.belongsTo(brand_role)
+
+    if ((account == role && account != 'admin') || (locate == 'account' && account != 'admin')) {
+      user.hasOne(employment, {
+        foreignKey: "employee_user_account"
+      })
+    } else {
+      user.hasOne(employment, {
+        foreignKey: "employer_user_account"
       })
     }
 
+
+    agent.hasMany(agent_detail)
+    agent.hasOne(agent_brand_role)
+    agent_brand_role.belongsTo(brand_role)
+    agent.belongsTo(user)
+    agent.hasOne(employment_term)
+    user.hasOne(agent)
+
+    employment.belongsTo(user, {
+      foreignKey: "employer_user_account"
+    })
+
+
+    return agent.findOne({
+      where: {
+        user_account: account
+      },
+      include: [agent_detail,
+        employment_term, {
+          model: agent_brand_role,
+          include: brand_role
+        }, {
+          model: user,
+          include: {
+            model: employment,
+            include: [brand, {
+              model: user,
+              include: {
+                model: agent,
+                include: agent_detail
+              }
+            }]
+          }
+        }
+      ]
+    }).then((result) => {
+      var obj = result.toJSON()
+      obj.agent_detail = {}
+      obj.agent_details.forEach((d) => {
+        obj.agent_detail[d.key] = d.value
+      })
+
+      obj.user.employment.user.agent.agent_detail = {}
+      obj.user.employment.user.agent.agent_details.forEach((d) => {
+        obj.user.employment.user.agent.agent_detail[d.key] = d.value
+      })
+
+      delete obj.agent_details
+      delete obj.user.employment.user.agent.agent_details
+      return obj
+    })
   },
   passAudit(req, res, next) {
     var auditID = req.body.auditID
@@ -655,6 +706,7 @@ module.exports = (req, res, next) => {
   }).then(function(result) {
     res.send(result)
   }).catch(function(error) {
+    console.log(error)
     res.status(500).send(error.toString())
   })
 }

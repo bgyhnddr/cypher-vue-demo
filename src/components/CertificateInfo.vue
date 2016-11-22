@@ -13,22 +13,20 @@
       <div>
         <h3>兹授权</h3>
         <table boder=0 class="personal-identity">
-
-
           <tr>
             <td width="60px">姓名:</td>
-            <td>{{auditInfo.name}}</td>
+            <td>{{agentInfo.agent_detail.name}}</td>
             <td rowspan="4" align="right">
-              <img class="vux-x-img ximg-demo" alt="授权者头像" :src.sync="auditInfo.headImg" />
+              <img class="vux-x-img ximg-demo" alt="授权者头像" :src="'/service/public/upload/getAttachment?id='+agentInfo.agent_detail.headImg" />
             </td>
           </tr>
           <tr>
             <td> 微信:</th>
-              <td>{{auditInfo.wechat}}</td>
+              <td>{{agentInfo.agent_detail.wechat}}</td>
           </tr>
           <tr>
-            <td>{{auditInfo.IDType}}:</th>
-              <td>{{auditInfo.IDNumber}}</td>
+            <td>{{agentInfo.agent_detail.IDType}}:</th>
+              <td>{{agentInfo.agent_detail.IDNumber}}</td>
           </tr>
           <tr>
             <td height="6px"></td>
@@ -37,27 +35,28 @@
 
         </table>
         <div class="set-agent ">为
-          <label>{{auditInfo.Brand}}</label>
-          <label>{{auditInfo.agent_level}}</label>
+          <label>{{agentInfo.brand}}</label>
+          <label>{{agentInfo.brand_role}}</label>
         </div>
         <div class="allow-agent">允许其在网络上销售
-          <label>{{auditInfo.Brand}}</label>
+          <label>{{agentInfo.brand}}</label>
           <label>旗下产品</label>
         </div>
         <div class="agent-height">
-        <div v-if="AdminFlag" >
-          <div class="agent-message">
-            <p>授权编号
-              <label>{{auditInfo.AuthorizationNum}}</label>
-            </p>
-            <p>授权期限
-              <label>{{auditInfo.term_from}}</label>至
-              <label>{{auditInfo.term_to}}</label>
-            </p>
+          <div v-if="AdminFlag">
+            <div class="agent-message">
+              <p>授权编号
+                <label>{{agentInfo.AuthorizationID}}</label>
+              </p>
+              <p>授权期限
+                <label>{{agentInfo.term_from}}</label>至
+                <label>{{agentInfo.term_to}}</label>
+              </p>
+            </div>
           </div>
-        </div></div>
+        </div>
         <p class="agent-unit ">授权单位
-          <label class="color-gray">{{auditInfo.Brand}}</label>
+          <label class="color-gray">{{agentInfo.brand}}</label>
         </p>
 
       </div>
@@ -70,97 +69,35 @@ import employAPI from '../api/employment'
 export default {
   data() {
     return {
-      AdminFlag:"",
-      auditInfo: {
+      AdminFlag: "",
+      agentInfo: {
         account: "",
+        brand: "",
+        brand_role:"",
         employer: "",
-        name: "",
-        wechat: "",
-        cellphone: "",
-        address: "",
-        addressDetail: "",
-        agent_level: "",
-        term_from: "",
-        term_to: "",
-        headImg: "",
-        IDType: "",
-        IDNumber: "",
-        AuthorizationNum: "",
-        Brand: ""
+        AuthorizationID:"",
+        term_from:"",
+        term_to:"",
+        agent_detail: {}
       }
     }
   },
   methods: {
     getInfo() {
       var that = this
-      employAPI.getAuditInfo({
+      employAPI.getAgentDetail({
         account: that.$route.params.account,
-        locate: that.$route.params.locate,
+        role:that.$route.params.from
       }).then(function(result) {
-        var LocateFrom = that.$route.params.locate
-        var LoacteAccount = that.$route.params.account
-        if (LocateFrom == 'history' || LocateFrom == 'account' || LocateFrom == 'auditInfo') {
-          that.auditInfo.Brand = result.GetBrand.name
-          if (LoacteAccount != 'admin') {
-            that.auditInfo.AuthorizationNum = result.Getemployment.guid.substring(result.Getemployment.guid.length - 12, result.Getemployment.guid.length)
-            that.auditInfo.term_from = result.Getdetail[0].agent.employment_term.term_from
-            that.auditInfo.term_to = result.Getdetail[0].agent.employment_term.term_to
-          }
-          result = result.Getdetail
+        if(that.$route.params.account != 'admin'){
+          that.agentInfo.term_from = result.employment_term.term_from
+          that.agentInfo.term_to = result.employment_term.term_to
+          that.agentInfo.AuthorizationID = result.user.employment.guid.substring(result.user.employment.guid.length - 12, result.user.employment.guid.length)
         }
+        that.agentInfo.agent_detail = result.agent_detail
+        that.agentInfo.brand = result.user.employment.brand.name
+        that.agentInfo.brand_role = result.agent_brand_role.brand_role.name
 
-        switch (result[0].agent.agent_brand_role.brand_role_code) {
-          case "brand_role1":
-            that.auditInfo.agent_level = "品牌商"
-            break
-          case "brand_role2":
-            that.auditInfo.agent_level = "总代理"
-            break
-          case "brand_role3":
-            that.auditInfo.agent_level = "二级代理"
-            break
-          case "brand_role4":
-            that.auditInfo.agent_level = "特约销售员"
-            break
-          case "brand_role5":
-            that.auditInfo.agent_level = "销售员"
-            break
-        }
-        for (var item in result) {
-          for (var meta in result[item]) {
-            if (meta == 'key') {
-              switch (result[item][meta]) {
-                case "name":
-                  that.auditInfo.name = result[item]['value']
-                  break
-                case "wechat":
-                  that.auditInfo.wechat = result[item]['value']
-                  break
-                case "cellphone":
-                  that.auditInfo.cellphone = result[item]['value']
-                  break
-                case "address":
-                  that.auditInfo.address = result[item]['value']
-                  break
-                case "addressDetail":
-                  that.auditInfo.addressDetail = result[item]['value']
-                  break
-                case "employer":
-                  that.auditInfo.employer = result[item]['value']
-                  break
-                case "headImg":
-                  that.auditInfo.headImg = "/service/public/upload/getAttachment?id=" + result[item]['value']
-                  break
-                case "IDType":
-                  that.auditInfo.IDType = result[item]['value']
-                  break
-                case "IDNumber":
-                  that.auditInfo.IDNumber = result[item]['value']
-                  break
-              }
-            }
-          }
-        }
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err
@@ -169,7 +106,7 @@ export default {
   },
   ready() {
     this.getInfo()
-    this.auditInfo.account = this.$route.params.account
+    this.agentInfo.account = this.$route.params.account
     if (this.$route.params.account == 'admin') {
       this.AdminFlag = false
     } else {
@@ -206,8 +143,8 @@ export default {
 
 .brandauthorization-img .brand-logo img {
   width: 62%;
-      height: auto;
-      margin: 4% auto 2%;
+  height: auto;
+  margin: 4% auto 2%;
 }
 
 .brandauthorization-img h3 {
@@ -240,7 +177,7 @@ table.personal-identity tbody tr td img {
   margin-right: 0;
   min-height: 76px;
   min-width: 46px;
-      max-height: 84px;
+  max-height: 84px;
 }
 
 .color-gray {
