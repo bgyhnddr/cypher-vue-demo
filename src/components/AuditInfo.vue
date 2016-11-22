@@ -265,6 +265,7 @@ export default {
 
       min-height: 475px;
 
+
 }
 
 .auditinfo-header {
@@ -296,16 +297,10 @@ export default {
   border-bottom: 1px solid #d3d1d1;
   padding: 9px 0;
 }
-<<<<<<< HEAD
-/*.auditinfo-message .weui_cell:nth-child(8){
-border-bottom:0
-=======
->>>>>>> origin/master
 
-.auditinfo-message .weui_cell:nth-child(8) {
-  border-bottom: 0
-}
-*/
+.auditinfo-message .weui_cell:nth-child(8){
+border-bottom:0}
+
 .auditinfo-message .weui_btn {
   padding-left: 0;
   padding-right: 0;
