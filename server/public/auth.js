@@ -180,24 +180,31 @@ var exec = {
   },
   resetuserpwd(req, res, next) {
     var user = require('../../db/models/user')
+    var agent = require('../../db/models/agent')
+    var agent_detail = require('../../db/models/agent_detail')
+    var user = require('../../db/models/user')
+
+    agent.hasMany(agent_detail)
 
     var account = req.body.account
     var pwd = req.body.pwd
 
-    return user.findOne({
-      where: {
-        account: account
-      }
-    }).then(function(result) {
-      if (result == null) {
+    return agent.findOne({
+      include: [{
+        model: agent_detail,
+        where: {
+          key: 'cellphone',
+          value: account
+        }
+      },user]
+    }).then((o) => {
+      if (o == null) {
         return Promise.reject("账户不存在")
       } else {
-        result.password = pwd
+        o.user.password = pwd
         req.session.VerificationInfo = undefined
-        return result.save()
+        return o.user.save()
       }
-    }).then(function() {
-      return "success"
     })
 
   }
