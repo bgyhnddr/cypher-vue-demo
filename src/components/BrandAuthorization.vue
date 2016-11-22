@@ -232,9 +232,9 @@ export default {
     },
     onHide() {
       if (this.loginUser == null) {
-        this.$route.router.go('/auth/login')
+        location.href = location.origin + "/#!/auth/login"
       } else {
-        this.$route.router.go('/employManagement')
+        location.href = location.origin + "/#!/employManagement"
       }
     },
     listenShare(){
