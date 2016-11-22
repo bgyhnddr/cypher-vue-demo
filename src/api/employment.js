@@ -35,6 +35,9 @@ export default {
   createEmployment(params) {
     return httpRequest.post(path + 'createEmployment', params)
   },
+  getHeadImg(params){
+    return httpRequest.post(path + 'getHeadImg', params)
+  },
   changeHeadImg(params) {
     return httpRequest.post(path + 'changeHeadImg', params)
   },
