@@ -246,6 +246,7 @@ export default {
       })
     },
     goFillEmployment2() {
+      var that = this
       var showNextPage = true
       var reg = /^[a-zA-Z]+[a-zA-Z0-9_]*$/ //微信号
       var reg2 = /[\u4e00-\u9fa5]/ //中文
@@ -267,14 +268,28 @@ export default {
         this.errorRemind.headImg = true
         showNextPage = false
       }
-
-      //测试是否手机号与微信号已经被注册
-
-
-
       if (showNextPage) {
-        this.$dispatch('fillInEmployment_goBack', true)
-        this.showNextFillModel = true
+        //测试是否手机号与微信号已经被注册
+        applyEmploymentAPI.checkBeforeSubmit({
+          meta: this.meta,
+          data: this.data,
+          publishEmploymentGuid: this.employmentData.publishEmploymentInfo.guid
+        }).then(function(result) {
+          if (result) {
+            that.$dispatch('fillInEmployment_goBack', true)
+            that.showNextFillModel = true
+          }
+        }).catch(function(err) {
+          if (err == "招募已关闭") {
+            that.showMsg = true
+            that.errorMsg = err
+          } else {
+            that.showSubmitMsg = true
+            that.submitMsg = err
+          }
+        })
+
+
       }
     },
     submit() {
