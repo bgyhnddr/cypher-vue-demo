@@ -134,6 +134,7 @@ export default {
         this.ShowBack = true
         return '使用登录密码'
       } else if (this.$route.name === 'PhoneVerification') {
+        document.body.style.background = '#fff'
         this.ShowBack = true
         return '忘记密码'
       } else if (this.$route.name === 'resetpwd') {
