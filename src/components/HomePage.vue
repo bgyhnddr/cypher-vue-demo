@@ -205,6 +205,7 @@ export default {
 }
 </script>
 <style lang="less">
+
 .homePage-bac {
     min-height: 485px;
 }
@@ -298,11 +299,12 @@ table.platform-message p:nth-child(1) {
 }
 
 .homepage-icon .vux-flexbox-item .flex-demo {
+
     border-right: 1px solid #d3d1d1;
     border-bottom: 1px solid #d3d1d1;
     font-size: 4.5vw;
     color: #292832;
-    background: #fff;
+
 }
 
 .homepage-icon .vux-flexbox-item .flex-demo h4 {
@@ -343,6 +345,9 @@ table.platform-message p:nth-child(1) {
     filter: grayscale(1);
     /* W3C */
 
+}
+.homepage-icon .vux-flexbox-item:nth-child(3) .flex-demo button img{
+  width: 38%
 }
 .homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo button img {
 
