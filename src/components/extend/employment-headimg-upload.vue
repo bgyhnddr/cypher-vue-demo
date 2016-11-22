@@ -48,11 +48,10 @@ export default {
 	computed: {
 		href() {
 			if(this.fileId>0){
-				this.href="/service/public/upload/getAttachment?id=" + this.fileId
+				return "/service/public/upload/getAttachment?id=" + this.fileId
 			}else{
-				this.href="/static/TestIMG/upload.png"
+				return "/static/TestIMG/upload.png"
 			}
-			return "/service/public/upload/getAttachment?id=" + this.fileId
 		},
 		isWechat() {
 			var ua = window.navigator.userAgent
