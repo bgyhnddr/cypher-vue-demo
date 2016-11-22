@@ -52,7 +52,7 @@
       </div>
     </div>
     <alert :show.sync="showMsg" button-text="确认" @on-hide="onHide">{{errorMsg}}</alert>
-    <alert :show.sync="showSubmitMsg" button-text="确认" >{{submitMsg}}</alert>
+    <alert :show.sync="showSubmitMsg" button-text="确认">{{submitMsg}}</alert>
   </div>
   <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
@@ -267,6 +267,11 @@ export default {
         this.errorRemind.headImg = true
         showNextPage = false
       }
+
+      //测试是否手机号与微信号已经被注册
+
+
+
       if (showNextPage) {
         this.$dispatch('fillInEmployment_goBack', true)
         this.showNextFillModel = true
@@ -326,8 +331,13 @@ export default {
         }).then(function(result) {
           that.$route.router.go('/employManagement/employmentSubmission/' + that.employmentData.brandInfo.name)
         }).catch(function(err) {
-          that.showSubmitMsg = true
-          that.submitMsg = err
+          if (err == "招募已关闭") {
+            that.showMsg = true
+            that.errorMsg = err
+          } else {
+            that.showSubmitMsg = true
+            that.submitMsg = err
+          }
         })
       }
     },
