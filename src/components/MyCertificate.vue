@@ -2,7 +2,7 @@
 <div class="certificate-bac">
   <div class="certificate-header">
     <div class="vux-center">
-      <headimg-upload :file-id.sync="agentInfo.headImg" @uploaded  = "changeHeadImg"></headimg-upload>
+      <employment-headimg-upload :file-id.sync="agentInfo.headImg" @uploaded="changeHeadImg"></employment-headimg-upload>
     </div>
   </div>
 
@@ -65,7 +65,7 @@ import {
   XButton,
 } from 'vux'
 import employAPI from '../api/employment'
-import HeadimgUpload from './extend/employment-headimg-upload'
+import EmploymentHeadimgUpload from './extend/employment-headimg-upload'
 export default {
   data() {
     return {
@@ -85,7 +85,7 @@ export default {
     Group,
     Cell,
     XButton,
-    HeadimgUpload
+    EmploymentHeadimgUpload
   },
   methods: {
     getInfo() {
