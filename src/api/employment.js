@@ -59,4 +59,7 @@ export default {
   getEmploymentInfo() {
     return httpRequest.post(path + 'getEmploymentInfo')
   },
+  getCurrentListLength(params) {
+    return httpRequest.post(path + 'getCurrentListLength' , params)
+  },
 }
