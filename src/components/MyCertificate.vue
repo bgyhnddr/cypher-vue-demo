@@ -165,7 +165,12 @@ export default {
   font-size: 4.5vw;
   /*14px*/
 }
+.certificate-header .vux-center {
+  width: 86%;
+      display: block;
+      margin: auto;
 
+}
 .certificate-messages {
   position: relative;
   width: 89%;
