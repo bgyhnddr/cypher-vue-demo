@@ -12,6 +12,22 @@ var exec = {
         resolve(result)
       })
     })
+  },
+  saveAttachment(req) {
+    var crypto = require('crypto')
+    var fs = require('fs')
+
+    var rs = fs.createReadStream('upload/files/6e51cf7a10d7b9c225e142bbf3498bb1')
+
+    var hash = crypto.createHash('md5')
+    rs.on('data', hash.update.bind(hash))
+
+    return new Promise((resolve) => {
+      rs.on('end', function() {
+        console.log(hash.digest('hex'))
+        resolve(hash.digest('hex'))
+      })
+    })
   }
 }
 
