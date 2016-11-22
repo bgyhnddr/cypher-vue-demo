@@ -188,7 +188,7 @@ export default {
               //招募已关闭
             if (result.status == false || endDate <= new Date()) {
               that.showMsg = true
-              that.errorMsg = "招募已关闭"
+              that.errorMsg = "招募已关闭，请关闭本页面"
             } else {
               that.getEmploymentInfo(result.employer_user_account)
               that.getAgentGuid(result.employer_user_account)
@@ -250,7 +250,7 @@ export default {
       var showNextPage = true
       var reg = /^[a-zA-Z]+[a-zA-Z0-9_]*$/ //微信号
       var reg2 = /[\u4e00-\u9fa5]/ //中文
-      var reg3 = /^[1][358][0-9]{9}$/ //手机号
+      var reg3 = /^(\+?0?86\-?)?1[345789]\d{9}$/ //手机号
 
       if (!reg2.test(this.data.name)) {
         this.errorRemind.name = true
@@ -280,7 +280,7 @@ export default {
             that.showNextFillModel = true
           }
         }).catch(function(err) {
-          if (err == "招募已关闭") {
+          if (err == "招募已关闭，请关闭本页面") {
             that.showMsg = true
             that.errorMsg = err
           } else {
@@ -346,7 +346,7 @@ export default {
         }).then(function(result) {
           that.$route.router.go('/employManagement/employmentSubmission/' + that.employmentData.brandInfo.name)
         }).catch(function(err) {
-          if (err == "招募已关闭") {
+          if (err == "招募已关闭，请关闭本页面") {
             that.showMsg = true
             that.errorMsg = err
           } else {
@@ -358,9 +358,9 @@ export default {
     },
     onHide() {
       if (this.loginUser == null) {
-        this.$route.router.go('/auth/login')
+        location.href = location.origin + "/#!/auth/login"
       } else {
-        this.$route.router.go('/employManagement')
+        location.href = location.origin + "/#!/employManagement"
       }
     }
   },

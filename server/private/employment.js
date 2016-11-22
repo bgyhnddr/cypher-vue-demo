@@ -764,11 +764,27 @@ var exec = {
       }
     })
 
+  },
+  getCurrentListLength(req, res, next) {
+    var user_account = req.session.userInfo.name
+    var nowString = req.body.nowString
+
+    var publish_employment = require('../../db/models/publish_employment')
+
+    return publish_employment.findAll({
+      where: {
+        employer_user_account: user_account,
+        status: true,
+        // create_time: {
+        //   $gt: nowString
+        // }
+      }
+    }).then(function(result) {
+        return result
+    })
   }
 
 }
-
-
 
 
 module.exports = (req, res, next) => {

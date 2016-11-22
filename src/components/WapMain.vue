@@ -133,6 +133,7 @@ export default {
         this.ShowBack = true
         return '使用登录密码'
       } else if (this.$route.name === 'PhoneVerification') {
+        document.body.style.background = '#fff'
         this.ShowBack = true
         return '忘记密码'
       } else if (this.$route.name === 'resetpwd') {
@@ -200,7 +201,7 @@ export default {
           this.$route.router.go('/employManagement')
           return
         } else if (SecPath == "brandAuthorization") {
-          this.$route.router.go('/employManagement/chooseEmployableRoles')
+          location.href = location.origin + "/#!/employManagement/chooseEmployableRoles"
           return
         } else if (SecPath == "fillInEmployment") {
           this.$broadcast('goFillEmployment1')

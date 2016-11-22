@@ -26,7 +26,7 @@
                     <p>查看当前进行的招募状态</p>
                 </div>
                 <div class="weui_cell_ft" :class="{'with_arrow': true}">
-                    <slot name="value"></slot>
+                    <label> <slot name="value">{{currentListLength}}</slot></label>
                     <slot></slot>
                 </div>
             </a>
@@ -92,6 +92,7 @@
                 },
                 showAuditClick: false,
                 showCreateClick: false,
+                currentListLength: null,
                 auditListLength: null,
                 showMsg: false,
                 errorMsg: null,
@@ -109,8 +110,22 @@
                                 that.auditListLength = null
                             }
                         }).catch(function(err) {
-                            this.showMsg = true
-                            this.errorMsg = err
+                            that.showMsg = true
+                            that.errorMsg = err
+                        })
+
+                        var nowString = new Date().Format('yyyy-MM-dd hh:mm:ss')
+                        employmentAPI.getCurrentListLength({
+                          nowString: nowString
+                        }).then(function(result) {
+                            if (result != 0) {
+                                that.currentListLength = result.length
+                            } else {
+                                that.currentListLength = null
+                            }
+                        }).catch(function(err) {
+                            that.showMsg = true
+                            that.errorMsg = err
                         })
 
                         if (result.brand_role.level == "0") {
@@ -122,8 +137,8 @@
                         that.user.brand_info = result
                         that.showClickModel = true
                     }).catch(function(err) {
-                        this.showMsg = true
-                        this.errorMsg = err
+                        that.showMsg = true
+                        that.errorMsg = err
                     })
 
             }
