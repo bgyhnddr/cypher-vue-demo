@@ -382,8 +382,8 @@ export default {
 
 .fillin {
   width: 90%;
-  margin: 0 auto 3%;
-  min-height: 460px;
+  margin: 0 auto;
+  min-height: 485px;
 }
 
 .fillin h3 {

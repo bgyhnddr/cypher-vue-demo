@@ -14,25 +14,51 @@ var exec = {
     })
   },
   saveAttachment(req, res, next, api, wechatapi) {
-    // var crypto = require('crypto')
-    // var fs = require('fs')
-    // var rs = fs.createReadStream('upload/files/6e51cf7a10d7b9c225e142bbf3498bb1')
-    //
-    // var hash = crypto.createHash('md5')
-    // rs.on('data', hash.update.bind(hash))
-    //
-    // return new Promise((resolve) => {
-    //   rs.on('end', function() {
-    //     var d = hash.digest('hex')
-    //     console.log(d)
-    //     resolve(d)
-    //   })
-    // })
-    return new Promise((resolve) => {
-      wechatapi.uploadMedia('upload/files/6e51cf7a10d7b9c225e142bbf3498bb1', "image", function(err, result) {
-        console.log(result)
-        resolve(result)
+    var crypto = require('crypto')
+    var fs = require('fs')
+    var media_id = req.body.media_id
 
+    if (!fs.existsSync("upload")) {
+      fs.mkdirSync("upload")
+    }
+
+    if (!fs.existsSync("upload/files")) {
+      fs.mkdirSync("upload/files")
+    }
+
+    var file = require('../../db/models/file')
+    var attachment = require('../../db/models/attachment')
+    return new Promise((resolve, reject) => {
+      wechatapi.getMedia(media_id, function(err, buffer, res) {
+        try {
+          console.log(buffer)
+          var hash = crypto.createHash('md5')
+          hash.update(buffer)
+          var md5 = hash.digest('hex')
+          console.log(md5)
+
+          fs.writeFileSync("upload/files/" + md5, buffer)
+          console.log(res.headers)
+          resolve({
+            md5: md5,
+            res: res
+          })
+        } catch (e) {
+          console.log(e)
+          reject(e)
+        }
+      })
+    }).then((result) => {
+      return file.upsert({
+        hash: result.md5,
+        size: result.res.headers["content-length"],
+        path: "upload/files/" + result.md5,
+        type: result.res.headers["content-type"]
+      }).then(() => {
+        return attachment.create({
+          file_hash: result.md5,
+          name: result.md5
+        })
       })
     })
   }

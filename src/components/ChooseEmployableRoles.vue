@@ -95,7 +95,7 @@
 <style lang="less">
     .choose-bac {
         margin-top: 7%;
-        min-height: 435px;
+        min-height: 460px;
     }
 
     .choose-bac .weui_btn+.weui_btn {

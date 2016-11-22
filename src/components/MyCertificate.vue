@@ -1,9 +1,8 @@
 ﻿<template>
-
 <div class="certificate-bac">
   <div class="certificate-header">
     <div class="vux-center">
-      <headimg-upload :file-id.sync="agentInfo.headImg"></headimg-upload>
+      <headimg-upload :file-id.sync="agentInfo.headImg" @uploaded  = "changeHeadImg"></headimg-upload>
     </div>
   </div>
 
@@ -66,18 +65,18 @@ import {
   XButton,
 } from 'vux'
 import employAPI from '../api/employment'
-import HeadimgUpload from './extend/change-headimg'
+import HeadimgUpload from './extend/employment-headimg-upload'
 export default {
   data() {
     return {
       agentInfo: {
-        employerFlag:false,
-        headImg:null,
-        account:"",
-        brand:"",
-        brand_role:"",
-        employer:"",
-        employer_account:"",
+        employerFlag: false,
+        headImg: null,
+        account: "",
+        brand: "",
+        brand_role: "",
+        employer: "",
+        employer_account: "",
         agent_detail: {}
       }
     }
@@ -93,7 +92,7 @@ export default {
       var that = this
       employAPI.getAgentDetail({
         account: that.$route.params.account,
-        locate:that.$route.params.locate
+        locate: that.$route.params.locate
       }).then(function(result) {
         that.agentInfo.account = result.user.account
         that.agentInfo.agent_detail = result.agent_detail
@@ -105,24 +104,50 @@ export default {
         console.log(err)
         that.serveMsg = err
       })
-    }
+    },
+    getHeadImg() {
+      var that = this
+      employAPI.changeHeadImg({
+        account: that.$route.params.account
+      }).then(function(result) {
+        that.agentInfo.headImg = parseInt(result.value)
+        console.log(that.agentInfo.headImg)
+      }).catch(function(err) {
+        console.log(err)
+        that.serveMsg = err
+      })
+    },
+    changeHeadImg() {
+      var that = this
+      employAPI.changeHeadImg({
+        account: that.$route.params.account,
+        ImgID: that.agentInfo.headImg
+      }).then(function(result) {
+        console.log(result)
+        that.getHeadImg()
+      }).catch(function(err) {
+        console.log(err)
+        that.serveMsg = err
+      })
+    },
   },
   ready() {
-    if(this.$route.params.account != 'admin'){
+    if (this.$route.params.account != 'admin') {
       this.agentInfo.employerFlag = true
     }
+    this.getHeadImg()
     this.getInfo()
   }
 }
 </script>
 <style>
-.certificate-bac{
- min-height: 460px;
-
+.certificate-bac {
+  min-height: 485px;
 }
+
 .certificate-header {
   text-align: center;
-    padding-top: 2%;
+  padding-top: 2%;
 }
 
 .certificate-header button {
@@ -196,7 +221,8 @@ export default {
   color: #595959;
 }
 
-.certificate-messages .weui_cell:nth-child(7) {
+
+/*.certificate-messages .weui_cell:nth-child(7) {
   border-bottom: 0;
-}
+}*/
 </style>

@@ -112,7 +112,7 @@
                             this.showMsg = true
                             this.errorMsg = err
                         })
-                        
+
                         if (result.brand_role.level == "0") {
                             that.showAuditClick = true
                         }
@@ -137,7 +137,7 @@
     .employmentindex-bac {
         font-family: "微软雅黑";
         background-color: #f2f2f2;
-            min-height: 460px;
+            min-height: 485px;
     }
     /*顶栏*/
 

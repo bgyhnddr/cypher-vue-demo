@@ -125,7 +125,7 @@ export default {
 </script>
 <style>
 .current-list {
-    min-height: 460px;
+    min-height: 485px;
 }
 .current-list a.current-list-list {
   background: #fff;

@@ -1,5 +1,5 @@
 ﻿<template>
-	<div style="min-height: 435px;">
+	<div style="min-height: 460px;">
 <div @keyup.enter="ChangePwd">
 	<div>
 		<div class="change-password">
