@@ -128,7 +128,7 @@ export default {
 
 .login-bac {
 	font-family: "微软雅黑";
-	min-height: 460px;
+	min-height: 485px;
 }
 
 
@@ -281,15 +281,7 @@ a.vux-header-back.headerTransition-transition {
 	border: 0
 }
 
-.all-footer {
-	width: 100%;
-	text-align: center;
-	color: #979797;
-	font-size: 3vw;
-	font-family: "微软雅黑";
-	line-height: 2.5em;
-	    margin-bottom: 10%;
-}
+
 
 .login-message input {
 	height: auto;

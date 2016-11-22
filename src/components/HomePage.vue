@@ -206,7 +206,7 @@ export default {
 </script>
 <style lang="less">
 .homePage-bac {
-    min-height: 460px;
+    min-height: 485px;
 }
 .homePage-bac .weui_cells {
     margin-top: 0;

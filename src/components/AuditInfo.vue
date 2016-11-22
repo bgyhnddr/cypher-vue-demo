@@ -262,7 +262,7 @@ export default {
 </script>
 <style>
 .auditinfo-bac {
-  min-height: 450px;
+  min-height: 475px;
 }
 
 .auditinfo-header {
@@ -293,10 +293,6 @@ export default {
 .auditinfo-message .weui_cell {
   border-bottom: 1px solid #d3d1d1;
   padding: 9px 0;
-}
-
-.auditinfo-message .weui_cell:nth-child(8) {
-  border-bottom: 0
 }
 
 .auditinfo-message .weui_btn {

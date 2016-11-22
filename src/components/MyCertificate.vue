@@ -117,7 +117,7 @@ export default {
 </script>
 <style>
 .certificate-bac{
- min-height: 460px;
+ min-height: 485px;
 
 }
 .certificate-header {
@@ -196,7 +196,7 @@ export default {
   color: #595959;
 }
 
-.certificate-messages .weui_cell:nth-child(7) {
+/*.certificate-messages .weui_cell:nth-child(7) {
   border-bottom: 0;
-}
+}*/
 </style>

@@ -157,7 +157,7 @@
 </script>
 <style>
 .history-message {
-    min-height: 460px;
+    min-height: 485px;
 }
     .history-button {
         position: absolute;
