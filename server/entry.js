@@ -46,6 +46,7 @@ module.exports = (app) => {
         checkPermission(req, res, next).then(function() {
           require('./private/' + req.params.type)(req, res, next)
         }, function(error) {
+          console.log(error)
           if (error == "not_login") {
             res.status(404).send({
               "code": "not_login",

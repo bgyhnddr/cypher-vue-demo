@@ -86,7 +86,7 @@ margin-top: 9%
 
 }
 .changepcellphone-input{
-    min-height: 460px;
+    min-height: 485px;
 
 }
 .changepcellphone-input .weui_label {

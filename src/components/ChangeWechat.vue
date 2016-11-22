@@ -75,7 +75,7 @@ export default {
 
 <style>
 .changewechat-bac{
-    min-height: 396px;
+    min-height: 421px;
 }
 .changewechat-input button.weui_btn.weui_btn_primary{
 margin-top: 9%

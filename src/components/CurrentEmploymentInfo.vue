@@ -105,7 +105,7 @@ export default {
 .currnt-info {
   width: 89%;
   margin: 5% auto 0;
-      min-height: 444px;
+      min-height: 469px;
 }
 
 .currnt-info span {

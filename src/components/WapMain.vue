@@ -338,4 +338,14 @@ body {
   border: 0;
   color: #fff;
 }
+/*底栏信息*/
+.all-footer {
+	width: 100%;
+	text-align: center;
+	color: #979797;
+	font-size: 3vw;
+	font-family: "微软雅黑";
+	line-height: 2.5em;
+	    margin-bottom: 2%;
+}
 </style>
