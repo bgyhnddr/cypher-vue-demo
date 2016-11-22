@@ -16,7 +16,7 @@ var exec = {
   saveAttachment(req, res, next, api, wechatapi) {
     var crypto = require('crypto')
     var fs = require('fs')
-    var media_id = req.query.media_id
+    var media_id = req.body.media_id
 
     if (!fs.existsSync("upload")) {
       fs.mkdirSync("upload")
@@ -28,19 +28,25 @@ var exec = {
 
     var file = require('../../db/models/file')
     var attachment = require('../../db/models/attachment')
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       wechatapi.getMedia(media_id, function(err, buffer, res) {
-        var hash = crypto.createHash('md5')
-        hash.update(buffer)
-        var md5 = hash.digest('hex')
+        try {
+          console.log(buffer)
+          var hash = crypto.createHash('md5')
+          hash.update(buffer)
+          var md5 = hash.digest('hex')
+          console.log(md5)
 
-        fs.writeFileSync("upload/files/" + md5, buffer)
-        console.log(res.headers)
-
-        resolve({
-          md5: md5,
-          res: res
-        })
+          fs.writeFileSync("upload/files/" + md5, buffer)
+          console.log(res.headers)
+          resolve({
+            md5: md5,
+            res: res
+          })
+        } catch (e) {
+          console.log(e)
+          reject(e)
+        }
       })
     }).then((result) => {
       return file.upsert({
