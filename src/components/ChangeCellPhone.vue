@@ -46,7 +46,7 @@ export default {
   methods: {
     confirm() {
       var that = this
-      var reg = /^[1][358][0-9]{9}$/  //手机号
+      var reg = /^(\+?0?86\-?)?1[345789]\d{9}$/  //手机号
 
       //检测手机号输入是否正确
       if (!reg.test(this.cellphone)) {
