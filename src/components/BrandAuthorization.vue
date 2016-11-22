@@ -71,6 +71,7 @@ import authAPI from '../api/auth'
 import agentInfoAPI from '../api/agentInfo'
 import employmentAPI from '../api/employment'
 import applyEmploymentAPI from '../api/applyEmployment'
+var request = require('../extend/http-request')
 
 export default {
   components: {
@@ -235,6 +236,26 @@ export default {
       } else {
         this.$route.router.go('/employManagement')
       }
+    },
+    listenShare(){
+      wx.onMenuShareAppMessage({
+        link: window.location.href
+      })
+      wx.onMenuShareTimeline({
+        link: window.location.href, // 分享链接
+      })
+    },
+    getJsConfig() {
+      var that = this
+      request.post('/wechat/getJsConfig', {
+        list: ['scanQRCode', 'chooseImage', 'uploadImage'],
+        url: window.location.href
+      }).then((result) => {
+        window.wx.config(result)
+        window.wx.ready(()=>{
+          that.listenShare()
+        })
+      })
     }
   },
   ready() {
