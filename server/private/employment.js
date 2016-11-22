@@ -409,6 +409,8 @@ var exec = {
     var employment = require('../../db/models/employment')
     var employment_detail = require('../../db/models/employment_detail')
     var brand_role = require('../../db/models/brand_role')
+    var agent = require('../../db/models/agent')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
 
     var level = req.body.level
     var date_from = req.body.date_from
@@ -418,30 +420,49 @@ var exec = {
     employment.hasMany(employment_detail)
     employment.hasOne(employment_detail)
     employment.belongsTo(brand_role)
+    agent.hasOne(agent_brand_role)
 
     if (userinfo) {
       var account = userinfo.name
-      var condition = {
-        employer_user_account: account,
-        status: "已审核",
-        audit_result: "已通过"
-      }
-      if (level && level != "all") {
-        condition.brand_role_code = level
-      }
-      if (date_from) {
-        condition.employer_time = {
-          $gt: date_from,
-          $lte: date_to
+      return agent.findOne({
+        where: {
+          user_account: account
+        },
+        include: agent_brand_role
+      }).then((o) => {
+        if (o == null) {
+          return Promise.reject("账户不存在")
+        } else {
+          if (o.agent_brand_role.brand_role_code == 'brand_role1') {
+            var condition = {
+              status: "已审核",
+              audit_result: "已通过"
+            }
+          } else {
+            var condition = {
+              employer_user_account: account,
+              status: "已审核",
+              audit_result: "已通过"
+            }
+          }
+          if (level && level != "all") {
+            condition.brand_role_code = level
+          }
+          if (date_from) {
+            condition.employer_time = {
+              $gt: date_from,
+              $lte: date_to
+            }
+          }
+          return employment.findAll({
+            where: condition,
+            include: [{
+              model: employment_detail
+            }, {
+              model: brand_role
+            }]
+          })
         }
-      }
-      return employment.findAll({
-        where: condition,
-        include: [{
-          model: employment_detail
-        }, {
-          model: brand_role
-        }]
       })
     } else {
       return Promise.reject("请先登录")
