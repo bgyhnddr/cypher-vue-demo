@@ -3,6 +3,7 @@
   <div class="certificate-header">
     <div class="vux-center">
       <employment-headimg-upload :file-id.sync="agentInfo.headImg" @uploaded="changeHeadImg"></employment-headimg-upload>
+      <p>点击头像可进行修改</p>
     </div>
   </div>
 
@@ -107,11 +108,10 @@ export default {
     },
     getHeadImg() {
       var that = this
-      employAPI.changeHeadImg({
+      employAPI.getHeadImg({
         account: that.$route.params.account
       }).then(function(result) {
         that.agentInfo.headImg = parseInt(result.value)
-        console.log(that.agentInfo.headImg)
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err
@@ -123,7 +123,6 @@ export default {
         account: that.$route.params.account,
         ImgID: that.agentInfo.headImg
       }).then(function(result) {
-        console.log(result)
         that.getHeadImg()
       }).catch(function(err) {
         console.log(err)
