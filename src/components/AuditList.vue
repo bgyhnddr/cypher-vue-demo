@@ -97,7 +97,7 @@ export default {
 </script>
 <style>
 .audit-list {
-    min-height: 460px;
+    min-height: 485px;
 }
 
 .audit-list .weui_btn {

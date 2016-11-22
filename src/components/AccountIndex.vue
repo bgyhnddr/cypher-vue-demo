@@ -99,7 +99,7 @@
 <style lang="less">
     .My-account {
         margin-top: 1%;
-            min-height: 456px;
+            min-height: 481px;
     }
 
     .My-account .weui_cell {

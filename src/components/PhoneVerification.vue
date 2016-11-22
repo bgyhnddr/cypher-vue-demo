@@ -1,10 +1,10 @@
 ﻿<template>
 
-<div style="min-height: 435px;">
+<div style="min-height: 460px;">
 	<div @keyup.enter="CommitVerification">
 		<div>
 
-			<div class="change-password">
+			<div class="change-passwords">
 				<group v-if="!UserPhone">
 					<x-input title="手机号" :value.sync="cellphone" placeholder="请输入手机号" :required="false"></x-input>
 				</group>

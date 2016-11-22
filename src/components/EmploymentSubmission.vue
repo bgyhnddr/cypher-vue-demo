@@ -38,7 +38,7 @@
     text-align: center;
     margin-top: 13%;
 font-family: "微软雅黑";
-min-height: 419px;
+min-height:444px;
 }
 .Application-is-successful img{
 width: 19%;

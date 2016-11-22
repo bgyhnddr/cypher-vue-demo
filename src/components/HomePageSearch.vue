@@ -166,7 +166,7 @@ export default {
 </script>
 <style lang="less">
 .function-search-bac{
-    min-height: 460px;
+    min-height: 485px;
 
 }
 .function-search .weui_cell {
