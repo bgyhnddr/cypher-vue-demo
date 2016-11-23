@@ -428,20 +428,31 @@ var exec = {
     employment_detail.belongsTo(employment)
     employment.belongsTo(brand_role)
 
-    var sequelize = require('../../db/sequelize')
-    var query = "WITH ret AS " +
-      "(SELECT employer_user_account,employee_user_account FROM employments WHERE employee_user_account = '" + userinfo.name + "' " +
-      "UNION ALL " +
-      "SELECT t.employer_user_account,t.employee_user_account FROM employments t INNER JOIN ret r ON t.employer_user_account = r.employee_user_account) " +
-      "SELECT * FROM ret;"
-    return sequelize.query(query).then((result) => {
+    var addEmployment = (account, employeeList, list) => {
+      var childList = list.filter(o => o.employer_user_account == account).map(o => o.employee_user_account)
+      Array.prototype.push.apply(employeeList, childList)
+      childList.forEach((o) => {
+        addEmployment(o, employeeList, list)
+      })
+    }
+
+
+    return employment.findAll().then((result) => {
+      if (userinfo.name == "admin") {
+        return []
+      } else {
+        var employeeList = []
+        addEmployment(userinfo.name, employeeList, result)
+        return employeeList
+      }
+    }).then((result) => {
       var condition = {}
       condition.status = '已审核'
       condition.audit_result = '已通过'
-      if (result[0].length > 0) {
+      if (result.length > 0) {
         condition = {
           employee_user_account: {
-            $in: result[0].map(o => o.employee_user_account).filter(o => o != userinfo.name)
+            $in: result
           },
           status: '已审核',
           audit_result: '已通过'
