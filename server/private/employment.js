@@ -59,15 +59,26 @@ var exec = {
               user_account: user_account
             },
           }],
-        }, ],
-      }, {
-        model: brand_detail
+        }],
       }]
     }).then(function(result) {
       if (result == null) {
-        return Promise.reject("找不到您的品牌商资料")
+        return Promise.reject("找不到您的品牌商角色")
       } else {
-        return result
+        return brand.findOne({
+          where: {
+            guid: result.guid,
+          },
+          include: [{
+            model: brand_detail,
+          }],
+        }).then(function(result) {
+          if (result == null) {
+            return Promise.reject("找不到您的品牌商资料")
+          } else {
+            return result
+          }
+        })
       }
     })
 
@@ -207,6 +218,43 @@ var exec = {
       return obj
     })
   },
+  getBrandDetail(req, res, next) {
+    var account = req.body.account
+    var user = require('../../db/models/user')
+    var brand = require('../../db/models/brand')
+    var brand_role = require('../../db/models/brand_role')
+    var agent = require('../../db/models/agent')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
+    var agent_detail = require('../../db/models/agent_detail')
+
+    agent.hasMany(agent_detail)
+    agent.hasOne(agent_brand_role)
+    agent_brand_role.belongsTo(brand_role)
+    agent.belongsTo(user)
+    user.hasOne(agent)
+    brand_role.belongsTo(brand)
+
+    return agent.findOne({
+      where: {
+        user_account: account
+      },
+      include: [agent_detail, user, {
+        model: agent_brand_role,
+        include: {
+          model: brand_role,
+          include: brand
+        }
+      }]
+    }).then((result) => {
+      var obj = result.toJSON()
+      obj.agent_detail = {}
+      obj.agent_details.forEach((d) => {
+        obj.agent_detail[d.key] = d.value
+      })
+      delete obj.agent_details
+      return obj
+    })
+  },
   getAgentDetail(req, res, next) {
     var account = req.body.account
     var role = req.body.role
@@ -222,16 +270,6 @@ var exec = {
 
     employment.belongsTo(brand)
     employment.belongsTo(brand_role)
-
-    // if ((account == role && account != 'admin') || (locate == 'account' && account != 'admin')) {
-    //   user.hasOne(employment, {
-    //     foreignKey: "employee_user_account"
-    //   })
-    // } else {
-    //   user.hasOne(employment, {
-    //     foreignKey: "employer_user_account"
-    //   })
-    // }
 
     user.hasOne(employment, {
       foreignKey: "employee_user_account"
@@ -416,6 +454,8 @@ var exec = {
       "SELECT * FROM ret;"
     return sequelize.query(query).then((result) => {
       var condition = {}
+      condition.status = '已审核'
+      condition.audit_result = '已通过'
       if (result[0].length > 0) {
         condition = {
           employee_user_account: {
@@ -423,7 +463,15 @@ var exec = {
           }
         }
       }
-
+      if (level && level != "all") {
+        condition.brand_role_code = level
+      }
+      if (date_from) {
+        condition.employer_time = {
+          $gt: date_from,
+          $lte: date_to
+        }
+      }
       return employment.findAll({
         where: condition,
         include: [{
@@ -431,6 +479,29 @@ var exec = {
         }, {
           model: brand_role
         }]
+      })
+    })
+  },
+  getLevel(req, res, next) {
+    var userinfo = req.session.userInfo
+    var brand_role = require('../../db/models/brand_role')
+    var agent = require('../../db/models/agent')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
+    agent.hasOne(agent_brand_role)
+    agent_brand_role.belongsTo(brand_role)
+    return agent.findOne({
+      where: {
+        user_account: userinfo.name
+      },
+      include: {
+        model: agent_brand_role,
+        include: brand_role
+      }
+    }).then((o)=>{
+      return brand_role.findAll({
+        where:{
+          level:{$gt:o.agent_brand_role.brand_role.level }
+        }
       })
     })
   },
@@ -705,9 +776,9 @@ var exec = {
       where: {
         employer_user_account: user_account,
         status: true,
-        create_time: {
-          $gt: nowString
-        }
+        // create_time: {
+        //   $gt: nowString
+        // }
       }
     }).then(function(result) {
       return result
