@@ -54,7 +54,7 @@ var exec = {
     ]).then((result) => {
       if (result[0].length > 0) {
         return Promise.reject("该微信号已存在")
-      } else if (result[1].status == "未审核") {
+      } else if (result[1] != null && result[1].status == "未审核") {
         return Promise.reject("该微信号已存在")
       } else {
         return result
@@ -122,7 +122,7 @@ var exec = {
     ]).then((result) => {
       if (result[0].length > 0) {
         return Promise.reject("该手机号已存在")
-      } else if (result[1].status == "未审核") {
+      } else if (result[1] != null && result[1].status == "未审核") {
         return Promise.reject("该手机号已存在")
       } else {
         return result
