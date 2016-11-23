@@ -460,7 +460,9 @@ var exec = {
         condition = {
           employee_user_account: {
             $in: result[0].map(o => o.employee_user_account)
-          }
+          },
+          status: '已审核',
+          audit_result: '已通过'
         }
       }
       if (level && level != "all") {
@@ -479,6 +481,11 @@ var exec = {
         }, {
           model: brand_role
         }]
+      }).then((o) => {
+        var FilterResult = o.filter(function(item) {
+          return item.employee_user_account != userinfo.name
+        })
+        return FilterResult
       })
     })
   },
@@ -497,10 +504,12 @@ var exec = {
         model: agent_brand_role,
         include: brand_role
       }
-    }).then((o)=>{
+    }).then((o) => {
       return brand_role.findAll({
-        where:{
-          level:{$gt:o.agent_brand_role.brand_role.level }
+        where: {
+          level: {
+            $gt: o.agent_brand_role.brand_role.level
+          }
         }
       })
     })
