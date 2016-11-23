@@ -23,14 +23,7 @@ var exec = {
         }, 'level', 'ASC']
       ]
     }).then(function(result) {
-      if (result.length > 0) {
-        return {
-          employableRoles: result,
-          roleCount: result.length
-        }
-      } else {
-        return Promise.reject("您目前暂无可招募代理角色")
-      }
+      return result
     })
 
   },
@@ -60,25 +53,14 @@ var exec = {
             },
           }],
         }],
+      }, {
+        model: brand_detail
       }]
     }).then(function(result) {
       if (result == null) {
-        return Promise.reject("找不到您的品牌商角色")
+        return Promise.reject("找不到您的品牌商资料")
       } else {
-        return brand.findOne({
-          where: {
-            guid: result.guid,
-          },
-          include: [{
-            model: brand_detail,
-          }],
-        }).then(function(result) {
-          if (result == null) {
-            return Promise.reject("找不到您的品牌商资料")
-          } else {
-            return result
-          }
-        })
+        return result
       }
     })
 
@@ -446,20 +428,31 @@ var exec = {
     employment_detail.belongsTo(employment)
     employment.belongsTo(brand_role)
 
-    var sequelize = require('../../db/sequelize')
-    var query = "WITH ret AS " +
-      "(SELECT employer_user_account,employee_user_account FROM employments WHERE employee_user_account = '" + userinfo.name + "' " +
-      "UNION ALL " +
-      "SELECT t.employer_user_account,t.employee_user_account FROM employments t INNER JOIN ret r ON t.employer_user_account = r.employee_user_account) " +
-      "SELECT * FROM ret;"
-    return sequelize.query(query).then((result) => {
+    var addEmployment = (account, employeeList, list) => {
+      var childList = list.filter(o => o.employer_user_account == account).map(o => o.employee_user_account)
+      Array.prototype.push.apply(employeeList, childList)
+      childList.forEach((o) => {
+        addEmployment(o, employeeList, list)
+      })
+    }
+
+
+    return employment.findAll().then((result) => {
+      if (userinfo.name == "admin") {
+        return []
+      } else {
+        var employeeList = []
+        addEmployment(userinfo.name, employeeList, result)
+        return employeeList
+      }
+    }).then((result) => {
       var condition = {}
       condition.status = '已审核'
       condition.audit_result = '已通过'
-      if (result[0].length > 0) {
+      if (result.length > 0) {
         condition = {
           employee_user_account: {
-            $in: result[0].map(o => o.employee_user_account).filter(o => o != userinfo.name)
+            $in: result
           },
           status: '已审核',
           audit_result: '已通过'
@@ -728,8 +721,6 @@ var exec = {
     }).then(function(result) {
       if (result == null) {
         return Promise.reject("招募信息读取出错")
-      } else if (result.status == false) {
-        return Promise.reject("招募已关闭")
       } else {
         return result
       }
@@ -780,9 +771,9 @@ var exec = {
       where: {
         employer_user_account: user_account,
         status: true,
-        // create_time: {
-        //   $gt: nowString
-        // }
+        create_time: {
+          $gt: nowString
+        }
       }
     }).then(function(result) {
       return result

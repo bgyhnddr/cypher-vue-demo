@@ -56,7 +56,6 @@
             </a>
         </group>
     </div>
-    <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
@@ -67,7 +66,6 @@
         Alert
     } from 'vux'
     import authAPI from '../api/auth'
-    import agentInfoAPI from '../api/agentInfo'
 
     export default {
         components: {
@@ -78,9 +76,7 @@
             return {
                 user: {
                     user_info: {}
-                },
-                showMsg: false,
-                errorMsg: null
+                }
             }
         },
         methods: {
