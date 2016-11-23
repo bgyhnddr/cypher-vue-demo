@@ -131,9 +131,7 @@ var exec = {
       }
     }
 
-    employment_detail.belongsTo(employment)
     employment.hasMany(employment_detail)
-    employment.hasOne(employment_detail)
     employment.belongsTo(brand_role)
 
     if (userinfo) {

@@ -102,7 +102,7 @@ var exec = {
 
     agent.hasOne(agent_brand_role)
     agent_brand_role.belongsTo(brand_role)
-    employment.hasOne(employment_detail)
+    employment.hasMany(employment_detail)
 
     return Promise.all([
       //查找是否已提交招募申请,未通过
@@ -292,7 +292,7 @@ var exec = {
     var agent_detail = require('../../db/models/agent_detail')
     var publish_employment = require('../../db/models/publish_employment')
 
-    employment.hasOne(employment_detail)
+    employment.hasMany(employment_detail)
 
     return Promise.all([
       //查找是否已提交招募申请,未通过
