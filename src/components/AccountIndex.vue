@@ -56,7 +56,6 @@
             </a>
         </group>
     </div>
-    <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
@@ -78,9 +77,7 @@
             return {
                 user: {
                     user_info: {}
-                },
-                showMsg: false,
-                errorMsg: null
+                }
             }
         },
         methods: {
