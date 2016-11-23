@@ -221,6 +221,7 @@ export default {
       }).then(function(result) {
         sendSMS.SendSMS({
           cellphone: that.auditInfo.employment_detail.cellphone,
+          auditID:that.auditID,
           mode: "SendRejectAuditMessage"
         }).then(function(result) {
           that.show = false
