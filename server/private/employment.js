@@ -223,16 +223,19 @@ var exec = {
     employment.belongsTo(brand)
     employment.belongsTo(brand_role)
 
-    if ((account == role && account != 'admin') || (locate == 'account' && account != 'admin')) {
-      user.hasOne(employment, {
-        foreignKey: "employee_user_account"
-      })
-    } else {
-      user.hasOne(employment, {
-        foreignKey: "employer_user_account"
-      })
-    }
+    // if ((account == role && account != 'admin') || (locate == 'account' && account != 'admin')) {
+    //   user.hasOne(employment, {
+    //     foreignKey: "employee_user_account"
+    //   })
+    // } else {
+    //   user.hasOne(employment, {
+    //     foreignKey: "employer_user_account"
+    //   })
+    // }
 
+    user.hasOne(employment, {
+      foreignKey: "employee_user_account"
+    })
 
     agent.hasMany(agent_detail)
     agent.hasOne(agent_brand_role)
@@ -244,7 +247,6 @@ var exec = {
     employment.belongsTo(user, {
       foreignKey: "employer_user_account"
     })
-
 
     return agent.findOne({
       where: {
@@ -398,64 +400,39 @@ var exec = {
     var employment = require('../../db/models/employment')
     var employment_detail = require('../../db/models/employment_detail')
     var brand_role = require('../../db/models/brand_role')
-    var agent = require('../../db/models/agent')
-    var agent_brand_role = require('../../db/models/agent_brand_role')
 
     var level = req.body.level
     var date_from = req.body.date_from
     var date_to = req.body.date_to
 
     employment_detail.belongsTo(employment)
-    employment.hasMany(employment_detail)
-    employment.hasOne(employment_detail)
     employment.belongsTo(brand_role)
-    agent.hasOne(agent_brand_role)
 
-    if (userinfo) {
-      var account = userinfo.name
-      return agent.findOne({
-        where: {
-          user_account: account
-        },
-        include: agent_brand_role
-      }).then((o) => {
-        if (o == null) {
-          return Promise.reject("账户不存在")
-        } else {
-          if (o.agent_brand_role.brand_role_code == 'brand_role1') {
-            var condition = {
-              status: "已审核",
-              audit_result: "已通过"
-            }
-          } else {
-            var condition = {
-              employer_user_account: account,
-              status: "已审核",
-              audit_result: "已通过"
-            }
+    var sequelize = require('../../db/sequelize')
+    var query = "WITH ret AS " +
+      "(SELECT employer_user_account,employee_user_account FROM employments WHERE employee_user_account = '" + userinfo.name + "' " +
+      "UNION ALL " +
+      "SELECT t.employer_user_account,t.employee_user_account FROM employments t INNER JOIN ret r ON t.employer_user_account = r.employee_user_account) " +
+      "SELECT * FROM ret;"
+    return sequelize.query(query).then((result) => {
+      var condition = {}
+      if (result[0].length > 0) {
+        condition = {
+          employee_user_account: {
+            $in: result[0].map(o => o.employee_user_account)
           }
-          if (level && level != "all") {
-            condition.brand_role_code = level
-          }
-          if (date_from) {
-            condition.employer_time = {
-              $gt: date_from,
-              $lte: date_to
-            }
-          }
-          return employment.findAll({
-            where: condition,
-            include: [{
-              model: employment_detail
-            }, {
-              model: brand_role
-            }]
-          })
         }
+      }
+
+      return employment.findAll({
+        where: condition,
+        include: [{
+          model: employment_detail
+        }, {
+          model: brand_role
+        }]
       })
-    } else {
-      return Promise.reject("请先登录")
-    }
+    })
   },
   createEmployment(req, res, next) {
     var employer = req.body.employer
@@ -728,9 +705,9 @@ var exec = {
       where: {
         employer_user_account: user_account,
         status: true,
-        // create_time: {
-        //   $gt: nowString
-        // }
+        create_time: {
+          $gt: nowString
+        }
       }
     }).then(function(result) {
       return result
