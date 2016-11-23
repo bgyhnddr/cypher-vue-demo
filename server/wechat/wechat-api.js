@@ -9,6 +9,7 @@ var exec = {
     }
     return new Promise((resolve, reject) => {
       wechatapi.getJsConfig(param, function(err, result) {
+        console.log("err:" + err)
         resolve(result)
       })
     })

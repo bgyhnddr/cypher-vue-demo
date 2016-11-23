@@ -47,9 +47,9 @@ export default {
 	},
 	computed: {
 		href() {
-			if(this.fileId>0){
+			if (this.fileId > 0) {
 				return "/service/public/upload/getAttachment?id=" + this.fileId
-			}else{
+			} else {
 				return "/static/TestIMG/upload.png"
 			}
 		},
@@ -133,10 +133,16 @@ export default {
 				url: window.location.href
 			}).then((result) => {
 				window.wx.config(result)
+				wx.error(function(res) {
+					window.alert(JSON.stringify(res))
+				})
+			}).catch((err) => {
+				window.alert(err)
 			})
 		}
 	},
 	ready() {
+		window.location.href = location.origin + location.hash
 		this.getJsConfig()
 	}
 }
