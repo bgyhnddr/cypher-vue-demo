@@ -6,6 +6,7 @@
         </button>
     </div>
     <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
+    <alert :show.sync="showCatchError" button-text="确认" @on-hide="onHide">{{catchErrorMsg}}</alert>
 </div>
   <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
@@ -14,7 +15,6 @@
     import {
         Alert
     } from 'vux'
-    import authAPI from '../api/auth'
     import agentInfoAPI from '../api/agentInfo'
     import employmentAPI from '../api/employment'
 
@@ -34,7 +34,9 @@
                 employableRolesList: [],
                 brandName: "",
                 showMsg: false,
-                errorMsg: null
+                errorMsg: null,
+                showCatchError: false,
+                catchErrorMsg: null
             }
         },
         methods: {
@@ -43,15 +45,15 @@
                 employmentAPI.getEmployableRoles({
                     brand_role_code: that.userinfo.brand_role.code
                 }).then(function(result) {
-                    if (result.roleCount == 0) {
+                    if (result.length == 0) {
                         that.showMsg = true
-                        that.errorMsg = "找不到您可以招募的级别"
+                        that.errorMsg = "您目前暂无可招募代理角色"
                     } else {
-                        that.employableRolesList = result.employableRoles
+                        that.employableRolesList = result
                     }
                 }).catch(function(err) {
-                    that.showMsg = true
-                    that.errorMsg = err
+                    that.showCatchError = true
+                    that.catchErrorMsg = err
                 })
             },
             getPersonalInfo() {
@@ -61,8 +63,8 @@
                     that.userinfo = result
                     that.chooseBrandRole()
                 }).catch(function(err) {
-                    that.showMsg = true
-                    that.errorMsg = err
+                    that.showCatchError = true
+                    that.catchErrorMsg = err
                 })
             },
             chooseRole(roleCode) {
@@ -80,12 +82,14 @@
                         //跳转证书页
                     that.$route.router.go('/employManagement/brandAuthorization/' + result + '/' + that.brandName)
                 }).catch(function(err) {
-                    that.showMsg = true
-                    that.errorMsg = err
-                    that.$route.router.go('/employManagement')
+                    that.showCatchError = true
+                    that.catchErrorMsg = err
                 })
 
             },
+            onHide() {
+              this.$route.router.go('/employManagement')
+            }
         },
         ready() {
             this.getPersonalInfo()

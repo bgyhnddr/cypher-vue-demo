@@ -23,14 +23,7 @@ var exec = {
         }, 'level', 'ASC']
       ]
     }).then(function(result) {
-      if (result.length > 0) {
-        return {
-          employableRoles: result,
-          roleCount: result.length
-        }
-      } else {
-        return Promise.reject("您目前暂无可招募代理角色")
-      }
+      return result
     })
 
   },
