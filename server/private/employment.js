@@ -64,7 +64,7 @@ var exec = {
         model: brand_detail
       }]
     }).then(function(result) {
-      if (result != null) {
+      if (result == null) {
         return Promise.reject("找不到您的品牌商资料")
       } else {
         return result
