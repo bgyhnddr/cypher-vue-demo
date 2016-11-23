@@ -43,12 +43,11 @@
           </flexbox-item>
         </flexbox>
       </div>
-
-
       <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
+      <alert :show.sync="showCatchError" button-text="确认" @on-hide="onHide">{{catchErrorMsg}}</alert>
     </div>
   </div>
-    <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -134,24 +133,25 @@ export default {
       }],
       keyword: null,
       user: {
-        agentInfo: {},
         brandName: null
       },
       show: false,
-      errorMsg: null
+      errorMsg: null,
+      showCatchError: false,
+      catchErrorMsg: null
     }
   },
   methods: {
     init() {
       var that = this
-      that.getAgentInfo()
+      that.getBrandName()
       this.getJsConfig()
     },
     search() {
       var reg = /^[\u4e00-\u9fa5]*$/ //全中文
       if (this.keyword == null || this.keyword == '') {
-         this.show = true
-         this.errorMsg = "搜索框内容不能为空"
+        this.show = true
+        this.errorMsg = "搜索框内容不能为空"
       } else if (!reg.test(this.keyword)) {
         this.show = true
         this.errorMsg = "填写格式错误，请填写中文"
@@ -159,33 +159,23 @@ export default {
         this.$route.router.go('/homePage/search/' + this.keyword)
       }
     },
-    getAgentInfo() {
+    getBrandName() {
       var that = this
-      employmentAPI.getAgentInfo().then(function(result) {
-        that.user.agentInfo = result
-      }).catch(function(err) {
-        this.show = true
-        this.errorMsg = err
-      })
-
       employmentAPI.getBrandInfo().then(function(result) {
         that.user.brandName = result.name
       }).catch(function(err) {
-        this.show = true
-        this.errorMsg = err
+        that.showCatchError = true
+        that.catchErrorMsg = "找不到您的品牌商资料,请重新登录"
       })
     },
     goto(item) {
       if (item.callback) {
         item.callback()
-        return
-      }
-      if (item.link == "") {
-        if (item.title == "") {
-          return
+      } else if (item.link == "") {
+        if (item.title != "") {
+          this.show = true
+          this.errorMsg = "该功能正在开发中"
         }
-        this.show = true
-        this.errorMsg = "该功能正在开发中"
       } else {
         this.$route.router.go(item.link)
       }
@@ -197,6 +187,10 @@ export default {
       }).then((result) => {
         window.wx.config(result)
       })
+    },
+    onHide() {
+      authAPI.logout()
+      this.$route.router.go('/')
     }
   },
   ready() {
@@ -205,7 +199,6 @@ export default {
 }
 </script>
 <style lang="less">
-
 .homePage-bac {
     min-height: 485px;
 }
@@ -346,8 +339,8 @@ table.platform-message p:nth-child(1) {
     /* W3C */
 
 }
-.homepage-icon .vux-flexbox-item:nth-child(3) .flex-demo button img{
-  width: 38%
+.homepage-icon .vux-flexbox-item:nth-child(3) .flex-demo button img {
+    width: 38%;
 }
 .homepage-icon .vux-flexbox-item:nth-child(9) .flex-demo button img {
 

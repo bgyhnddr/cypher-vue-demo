@@ -114,7 +114,8 @@
                             that.errorMsg = err
                         })
 
-                        var nowString = new Date().Format('yyyy-MM-dd hh:mm:ss')
+                        var nowDate = new Date()
+                        var nowString = new Date(nowDate.getTime() - 2 * 3600 * 1000).Format('yyyy-MM-dd hh:mm:ss')
                         employmentAPI.getCurrentListLength({
                           nowString: nowString
                         }).then(function(result) {

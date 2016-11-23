@@ -35,6 +35,9 @@ export default {
   getAuditHistory(params) {
     return httpRequest.post(path + 'getAuditHistory', params)
   },
+  getLevel(){
+    return httpRequest.post(path + 'getLevel')
+  },
   createEmployment(params) {
     return httpRequest.post(path + 'createEmployment', params)
   },
