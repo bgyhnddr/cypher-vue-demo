@@ -74,7 +74,7 @@ export default {
       showAlert: false,
       showToast: false,
       show: false,
-      radio: [],
+      radio: ['查看所有'],
       items: []
     }
   },
