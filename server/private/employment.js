@@ -59,26 +59,15 @@ var exec = {
               user_account: user_account
             },
           }],
-        }],
+        }, ],
+      }, {
+        model: brand_detail
       }]
     }).then(function(result) {
-      if (result == null) {
-        return Promise.reject("找不到您的品牌商角色")
+      if (result != null) {
+        return Promise.reject("找不到您的品牌商资料")
       } else {
-        return brand.findOne({
-          where: {
-            guid: result.guid,
-          },
-          include: [{
-            model: brand_detail,
-          }],
-        }).then(function(result) {
-          if (result == null) {
-            return Promise.reject("找不到您的品牌商资料")
-          } else {
-            return result
-          }
-        })
+        return result
       }
     })
 
@@ -744,7 +733,7 @@ var exec = {
         // }
       }
     }).then(function(result) {
-        return result
+      return result
     })
   }
 
