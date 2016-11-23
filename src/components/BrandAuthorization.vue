@@ -157,15 +157,19 @@ export default {
       }).then(function(result) {
         that.employmentData = result
 
-        for (var item in result.brand_details) {
-          for (var meta in result.brand_details[item]) {
-            //key = "companyName"
-            if (meta == 'key' && result.brand_details[item][meta] == 'companyName') {
-              that.company_name = result.brand_details[item]['value']
+        if (result.brand_details.length == 0) {
+          that.showRemindMsg = true
+          that.remindMsg = "获取品牌商信息异常"
+        } else {
+          for (var item in result.brand_details) {
+            for (var meta in result.brand_details[item]) {
+              //key = "companyName"
+              if (meta == 'key' && result.brand_details[item][meta] == 'companyName') {
+                that.company_name = result.brand_details[item]['value']
+              }
             }
           }
         }
-
       }).catch(function(err) {
         that.showRemindMsg = true
         that.remindMsg = err
@@ -236,7 +240,7 @@ export default {
         location.href = location.origin + "/#!/employManagement"
       }
     },
-    listenShare(){
+    listenShare() {
       wx.onMenuShareAppMessage({
         link: window.location.href
       })
@@ -251,7 +255,7 @@ export default {
         url: window.location.href
       }).then((result) => {
         window.wx.config(result)
-        window.wx.ready(()=>{
+        window.wx.ready(() => {
           that.listenShare()
         })
       })
