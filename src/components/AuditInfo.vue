@@ -13,7 +13,7 @@
         <div>
           <cell>
             <div slot="icon">用户名：
-              <label>{{auditInfo..employment_detail.cellphone}}</label>
+              <label>{{auditInfo.employment_detail.cellphone}}</label>
             </div>
           </cell>
           <cell>
