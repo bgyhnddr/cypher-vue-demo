@@ -218,6 +218,40 @@ var exec = {
       return obj
     })
   },
+  getBrandDetail(req, res, next) {
+    var account = req.body.account
+    var user = require('../../db/models/user')
+    var brand = require('../../db/models/brand')
+    var brand_role = require('../../db/models/brand_role')
+    var agent = require('../../db/models/agent')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
+    var agent_detail = require('../../db/models/agent_detail')
+
+    agent.hasMany(agent_detail)
+    agent.hasOne(agent_brand_role)
+    agent_brand_role.belongsTo(brand_role)
+    agent.belongsTo(user)
+    user.hasOne(agent)
+    brand_role.belongsTo(brand)
+
+    return agent.findOne({
+      where: {
+        user_account: account
+      },
+      include: [agent_detail,user, {
+        model: agent_brand_role,
+        include: {model:brand_role,include:brand}
+      }]
+    }).then((result) => {
+      var obj = result.toJSON()
+      obj.agent_detail = {}
+      obj.agent_details.forEach((d) => {
+        obj.agent_detail[d.key] = d.value
+      })
+      delete obj.agent_details
+      return obj
+    })
+  },
   getAgentDetail(req, res, next) {
     var account = req.body.account
     var role = req.body.role
@@ -234,16 +268,19 @@ var exec = {
     employment.belongsTo(brand)
     employment.belongsTo(brand_role)
 
-    if ((account == role && account != 'admin') || (locate == 'account' && account != 'admin')) {
-      user.hasOne(employment, {
-        foreignKey: "employee_user_account"
-      })
-    } else {
-      user.hasOne(employment, {
-        foreignKey: "employer_user_account"
-      })
-    }
+    // if ((account == role && account != 'admin') || (locate == 'account' && account != 'admin')) {
+    //   user.hasOne(employment, {
+    //     foreignKey: "employee_user_account"
+    //   })
+    // } else {
+    //   user.hasOne(employment, {
+    //     foreignKey: "employer_user_account"
+    //   })
+    // }
 
+    user.hasOne(employment, {
+      foreignKey: "employee_user_account"
+    })
 
     agent.hasMany(agent_detail)
     agent.hasOne(agent_brand_role)
@@ -255,7 +292,6 @@ var exec = {
     employment.belongsTo(user, {
       foreignKey: "employer_user_account"
     })
-
 
     return agent.findOne({
       where: {
