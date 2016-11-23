@@ -29,7 +29,6 @@ import {
   Selector,
   Alert
 } from 'vux'
-import authAPI from '../api/auth'
 import employmentAPI from '../api/employment'
 
 export default {
@@ -93,6 +92,9 @@ export default {
               })
             }
           }
+        }).catch(function(err) {
+          that.showMsg = true
+          that.errorMsg = "搜索记录出错"
         })
     },
     onChange(val) {
