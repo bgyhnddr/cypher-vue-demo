@@ -143,7 +143,6 @@ export default {
           }).catch(function(err) {
             that.showRemindMsg = true
             that.remindMsg = err
-            this.$route.router.go('/employManagement')
           })
         } else { //非登录状态
           that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
