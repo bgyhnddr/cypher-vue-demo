@@ -85,7 +85,7 @@ export default {
         iconhref: '/static/TestIMG/recruiting.png',
         isShow: true
       }, {
-        title: '货品销售',
+        title: '货品出售',
         link: '',
         iconhref: '/static/TestIMG/sell.png',
         isShow: true,
