@@ -459,7 +459,7 @@ var exec = {
       if (result[0].length > 0) {
         condition = {
           employee_user_account: {
-            $in: result[0].map(o => o.employee_user_account)
+            $in: result[0].map(o => o.employee_user_account).filter(o => o != userinfo.name)
           },
           status: '已审核',
           audit_result: '已通过'
@@ -481,11 +481,6 @@ var exec = {
         }, {
           model: brand_role
         }]
-      }).then((o) => {
-        var FilterResult = o.filter(function(item) {
-          return item.employee_user_account != userinfo.name
-        })
-        return FilterResult
       })
     })
   },
