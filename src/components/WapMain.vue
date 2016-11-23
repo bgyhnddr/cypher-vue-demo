@@ -80,7 +80,6 @@ export default {
         document.body.style.background = '#f2f2f2'
         this.ShowBack = false
         this.$on('fillInEmployment_goBack', function(flag) {
-          console.log("event" + "==========" + flag)
           this.ShowBack = flag
         })
         return "代理申请"
@@ -133,6 +132,7 @@ export default {
         this.ShowBack = true
         return '使用登录密码'
       } else if (this.$route.name === 'PhoneVerification') {
+        document.body.style.background = '#fff'
         this.ShowBack = true
         return '忘记密码'
       } else if (this.$route.name === 'resetpwd') {
@@ -199,7 +199,7 @@ export default {
           this.$route.router.go('/employManagement')
           return
         } else if (SecPath == "brandAuthorization") {
-          this.$route.router.go('/employManagement')
+          location.href = location.origin + "/#!/employManagement/"
           return
         } else if (SecPath == "fillInEmployment") {
           this.$broadcast('goFillEmployment1')

@@ -2,7 +2,8 @@
 <div class="certificate-bac">
   <div class="certificate-header">
     <div class="vux-center">
-      <headimg-upload :file-id.sync="agentInfo.headImg" @uploaded  = "changeHeadImg"></headimg-upload>
+      <employment-headimg-upload :file-id.sync="agentInfo.headImg" @uploaded="changeHeadImg"></employment-headimg-upload>
+      <p>点击头像可进行修改</p>
     </div>
   </div>
 
@@ -65,7 +66,7 @@ import {
   XButton,
 } from 'vux'
 import employAPI from '../api/employment'
-import HeadimgUpload from './extend/employment-headimg-upload'
+import EmploymentHeadimgUpload from './extend/employment-headimg-upload'
 export default {
   data() {
     return {
@@ -85,7 +86,7 @@ export default {
     Group,
     Cell,
     XButton,
-    HeadimgUpload
+    EmploymentHeadimgUpload
   },
   methods: {
     getInfo() {
@@ -107,11 +108,10 @@ export default {
     },
     getHeadImg() {
       var that = this
-      employAPI.changeHeadImg({
+      employAPI.getHeadImg({
         account: that.$route.params.account
       }).then(function(result) {
         that.agentInfo.headImg = parseInt(result.value)
-        console.log(that.agentInfo.headImg)
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err
@@ -123,7 +123,6 @@ export default {
         account: that.$route.params.account,
         ImgID: that.agentInfo.headImg
       }).then(function(result) {
-        console.log(result)
         that.getHeadImg()
       }).catch(function(err) {
         console.log(err)
@@ -166,7 +165,12 @@ export default {
   font-size: 4.5vw;
   /*14px*/
 }
+.certificate-header .vux-center {
+  width: 86%;
+      display: block;
+      margin: auto;
 
+}
 .certificate-messages {
   position: relative;
   width: 89%;

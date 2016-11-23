@@ -165,23 +165,27 @@ var exec = {
       })
     ]).then(function(result) {
       var overtime = false
-      
-      if(result[3] != null){
+
+      if (result[3] != null) {
         var startDate = new Date(result[3].create_time)
         var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
-        if ( endDate <= new Date()) {
+        if (endDate <= new Date()) {
           overtime = true
         }
       }
 
-      if (result[2] == null ||result[3] == null) {
-        return Promise.reject("招募信息读取出错")
-      } else if (result[0] != null) {
-        if (result[0].status == "未审核" || result[0].audit_result == "已通过" || result[1] != null) {
+      if (result[0] != null) {
+        if (result[0].status == "未审核" || result[0].audit_result == "已通过") {
           return Promise.reject("您已提交申请或已成为该品牌成员，申请失败")
         }
-      } else if (result[3].status == false || overtime ) {
-        return Promise.reject("招募已关闭")
+      } else if (result[1] != null) {
+        return Promise.reject("您已提交申请或已成为该品牌成员，申请失败")
+      } else if (result[2] == null) {
+        return Promise.reject("招募信息读取出错")
+      } else if (result[3] == null) {
+        return Promise.reject("招募信息读取出错")
+      } else if (result[3].status == false || overtime) {
+        return Promise.reject("招募已关闭，请关闭本页面")
       }
 
       var pwd = "";
@@ -265,6 +269,7 @@ var exec = {
         })
 
       })
+
     })
   },
   getPwd(req, res, next) {
@@ -288,6 +293,79 @@ var exec = {
     })
 
   },
+  checkBeforeSubmit(req, res, next) {
+    var meta = req.body.meta
+    var data = req.body.data
+    var publishEmploymentGuid = req.body.publishEmploymentGuid
+
+    var employment = require('../../db/models/employment')
+    var employment_detail = require('../../db/models/employment_detail')
+    var agent_detail = require('../../db/models/agent_detail')
+    var publish_employment = require('../../db/models/publish_employment')
+
+    employment.hasOne(employment_detail)
+
+    return Promise.all([
+      //查找是否已提交招募申请,未通过
+      employment.findOne({
+        include: [{
+          model: employment_detail,
+          where: {
+            $or: [{
+              key: "cellphone",
+              value: data.cellphone
+            }, {
+              key: "wechat",
+              value: data.wechat
+            }]
+          },
+        }]
+      }),
+      //查找是否已注册成为代理
+      agent_detail.findOne({
+        where: {
+          $or: [{
+            key: "cellphone",
+            value: data.cellphone
+          }, {
+            key: "wechat",
+            value: data.wechat
+          }]
+        }
+      }),
+
+      //查找发起招募信息
+      publish_employment.findOne({
+        where: {
+          guid: publishEmploymentGuid
+        }
+      })
+    ]).then(function(result) {
+      var overtime = false
+
+      if (result[2] != null) {
+        var startDate = new Date(result[2].create_time)
+        var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
+        if (endDate <= new Date()) {
+          overtime = true
+        }
+      }
+
+      if (result[0] != null) {
+        if (result[0].status == "未审核" || result[0].audit_result == "已通过") {
+          return Promise.reject("您已提交申请或已成为该品牌成员，申请失败")
+        }
+      } else if (result[1] != null) {
+        return Promise.reject("您已提交申请或已成为该品牌成员，申请失败")
+      } else if (result[2] == null) {
+        return Promise.reject("招募信息读取出错")
+      } else if (result[2].status == false || overtime) {
+        return Promise.reject("招募已关闭，请关闭本页面")
+      }
+      return true
+
+    })
+  }
 }
 
 module.exports = (req, res, next) => {
