@@ -33,7 +33,6 @@ import {
   XInput,
   Alert
 } from 'vux'
-import authAPI from '../api/auth'
 import agentInfoAPI from '../api/agentInfo'
 
 

@@ -25,25 +25,14 @@ var exec = {
             },
           }],
         }],
+      }, {
+        model: brand_detail
       }]
     }).then(function(result) {
       if (result == null) {
-        return Promise.reject("找不到您的品牌商角色")
+        return Promise.reject("找不到您的品牌商资料")
       } else {
-        return brand.findOne({
-          where: {
-            guid: result.guid,
-          },
-          include: [{
-            model: brand_detail,
-          }],
-        }).then(function(result) {
-          if (result == null) {
-            return Promise.reject("找不到您的品牌商资料")
-          } else {
-            return result
-          }
-        })
+        return result
       }
     })
   },

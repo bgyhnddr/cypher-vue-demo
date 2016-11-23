@@ -24,7 +24,6 @@ import {
   Alert,
   Confirm
 } from 'vux'
-import authAPI from '../api/auth'
 import employmentAPI from '../api/employment'
 
 export default {
