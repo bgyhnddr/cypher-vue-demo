@@ -769,9 +769,9 @@ var exec = {
       where: {
         employer_user_account: user_account,
         status: true,
-        // create_time: {
-        //   $gt: nowString
-        // }
+        create_time: {
+          $gt: nowString
+        }
       }
     }).then(function(result) {
       return result
