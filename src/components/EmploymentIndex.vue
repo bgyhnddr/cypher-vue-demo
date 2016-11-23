@@ -69,7 +69,6 @@
         Group,
         Alert
     } from 'vux'
-    import authAPI from '../api/auth'
     import agentInfoAPI from '../api/agentInfo'
     import employmentAPI from '../api/employment'
 

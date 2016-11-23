@@ -21,7 +21,6 @@ import {
   XButton,
   Alert
 } from 'vux'
-import authAPI from '../api/auth'
 import changeUserInfoAPI from '../api/changeUserInfo'
 
 export default {
