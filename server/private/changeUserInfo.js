@@ -25,19 +25,36 @@ var exec = {
     var user = require('../../db/models/user')
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
+    var employment = require('../../db/models/employment')
+    var employment_detail = require('../../db/models/employment_detail')
 
     user.hasOne(agent)
     agent.hasMany(agent_detail)
+    employment.hasOne(employment_detail)
 
-    return agent_detail.findAll({
-      where: {
-        $and: {
-          key: "wechat",
-          value: wechat
+    return Promise.all([
+      agent_detail.findAll({
+        where: {
+          $and: {
+            key: "wechat",
+            value: wechat
+          }
         }
-      }
-    }).then((result) => {
-      if (result.length > 0) {
+      }),
+      //查找是否已提交招募申请,未通过
+      employment.findOne({
+        include: [{
+          model: employment_detail,
+          where: {
+            key: "wechat",
+            value: wechat
+          }
+        }]
+      })
+    ]).then((result) => {
+      if (result[0].length > 0) {
+        return Promise.reject("该微信号已存在")
+      } else if (result[1].status == "未审核") {
         return Promise.reject("该微信号已存在")
       } else {
         return result
@@ -76,19 +93,36 @@ var exec = {
     var user = require('../../db/models/user')
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
+    var employment = require('../../db/models/employment')
+    var employment_detail = require('../../db/models/employment_detail')
 
     user.hasOne(agent)
     agent.hasMany(agent_detail)
+    employment.hasOne(employment_detail)
 
-    return agent_detail.findAll({
-      where: {
-        $and: {
-          key: "cellphone",
-          value: cellphone
+    return Promise.all([
+      agent_detail.findAll({
+        where: {
+          $and: {
+            key: "cellphone",
+            value: cellphone
+          }
         }
-      }
-    }).then((result) => {
-      if (result.length > 0) {
+      }),
+      //查找是否已提交招募申请,未通过
+      employment.findOne({
+        include: [{
+          model: employment_detail,
+          where: {
+            key: "cellphone",
+            value: cellphone
+          }
+        }]
+      })
+    ]).then((result) => {
+      if (result[0].length > 0) {
+        return Promise.reject("该手机号已存在")
+      } else if (result[1].status == "未审核") {
         return Promise.reject("该手机号已存在")
       } else {
         return result
