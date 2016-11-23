@@ -30,7 +30,7 @@ var exec = {
 
     user.hasOne(agent)
     agent.hasMany(agent_detail)
-    employment.hasOne(employment_detail)
+    employment.hasMany(employment_detail)
 
     return Promise.all([
       agent_detail.findAll({
@@ -98,7 +98,7 @@ var exec = {
 
     user.hasOne(agent)
     agent.hasMany(agent_detail)
-    employment.hasOne(employment_detail)
+    employment.hasMany(employment_detail)
 
     return Promise.all([
       agent_detail.findAll({
