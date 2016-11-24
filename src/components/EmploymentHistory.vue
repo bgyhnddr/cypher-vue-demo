@@ -75,6 +75,7 @@ export default {
       showToast: false,
       show: false,
       radio: ['查看所有'],
+      radioValue:[],
       items: []
     }
   },
@@ -112,6 +113,7 @@ export default {
       employAPI.getLevel().then(function(result) {
         result.forEach((d) => {
           that.radio.push(d.name)
+          that.radioValue.push({name:d.name,value:d.code})
         })
       }).catch(function(err) {
         console.log(err)
@@ -123,23 +125,12 @@ export default {
       that.show = true
     },
     change(value) {
-      switch (value) {
-        case "总代理":
-          this.level = "brand_role2"
-          break
-        case "二级代理":
-          this.level = "brand_role3"
-          break
-        case "特约销售员":
-          this.level = "brand_role4"
-          break
-        case "销售员":
-          this.level = "brand_role5"
-          break
-        case "查看所有":
-          this.level = "all"
-          break
-      }
+      var that = this
+      that.radioValue.forEach((o)=>{
+        if(o.name == value){
+          that.level = o.value
+        }
+      })
     },
     reset() {
       this.date1 = ""
