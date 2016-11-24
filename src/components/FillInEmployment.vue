@@ -176,7 +176,7 @@ export default {
           that.employmentData.publishEmploymentInfo = result
 
           if (that.loginUser == result.employer_user_account) { //是发起人
-            that.$route.router.go('/employManagement/brandAuthorization/' + publishEmploymentID + '/' + that.brandName)
+            that.$route.router.go('/employManagement/brandAuthorization/' + publishEmploymentID)
           } else { //非发起人或者未登录
 
             var guid = uuid.v1()
@@ -344,7 +344,7 @@ export default {
           deadline: deadline,
           publishEmploymentGuid: this.employmentData.publishEmploymentInfo.guid
         }).then(function(result) {
-          that.$route.router.go('/employManagement/employmentSubmission/' + that.employmentData.brandInfo.name)
+          that.$route.router.go("/employManagement/employmentSubmission")
         }).catch(function(err) {
           if (err == "招募已关闭，请关闭本页面") {
             that.showMsg = true

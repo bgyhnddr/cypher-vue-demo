@@ -87,16 +87,15 @@ export function configRouter(router) {
         'chooseEmployableRoles': {
           component: require('../components/ChooseEmployableRoles.vue')
         },
-        'brandAuthorization/:publishEmploymentID/:brandName': {
+        'brandAuthorization/:publishEmploymentID': {
           name: 'BrandAuthorization',
           component: require('../components/BrandAuthorization.vue')
         },
-        'fillInEmployment/:publishEmploymentID/:brandName': {
+        'fillInEmployment/:publishEmploymentID': {
           name: 'FillInEmployment',
           component: require('../components/FillInEmployment.vue')
         },
-        'employmentSubmission/:brandName': {
-          name: 'EmploymentSubmission',
+        'employmentSubmission': {
           component: require('../components/EmploymentSubmission.vue')
         },
         'audit': {

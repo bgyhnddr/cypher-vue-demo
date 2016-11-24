@@ -80,7 +80,7 @@
                     createTime: new Date().Format('yyyy-MM-dd hh:mm:ss')
                 }).then(function(result) {
                         //跳转证书页
-                    that.$route.router.go('/employManagement/brandAuthorization/' + result + '/' + that.brandName)
+                    that.$route.router.go('/employManagement/brandAuthorization/' + result)
                 }).catch(function(err) {
                     that.showCatchError = true
                     that.catchErrorMsg = err

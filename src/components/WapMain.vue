@@ -83,7 +83,7 @@ export default {
           this.ShowBack = flag
         })
         return "代理申请"
-      } else if (this.$route.name === 'EmploymentSubmission') {
+      } else if (this.$route.path === '/employManagement/employmentSubmission') {
         document.body.style.background = '#fff'
         this.ShowBack = false
         return "代理申请"
