@@ -26,8 +26,8 @@ module.exports = (app) => {
   app.use(session({
     secret: '1234567890QWERTY'
   }))
-  var appid = 'wxa4ff4d9b9169aa46'
-  var apps = '6ebc82ec6b6d69f2402ac1495147b1f2'
+  var appid = 'wx9165b89a9a491bf0'
+  var apps = 'af55586c61c8ce8900ffa9fa7c3cfb96'
   // var appid = 'wx9165b89a9a491bf0'
   // var apps = 'af55586c61c8ce8900ffa9fa7c3cfb96'
   var OAuth = require('wechat-oauth')
