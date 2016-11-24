@@ -140,7 +140,7 @@ export default {
       }
       if (this.userLevel == "4") {
         for (var item in this.funcList) {
-          if (this.funcList[item]['name'] == '发起招募' || this.funcList[item].isShow == false) {
+          if (this.funcList[item].isShow == false || this.funcList[item]['name'] == '发起招募' || this.funcList[item]['name'] == '当前招募' || this.funcList[item]['name'] == '成员审核' || this.funcList[item]['name'] == '招募历史') {
             this.funcList[item].isShow = false
           } else {
             this.funcList[item].isShow = true
@@ -163,7 +163,7 @@ export default {
 }
 </script>
 <style lang="less">
-.function-search-bac{
+.function-search-bac {
     min-height: 485px;
 
 }
