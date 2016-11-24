@@ -1,7 +1,9 @@
 ﻿<template>
 <div class="employmentindex-bac">
+
   <div v-if="showClickModel">
     <group>
+      <div style="min-height:471px" >
       <a class="weui_cell a-li a-li-first" v-link="{path: '/employManagement/chooseEmployableRoles'}">
         <div class="weui_cell_hd">
           <img src="/static/TestIMG/initiate.png" />
@@ -61,6 +63,7 @@
           <slot></slot>
         </div>
       </a>
+    </div>
     </group>
   <div>
   <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
