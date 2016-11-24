@@ -345,7 +345,7 @@ body {
 	color: #979797;
 	font-size: 3vw;
 	font-family: "微软雅黑";
-	line-height: 2.5em;
-	    margin-bottom: 2%;
+	line-height: 2.8em;
+	margin-bottom: 0;
 }
 </style>
