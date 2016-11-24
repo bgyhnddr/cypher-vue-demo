@@ -1,6 +1,7 @@
 ﻿<template>
 <div>
   <div class="homePage-bac">
+    <div class="homepage-head">
     <group>
       <table border="0" class="platform-message" cellspacing=0 cellpadding=0>
         <tbody>
@@ -30,6 +31,7 @@
         </div>
       </div>
     </group>
+  </div>
     <div>
       <div v-if="showFuncList" class="homepage-icon">
         <flexbox :gutter="0" wrap="wrap">
@@ -217,8 +219,14 @@ export default {
 }
 </script>
 <style lang="less">
+
 .homePage-bac {
     min-height: 485px;
+}
+.homepage-head{
+  background: url(/static/TestIMG/homepage_header.png) no-repeat;
+  background-size: cover;
+
 }
 .homePage-bac .weui_cells {
     margin-top: 0;
@@ -239,7 +247,7 @@ div.icon_btn {
 table.platform-message {
     width: 94%;
     margin: 3% auto auto;
-    color: #292832;
+    color: #fff;
     font-size: 4.7vw;
     font-family: "微软雅黑";
 }
@@ -268,14 +276,14 @@ table.platform-message p:nth-child(1) {
 
 .search input.weui_input {
     width: 97%;
-    background: #fff;
+        background: rgba(0, 0, 0, 0.5);
     margin: auto;
     padding-left: 2%;
     height: 2.3em;
     font-family: "微软雅黑";
     font-size: 4.7vw;
     color: #9b9c9c;
-    border: 1px solid #d3d1d1;
+    border: 1px solid #645f5f
 }
 
 .search-button {
@@ -292,6 +300,7 @@ table.platform-message p:nth-child(1) {
     background: url("/static/TestIMG/search.png");
     background-size: 100%;
     background-repeat: no-repeat;
+        color: rgba(0, 0, 0, 0.5);
 }
 .search-button .weui_btn:after {
     border: 0;
