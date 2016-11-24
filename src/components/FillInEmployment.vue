@@ -37,7 +37,7 @@
       <div class="certificate ">
         <group>
           <selector placeholder="-证件类型-" :options="IDTypeList" :value.sync="data.IDType"></selector>
-          <x-input class="weui_cell_primary certificate-input" keyboard="number" placeholder="输入证件号" :value.sync="data.IDNumber" :show-clear="false" :required="false" v-ref:IDNumber></x-input>
+          <x-input class="weui_cell_primary certificate-input" placeholder="输入证件号" :value.sync="data.IDNumber" :show-clear="false" :required="false" v-ref:IDNumber></x-input>
           <p v-if="errorRemind.IDNumber">{{errorRemind.IDNumberErrorMsg}}</p>
           <div class="clean"></div>
         </group>
