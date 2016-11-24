@@ -31,12 +31,12 @@
       </div>
     </group>
     <div>
-      <div class="homepage-icon">
+      <div v-if="showFuncList" class="homepage-icon">
         <flexbox :gutter="0" wrap="wrap">
           <flexbox-item :span="1/3" v-for="item in btn_list">
-            <div class="flex-demo">
+            <div class="flex-demo" v-if="item.isShow">
               <button @click="goto(item)">
-                <img :src.sync="item.iconhref" alt="icon" v-show="item.isShow">
+                <img :src.sync="item.iconhref" alt="icon">
                 <h4 class="weui_media_title">{{item.title}}</h4>
               </button>
             </div>
@@ -138,13 +138,15 @@ export default {
       show: false,
       errorMsg: null,
       showCatchError: false,
-      catchErrorMsg: null
+      catchErrorMsg: null,
+      showFuncList: false
     }
   },
   methods: {
     init() {
       var that = this
       that.getBrandName()
+      that.getShowItem()
       this.getJsConfig()
     },
     search() {
@@ -166,6 +168,22 @@ export default {
       }).catch(function(err) {
         that.showCatchError = true
         that.catchErrorMsg = "找不到您的品牌商资料,请重新登录"
+      })
+    },
+    getShowItem() {
+      var that = this
+      employmentAPI.getBrandInfo().then(function(result) {
+        if (result.brand_role.level == "4") {
+          for (var item in that.btn_list) {
+            if (that.btn_list[item]['title'] == "成员招募") {
+              that.btn_list.splice(item, 1)
+            }
+          }
+        }
+        that.showFuncList = true
+      }).catch(function(err) {
+        that.showCatchError = true
+        that.catchErrorMsg = "找不到您的个人资料,请重新登录"
       })
     },
     goto(item) {
