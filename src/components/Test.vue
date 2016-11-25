@@ -6,7 +6,6 @@
 <div v-el:qr></div>
 </template>
 <script>
-import qrcode from 'vue-qrcode'
 var qrcanvas = require('qrcanvas')
 var request = require('../extend/http-request')
 export default {
@@ -16,9 +15,6 @@ export default {
       imgId: "",
       str: "来吧中文"
     }
-  },
-  components: {
-    qrcode
   },
   methods: {
     getJsConfig() {
