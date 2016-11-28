@@ -54,7 +54,7 @@ export default {
       var account = null
       var publishEmploymentID = this.$route.params.publishEmploymentID
       that.qrcodeHref = window.location.href
-      
+
       authAPI.getUser().then(function(result) {
         if (result.name != undefined) { //登录状态
           account = result.name
@@ -145,7 +145,7 @@ export default {
 }
 
 .brandauthorization-bac {
-  background: url(/static/TestIMG/PowerOfAttorney-bac.png) no-repeat;
+
   background-size: 100%;
   width: 100%;
   margin: 3% auto;
@@ -164,7 +164,7 @@ export default {
 }
 
 .brandauthorization-img .brand-logo img {
-  width: 62%;
+  width: 78%;
   height: auto;
   margin: 4% auto 2%;
 }
