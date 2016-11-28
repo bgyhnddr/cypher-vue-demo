@@ -122,6 +122,9 @@ export default {
         document.body.style.background = '#f2f2f2'
         return '我的证书'
       } else if (this.$route.name === 'CertificateInfo') {
+          document.body.style.backgroundImage = 'url(/static/TestIMG/certificateinfo_bac.png)'
+          document.body.style.backgroundRepeat='no-repea'
+          document.body.style.backgroundSize='contain'
         this.ShowBack = true
         return '授权证书'
       } else if (this.$route.path === '/employManagement/currentList') {
