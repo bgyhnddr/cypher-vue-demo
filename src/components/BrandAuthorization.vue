@@ -130,7 +130,8 @@ export default {
   ready() {
     this.initData()
     this.$els.qr.appendChild(qrcanvas({
-      data:  window.location.href
+      data:  window.location.href,
+      size:300
     }))
   }
 }
