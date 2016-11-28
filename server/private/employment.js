@@ -1,3 +1,57 @@
+var getTeamNum = () => {
+  var team_num = require('../../db/models/team_num')
+
+  function mkcode(n) {
+    var n3 = n % 17576
+    var a3 = Math.floor(n3 / 676)
+    var n2 = n3 - a3 * 676
+    var a2 = Math.floor(n2 / 26)
+    var n1 = n2 - a2 * 26
+    var a1 = Math.floor(n1)
+    return ((10 + a3).toString(36) + (10 + a2).toString(36) + (10 + a1).toString(36)).toUpperCase()
+  }
+
+  return team_num.findOne({
+    where: {
+      id: 1
+    }
+  }).then((o) => {
+    return Promise.all([
+      team_num.update({
+        num: o.num + 1
+      }, {
+        where: {
+          id: 1
+        }
+      }),
+      mkcode(o.num+1)
+    ])
+  })
+}
+
+var getTeamCode = (e) => {
+  var agent = require('../../db/models/agent')
+  var team_agent = require('../../db/models/team_agent')
+
+  agent.hasOne(team_agent)
+
+  return agent.findOne({
+    where: {
+      user_account: e
+    },
+    include: team_agent
+  }).then((o) => {
+    return Promise.all([
+      team_agent.count({
+        where:{
+          team_code:o.team_agent.team_code
+        }
+      }),
+      o.team_agent.team_code
+    ])
+    // return o.team_agent.team_code
+  })
+}
 var exec = {
   getEmployableRoles(req, res, next) {
     var brand_role_code = req.body.brand_role_code
@@ -311,6 +365,8 @@ var exec = {
     var employment = require('../../db/models/employment')
     var employment_term = require('../../db/models/employment_term')
     var employment_detail = require('../../db/models/employment_detail')
+    var team = require('../../db/models/team')
+    var team_agent = require('../../db/models/team_agent')
     var user = require('../../db/models/user')
     var user_role = require('../../db/models/user_role')
     var agent = require('../../db/models/agent')
@@ -322,6 +378,9 @@ var exec = {
 
     var createList
     var term
+
+    var team
+    var brand = 'B'
 
     employment_detail.belongsTo(employment)
 
@@ -362,6 +421,32 @@ var exec = {
           value: result.employment_details[item]['value']
         })
       }
+
+      if (result.brand_role_code == 'brand_role2') {
+        getTeamNum().then((o) => {
+          team = team.create({
+            brand: brand,
+            code: o[1]
+          })
+          team_agent = team_agent.create({
+            agent_guid: guid,
+            team_code: o[1],
+            num: '0001'
+          })
+        })
+      } else {
+        getTeamCode(result.employer_user_account).then((o) => {
+            var num = (o[0]+1)
+            var initNum = '0000'
+            var countNum = initNum.substring(0,((initNum.length)-(num.toString().length)))+num
+
+            team_agent = team_agent.create({
+              agent_guid: guid,
+              team_code: o[1],
+              num: countNum
+            })
+        })
+      }
       return Promise.all([
         employment_term.create({
           agent_guid: guid,
@@ -370,11 +455,9 @@ var exec = {
         }),
         agent.create({
           user_account: result.employee_user_account,
-          //guid test
           guid: guid
         }),
         agent_brand_role.create({
-          //guid test
           agent_guid: guid,
           brand_role_code: result.brand_role_code
         }),
@@ -383,6 +466,8 @@ var exec = {
           key: 'employer',
           value: result.employer_user_account
         }),
+        team,
+        team_agent,
         createList,
         result.status = "已审核",
         result.audit_time = new Date().toLocaleString(),

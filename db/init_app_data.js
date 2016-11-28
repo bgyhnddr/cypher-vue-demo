@@ -10,6 +10,8 @@ var employment = require('./models/employment')
 var employment_detail = require('./models/employment_detail')
 var employment_term = require('./models/employment_term')
 var agent_detail = require('./models/agent_detail')
+var team = require('./models/team')
+var team_agent = require('./models/team_agent')
 var team_num = require('./models/team_num')
 
 module.exports = function() {
@@ -55,7 +57,9 @@ module.exports = function() {
         agent_detail.create({ agent_guid: "agent1", key: "addressDetail", value: "中山路52号2栋1单元808" }),
         agent_detail.create({ agent_guid: "agent1", key: "headImg", value: "1" }),
 
-        team_num.create({ num:0 })
+        team.create({ brand:'B',code:'AAA' }),
+        team_num.create({ num:0 }),
+        team_agent.create({ agent_guid:'agent1',team_code:'AAA',num:'0001' })
 
     ])
 }
