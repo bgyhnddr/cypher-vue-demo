@@ -103,18 +103,16 @@ export default {
   methods: {
     search() {
       var reg = /^[\u4e00-\u9fa5]*$/
+      this.showResult = false
       if (this.keyword == null || this.keyword == '') {
-        this.showResult = false
         this.showErrorNoHandled = true
         this.errorMsgNoHandled = "请输入需要搜索的关键字"
         this.$dispatch("backButton", this.showHomePageModel)
       } else if (!reg.test(this.keyword)) {
-        this.showResult = false
         this.showErrorNoHandled = true
         this.errorMsgNoHandled = "请输入中文关键字"
         this.$dispatch("backButton", this.showHomePageModel)
       } else {
-        this.showResult = false
         var countShowItem = this.filter(this.keyword)
         if(countShowItem == 0){
           this.showErrorNoHandled = true
