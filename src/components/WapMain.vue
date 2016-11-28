@@ -74,6 +74,7 @@ export default {
         document.body.style.background = '#fff'
         return '选择招募代理级别'
       } else if (this.$route.name === 'BrandAuthorization') {
+          document.body.style.background = '#f2f2f2'
         this.ShowBack = true
         return '分享招募'
       } else if (this.$route.name === 'FillInEmployment') {
