@@ -1,63 +1,53 @@
 ﻿<template>
 <div>
-  <div class="brandauthorization-bac">
-    <div class="brandauthorizations">
-      <div class="brandauthorization-img">
-        <p class="brand-logo">
-          <img class="vux-x-img ximg-demo" alt="品牌logo" src="/static/TestIMG/logo.png" />
-        </p>
-        <p>
-          <img src="/static/TestIMG/authorization.png" class="authorization" />
-        </p>
-      </div>
+  <div class="certificateinfo-bac">
+    <div class="certificateinfo">
+
       <div>
-        <h3>兹授权</h3>
-        <table boder=0 class="personal-identity">
+
+        <table boder=0 class="personal-identitys">
+          <tbody>
           <tr>
-            <td width="60px">姓名:</td>
+            <td width=37%><img src="/static/TestIMG/i_have_granted.png"/></td>
             <td>{{agentInfo.agent_detail.name}}</td>
-            <td rowspan="4" align="right">
-              <img class="vux-x-img ximg-demo" alt="授权者头像" :src="'/service/public/upload/getAttachment?id='+agentInfo.agent_detail.headImg" />
-            </td>
+
           </tr>
           <tr>
-            <td> 微信:</th>
+              <td width=37%><img src="/static/TestIMG/authorization_level.png"/></td>
+            <td>{{agentInfo.brand}}{{agentInfo.brand_role}}</th>
+
+          </tr>
+          <tr>
+  <td width=37%><img src="/static/TestIMG/authorization_num.png"/></td>
+              <td>{{agentInfo.AuthorizationID}}</td>
+          </tr>
+          <tr>
+  <td width=37%><img src="/static/TestIMG/wechat.png"/></td>
               <td>{{agentInfo.agent_detail.wechat}}</td>
           </tr>
           <tr>
-            <td>{{agentInfo.agent_detail.IDType}}:</th>
+  <td width=37%><img src="/static/TestIMG/idcard.png"/></td>
               <td>{{agentInfo.agent_detail.IDNumber}}</td>
           </tr>
-          <tr>
-            <td height="6px"></td>
-            <td></td>
-          </tr>
 
+</tbody>
         </table>
-        <div class="set-agent ">为
-          <label>{{agentInfo.brand}}</label>
-          <label>{{agentInfo.brand_role}}</label>
-        </div>
-        <div class="allow-agent">允许其在网络上销售
-          <label>{{agentInfo.brand}}</label>
-          <label>旗下产品</label>
-        </div>
-        <div class="agent-height">
-          <div v-if="AdminFlag">
-            <div class="agent-message">
-              <p>授权编号
-                <label>{{agentInfo.AuthorizationID}}</label>
-              </p>
-              <p>授权期限
-                <label>{{agentInfo.term_from}}</label>至
-                <label>{{agentInfo.term_to}}</label>
-              </p>
-            </div>
-          </div>
-        </div>
-        <p class="agent-unit ">授权单位
-          <label class="color-gray">{{agentInfo.brand}}</label>
-        </p>
+        <div class="attention"><img src="/static/TestIMG/attention.png"></div>
+
+<table class="agents-height">
+  <tbody>
+    <tr>
+<td width="60%">
+  <img src="/static/TestIMG/data.png" />
+  <p>{{agentInfo.term_from}}-
+  {{agentInfo.term_to}}</td></p>
+<td align="right"><img src="/static/TestIMG/brand_people.png" /></td>
+</tr>
+
+
+  </tbody>
+</table>
+
 
       </div>
     </div>
@@ -135,32 +125,31 @@ export default {
   padding-bottom: 0;
 }
 
-.brandauthorization-bac {
-  background: url(/static/TestIMG/PowerOfAttorney-bac.png) no-repeat;
-  background-size: 100%;
-  width: 100%;
-  margin: 3% auto;
+.certificateinfo-bac {
+
 }
 
-.brandauthorizations {
-  width: 75%;
-  margin: auto;
-  padding: 13% 0%;
+.certificateinfo {
+  width: 93%;
+  margin: 40% auto;
+  padding: 13% 0 0 0;
   font-size: 3vw;
   color: #3f3a36;
+  background: url(/static/TestIMG/certificateinfo.png) no-repeat #000;
+  background-size: 100%;
 }
 
-.brandauthorizations h3 {
+.certificateinfo h3 {
   font-size: 3vw;
 }
 
-.brandauthorization-img .brand-logo img {
-  width: 62%;
+.certificateinfo-img .brand-logo img {
+    width: 100%;
   height: auto;
   margin: 4% auto 2%;
 }
 
-.brandauthorization-img h3 {
+.certificateinfo-img h3 {
   font-family: " 微软雅黑";
 }
 
@@ -169,28 +158,26 @@ export default {
   height: auto;
 }
 
-.brandauthorization-img {
+.certificateinfo-img {
   text-align: center;
 }
 
-table.personal-identity {
+.certificateinfo table.personal-identitys {
   font-family: "微软雅黑";
   width: 100%;
-  margin: auto;
-}
+margin: 8% auto 0 0;
+  color: #fff}
 
-table.personal-identity tbody tr td {
+.certificateinfo table.personal-identitys tbody tr td {
   font-family: "微软雅黑";
   text-align: left;
 }
 
-table.personal-identity tbody tr td img {
-  width: 58px;
+.certificateinfo table.personal-identitys tbody tr td img {
+  width:37%;
   height: auto;
-  margin-right: 0;
-  min-height: 76px;
-  min-width: 46px;
-  max-height: 84px;
+  float: right;
+
 }
 
 .color-gray {
@@ -212,6 +199,7 @@ table.personal-identity tbody tr td img {
 .allow-agent {
   text-align: center;
   font-family: "微软雅黑";
+
 }
 
 .agent-message {
@@ -229,8 +217,39 @@ table.personal-identity tbody tr td img {
   margin-bottom: 42%
 }
 
-.agent-height {
-  margin: 8% 0px 10%;
-  height: 38px
+.agents-height {
+color: #fff;
+font-family: "微软雅黑";
+font-size: 3vw;
+width: 80%;
+margin: auto;
+position: relative;
+}
+.agents-height tr td{
+  line-height: normal;
+      vertical-align: top;
+}
+.agents-height tr td:nth-child(1)   img {
+    width: 66%;
+    margin: auto;
+    }
+.agents-height tr td:nth-child(2) img {
+    width:100%;
+    margin: auto;
+}
+.agents-height tr td:nth-child(1)  p{
+  position: absolute;
+  top: 37%;
+left: 2%;
+}
+.attention {
+    text-align: center;
+    line-height: initial;
+    margin: 0;
+    padding: 0;
+}
+.attention img {
+    width: 79%;
+    margin: auto;
 }
 </style>
