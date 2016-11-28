@@ -1,6 +1,5 @@
 ﻿<template>
-<div>
-  <div class="brandauthorization-bac" v-if="showBrandAuthorizationModel">
+  <div class="brandauthorization-bac">
     <div class="brandauthorizations">
       <div class="brandauthorization-img">
         <p class="brand-logo">
@@ -10,37 +9,33 @@
         <p>点击右上角分享此页面</p>
         <p>或</p>
         <p>直接微信扫描二维码进行申请</p>
-        <vue-qrcode :val.sync="qrcodeHref" bg-color="#FFFFFF" fg-color="#000000" ></vue-qrcode>
+        <div v-el:qr></div>
       </div>
     </div>
   </div>
   <alert :show.sync="showRemindMsg" button-text="确认" @on-hide="onHide">{{remindMsg}}</alert>
-</div>
 </template>
 <script>
 import {
   Alert
 } from 'vux'
-import VueQrcode from 'vue-qrcode'
 import authAPI from '../api/auth'
 import agentInfoAPI from '../api/agentInfo'
 import employmentAPI from '../api/employment'
 import applyEmploymentAPI from '../api/applyEmployment'
 var request = require('../extend/http-request')
+var qrcanvas = require('qrcanvas')
 
 
 export default {
   components: {
-    Alert,
-    VueQrcode
+    Alert
   },
   data() {
     return {
       publishEmploymentData: {},
       employment_role_name: "",
       loginUser: null,
-      showBrandAuthorizationModel: false,
-      qrcodeHref: null,
       showMsg: false,
       errorMsg: null,
       showRemindMsg: false,
@@ -53,7 +48,7 @@ export default {
       var that = this
       var account = null
       var publishEmploymentID = this.$route.params.publishEmploymentID
-      that.qrcodeHref = window.location.href
+
 
       authAPI.getUser().then(function(result) {
         if (result.name != undefined) { //登录状态
@@ -102,7 +97,6 @@ export default {
         that.showRemindMsg = true
         that.remindMsg = "获取招募角色资料出错"
       })
-      that.showBrandAuthorizationModel = true
     },
     onHide() {
       if (this.loginUser == null) {
@@ -134,6 +128,9 @@ export default {
   },
   ready() {
     this.initData()
+    this.$els.qr.appendChild(qrcanvas({
+      data:  window.location.href
+    }))
   }
 }
 </script>
