@@ -24,7 +24,7 @@ var getTeamNum = () => {
           id: 1
         }
       }),
-      mkcode(o.num+1)
+      mkcode(o.num + 1)
     ])
   })
 }
@@ -42,14 +42,14 @@ var getTeamCode = (e) => {
     include: team_agent
   }).then((o) => {
     return Promise.all([
-      team_agent.count({
-        where:{
-          team_code:o.team_agent.team_code
-        }
-      }),
-      o.team_agent.team_code
-    ])
-    // return o.team_agent.team_code
+        team_agent.count({
+          where: {
+            team_code: o.team_agent.team_code
+          }
+        }),
+        o.team_agent.team_code
+      ])
+      // return o.team_agent.team_code
   })
 }
 var exec = {
@@ -301,6 +301,8 @@ var exec = {
     var agent = require('../../db/models/agent')
     var agent_brand_role = require('../../db/models/agent_brand_role')
     var agent_detail = require('../../db/models/agent_detail')
+    var team = require('../../db/models/team')
+    var team_agent = require('../../db/models/team_agent')
 
     employment.belongsTo(brand)
     employment.belongsTo(brand_role)
@@ -314,18 +316,25 @@ var exec = {
     agent_brand_role.belongsTo(brand_role)
     agent.belongsTo(user)
     agent.hasOne(employment_term)
+    agent.hasOne(team_agent)
+    team_agent.belongsTo(team, {
+      foreignKey: "team_code"
+    })
     user.hasOne(agent)
 
     employment.belongsTo(user, {
-      foreignKey: "employer_user_account"
-    })
-
+        foreignKey: "employer_user_account"
+      })
+      //关联团队数据
     return agent.findOne({
       where: {
         user_account: account
       },
       include: [agent_detail,
         employment_term, {
+          model: team_agent,
+          include: team
+        }, {
           model: agent_brand_role,
           include: brand_role
         }, {
@@ -436,15 +445,15 @@ var exec = {
         })
       } else {
         getTeamCode(result.employer_user_account).then((o) => {
-            var num = (o[0]+1)
-            var initNum = '0000'
-            var countNum = initNum.substring(0,((initNum.length)-(num.toString().length)))+num
+          var num = (o[0] + 1)
+          var initNum = '0000'
+          var countNum = initNum.substring(0, ((initNum.length) - (num.toString().length))) + num
 
-            team_agent = team_agent.create({
-              agent_guid: guid,
-              team_code: o[1],
-              num: countNum
-            })
+          team_agent = team_agent.create({
+            agent_guid: guid,
+            team_code: o[1],
+            num: countNum
+          })
         })
       }
       return Promise.all([

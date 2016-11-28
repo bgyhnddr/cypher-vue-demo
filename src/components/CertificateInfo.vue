@@ -91,7 +91,7 @@ export default {
       }).then(function(result) {
         that.agentInfo.term_from = result.employment_term.term_from
         that.agentInfo.term_to = result.employment_term.term_to
-        that.agentInfo.AuthorizationID = result.user.employment.guid.substring(result.user.employment.guid.length - 12, result.user.employment.guid.length)
+        that.agentInfo.AuthorizationID = result.team_agent.team.brand+result.agent_brand_role.brand_role.level+result.team_agent.team_code+result.team_agent.num
         that.agentInfo.agent_detail = result.agent_detail
         that.agentInfo.brand = result.user.employment.brand.name
         that.agentInfo.brand_role = result.agent_brand_role.brand_role.name
