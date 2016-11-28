@@ -60,6 +60,14 @@ export default {
         this.backText = "退出"
         this.ShowBack = true
         document.body.style.background = '#f2f2f2'
+        this.$on('backButton', function(showHomePageModel) {
+          if(showHomePageModel){
+            this.backText = "退出"
+          }
+          else{
+            this.backText = "返回"
+          }
+        })
         return
       } else if (this.$route.name === 'HomePageSearch') {
         document.body.style.background = '#f2f2f2'
@@ -184,12 +192,14 @@ export default {
         }
       } else if (FirstPath == "homePage") {
         if (!SecPath) {
-          //登出
-          authAPI.logout()
-          this.$route.router.go('/')
-          return
-        } else if (SecPath == "search") {
-          this.$route.router.go('/homePage')
+          if(this.backText ==　"返回"){
+            // window.location.reload()
+            this.$broadcast('showHomePage')
+          } else {
+            //登出
+            authAPI.logout()
+            this.$route.router.go('/')
+          }
           return
         }
       } else if (FirstPath == "employManagement") {

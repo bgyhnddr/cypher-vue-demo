@@ -1,5 +1,5 @@
 ﻿<template>
-<div class="function-search-bac">
+<div class="function-search-bac" v-show="!showHomePageModel">
   <div class="function-search">
     <group>
       <x-input class="weui_cell_primary" title='' placeholder="输入需要查看的功能名称" :value.sync="keyword" :show-clear=false :required="false"></x-input>
@@ -21,10 +21,10 @@
       </a>
     </group>
   </div>
-  <p v-if="showNullMsg" class="search-none">暂无此功能，敬请期待</p>
-  <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
 </div>
-<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+<div>
+  <alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
+</div>
 </template>
 
 <script>
@@ -35,17 +35,25 @@ import {
 } from 'vux'
 import agentInfoAPI from '../api/agentInfo'
 
-
 export default {
   components: {
     Group,
     XInput,
     Alert
   },
+  props: {
+    keyword: {
+      type: String
+    },
+    userLevel: {
+      type: String
+    },
+    showHomePageModel: {
+      type: Boolean
+    }
+  },
   data() {
     return {
-      keyword: null,
-      userLevel: null,
       funcList: [{
         name: '发起招募',
         iconhref: '/static/TestIMG/initiate.png',
@@ -87,38 +95,36 @@ export default {
         link: null,
         isShow: true
       }],
-      show: false,
-      errorMsg: null,
+      showErrorNoHandled: false,
+      errorMsgNoHandled: null,
       showResult: false
     }
   },
   methods: {
-    init() {
-      var that = this
-      this.keyword = this.$route.params.keyword
-
-      //根据级别选择显示功能
-      agentInfoAPI.getBrandRoleInfo().then(function(result) {
-        that.userLevel = result.brand_role.level
-        that.filter(that.$route.params.keyword)
-      }).catch(function(err) {
-        this.show = true
-        this.errorMsg = err
-      })
-    },
     search() {
-      var reg = /^[\u4e00-\u9fa5]*$/ //全中文
+      var reg = /^[\u4e00-\u9fa5]*$/
       if (this.keyword == null || this.keyword == '') {
-        this.show = true
-        this.errorMsg = "搜索框内容不能为空"
         this.showResult = false
+        this.showErrorNoHandled = true
+        this.errorMsgNoHandled = "请输入需要搜索的关键字"
+        this.$dispatch("backButton", this.showHomePageModel)
       } else if (!reg.test(this.keyword)) {
-        this.show = true
-        this.errorMsg = "输入错误，请填写中文关键字"
         this.showResult = false
+        this.showErrorNoHandled = true
+        this.errorMsgNoHandled = "请输入中文关键字"
+        this.$dispatch("backButton", this.showHomePageModel)
       } else {
         this.showResult = false
-        this.filter(this.keyword)
+        var countShowItem = this.filter(this.keyword)
+        if(countShowItem == 0){
+          this.showErrorNoHandled = true
+          this.errorMsgNoHandled = "暂无此功能"
+          this.$dispatch("backButton", this.showHomePageModel)
+        }else{
+          this.showResult = true
+          this.showHomePageModel = false
+          this.$dispatch("backButton", this.showHomePageModel)
+        }
       }
     },
     filter(keyword) {
@@ -155,11 +161,20 @@ export default {
           this.funcList[item].isShow = false
         }
       }
-      this.showResult = true
+
+      //计算isShow 数量
+      for (var item in this.funcList) {
+        if (this.funcList[item].isShow) {
+          countShowItem ++
+        }
+      }
+      return countShowItem
     }
   },
-  ready() {
-    this.init()
+  events: {
+    search() {
+      this.search()
+    }
   }
 }
 </script>

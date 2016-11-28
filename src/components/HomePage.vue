@@ -1,7 +1,7 @@
 ﻿<template>
-<div>
-  <div class="homePage-bac">
-    <div class="homepage-head">
+<!--Home Page-->
+<div class="homePage-bac" v-if="showHomePageModel">
+  <div class="homepage-head">
     <group>
       <table border="0" class="platform-message" cellspacing=0 cellpadding=0>
         <tbody>
@@ -32,24 +32,26 @@
       </div>
     </group>
   </div>
-    <div>
-      <div v-if="showFuncList" class="homepage-icon">
-        <flexbox :gutter="0" wrap="wrap">
-          <flexbox-item :span="1/3" v-for="item in btn_list">
-            <div class="flex-demo" v-if="item.isShow">
-              <button @click="goto(item)">
-                <img :src.sync="item.iconhref" alt="icon">
-                <h4 class="weui_media_title">{{item.title}}</h4>
-              </button>
-            </div>
-          </flexbox-item>
-        </flexbox>
-      </div>
-      <alert :show.sync="show" button-text="确认">{{errorMsg}}</alert>
-      <alert :show.sync="showCatchError" button-text="确认" @on-hide="onHide">{{catchErrorMsg}}</alert>
-    </div>
+  <div v-if="showFuncList" class="homepage-icon">
+    <flexbox :gutter="0" wrap="wrap">
+      <flexbox-item :span="1/3" v-for="item in btn_list">
+        <div class="flex-demo" v-if="item.isShow">
+          <button @click="goto(item)">
+            <img :src.sync="item.iconhref" alt="icon">
+            <h4 class="weui_media_title">{{item.title}}</h4>
+          </button>
+        </div>
+      </flexbox-item>
+    </flexbox>
   </div>
-  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+</div>
+<!--Home Page Search-->
+<home-page-search  :show-home-page-model.sync="showHomePageModel" :keyword.sync="keyword" :user-level.sync="user.userLevel"></home-page-search>
+<div>
+  <alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
+  <alert :show.sync="showCatchError" button-text="确认" @on-hide="onHide">{{catchErrorMsg}}</alert>
+</div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -62,6 +64,7 @@ import {
 } from 'vux'
 import authAPI from '../api/auth'
 import employmentAPI from '../api/employment'
+import HomePageSearch from './HomePageSearch'
 var request = require('../extend/http-request')
 
 
@@ -71,7 +74,8 @@ export default {
     XInput,
     Flexbox,
     FlexboxItem,
-    Alert
+    Alert,
+    HomePageSearch
   },
   data() {
     return {
@@ -133,12 +137,14 @@ export default {
         iconhref: '/static/TestIMG/more.png',
         isShow: true
       }],
+      showHomePageModel: true,
       keyword: null,
       user: {
-        brandName: null
+        brandName: null,
+        userLevel: null
       },
-      show: false,
-      errorMsg: null,
+      showErrorNoHandled: false,
+      errorMsgNoHandled: null,
       showCatchError: false,
       catchErrorMsg: null,
       showFuncList: false
@@ -152,16 +158,7 @@ export default {
       this.getJsConfig()
     },
     search() {
-      var reg = /^[\u4e00-\u9fa5]*$/ //全中文
-      if (this.keyword == null || this.keyword == '') {
-        this.show = true
-        this.errorMsg = "搜索框内容不能为空"
-      } else if (!reg.test(this.keyword)) {
-        this.show = true
-        this.errorMsg = "填写格式错误，请填写中文"
-      } else {
-        this.$route.router.go('/homePage/search/' + this.keyword)
-      }
+      this.$broadcast('search')
     },
     getBrandName() {
       var that = this
@@ -175,6 +172,7 @@ export default {
     getShowItem() {
       var that = this
       employmentAPI.getBrandInfo().then(function(result) {
+        that.user.userLevel = result.brand_role.level
         if (result.brand_role.level == "4") {
           for (var item in that.btn_list) {
             if (that.btn_list[item]['title'] == "成员招募") {
@@ -193,8 +191,8 @@ export default {
         item.callback()
       } else if (item.link == "") {
         if (item.title != "") {
-          this.show = true
-          this.errorMsg = "该功能正在开发中"
+          this.showErrorNoHandled = true
+          this.errorMsgNoHandled = "该功能正在开发中"
         }
       } else {
         this.$route.router.go(item.link)
@@ -213,19 +211,25 @@ export default {
       this.$route.router.go('/')
     }
   },
+  events: {
+    showHomePage() {
+      this.showHomePageModel = true
+      this.keyword = null
+      this.$dispatch("backButton", "退出")
+    }
+  },
   ready() {
     this.init()
   }
 }
 </script>
 <style lang="less">
-
 .homePage-bac {
     min-height: 485px;
 }
-.homepage-head{
-  background: url(/static/TestIMG/homepage_header.png) no-repeat;
-  background-size: cover;
+.homepage-head {
+    background: url("/static/TestIMG/homepage_header.png") no-repeat;
+    background-size: cover;
 
 }
 .homePage-bac .weui_cells {
@@ -276,14 +280,14 @@ table.platform-message p:nth-child(1) {
 
 .search input.weui_input {
     width: 97%;
-        background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5);
     margin: auto;
     padding-left: 2%;
     height: 2.3em;
     font-family: "微软雅黑";
     font-size: 4.7vw;
     color: #9b9c9c;
-    border: 1px solid #645f5f
+    border: 1px solid #645f5f;
 }
 
 .search-button {
@@ -300,7 +304,7 @@ table.platform-message p:nth-child(1) {
     background: url("/static/TestIMG/search.png");
     background-size: 100%;
     background-repeat: no-repeat;
-        color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.5);
 }
 .search-button .weui_btn:after {
     border: 0;
