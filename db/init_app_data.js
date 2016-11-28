@@ -10,6 +10,7 @@ var employment = require('./models/employment')
 var employment_detail = require('./models/employment_detail')
 var employment_term = require('./models/employment_term')
 var agent_detail = require('./models/agent_detail')
+var team_num = require('./models/team_num')
 
 module.exports = function() {
     return Promise.all([
@@ -52,7 +53,9 @@ module.exports = function() {
         agent_detail.create({ agent_guid: "agent1", key: "IDNumber", value: "440402198902202564" }),
         agent_detail.create({ agent_guid: "agent1", key: "address", value: "北京市 北京市市辖区 东城区" }),
         agent_detail.create({ agent_guid: "agent1", key: "addressDetail", value: "中山路52号2栋1单元808" }),
-        agent_detail.create({ agent_guid: "agent1", key: "headImg", value: "1" })
+        agent_detail.create({ agent_guid: "agent1", key: "headImg", value: "1" }),
+
+        team_num.create({ num:0 })
 
     ])
 }
