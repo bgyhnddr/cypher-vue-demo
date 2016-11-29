@@ -18,7 +18,7 @@
 
           </tr>
           <tr>
-  <td width=37%><img src="/static/TestIMG/authorization_num.png"/></td>
+  <td v-if="AdminFlag" width=37%><img src="/static/TestIMG/authorization_num.png"/></td>
               <td>{{agentInfo.AuthorizationID}}</td>
           </tr>
           <tr>
@@ -37,7 +37,7 @@
 <table class="agents-height">
   <tbody>
     <tr>
-<td width="60%">
+<td v-if="AdminFlag" width="60%">
   <img src="/static/TestIMG/data.png" />
   <p>{{agentInfo.term_from}}-
   {{agentInfo.term_to}}</td></p>
