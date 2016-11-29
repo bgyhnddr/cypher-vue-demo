@@ -1,26 +1,24 @@
 ﻿<template>
-<div v-show="showBrandAuthorizationModel">
-  <div class="brandauthorization-bac">
-    <div class="brandauthorizations">
-      <div class="brandauthorization-img">
-        <p class="brand-logo">
-          <img class="vux-x-img ximg-demo" src="/static/TestIMG/logo.png" alt="品牌logo" />
-        </p>
-        <p>开始招募
-          <label> {{employment_role_name}}</label>
-        </p>
-        <p>点击右上角分享此页面
-          <img src="/static/TestIMG/arrow .png" />
-        </p>
-        <p>或</p>
-        <p>直接微信扫描二维码进行申请</p>
-        <div v-el:qr class="qr-code "></div>
-      </div>
+<div class="brandauthorization-bac" v-show="showBrandAuthorizationModel">
+  <div class="brandauthorizations">
+    <div class="brandauthorization-img">
+      <p class="brand-logo">
+        <img class="vux-x-img ximg-demo" src="/static/TestIMG/logo.png" alt="品牌logo" />
+      </p>
+      <p>开始招募
+        <label> {{employment_role_name}}</label>
+      </p>
+      <p>点击右上角分享此页面
+        <img src="/static/TestIMG/arrow .png" />
+      </p>
+      <p>或</p>
+      <p>直接微信扫描二维码进行申请</p>
+      <div v-el:qr class="qr-code "></div>
     </div>
   </div>
-  <alert :show.sync="showRemindMsg" button-text="确认" @on-hide="onHide">{{remindMsg}}</alert>
-  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </div>
+<alert :show.sync="showRemindMsg" button-text="确认" @on-hide="onHide">{{remindMsg}}</alert>
+<div class="all-footer" v-show="showBrandAuthorizationModel">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 <script>
 import {
