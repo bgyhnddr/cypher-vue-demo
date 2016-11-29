@@ -1,12 +1,17 @@
 ﻿<template>
+<div v-show="showBrandAuthorizationModel">
   <div class="brandauthorization-bac">
     <div class="brandauthorizations">
       <div class="brandauthorization-img">
         <p class="brand-logo">
           <img class="vux-x-img ximg-demo" src="/static/TestIMG/logo.png" alt="品牌logo" />
         </p>
-        <p>开始招募<label> {{employment_role_name}}</label> </p>
-        <p>点击右上角分享此页面 <img src="/static/TestIMG/arrow .png"></p>
+        <p>开始招募
+          <label> {{employment_role_name}}</label>
+        </p>
+        <p>点击右上角分享此页面
+          <img src="/static/TestIMG/arrow .png" />
+        </p>
         <p>或</p>
         <p>直接微信扫描二维码进行申请</p>
         <div v-el:qr class="qr-code "></div>
@@ -15,6 +20,7 @@
   </div>
   <alert :show.sync="showRemindMsg" button-text="确认" @on-hide="onHide">{{remindMsg}}</alert>
   <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+</div>
 </template>
 <script>
 import {
@@ -41,7 +47,7 @@ export default {
       errorMsg: null,
       showRemindMsg: false,
       remindMsg: null,
-
+      showBrandAuthorizationModel: false,
     }
   },
   methods: {
@@ -74,7 +80,7 @@ export default {
                 //TODO : 页面内容搜索
                 //获取招募角色名称
                 that.getEmploymentRoleName()
-
+                that.showBrandAuthorizationModel = true
               }
             } else { //非发起人状态
               that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID)
@@ -84,7 +90,7 @@ export default {
             that.remindMsg = err
           })
         } else { //非登录状态
-          that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID )
+          that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID)
         }
       })
     },
@@ -130,8 +136,8 @@ export default {
   ready() {
     this.initData()
     this.$els.qr.appendChild(qrcanvas({
-      data:  window.location.href,
-      size:300
+      data: window.location.href,
+      size: 300
     }))
   }
 }
@@ -144,7 +150,7 @@ export default {
 }
 
 .brandauthorization-bac {
-    min-height: 482px;
+  min-height: 482px;
   background-size: 100%;
   width: 100%;
   margin: 0 auto;
@@ -153,7 +159,7 @@ export default {
 .brandauthorizations {
   width: 88%;
   margin: auto;
-    padding: 9% 0%;
+  padding: 9% 0%;
   font-size: 3vw;
   color: #3f3a36;
   background: #fff;
@@ -165,49 +171,57 @@ export default {
 
 .brandauthorization-img .brand-logo img {
   width: 71%;
-     height: auto;
-     border: 1px solid #d3d1d1;
-     margin: 0% auto 2%;
-
+  height: auto;
+  border: 1px solid #d3d1d1;
+  margin: 0% auto 2%;
 }
 
 .brandauthorization-img h3 {
   font-family: " 微软雅黑";
 }
-.brandauthorization-img p:nth-child(2){
-font-size: 5.3vw;/*18px*/
-    font-family: "微软雅黑";
-        margin-top: 3%;
-}
-.brandauthorization-img p:nth-child(2) label{
-color: #ff1016;
 
+.brandauthorization-img p:nth-child(2) {
+  font-size: 5.3vw;
+  /*18px*/
+  font-family: "微软雅黑";
+  margin-top: 3%;
 }
-.brandauthorization-img p:nth-child(3){
-  color: #393a3f;
-  font-size: 4.5vw;/*14px*/
-      margin-top: 2%;
-}.brandauthorization-img p:nth-child(3) img {
-    width: 7%;
-    height: auto;
-    transform: rotate(23deg);
-    -ms-transform: rotate(23deg);
-    -moz-transform: rotate(23deg);
-    -webkit-transform: rotate(23deg);
-    -o-transform: rotate(23deg);
+
+.brandauthorization-img p:nth-child(2) label {
+  color: #ff1016;
 }
-.brandauthorization-img p:nth-child(4){
+
+.brandauthorization-img p:nth-child(3) {
   color: #393a3f;
-  font-size: 4.5vw;/*14px*/
+  font-size: 4.5vw;
+  /*14px*/
+  margin-top: 2%;
+}
+
+.brandauthorization-img p:nth-child(3) img {
+  width: 7%;
+  height: auto;
+  transform: rotate(23deg);
+  -ms-transform: rotate(23deg);
+  -moz-transform: rotate(23deg);
+  -webkit-transform: rotate(23deg);
+  -o-transform: rotate(23deg);
+}
+
+.brandauthorization-img p:nth-child(4) {
+  color: #393a3f;
+  font-size: 4.5vw;
+  /*14px*/
   margin: -1% auto;
-
 }
-.brandauthorization-img p:nth-child(5){
+
+.brandauthorization-img p:nth-child(5) {
   color: #393a3f;
-  font-size: 4.5vw;/*14px*/
-
-      margin-bottom: 6%;
+  font-size: 4.5vw;
+  /*14px*/
+  margin-bottom: 6%;
 }
+
 .authorization {
   width: 57%;
   height: auto;
@@ -277,13 +291,15 @@ table.personal-identity tbody tr td img {
   margin: 8% 0px 10%;
   height: 38px
 }
+
 .qr-code {
   width: 65%;
-margin: auto;
-background: #e2e2e2;
-    padding: 2% 2% 1% 2%;
+  margin: auto;
+  background: #e2e2e2;
+  padding: 2% 2% 1% 2%;
 }
-.qr-code canvas{
+
+.qr-code canvas {
   width: 95%!important;
   height: auto!important;
   border: 5px solid #fff;
