@@ -213,7 +213,7 @@ export default {
           this.$route.router.go('/employManagement')
           return
         } else if (SecPath == "brandAuthorization") {
-          location.href = location.origin + "/#!/employManagement/"
+          location.href = location.origin + "/#!/employManagement"
           return
         } else if (SecPath == "fillInEmployment") {
           this.$broadcast('goFillEmployment1')
