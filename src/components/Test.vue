@@ -3,14 +3,17 @@
   扫一扫</button>
 <button @click="choose">上传</button>
 <img :src="imgId" alt="" />
+<div v-el:qr></div>
 </template>
 <script>
+var qrcanvas = require('qrcanvas')
 var request = require('../extend/http-request')
 export default {
   data() {
     return {
       test: false,
-      imgId: ""
+      imgId: "",
+      str: "来吧中文"
     }
   },
   methods: {
@@ -49,6 +52,9 @@ export default {
   },
   ready() {
     this.getJsConfig()
+    this.$els.qr.appendChild(qrcanvas({
+      data: 'http://localhost:8080/#!/employManagement/brandAuthorization/2c2cd470-b21d-11e6-920e-6b9af5cfe498/%E8%B4%9D%E5%88%A9%E9%BE%99'
+    }))
   }
 }
 </script>

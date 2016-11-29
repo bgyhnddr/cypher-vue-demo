@@ -1,67 +1,20 @@
 ﻿<template>
-<div>
-  <div class="brandauthorization-bac" v-if="showBrandAuthorizationModel">
+  <div class="brandauthorization-bac">
     <div class="brandauthorizations">
       <div class="brandauthorization-img">
         <p class="brand-logo">
           <img class="vux-x-img ximg-demo" src="/static/TestIMG/bleman_cert_logo.jpg" alt="品牌logo" />
         </p>
-        <p>
-          <img src="/static/TestIMG/authorization.png" class="authorization" />
-        </p>
-      </div>
-      <div>
-        <h3>兹授权</h3>
-        <table boder=0 class="personal-identity">
-          <tbody>
-
-            <tr>
-              <td width="60px">姓名:</td>
-              <td class="color-gray">{{agentInfo.name}}</td>
-              <td rowspan="4" style="text-align:right">
-                <img class="vux-x-img ximg-demo" alt="授权者头像" :src.sync="agentInfo.headHref" />
-              </td>
-            </tr>
-            <tr>
-              <td> 微信:</td>
-              <td class="color-gray">{{agentInfo.wechat}}</td>
-            </tr>
-            <tr>
-              <td>{{agentInfo.IDType}}:</td>
-              <td class="color-gray">{{agentInfo.IDNumber}}</td>
-            </tr>
-            <tr>
-              <td height="6px"></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="set-agent ">为{{employmentData.name}}
-          <label>{{brand_role_name}}</label>
-        </div>
-        <div class="allow-agent"> 允许其在网络上销售{{employmentData.name}}
-          <label>旗下产品</label>
-        </div>
-        <div class="agent-height">
-          <div class="agent-message" v-show="showEmploymentIDAndTerm">
-            <p>授权编号:
-              <label class="color-gray">{{employmentIDAndTerm.employmentGuid}}</label>
-            </p>
-            <p>授权期限:
-              <label class="color-gray">{{employmentIDAndTerm.start}}</label>
-              至
-              <label class="color-gray">{{employmentIDAndTerm.deadline}}</label>
-            </p>
-          </div>
-        </div>
-        <p class="agent-unit ">授权单位:
-          <label class="color-gray">{{company_name}}</label>
-        </p>
+        <p>开始招募<label> {{employment_role_name}}</label> </p>
+        <p>点击右上角分享此页面 <img src="/static/TestIMG/arrow .png"></p>
+        <p>或</p>
+        <p>直接微信扫描二维码进行申请</p>
+        <div v-el:qr class="qr-code "></div>
       </div>
     </div>
   </div>
   <alert :show.sync="showRemindMsg" button-text="确认" @on-hide="onHide">{{remindMsg}}</alert>
-</div>
+  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 <script>
 import {
@@ -72,6 +25,8 @@ import agentInfoAPI from '../api/agentInfo'
 import employmentAPI from '../api/employment'
 import applyEmploymentAPI from '../api/applyEmployment'
 var request = require('../extend/http-request')
+var qrcanvas = require('qrcanvas')
+
 
 export default {
   components: {
@@ -79,29 +34,14 @@ export default {
   },
   data() {
     return {
-      employmentData: {},
-      company_name: null,
       publishEmploymentData: {},
-      brand_role_name: "",
-      agentInfo: {
-        name: "",
-        wechat: "",
-        IDType: "",
-        IDNumber: "",
-        headHref: "/static/TestIMG/default_headImg.png",
-      },
-      employmentIDAndTerm: {
-        employmentGuid: "",
-        start: "",
-        deadline: ""
-      },
+      employment_role_name: "",
       loginUser: null,
-      showEmploymentIDAndTerm: false,
-      showBrandAuthorizationModel: false,
       showMsg: false,
       errorMsg: null,
       showRemindMsg: false,
-      remindMsg: null
+      remindMsg: null,
+
     }
   },
   methods: {
@@ -109,6 +49,7 @@ export default {
       var that = this
       var account = null
       var publishEmploymentID = this.$route.params.publishEmploymentID
+
 
       authAPI.getUser().then(function(result) {
         if (result.name != undefined) { //登录状态
@@ -121,7 +62,6 @@ export default {
           }).then(function(result) {
             that.publishEmploymentData = result
 
-            that.getBrandInfo(result.employer_user_account)
             if (account == that.publishEmploymentData.employer_user_account) { //判断是否发起人
 
               var startDate = new Date(result.create_time)
@@ -131,106 +71,32 @@ export default {
                 that.showRemindMsg = true
                 that.remindMsg = "招募已关闭"
               } else {
-                //获取自己的资料
-                that.getAgentInfo()
-                  //获取自己的代理等级名称 & 获取授权编号 & 授权期
-                that.getRoleName()
-                that.showBrandAuthorizationModel = true
+                //TODO : 页面内容搜索
+                //获取招募角色名称
+                that.getEmploymentRoleName()
+
               }
             } else { //非发起人状态
-              that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
+              that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID)
             }
           }).catch(function(err) {
             that.showRemindMsg = true
             that.remindMsg = err
           })
         } else { //非登录状态
-          that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID + '/' + that.$route.params.brandName)
+          that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID )
         }
       })
     },
-    getBrandInfo(employerUsesrAccount) {
+    getEmploymentRoleName() {
       var that = this
-
-      applyEmploymentAPI.getBrandInfo({
-        user_account: employerUsesrAccount
+      employmentAPI.getRoleName({
+        brand_role_code: that.publishEmploymentData.brand_role_code
       }).then(function(result) {
-        that.employmentData = result
-
-        if (result.brand_details.length == 0) {
-          that.showRemindMsg = true
-          that.remindMsg = "获取品牌商信息异常"
-        } else {
-          for (var item in result.brand_details) {
-            for (var meta in result.brand_details[item]) {
-              //key = "companyName"
-              if (meta == 'key' && result.brand_details[item][meta] == 'companyName') {
-                that.company_name = result.brand_details[item]['value']
-              }
-            }
-          }
-        }
+        that.employment_role_name = result.name
       }).catch(function(err) {
         that.showRemindMsg = true
-        that.remindMsg = err
-      })
-    },
-    getRoleName() {
-      var that = this
-      agentInfoAPI.getBrandRoleInfo().then(function(result) {
-        that.brand_role_name = result.brand_role.name
-
-        if (result.brand_role.level != "0") {
-          that.showEmploymentIDAndTerm = true
-          that.getEmploymentGuidAndTerm()
-        }
-      }).catch(function(err) {
-        that.showRemindMsg = true
-        that.remindMsg = err
-      })
-    },
-    getAgentInfo() {
-      var that = this
-      employmentAPI.getAgentInfo().then(function(result) {
-        that.agentInfo = result
-
-        for (var item in result.agent_details) {
-          for (var meta in result.agent_details[item]) {
-            if (meta == 'key') {
-              switch (result.agent_details[item][meta]) {
-                case "headImg":
-                  that.agentInfo.headHref = "/service/public/upload/getAttachment?id=" + parseInt(result.agent_details[item]['value'])
-                  break
-                case "name":
-                  that.agentInfo.name = result.agent_details[item]['value']
-                  break
-                case "wechat":
-                  that.agentInfo.wechat = result.agent_details[item]['value']
-                  break
-                case "IDType":
-                  that.agentInfo.IDType = result.agent_details[item]['value']
-                  break
-                case "IDNumber":
-                  that.agentInfo.IDNumber = result.agent_details[item]['value']
-                  break
-              }
-            }
-          }
-        }
-      }).catch(function(err) {
-        that.showRemindMsg = true
-        that.remindMsg = err
-      })
-    },
-    getEmploymentGuidAndTerm() {
-      var that = this
-      employmentAPI.getEmploymentInfo().then(function(result) {
-        that.employmentIDAndTerm.employmentGuid = result[0].guid.split('-')[4]
-        that.employmentIDAndTerm.start = new Date(result[1].employment_term.term_from).Format("yyyy 年 MM 月 dd 日")
-        that.employmentIDAndTerm.deadline = new Date(result[1].employment_term.term_to).Format("yyyy 年 MM 月 dd 日")
-      }).catch(function(err) {
-        that.showRemindMsg = true
-        that.remindMsg = err
+        that.remindMsg = "获取招募角色资料出错"
       })
     },
     onHide() {
@@ -263,6 +129,10 @@ export default {
   },
   ready() {
     this.initData()
+    this.$els.qr.appendChild(qrcanvas({
+      data:  window.location.href,
+      size:300
+    }))
   }
 }
 </script>
@@ -274,18 +144,19 @@ export default {
 }
 
 .brandauthorization-bac {
-  background: url(/static/TestIMG/PowerOfAttorney-bac.png) no-repeat;
+    min-height: 482px;
   background-size: 100%;
   width: 100%;
-  margin: 3% auto;
+  margin: 0 auto;
 }
 
 .brandauthorizations {
-  width: 75%;
+  width: 88%;
   margin: auto;
-  padding: 13% 0%;
+    padding: 9% 0%;
   font-size: 3vw;
   color: #3f3a36;
+  background: #fff;
 }
 
 .brandauthorizations h3 {
@@ -293,15 +164,50 @@ export default {
 }
 
 .brandauthorization-img .brand-logo img {
-  width: 62%;
-  height: auto;
-  margin: 4% auto 2%;
+  width: 71%;
+     height: auto;
+     border: 1px solid #d3d1d1;
+     margin: 0% auto 2%;
+
 }
 
 .brandauthorization-img h3 {
   font-family: " 微软雅黑";
 }
+.brandauthorization-img p:nth-child(2){
+font-size: 5.3vw;/*18px*/
+    font-family: "微软雅黑";
+        margin-top: 3%;
+}
+.brandauthorization-img p:nth-child(2) label{
+color: #ff1016;
 
+}
+.brandauthorization-img p:nth-child(3){
+  color: #393a3f;
+  font-size: 4.5vw;/*14px*/
+      margin-top: 2%;
+}.brandauthorization-img p:nth-child(3) img {
+    width: 7%;
+    height: auto;
+    transform: rotate(23deg);
+    -ms-transform: rotate(23deg);
+    -moz-transform: rotate(23deg);
+    -webkit-transform: rotate(23deg);
+    -o-transform: rotate(23deg);
+}
+.brandauthorization-img p:nth-child(4){
+  color: #393a3f;
+  font-size: 4.5vw;/*14px*/
+  margin: -1% auto;
+
+}
+.brandauthorization-img p:nth-child(5){
+  color: #393a3f;
+  font-size: 4.5vw;/*14px*/
+
+      margin-bottom: 6%;
+}
 .authorization {
   width: 57%;
   height: auto;
@@ -370,5 +276,16 @@ table.personal-identity tbody tr td img {
 .agent-height {
   margin: 8% 0px 10%;
   height: 38px
+}
+.qr-code {
+  width: 65%;
+margin: auto;
+background: #e2e2e2;
+    padding: 2% 2% 1% 2%;
+}
+.qr-code canvas{
+  width: 95%!important;
+  height: auto!important;
+  border: 5px solid #fff;
 }
 </style>

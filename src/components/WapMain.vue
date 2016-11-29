@@ -60,6 +60,14 @@ export default {
         this.backText = "退出"
         this.ShowBack = true
         document.body.style.background = '#f2f2f2'
+        this.$on('backButton', function(showHomePageModel) {
+          if(showHomePageModel){
+            this.backText = "退出"
+          }
+          else{
+            this.backText = "返回"
+          }
+        })
         return
       } else if (this.$route.name === 'HomePageSearch') {
         document.body.style.background = '#f2f2f2'
@@ -74,6 +82,7 @@ export default {
         document.body.style.background = '#fff'
         return '选择招募代理级别'
       } else if (this.$route.name === 'BrandAuthorization') {
+          document.body.style.background = '#f2f2f2'
         this.ShowBack = true
         return '分享招募'
       } else if (this.$route.name === 'FillInEmployment') {
@@ -83,7 +92,7 @@ export default {
           this.ShowBack = flag
         })
         return "代理申请"
-      } else if (this.$route.name === 'EmploymentSubmission') {
+      } else if (this.$route.path === '/employManagement/employmentSubmission') {
         document.body.style.background = '#fff'
         this.ShowBack = false
         return "代理申请"
@@ -113,6 +122,9 @@ export default {
         document.body.style.background = '#f2f2f2'
         return '我的证书'
       } else if (this.$route.name === 'CertificateInfo') {
+          document.body.style.backgroundImage = 'url(/static/TestIMG/certificateinfo_bac.png)'
+          document.body.style.backgroundRepeat='no-repea'
+          document.body.style.backgroundSize='contain'
         this.ShowBack = true
         return '授权证书'
       } else if (this.$route.path === '/employManagement/currentList') {
@@ -182,12 +194,14 @@ export default {
         }
       } else if (FirstPath == "homePage") {
         if (!SecPath) {
-          //登出
-          authAPI.logout()
-          this.$route.router.go('/')
-          return
-        } else if (SecPath == "search") {
-          this.$route.router.go('/homePage')
+          if(this.backText ==　"返回"){
+            // window.location.reload()
+            this.$broadcast('showHomePage')
+          } else {
+            //登出
+            authAPI.logout()
+            this.$route.router.go('/')
+          }
           return
         }
       } else if (FirstPath == "employManagement") {

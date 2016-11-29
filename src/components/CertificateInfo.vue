@@ -1,68 +1,67 @@
 ﻿<template>
 <div>
-  <div class="brandauthorization-bac">
-    <div class="brandauthorizations">
-      <div class="brandauthorization-img">
-        <p class="brand-logo">
-          <img class="vux-x-img ximg-demo" alt="品牌logo" src="/static/TestIMG/logo.png" />
-        </p>
-        <p>
-          <img src="/static/TestIMG/authorization.png" class="authorization" />
-        </p>
-      </div>
+  <div class="certificateinfo-box">
+  <div class="certificateinfo-top"></div>
+  <div class="certificateinfo-bac">
+
+    <div class="certificateinfo">
+
       <div>
-        <h3>兹授权</h3>
-        <table boder=0 class="personal-identity">
+
+  <div class="certificateinfo-title">
+    <img src="/static/TestIMG/certificateinfo_title.png" />
+  </div>
+        <table boder=0 class="personal-identitys">
+          <tbody>
           <tr>
-            <td width="60px">姓名:</td>
+            <td width=37%><img src="/static/TestIMG/i_have_granted.png"/></td>
             <td>{{agentInfo.agent_detail.name}}</td>
-            <td rowspan="4" align="right">
-              <img class="vux-x-img ximg-demo" alt="授权者头像" :src="'/service/public/upload/getAttachment?id='+agentInfo.agent_detail.headImg" />
-            </td>
+
           </tr>
           <tr>
-            <td> 微信:</th>
+              <td width=37%><img src="/static/TestIMG/authorization_level.png"/></td>
+            <td>{{agentInfo.brand}}{{agentInfo.brand_role}}</th>
+
+          </tr>
+          <tr>
+  <td v-if="AdminFlag" width=37%><img src="/static/TestIMG/authorization_num.png"/></td>
+              <td>{{agentInfo.AuthorizationID}}</td>
+          </tr>
+          <tr>
+  <td width=37%><img src="/static/TestIMG/wechat.png"/></td>
               <td>{{agentInfo.agent_detail.wechat}}</td>
           </tr>
           <tr>
-            <td>{{agentInfo.agent_detail.IDType}}:</th>
+  <td width=37%><img src="/static/TestIMG/idcard.png"/></td>
               <td>{{agentInfo.agent_detail.IDNumber}}</td>
           </tr>
-          <tr>
-            <td height="6px"></td>
-            <td></td>
-          </tr>
 
+</tbody>
         </table>
-        <div class="set-agent ">为
-          <label>{{agentInfo.brand}}</label>
-          <label>{{agentInfo.brand_role}}</label>
-        </div>
-        <div class="allow-agent">允许其在网络上销售
-          <label>{{agentInfo.brand}}</label>
-          <label>旗下产品</label>
-        </div>
-        <div class="agent-height">
-          <div v-if="AdminFlag">
-            <div class="agent-message">
-              <p>授权编号
-                <label>{{agentInfo.AuthorizationID}}</label>
-              </p>
-              <p>授权期限
-                <label>{{agentInfo.term_from}}</label>至
-                <label>{{agentInfo.term_to}}</label>
-              </p>
-            </div>
-          </div>
-        </div>
-        <p class="agent-unit ">授权单位
-          <label class="color-gray">{{agentInfo.brand}}</label>
-        </p>
+        <div class="attention"><img src="/static/TestIMG/attention.png"/></div>
+<table class="agents-height">
+  <tbody>
+    <tr>
+<td v-if="AdminFlag" width="60%">
+  <img src="/static/TestIMG/data.png" />
+  <p>{{agentInfo.term_from}}-
+  {{agentInfo.term_to}}</td></p>
+<td align="right"><img src="/static/TestIMG/brand_people.png" /></td>
+</tr>
+
+
+  </tbody>
+</table>
+
 
       </div>
+
     </div>
+
   </div>
-</div>
+    <div class="certificateinfo-footer"></div>
+</div></div>
+ <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 <script>
 import employAPI from '../api/employment'
@@ -91,7 +90,7 @@ export default {
       }).then(function(result) {
         that.agentInfo.term_from = result.employment_term.term_from
         that.agentInfo.term_to = result.employment_term.term_to
-        that.agentInfo.AuthorizationID = result.user.employment.guid.substring(result.user.employment.guid.length - 12, result.user.employment.guid.length)
+        that.agentInfo.AuthorizationID = result.team_agent.team.brand+result.agent_brand_role.brand_role.level+result.team_agent.team_code+result.team_agent.num
         that.agentInfo.agent_detail = result.agent_detail
         that.agentInfo.brand = result.user.employment.brand.name
         that.agentInfo.brand_role = result.agent_brand_role.brand_role.name
@@ -130,37 +129,62 @@ export default {
 </script>
 <style>
 /*底部距离*/
+.certificateinfo-box{
+  width: 93%;
+  margin: auto;
 
+}
+.certificateinfo-top{
+  background: url(/static/TestIMG/certificateinfo_top.png);
+  background-repeat: no-repeat;
+  padding-top: 6%;
+  background-size: contain;
+  margin-top: 40%
+}
+.certificateinfo-footer{
+  background: url(/static/TestIMG/certificateinfo_footer.png);
+  background-repeat: no-repeat;
+  padding-top:5%;
+  background-size: 100%;
+  margin-bottom: 44%
+
+}
 .weui_tab_bd {
   padding-bottom: 0;
 }
 
-.brandauthorization-bac {
-  background: url(/static/TestIMG/PowerOfAttorney-bac.png) no-repeat;
+.certificateinfo-bac {
+  background: url(/static/TestIMG/certificateinfo-middle.png) repeat-y #000;
   background-size: 100%;
-  width: 100%;
-  margin: 3% auto;
+    margin-top: -1%;
 }
-
-.brandauthorizations {
-  width: 75%;
-  margin: auto;
-  padding: 13% 0%;
+.certificateinfo-title {
+    width: 70%;
+    margin: auto;
+}
+.certificateinfo-title img{
+  width: 100%
+}
+.certificateinfo {
+  background: url(/static/TestIMG/certificateinfo.png ) no-repeat 50% 88%;
+  background-size: 55%;
+  margin:0 auto;
   font-size: 3vw;
   color: #3f3a36;
+
 }
 
-.brandauthorizations h3 {
+.certificateinfo h3 {
   font-size: 3vw;
 }
 
-.brandauthorization-img .brand-logo img {
-  width: 62%;
+.certificateinfo-img .brand-logo img {
+    width: 100%;
   height: auto;
   margin: 4% auto 2%;
 }
 
-.brandauthorization-img h3 {
+.certificateinfo-img h3 {
   font-family: " 微软雅黑";
 }
 
@@ -169,28 +193,26 @@ export default {
   height: auto;
 }
 
-.brandauthorization-img {
+.certificateinfo-img {
   text-align: center;
 }
 
-table.personal-identity {
+.certificateinfo table.personal-identitys {
   font-family: "微软雅黑";
-  width: 100%;
-  margin: auto;
-}
+width: 100%;
+margin-top: -3%;
+color: #fff;}
 
-table.personal-identity tbody tr td {
+.certificateinfo table.personal-identitys tbody tr td {
   font-family: "微软雅黑";
   text-align: left;
 }
 
-table.personal-identity tbody tr td img {
-  width: 58px;
+.certificateinfo table.personal-identitys tbody tr td img {
+  width:37%;
   height: auto;
-  margin-right: 0;
-  min-height: 76px;
-  min-width: 46px;
-  max-height: 84px;
+  float: right;
+
 }
 
 .color-gray {
@@ -212,6 +234,7 @@ table.personal-identity tbody tr td img {
 .allow-agent {
   text-align: center;
   font-family: "微软雅黑";
+
 }
 
 .agent-message {
@@ -229,8 +252,40 @@ table.personal-identity tbody tr td img {
   margin-bottom: 42%
 }
 
-.agent-height {
-  margin: 8% 0px 10%;
-  height: 38px
+.agents-height {
+  color: #fff;
+  font-family: "微软雅黑";
+  font-size: 3vw;
+  width: 80%;
+  margin: -3% auto 0 auto;
+  position: relative;
 }
+.agents-height tr td{
+  line-height: normal;
+      vertical-align: top;
+}
+.agents-height tr td:nth-child(1)   img {
+    width: 66%;
+    margin: auto;
+    }
+.agents-height tr td:nth-child(2) img {
+    width:94%;
+    margin: auto;
+}
+.agents-height tr td:nth-child(1)  p{
+  position: absolute;
+  top: 37%;
+left: 2%;
+}
+.attention {
+    text-align: center;
+    line-height: initial;
+    margin: 0;
+    padding: 0;
+}
+.attention img {
+    width: 79%;
+    margin: auto;
+}
+
 </style>
