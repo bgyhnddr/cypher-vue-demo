@@ -530,13 +530,9 @@ var exec = {
 
 
     return employment.findAll().then((result) => {
-      if (userinfo.name == "admin") {
-        return []
-      } else {
         var employeeList = []
         addEmployment(userinfo.name, employeeList, result)
         return employeeList
-      }
     }).then((result) => {
       var condition = {}
       condition.status = '已审核'
@@ -549,24 +545,26 @@ var exec = {
           status: '已审核',
           audit_result: '已通过'
         }
-      }
-      if (level && level != "all") {
-        condition.brand_role_code = level
-      }
-      if (date_from) {
-        condition.employer_time = {
-          $gt: date_from,
-          $lte: date_to
+        if (level && level != "all") {
+          condition.brand_role_code = level
         }
+        if (date_from) {
+          condition.employer_time = {
+            $gt: date_from,
+            $lte: date_to
+          }
+        }
+        return employment.findAll({
+          where: condition,
+          include: [{
+            model: employment_detail
+          }, {
+            model: brand_role
+          }]
+        })
+      } else {
+        return []
       }
-      return employment.findAll({
-        where: condition,
-        include: [{
-          model: employment_detail
-        }, {
-          model: brand_role
-        }]
-      })
     })
   },
   getLevel(req, res, next) {
