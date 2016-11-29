@@ -1,10 +1,16 @@
 ﻿<template>
 <div>
+  <div class="certificateinfo-box">
+  <div class="certificateinfo-top"></div>
   <div class="certificateinfo-bac">
+
     <div class="certificateinfo">
 
       <div>
 
+  <div class="certificateinfo-title">
+    <img src="/static/TestIMG/certificateinfo_title.png" />
+  </div>
         <table boder=0 class="personal-identitys">
           <tbody>
           <tr>
@@ -32,8 +38,7 @@
 
 </tbody>
         </table>
-        <div class="attention"><img src="/static/TestIMG/attention.png"></div>
-
+        <div class="attention"><img src="/static/TestIMG/attention.png"/></div>
 <table class="agents-height">
   <tbody>
     <tr>
@@ -50,9 +55,13 @@
 
 
       </div>
+
     </div>
+
   </div>
-</div>
+    <div class="certificateinfo-footer"></div>
+</div></div>
+ <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 <script>
 import employAPI from '../api/employment'
@@ -120,23 +129,49 @@ export default {
 </script>
 <style>
 /*底部距离*/
+.certificateinfo-box{
+  width: 93%;
+  margin: auto;
 
+}
+.certificateinfo-top{
+  background: url(/static/TestIMG/certificateinfo_top.png);
+  background-repeat: no-repeat;
+  padding-top: 6%;
+  background-size: contain;
+  margin-top: 40%
+}
+.certificateinfo-footer{
+  background: url(/static/TestIMG/certificateinfo_footer.png);
+  background-repeat: no-repeat;
+  padding-top:5%;
+  background-size: 100%;
+  margin-bottom: 44%
+
+}
 .weui_tab_bd {
   padding-bottom: 0;
 }
 
 .certificateinfo-bac {
-
+  background: url(/static/TestIMG/certificateinfo-middle.png) repeat-y #000;
+  background-size: 100%;
+    margin-top: -1%;
 }
-
+.certificateinfo-title {
+    width: 70%;
+    margin: auto;
+}
+.certificateinfo-title img{
+  width: 100%
+}
 .certificateinfo {
-  width: 93%;
-  margin: 40% auto;
-  padding: 13% 0 0 0;
+  background: url(/static/TestIMG/certificateinfo.png ) no-repeat 50% 88%;
+  background-size: 55%;
+  margin:0 auto;
   font-size: 3vw;
   color: #3f3a36;
-  background: url(/static/TestIMG/certificateinfo.png) no-repeat #000;
-  background-size: 100%;
+
 }
 
 .certificateinfo h3 {
@@ -164,9 +199,9 @@ export default {
 
 .certificateinfo table.personal-identitys {
   font-family: "微软雅黑";
-  width: 100%;
-margin: 8% auto 0 0;
-  color: #fff}
+width: 100%;
+margin-top: -3%;
+color: #fff;}
 
 .certificateinfo table.personal-identitys tbody tr td {
   font-family: "微软雅黑";
@@ -218,12 +253,12 @@ margin: 8% auto 0 0;
 }
 
 .agents-height {
-color: #fff;
-font-family: "微软雅黑";
-font-size: 3vw;
-width: 80%;
-margin: auto;
-position: relative;
+  color: #fff;
+  font-family: "微软雅黑";
+  font-size: 3vw;
+  width: 80%;
+  margin: -3% auto 0 auto;
+  position: relative;
 }
 .agents-height tr td{
   line-height: normal;
@@ -234,7 +269,7 @@ position: relative;
     margin: auto;
     }
 .agents-height tr td:nth-child(2) img {
-    width:100%;
+    width:94%;
     margin: auto;
 }
 .agents-height tr td:nth-child(1)  p{
@@ -252,4 +287,5 @@ left: 2%;
     width: 79%;
     margin: auto;
 }
+
 </style>
