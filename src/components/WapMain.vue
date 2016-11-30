@@ -61,10 +61,9 @@ export default {
         this.ShowBack = true
         document.body.style.background = '#f2f2f2'
         this.$on('backButton', function(showHomePageModel) {
-          if(showHomePageModel){
+          if (showHomePageModel) {
             this.backText = "退出"
-          }
-          else{
+          } else {
             this.backText = "返回"
           }
         })
@@ -82,7 +81,7 @@ export default {
         document.body.style.background = '#fff'
         return '选择招募代理级别'
       } else if (this.$route.name === 'BrandAuthorization') {
-          document.body.style.background = '#f2f2f2'
+        document.body.style.background = '#f2f2f2'
         this.ShowBack = true
         return '分享招募'
       } else if (this.$route.name === 'FillInEmployment') {
@@ -123,9 +122,9 @@ export default {
         document.body.style.background = '#f2f2f2'
         return '我的证书'
       } else if (this.$route.name === 'CertificateInfo') {
-          document.body.style.backgroundImage = 'url(/static/TestIMG/certificateinfo_bac.png)'
-          document.body.style.backgroundRepeat='no-repea'
-          document.body.style.backgroundSize='contain'
+        document.body.style.backgroundImage = 'url(/static/TestIMG/certificateinfo_bac.png)'
+        document.body.style.backgroundRepeat = 'no-repea'
+        document.body.style.backgroundSize = 'contain'
         this.ShowBack = true
         return '授权证书'
       } else if (this.$route.path === '/employManagement/currentList') {
@@ -160,6 +159,9 @@ export default {
       } else if (this.$route.path === '/accountManagement/changeCellPhone') {
         this.ShowBack = true
         return '修改手机号'
+      } else if (this.$route.path === '/saleManagement/sale') {
+        this.ShowBack = true
+        return '货品出售'
       }
 
     }
@@ -196,7 +198,7 @@ export default {
         }
       } else if (FirstPath == "homePage") {
         if (!SecPath) {
-          if(this.backText ==　"返回"){
+          if (this.backText == 　"返回") {
             // window.location.reload()
             this.$broadcast('showHomePage')
           } else {
@@ -256,7 +258,7 @@ export default {
             this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/audit')
             return
           } else if (this.$route.params.locate == "history")
-          this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/history')
+            this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/history')
           return
         } else if (SecPath == "checkPwd") {
           this.$route.router.go('/accountManagement')
@@ -266,6 +268,11 @@ export default {
           return
         } else if (SecPath == "changeCellPhone") {
           this.$route.router.go('/accountManagement/checkPwd/phone')
+          return
+        }
+      } else if (FirstPath == "saleManagement") {
+         if (SecPath == "sale") {
+          this.$route.router.go('/homePage')
           return
         }
       }
@@ -354,14 +361,17 @@ body {
   border: 0;
   color: #fff;
 }
+
+
 /*底栏信息*/
+
 .all-footer {
-	width: 100%;
-	text-align: center;
-	color: #979797;
-	font-size: 3vw;
-	font-family: "微软雅黑";
-	line-height: 2.5em;
-	    margin-bottom: 2%;
+  width: 100%;
+  text-align: center;
+  color: #979797;
+  font-size: 3vw;
+  font-family: "微软雅黑";
+  line-height: 2.5em;
+  margin-bottom: 2%;
 }
 </style>

@@ -119,6 +119,14 @@ export function configRouter(router) {
 
       }
     },
+    '/saleManagement': {
+      component: require('../components/WapMain.vue'),
+      subRoutes: {
+        'sale': {
+          component: require('../components/SaleProduct.vue')
+        }
+      }
+    },
     '/accountManagement': {
       component: require('../components/WapMain.vue'),
       subRoutes: {
