@@ -15,12 +15,13 @@
             <div slot="icon">用户名：
               <label>{{auditInfo.employment_detail.cellphone}}</label>
             </div>
+              <x-button v-if="!Toggle" type="default" class="auditinfo-view" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/'+this.$route.params.locate+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
           </cell>
           <cell>
             <div slot="icon">授权品牌：
               <label>{{auditInfo.brand}}</label>
             </div>
-            <x-button v-if="!Toggle" type="default" class="auditinfo-view" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/'+this.$route.params.locate+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
+
           </cell>
           <cell>
             <div slot="icon">授权上级：
@@ -285,7 +286,7 @@ export default {
 }
 
 .auditinfo-message {
-  position: relative;
+
   width: 89%;
   margin: 1% auto;
 }
@@ -297,6 +298,7 @@ export default {
 .auditinfo-message .weui_cell {
   border-bottom: 1px solid #d3d1d1;
   padding: 9px 0;
+
 }
 
 .auditinfo-message .weui_cell:nth-child(8){
@@ -322,11 +324,11 @@ border-bottom:0}
 }
 
 .auditinfo-message .auditinfo-view {
-  top: -33px;
+    top:40%;
 }
 
 .auditinfo-message .auditinfo-views {
-  top: 4px;
+      top: 10%;
 }
 
 .auditinfo-message .weui_cell_hd {
@@ -386,7 +388,7 @@ input.weui_btn {
 
 .auditinfo-choose .weui_cell_ft {
   position: absolute;
-  left: 78px;
+    left: 26%;
   top: 11%;
   width: 100%;
   margin-left: 2%;
@@ -422,7 +424,7 @@ input.weui_btn {
   display: inline-block;
   position: absolute;
   top: 22%;
-  left: 188px;
+left: 64%;
   font-size: 4.5vw;
 }
 
@@ -448,7 +450,7 @@ input.weui_btn {
   width: 11%;
   text-align: center;
   border-radius: 5px;
-  line-height: 33px;
+padding: 3% 1%!important;
   height: auto;
   color: #fff
 }
@@ -467,6 +469,8 @@ input.weui_btn {
   margin-right: 14%;
   margin-top: 2px;
   border: 1px solid #d3d1d1;
+      width: 14%!important;
+          padding: 1%;
 }
 
 .auditinfo-choose .weui_cell {

@@ -1,4 +1,3 @@
-var Sequelize = require('sequelize')
 module.exports = function(req, res, next, api, wechatapi) {
     try {
         if (req.query.code) {
@@ -12,9 +11,9 @@ module.exports = function(req, res, next, api, wechatapi) {
                 } else {
                     wechatapi.getUser(result.data.openid, function(err, result) {
                         if (result.subscribe) {
-                            res.send("已关注")
+                            res.send("已关�)
                         } else {
-                            res.send("未关注")
+                            res.send("未关�)
                         }
                     })
                 }

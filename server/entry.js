@@ -1,6 +1,7 @@
 var express = require('express')
 var session = require('express-session')
 var bodyParser = require('body-parser')
+var OAuth = require('./wechat/oauth')
 
 var getClientAddress = function(req) {
   return (req.headers['x-forwarded-for'] || '').split(',')[0] ||
@@ -12,8 +13,7 @@ module.exports = (app) => {
     init(req, res, next)
   })
 
-  app.use('/', express.static('mp'));
-
+  app.use('/', express.static('mp'))
 
   // parse application/x-www-form-urlencoded
   app.use(bodyParser.urlencoded({
@@ -28,14 +28,28 @@ module.exports = (app) => {
   }))
   var appid = 'wx9165b89a9a491bf0'
   var apps = 'af55586c61c8ce8900ffa9fa7c3cfb96'
-  // var appid = 'wx9165b89a9a491bf0'
-  // var apps = 'af55586c61c8ce8900ffa9fa7c3cfb96'
+    // var appid = 'wx9165b89a9a491bf0'
+    // var apps = 'af55586c61c8ce8900ffa9fa7c3cfb96'
   var OAuth = require('wechat-oauth')
   var api = new OAuth(appid, apps)
   var WechatAPI = require('wechat-api')
   var wechatapi = new WechatAPI(appid, apps)
   app.use('/wechat/:action', function(req, res, next) {
     require('./wechat/wechat-api')(req, res, next, api, wechatapi)
+  })
+
+
+
+  app.use('/g/:id', function(req, res) {
+    OAuth(req, res, next, api, wechatapi).then((result) => {
+      if (result) {
+        //已经关注
+      } else {
+        //未关�
+      }
+    }).catch((e) => {
+      res.status(500).send(e)
+    })
   })
 
   app.use('/service/:permission/:type/:action', function(req, res, next) {
