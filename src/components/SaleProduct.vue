@@ -135,7 +135,7 @@ export default {
           that.soldProductInfo.name = "幸运银内裤"
           that.soldProductInfo.retailPrice = "139.00"
           that.soldProductInfo.status = "已出售"
-          that.unsoldProductInfo.soldBy = that.getSolderName(result.sold_by)
+          that.getSolderName(result.sold_by)
           that.soldProductInfo.soldDate = result.sold_date
           that.soldProductInfo.scanNum = result.scan_num
           that.getBrandInfo()
@@ -202,10 +202,9 @@ export default {
         var solderName = null
         for (var index in result.agent_details) {
           if (result.agent_details[index].key == "name") {
-            solderName = result.agent_details[index].value
+            that.soldProductInfo.soldBy = result.agent_details[index].value
           }
         }
-        return solderName
       }).catch(function(err) {
         that.showErrorNoHandled = true
         that.errorMsgNoHandled = err
