@@ -135,7 +135,7 @@ export default {
           that.soldProductInfo.name = "幸运银内裤"
           that.soldProductInfo.retailPrice = "139.00"
           that.soldProductInfo.status = "已出售"
-          that.unsoldProductInfo.soldBy = that.getsolderName(result.sold_by)
+          that.unsoldProductInfo.soldBy = that.getSolderName(result.sold_by)
           that.soldProductInfo.soldDate = result.sold_date
           that.soldProductInfo.scanNum = result.scan_num
           that.getBrandInfo()
