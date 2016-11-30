@@ -11,7 +11,6 @@
       <cell title="零售价 ：￥" :value.sync="unsoldProductInfo.retailPrice"></cell>
       <cell title="状态 ：" :value.sync="unsoldProductInfo.status"></cell>
     </group>
-    <x-button type="primary" @click="showComfirm=true">出售此货品</x-button>
     <div>
       <p>提示：</p>
       <p>1.请核对货品信息，无误后点击出售</p>
@@ -19,6 +18,7 @@
       <p>3.货品最终解释权归{{brandInfo.brandName}}所有</p>
     </div>
     <div>© 2016 ShareWin.me 粤ICP备14056388号</div>
+    <x-button type="primary" @click="showComfirm=true">出售此货品</x-button>
   </div>
   <!--出售按钮二次确认-->
   <confirm :show.sync="showComfirm" title="" confirm-text="确认" cancel-text="取消" @on-confirm="saleProduct">
@@ -89,7 +89,6 @@ export default {
   },
   data() {
     return {
-      packcode: "A-3A0-88-4716-0003-03",
       userName: null,
       showUnsoldModel: false,
       showSoldModel: false,
@@ -125,19 +124,18 @@ export default {
   methods: {
     init() {
       var that = this
-      var packcode = this.packcode
 
       this.getJsConfig()
 
       saleAPI.showPack({
-        packcode: packcode
+        packcode: this.$route.params.packcode
       }).then(function(result) {
         console.log(JSON.stringify(result))
         if (result.sold) { //判断是否出售
           that.soldProductInfo.name = "幸运银内裤"
           that.soldProductInfo.retailPrice = "139.00"
           that.soldProductInfo.status = "已出售"
-          that.soldProductInfo.soldBy = result.sold_by
+          that.unsoldProductInfo.soldBy = that.getsolderName(result.sold_by)
           that.soldProductInfo.soldDate = result.sold_date
           that.soldProductInfo.scanNum = result.scan_num
           that.getBrandInfo()
@@ -158,7 +156,7 @@ export default {
               if (result.name == owner || owner == "") { //TODO: owner为空或者owner为上级
                 that.showSoldModel = false
                 that.showUnsoldModel = true
-              }else{
+              } else {
                 that.showUnableToSale = true
               }
             } else {
@@ -196,6 +194,24 @@ export default {
       }
       return productID
     },
+    getSolderName(solderAccount) {
+      var that = this
+      saleAPI.getAgentInfo({
+        user_account: solderAccount
+      }).then(function(result) {
+        var solderName = null
+        for (var index in result.agent_details) {
+          if (result.agent_details[index].key == "name") {
+            solderName = result.agent_details[index].value
+          }
+        }
+        return solderName
+      }).catch(function(err) {
+        that.showErrorNoHandled = true
+        that.errorMsgNoHandled = err
+      })
+
+    },
     getBrandInfo() {
       var that = this
       brandInfoAPI.getBrandInfo().then(function(result) {
@@ -213,10 +229,9 @@ export default {
     },
     saleProduct() {
       var that = this
-      var packcode = this.packcode
 
       saleAPI.packSoldBy({
-        packcode: packcode
+        packcode: this.$route.params.packcode
       }).then(function(result) {
         if (result != null) {
           that.showSuccessNextStep = true

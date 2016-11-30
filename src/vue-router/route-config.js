@@ -122,7 +122,8 @@ export function configRouter(router) {
     '/saleManagement': {
       component: require('../components/WapMain.vue'),
       subRoutes: {
-        'sale': {
+        'sale/:packcode': {
+          name: "SaleProduct",
           component: require('../components/SaleProduct.vue')
         }
       }

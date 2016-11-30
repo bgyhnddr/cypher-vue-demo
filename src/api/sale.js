@@ -7,5 +7,8 @@ export default {
   },
   packSoldBy(params) {
     return httpRequest.post(path + 'packSoldBy', params)
+  },
+  getAgentInfo(params) {
+    return httpRequest.post(path + 'getAgentInfo', params)
   }
 }

@@ -159,7 +159,7 @@ export default {
       } else if (this.$route.path === '/accountManagement/changeCellPhone') {
         this.ShowBack = true
         return '修改手机号'
-      } else if (this.$route.path === '/saleManagement/sale') {
+      } else if (this.$route.name === 'SaleProduct') {
         this.ShowBack = true
         return '货品出售'
       }

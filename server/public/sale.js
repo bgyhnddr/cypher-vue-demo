@@ -11,6 +11,26 @@ var exec = {
     var user_account = req.session.userInfo.name
 
     var agent = require('../../db/models/agent')
+
+
+    return agent.findOne({
+      where: {
+        user_account: user_account
+      }
+    }).then(function(result) {
+      if (result == null) {
+        return Promise.reject("获取您的个人资料读取出错")
+      } else {
+        var who = result.user_account
+
+        return pmp_server.pack_sold_by(packcode,who)
+      }
+    })
+  },
+  getAgentInfo(req, res, next) {
+    var user_account = req.body.user_account
+
+    var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
 
     agent.hasMany(agent_detail)
@@ -24,18 +44,12 @@ var exec = {
       }]
     }).then(function(result) {
       if (result == null) {
-        return Promise.reject("获取您的个人资料读取出错")
+        return Promise.reject("上级授权角色资料读取出错")
       } else {
-        var who = null
-        for (var index in result.agent_details) {
-          if (result.agent_details[index].key == "name") {
-            who = result.agent_details[index].value
-          }
-        }
-        return pmp_server.pack_sold_by(packcode,who)
+        return result
       }
     })
-  }
+  },
 
 }
 
