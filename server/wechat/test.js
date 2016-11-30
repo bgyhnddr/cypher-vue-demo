@@ -1,4 +1,3 @@
-var Sequelize = require('sequelize')
 module.exports = function(req, res, next, api, wechatapi) {
     try {
         if (req.query.code) {
