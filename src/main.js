@@ -78,6 +78,12 @@ router.beforeEach((tran) => {
         tran.next()
         return
     }
+  } else if (FirstPath == "accountManagement") {
+    switch (SecPath) {
+      case "CertificateInfo":
+        tran.next()
+        return
+    }
   } else if (FirstPath == "test") {
     tran.next()
     return
@@ -137,7 +143,7 @@ router.beforeEach((tran) => {
         switch (SecPath) {
           case undefined:
           case "MyCertificate":
-          case "CertificateInfo":
+          // case "CertificateInfo":
           case "checkPwd":
           case "changeWechat":
           case "changeCellPhone":

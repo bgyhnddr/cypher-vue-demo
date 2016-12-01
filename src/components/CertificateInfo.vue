@@ -64,7 +64,7 @@
  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 <script>
-import employAPI from '../api/employment'
+import applyEmployAPI from '../api/applyEmployment'
 export default {
   data() {
     return {
@@ -84,7 +84,7 @@ export default {
   methods: {
     getAgentInfo() {
       var that = this
-      employAPI.getAgentDetail({
+      applyEmployAPI.getAgentDetail({
         account: that.$route.params.account,
         role: that.$route.params.from
       }).then(function(result) {
@@ -102,7 +102,7 @@ export default {
     },
     getBrandDetail() {
       var that = this
-      employAPI.getBrandDetail({
+      applyEmployAPI.getBrandDetail({
         account: that.$route.params.account
       }).then(function(result) {
         console.log(result)

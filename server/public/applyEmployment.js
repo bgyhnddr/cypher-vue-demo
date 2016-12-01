@@ -36,6 +36,122 @@ var exec = {
       }
     })
   },
+  getAgentDetail(req, res, next) {
+    var account = req.body.account
+    var role = req.body.role
+    var locate = req.body.locate
+    var employment = require('../../db/models/employment')
+    var employment_term = require('../../db/models/employment_term')
+    var user = require('../../db/models/user')
+    var brand = require('../../db/models/brand')
+    var brand_role = require('../../db/models/brand_role')
+    var agent = require('../../db/models/agent')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
+    var agent_detail = require('../../db/models/agent_detail')
+    var team = require('../../db/models/team')
+    var team_agent = require('../../db/models/team_agent')
+
+    employment.belongsTo(brand)
+    employment.belongsTo(brand_role)
+
+    user.hasOne(employment, {
+      foreignKey: "employee_user_account"
+    })
+
+    agent.hasMany(agent_detail)
+    agent.hasOne(agent_brand_role)
+    agent_brand_role.belongsTo(brand_role)
+    agent.belongsTo(user)
+    agent.hasOne(employment_term)
+    agent.hasOne(team_agent)
+    team_agent.belongsTo(team, {
+      foreignKey: "team_code"
+    })
+    user.hasOne(agent)
+
+    employment.belongsTo(user, {
+        foreignKey: "employer_user_account"
+      })
+      //关联团队数据
+    return agent.findOne({
+      where: {
+        user_account: account
+      },
+      include: [agent_detail,
+        employment_term, {
+          model: team_agent,
+          include: team
+        }, {
+          model: agent_brand_role,
+          include: brand_role
+        }, {
+          model: user,
+          include: {
+            model: employment,
+            include: [brand, {
+              model: user,
+              include: {
+                model: agent,
+                include: agent_detail
+              }
+            }]
+          }
+        }
+      ]
+    }).then((result) => {
+      var obj = result.toJSON()
+      obj.agent_detail = {}
+      obj.agent_details.forEach((d) => {
+        obj.agent_detail[d.key] = d.value
+      })
+
+      obj.user.employment.user.agent.agent_detail = {}
+      obj.user.employment.user.agent.agent_details.forEach((d) => {
+        obj.user.employment.user.agent.agent_detail[d.key] = d.value
+      })
+
+      delete obj.agent_details
+      delete obj.user.employment.user.agent.agent_details
+      return obj
+    })
+  },
+  getBrandDetail(req, res, next) {
+    var account = req.body.account
+    var user = require('../../db/models/user')
+    var brand = require('../../db/models/brand')
+    var brand_role = require('../../db/models/brand_role')
+    var agent = require('../../db/models/agent')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
+    var agent_detail = require('../../db/models/agent_detail')
+
+    agent.hasMany(agent_detail)
+    agent.hasOne(agent_brand_role)
+    agent_brand_role.belongsTo(brand_role)
+    agent.belongsTo(user)
+    user.hasOne(agent)
+    brand_role.belongsTo(brand)
+
+    return agent.findOne({
+      where: {
+        user_account: account
+      },
+      include: [agent_detail, user, {
+        model: agent_brand_role,
+        include: {
+          model: brand_role,
+          include: brand
+        }
+      }]
+    }).then((result) => {
+      var obj = result.toJSON()
+      obj.agent_detail = {}
+      obj.agent_details.forEach((d) => {
+        obj.agent_detail[d.key] = d.value
+      })
+      delete obj.agent_details
+      return obj
+    })
+  },
   getRoleName(req, res, next) {
     var brand_guid = req.body.brand_guid
     var brand_role_code = req.body.brand_role_code
