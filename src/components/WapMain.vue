@@ -161,6 +161,7 @@ export default {
         return '修改手机号'
       } else if (this.$route.name === 'SaleProduct') {
         this.ShowBack = true
+        document.body.style.background = '#f2f2f2'
         return '货品出售'
       }
 
