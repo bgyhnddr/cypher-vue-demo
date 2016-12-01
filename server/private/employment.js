@@ -653,6 +653,7 @@ var exec = {
     var user_account = req.session.userInfo.name
     var select = null
 
+    var moment = require('moment')
     var brand_role = require('../../db/models/brand_role')
     var publish_employment = require('../../db/models/publish_employment')
 
@@ -664,31 +665,50 @@ var exec = {
         return publish_employment.findAll({
           where: {
             employer_user_account: user_account,
-            status: true
+            status: true,
+            create_time: {
+              $gt: moment().subtract(2, 'hours').format('YYYY-MM-DD HH:mm:ss')
+            }
           },
           include: [{
             model: brand_role
           }],
           order: select
+        }).then(function(result) {
+            return {
+              currentList : result,
+              nowDateString : moment().format('YYYY-MM-DD HH:mm:ss')
+            }
         })
       case "timeDesc":
         select = "publish_employment.created_at DESC" //时间由近到远
         return publish_employment.findAll({
           where: {
             employer_user_account: user_account,
-            status: true
+            status: true,
+            create_time: {
+              $gt: moment().subtract(2, 'hours').format('YYYY-MM-DD HH:mm:ss')
+            }
           },
           include: [{
             model: brand_role
           }],
           order: select
+        }).then(function(result) {
+            return {
+              currentList : result,
+              nowDateString : moment().format('YYYY-MM-DD HH:mm:ss')
+            }
         })
       case "levelDesc":
         select = "brand_role.level DESC" // 等级由低到高
         return publish_employment.findAll({
           where: {
             employer_user_account: user_account,
-            status: true
+            status: true,
+            create_time: {
+              $gt: moment().subtract(2, 'hours').format('YYYY-MM-DD HH:mm:ss')
+            }
           },
           include: [{
             model: brand_role
@@ -699,13 +719,21 @@ var exec = {
             }, 'level', 'DESC'],
             ['created_at', 'DESC']
           ]
+        }).then(function(result) {
+            return {
+              currentList : result,
+              nowDateString : moment().format('YYYY-MM-DD HH:mm:ss')
+            }
         })
       case "levelAsc":
         select = "brand_role.level ASC" // 等级由高到低
         return publish_employment.findAll({
           where: {
             employer_user_account: user_account,
-            status: true
+            status: true,
+            create_time: {
+              $gt: moment().subtract(2, 'hours').format('YYYY-MM-DD HH:mm:ss')
+            }
           },
           include: [{
             model: brand_role
@@ -716,28 +744,18 @@ var exec = {
             }, 'level', 'ASC'],
             ['created_at', 'DESC']
           ]
+        }).then(function(result) {
+            return {
+              currentList : result,
+              nowDateString : moment().format('YYYY-MM-DD HH:mm:ss')
+            }
         })
-    }
-  },
-  closeOverduePublishEmployment(req, res, next) {
-    var delectItemList = req.body.delectItemList
-
-    var publish_employment = require('../../db/models/publish_employment')
-
-    for (var item in delectItemList) {
-      publish_employment.findOne({
-        where: {
-          guid: delectItemList[item]
-        }
-      }).then(function(result) {
-        result.status = false
-        result.save()
-      })
     }
   },
   getCurrentInfo(req, res, next) {
     var guid = req.body.guid
 
+    var moment = require('moment')
     var publish_employment = require('../../db/models/publish_employment')
     var employment = require('../../db/models/employment')
     var brand_role = require('../../db/models/brand_role')
@@ -747,7 +765,11 @@ var exec = {
 
     return publish_employment.findOne({
       where: {
-        guid: guid
+        guid: guid,
+        status: true,
+        create_time: {
+          $gt: moment().subtract(2, 'hours').format('YYYY-MM-DD HH:mm:ss')
+        }
       },
       include: [{
         model: employment
@@ -756,9 +778,12 @@ var exec = {
       }]
     }).then(function(result) {
       if (result == null) {
-        return Promise.reject("查找招募详情异常")
+        return Promise.reject("招募已关闭或查找招募信息异常，请稍后再操作")
       } else {
-        return result
+        return {
+          publish_employment: result,
+          nowDateString:  moment().format('YYYY-MM-DD HH:mm:ss')
+        }
       }
     })
   },
@@ -840,7 +865,7 @@ var exec = {
   },
   getCurrentListLength(req, res, next) {
     var user_account = req.session.userInfo.name
-    var nowString = req.body.nowString
+    var moment = require('moment')
 
     var publish_employment = require('../../db/models/publish_employment')
 
@@ -849,7 +874,7 @@ var exec = {
         employer_user_account: user_account,
         status: true,
         create_time: {
-          $gt: nowString
+          $gt: moment().subtract(2, 'hours').format('YYYY-MM-DD HH:mm:ss')
         }
       }
     }).then(function(result) {
