@@ -1,25 +1,35 @@
 <template>
-<div>
-  <!-- 未出售 -->
+
+
   <div v-if="showUnsoldModel">
-    <p class="brand-logo-bili">
+    <div class="saleProduct-sell-box">
+      <!-- 未出售 -->
+      <div class="saleProduct-sell-height">
+    <p class="saleProduct-sell-logo">
       <img class="vux-x-img ximg-demo" src="/static/TestIMG/logo.png" alt="品牌logo" />
     </p>
     <group>
+        <div class="saleProduct-sell-table">
       <cell title="货品 ：" :value.sync="unsoldProductInfo.name"></cell>
       <cell title="货号 ：" :value.sync="unsoldProductInfo.productID"></cell>
       <cell title="零售价 ：￥" :value.sync="unsoldProductInfo.retailPrice"></cell>
       <cell title="状态 ：" :value.sync="unsoldProductInfo.status"></cell>
+        </div>
     </group>
-    <div>
+      <x-button type="primary" @click="showComfirm=true" class="saleProduct-sell-button">出售此货品</x-button>
+    <div class="saleProduct-sell-prompt">
       <p>提示：</p>
       <p>1.请核对货品信息，无误后点击出售</p>
       <p>2.全国统一客服电话：{{brandInfo.servicesPhone}}</p>
       <p>3.货品最终解释权归{{brandInfo.brandName}}所有</p>
     </div>
-    <div>© 2016 ShareWin.me 粤ICP备14056388号</div>
-    <x-button type="primary" @click="showComfirm=true">出售此货品</x-button>
+
+    </div>
   </div>
+  <div class="saleProduct-sell-footer">由分得PMP货品监控平台数据支持<br/>© 2016 ShareWin.me 粤ICP备14056388号
+  </div>
+
+</div>
   <confirm :show.sync="showComfirm" title="" confirm-text="确认" cancel-text="取消" @on-confirm="saleProduct">
     <p style="text-align:center;">确定出售此商品吗？</p>
   </confirm>
@@ -32,27 +42,40 @@
   </confirm>
   <!-- 已出售 -->
   <div v-if="showSoldModel">
-    <p class="brand-logo-bili">
+      <div class="saleProduct-unsold-box">
+          <div class="saleProduct-unsold-height">
+    <p class="saleProduct-unsold-logo">
       <img class="vux-x-img ximg-demo" src="/static/TestIMG/logo.png" alt="品牌logo" />
     </p>
+
     <group>
+  <div class="saleProduct-unsold-table">
       <cell title="货品 ：" :value.sync="soldProductInfo.name"></cell>
       <cell title="零售价 ：￥" :value.sync="soldProductInfo.retailPrice"></cell>
       <cell title="状态 ：" :value.sync="soldProductInfo.status"></cell>
       <cell title="销售员 ：" :value.sync="soldProductInfo.soldBy">
-        <x-button type="primary" >查看授权证书</x-button>
+        <x-button type="primary" class="saleProduct-unsold-table-button" >查看授权证书</x-button>
       </cell>
       <cell title="出售时间 ：" :value.sync="soldProductInfo.soldDate"></cell>
       <cell title="查验次数 ：" :value.sync="soldProductInfo.scanNum"></cell>
+      </div>
+
     </group>
-    <x-button type="primary" @click="goToHomePage">返回</x-button>
-    <div>
+
+  <x-button type="primary" @click="goToHomePage" class="saleProduct-unsold-button">返回</x-button>
+    <div class="saleProduct-unsold-prompt">
       <p>提示：</p>
       <p>1.零售价为全国统一售价，如有不符，请及时与我司联系</p>
       <p>2.全国统一客服电话：{{brandInfo.servicesPhone}}</p>
       <p>3.货品最终解释权归{{brandInfo.brandName}}所有</p>
     </div>
-    <div>© 2016 ShareWin.me 粤ICP备14056388号</div>
+
+    </div>
+  </div>
+  <div class="saleProduct-unsold-footer">由分得PMP货品监控平台数据支持<br/>© 2016 ShareWin.me 粤ICP备14056388号
+
+  </div>  </div>
+
   </div>
   <alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
   <alert :show.sync="showCatchError" button-text="确认" @on-hide="catchErrorHandled">{{catchErrorMsg}}</alert>
@@ -61,7 +84,7 @@
     <p>{{noSaleErrorMsg}}</p>
   </alert>
 
-</div>
+
 </template>
 
 <script>
@@ -280,10 +303,181 @@ export default {
 }
 </script>
 <style>
-.brand-logo-bili img {
-  width: 71%;
+/*未出售*/
+.saleProduct-sell-height{
+    min-height: 450px;
+
+}
+.saleProduct-sell-box {
+    width: 100%;
+    margin: auto;
+
+}
+p.saleProduct-sell-logo {
+    width: 100%;
+    text-align: center;
+  margin: 4% auto 0 auto;
+}
+.saleProduct-sell-logo img {
+  width: 65%;
   height: auto;
-  border: 1px solid #d3d1d1;
   margin: 0% auto 2%;
 }
+.saleProduct-sell-table .weui_cell_hd{ width: auto;}
+.saleProduct-sell-table {
+  text-align: left;
+  background: #fff;
+  padding: 0;
+  font-family: "微软雅黑";
+  font-size: 4.5vw;
+}
+.saleProduct-sell-table .weui_cell:before{
+      border-top: 0;
+}
+.saleProduct-sell-table .weui_cell{
+
+      border-bottom: 1px solid #d3d1d1;
+}
+.saleProduct-sell-table .weui_cell:nth-child(4){
+
+  border-bottom:0
+}
+.saleProduct-sell-table .weui_cell:nth-child(4) .weui_cell_ft{
+ color: #f4604b}
+.saleProduct-sell-table  .weui_cell_primary {
+    -webkit-box-flex: inherit!important;
+    -ms-flex: inherit!important;
+    flex: inherit!important;
+    width: 28%;
+    text-align: right;
+}
+.saleProduct-sell-prompt {
+    width: 88%;
+    margin: 3% auto;
+    color: #d22d23;
+    font-family: "微软雅黑";
+    font-size: 3.9vw;
+}
+.saleProduct-sell-footer{
+
+  width: 100%;
+  text-align: center;
+  color: #979797;
+  font-size: 3vw;
+  font-family: "微软雅黑";
+  line-height:1.5em;
+  margin-bottom: 10%;
+}
+ button.weui_btn.saleProduct-sell-button.weui_btn_primary {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-radius: 0;
+    font-size: 5.2vw;
+    line-height: 2.3em;
+}
+.saleProduct-sell-box .weui_btn:after{
+  border: 0;
+border-radius: 0;
+
+}
+.saleProduct-sell-box .weui_cell_ft{
+
+      color: #595959;
+          padding-left: 4%;
+}
+/*已出售*/
+
+.saleProduct-unsold-height{
+    min-height: 450px;
+
+}
+.saleProduct-unsold-box {
+    width: 100%;
+    margin: auto;
+
+}
+p.saleProduct-unsold-logo {
+    width: 100%;
+    text-align: center;
+  margin: 4% auto 0 auto;
+}
+.saleProduct-unsold-logo img {
+  width: 65%;
+  height: auto;
+  margin: 0% auto 2%;
+}
+.saleProduct-unsold-table .weui_cell_hd{ width: auto;}
+.saleProduct-unsold-table {
+  text-align: left;
+
+  padding: 0;
+  font-family: "微软雅黑";
+  font-size: 4.5vw;
+}
+.saleProduct-unsold-table .weui_cell:before{
+      border-top: 0;
+}
+.saleProduct-unsold-table .weui_cell{
+
+      border-bottom: 1px solid #d3d1d1;
+}
+.saleProduct-unsold-table .weui_cell:nth-child(6){
+
+  border-bottom:0
+}
+.saleProduct-unsold-table .weui_cell:nth-child(3) .weui_cell_ft{
+ color: #21c36d}
+.saleProduct-unsold-table  .weui_cell_primary {
+    -webkit-box-flex: inherit!important;
+    -ms-flex: inherit!important;
+    flex: inherit!important;
+    width: 28%;
+    text-align: right;
+}
+.saleProduct-unsold-prompt {
+    width: 88%;
+    margin: 3% auto;
+    color: #d22d23;
+    font-family: "微软雅黑";
+    font-size: 3.9vw;
+}
+.saleProduct-unsold-footer{
+
+  width: 100%;
+  text-align: center;
+  color: #979797;
+  font-size: 3vw;
+  font-family: "微软雅黑";
+  line-height:1.5em;
+  margin-bottom: 10%;
+}
+button.weui_btn.saleProduct-unsold-button.weui_btn_primary {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-radius: 0;
+    font-size: 5.2vw;
+    line-height: 2.3em;
+}
+.saleProduct-unsold-box .weui_btn:after{
+  border: 0;
+border-radius: 0;
+
+}
+.saleProduct-unsold-box .weui_cell_ft{
+
+      color: #595959;
+          padding-left: 4%;
+}
+.saleProduct-unsold-box button.weui_btn.saleProduct-unsold-table-button.weui_btn_primary {
+    position: absolute;
+    width: 33%;
+    font-size: 3.9vw;
+    background: #5091d5;
+    top: 18%;
+    left: 63%;
+    border-radius: 2px;
+}
+
 </style>
