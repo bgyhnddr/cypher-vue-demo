@@ -1,4 +1,5 @@
 ﻿<template>
+  <div class="brandauthorization-list">
 <div class="brandauthorization-bac" v-show="showBrandAuthorizationModel">
   <div class="brandauthorizations">
     <div class="brandauthorization-img">
@@ -18,6 +19,7 @@
   </div>
 </div>
 <alert :show.sync="showRemindMsg" button-text="确认" @on-hide="onHide">{{remindMsg}}</alert>
+</div>
 <div class="all-footer" v-show="showBrandAuthorizationModel">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 <script>
@@ -302,4 +304,30 @@ table.personal-identity tbody tr td img {
   height: auto!important;
   border: 5px solid #fff;
 }
+.brandauthorization-list  .weui_dialog_ft {
+  width: 89%;
+  margin: 8% auto;
+    background: #0bb20c;
+  line-height: 35px;
+  border-radius: 2px;
+}
+
+.brandauthorization-list .weui_dialog_bd {
+  color: #000000;
+  font-size: 5.2vw;
+  /*17px*/
+  font-family: "微软雅黑";
+  margin-top: 5%;
+}
+
+.brandauthorization-list .weui_btn_dialog.primary {
+  font-size: 4.9vw;
+  /*16px*/
+  color: #fff;
+}
+
+.brandauthorization-list  .weui_dialog {
+  width: 92%;
+}
+
 </style>

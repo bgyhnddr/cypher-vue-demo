@@ -17,7 +17,7 @@
         <x-button mini v-link="{path: '/employManagement/auditInfo/'+item.employee_user_account+'/'+item.guid+'/'+item.brand_guid+'/audit'}">审核</x-button>
       </cell>
     </group>
-    <alert :show.sync="show">无记录</alert>
+    <alert :show.sync="show" button-text="确认">无记录</alert>
   </div>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
@@ -177,5 +177,30 @@ export default {
 
 .audit-choose .weui_cell_select .weui_select option:nth-child(even) {
   background-color: #f5f5f5;
+}
+.audit-list  .weui_dialog_ft {
+  width: 89%;
+  margin: 8% auto;
+    background: #0bb20c;
+  line-height: 35px;
+  border-radius: 2px;
+}
+
+.audit-list  .weui_dialog_bd {
+  color: #000000;
+  font-size: 5.2vw;
+  /*17px*/
+  font-family: "微软雅黑";
+  margin-top: 5%;
+}
+
+.audit-list .weui_btn_dialog.primary {
+  font-size: 4.9vw;
+  /*16px*/
+  color: #fff;
+}
+
+.audit-list  .weui_dialog {
+  width: 92%;
 }
 </style>

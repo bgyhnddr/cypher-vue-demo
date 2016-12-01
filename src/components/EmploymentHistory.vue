@@ -1,5 +1,5 @@
 ﻿<template>
-<div>
+<div class="history-list">
   <div class="history-button">
     <flexbox-item>
       <x-button type="default" @click="ShowFilterBox">筛选</x-button>
@@ -44,7 +44,7 @@
       </div>
     </div>
   </popup>
-  <alert :show.sync="showAlert" @on-hide="onHide">无记录</alert>
+  <alert :show.sync="showAlert" @on-hide="onHide" button-text="确认">无记录</alert>
   <toast :show.sync="showToast" :time="1000" type="text">{{errMsg}}</toast>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
@@ -343,5 +343,30 @@ input.weui_btn {
 
 .history-buttons .vux-flexbox .vux-flexbox-item:nth-child(2) .weui_btn {
   background: #9b9b9b;
+}
+.history-list .weui_dialog_ft {
+  width: 89%;
+  margin: 8% auto;
+    background: #0bb20c;
+  line-height: 35px;
+  border-radius: 2px;
+}
+
+.history-list .weui_dialog_bd {
+  color: #000000;
+  font-size: 5.2vw;
+  /*17px*/
+  font-family: "微软雅黑";
+  margin-top: 5%;
+}
+
+.history-list .weui_btn_dialog.primary {
+  font-size: 4.9vw;
+  /*16px*/
+  color: #fff;
+}
+
+.history-list  .weui_dialog {
+  width: 92%;
 }
 </style>

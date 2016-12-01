@@ -204,4 +204,23 @@ export default {
   height: 4px;
   width: 4px;
 }
+.current-list  .weui_dialog{
+    width: 92%;
+
+}
+.current-list  .weui_dialog_ft {
+    width: 89%;
+    margin: 8% auto;
+    background: #0bb20c;
+    line-height: 35px;
+    border-radius: 2px;
+}
+.current-list  .weui_btn_dialog.primary{
+  color: #fff
+}
+.current-list  .weui_dialog_bd {
+    color: #000000;
+    font-size: 5.2vw;
+    font-family: "微软雅黑";
+}
 </style>
