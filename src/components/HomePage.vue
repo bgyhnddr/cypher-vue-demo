@@ -46,7 +46,7 @@
   </div>
 </div>
 <!--Home Page Search-->
-<home-page-search  :show-home-page-model.sync="showHomePageModel" :keyword.sync="keyword" :user-level.sync="user.userLevel"></home-page-search>
+<home-page-search :show-home-page-model.sync="showHomePageModel" :keyword.sync="keyword" :user-level.sync="user.userLevel"></home-page-search>
 <div>
   <alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
   <alert :show.sync="showCatchError" button-text="确认" @on-hide="onHide">{{catchErrorMsg}}</alert>
@@ -96,8 +96,11 @@ export default {
         isShow: true,
         callback: function() {
           window.wx.scanQRCode({
-            needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-            scanType: ["qrCode", "barCode"]
+            needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+            scanType: ["qrCode", "barCode"],
+            success: function(res) {
+              window.location.href = res.resultStr // 当needResult 为 1 时，扫码返回的结果
+            }
           })
         }
       }, {
@@ -107,8 +110,11 @@ export default {
         isShow: true,
         callback: function() {
           window.wx.scanQRCode({
-            needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-            scanType: ["qrCode", "barCode"]
+            needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+            scanType: ["qrCode", "barCode"],
+            success: function(res) {
+              window.location.href = res.resultStr // 当needResult 为 1 时，扫码返回的结果
+            }
           })
         }
       }, {

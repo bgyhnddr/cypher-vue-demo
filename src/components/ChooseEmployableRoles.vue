@@ -76,8 +76,7 @@
                 employmentAPI.createEmployment({
                     employer: employer,
                     brandGuid: brandGuid,
-                    roleCode: roleCode,
-                    createTime: new Date().Format('yyyy-MM-dd hh:mm:ss')
+                    roleCode: roleCode
                 }).then(function(result) {
                         //跳转证书页
                     that.$route.router.go('/employManagement/brandAuthorization/' + result)

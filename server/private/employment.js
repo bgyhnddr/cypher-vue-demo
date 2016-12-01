@@ -596,7 +596,7 @@ var exec = {
     var employer = req.body.employer
     var roleCode = req.body.roleCode
     var brandGuid = req.body.brandGuid
-    var createTime = req.body.createTime
+    var createTime = new Date().toISOString().split('.')[0].split('T').join(' ')
 
     var uuid = require('node-uuid')
     var guid = uuid.v1()

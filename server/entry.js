@@ -44,7 +44,7 @@ module.exports = (app) => {
   app.use('/g/:id', function(req, res, next) {
     require('./wechat/oauth')(req, res, next, api, wechatapi).then((result) => {
       if (result) {
-        res.send("已关注，功能开发中，扫描的id为：" + req.params.id)
+        res.redirect('/#!/saleManagement/sale/' + req.params.id)
       } else {
         res.redirect('/static/FocusOn.html')
       }
