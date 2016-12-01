@@ -50,7 +50,7 @@
       <group>
         <div class="saleProduct-unsold-table">
           <cell title="货品 ：" :value.sync="soldProductInfo.name"></cell>
-          <cell title="零售价 ：￥" :value.sync="soldProductInfo.retailPrice"></cell>
+          <cell title="零售价 ：" :value.sync="soldProductInfo.retailPrice"></cell>
           <cell title="状态 ：" :value.sync="soldProductInfo.status"></cell>
           <cell title="销售员 ：" :value.sync="soldProductInfo.soldBy">
             <x-button type="primary" class="saleProduct-unsold-table-button" @click="goToMyCertificate">查看授权证书</x-button>
