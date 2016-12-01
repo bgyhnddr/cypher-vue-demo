@@ -484,7 +484,7 @@ var exec = {
       }
     }).then(function(result) {
       result.status = "已审核"
-      result.audit_time = new Date().toLocaleString()
+      result.audit_time = moment().format('YYYY-MM-DD HH:mm:ss')
       result.audit_result = "已拒绝"
       result.reject_reason = reason
       return result.save()
