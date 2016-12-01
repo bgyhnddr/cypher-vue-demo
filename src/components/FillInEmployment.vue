@@ -298,9 +298,6 @@ export default {
         //将data.provinceAndRegion 转换成中文字符串
       this.data.address = filterAddress(this.data.addressTemp, AddressChinaData)
 
-      var startDate = new Date(this.employmentData.publishEmploymentInfo.create_time)
-      var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
-
       //检查未填写完整的值
       if (this.data.IDType == "") {
         this.errorRemind.IDNumber = true
@@ -335,13 +332,11 @@ export default {
         commitFlag = false
       }
       if (commitFlag) {
-        var deadline = endDate.Format('yyyy-MM-dd hh:mm:ss')
 
         applyEmploymentAPI.submitApplication({
           meta: this.meta,
           data: this.data,
           employmentData: this.employmentData,
-          deadline: deadline,
           publishEmploymentGuid: this.employmentData.publishEmploymentInfo.guid
         }).then(function(result) {
           that.$route.router.go("/employManagement/employmentSubmission")
