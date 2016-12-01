@@ -44,7 +44,7 @@ var exec = {
       }]
     }).then(function(result) {
       if (result == null) {
-        return Promise.reject("上级授权角色资料读取出错")
+        return Promise.reject("销售员资料读取出错")
       } else {
         return result
       }
