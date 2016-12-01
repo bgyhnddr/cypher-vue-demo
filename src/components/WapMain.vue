@@ -160,7 +160,7 @@ export default {
         this.ShowBack = true
         return '修改手机号'
       } else if (this.$route.name === 'SaleProduct') {
-        this.ShowBack = true
+        this.ShowBack = false
         this.$on('displayShowBack', function(flag) {
           this.ShowBack = flag
         })
