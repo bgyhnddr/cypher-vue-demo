@@ -382,6 +382,7 @@ var exec = {
     var agent_detail = require('../../db/models/agent_detail')
     var agent_brand_role = require('../../db/models/agent_brand_role')
 
+    var moment = require('moment')
     var uuid = require('node-uuid')
     var guid = uuid.v1()
 
@@ -401,26 +402,10 @@ var exec = {
         model: employment_detail
       }]
     }).then(function(result) {
-      var date = new Date(result.employer_time)
-      var year = parseInt(date.getFullYear())
-      var month = parseInt(date.getMonth() + 1)
-      var day = parseInt(date.getDate())
-
-      if (termNum) {
-        var val = parseInt(termNum)
-        if (val > 12) {
-          var num = parseInt(val / 12)
-          if (!(val % 12)) {
-            term = (year + (num)) + '-' + (month + val - 12 * (num)) + '-' + day
-          } else {
-            term = (year + (num + 1)) + '-' + (month + val - 12 * (num + 1)) + '-' + day
-          }
-        } else if (month + val > 12) {
-          term = (year + 1) + '-' + (month + val - 12) + '-' + day
-        } else {
-          term = year + '-' + (month + val) + '-' + day
-        }
-      }
+      var date = moment()
+      var term = moment()
+      console.log(termNum)
+      term.month(term.month() + termNum)
 
       for (var item in result.employment_details) {
         createList = agent_detail.create({
@@ -456,11 +441,15 @@ var exec = {
           })
         })
       }
+
+      result.status = "已审核"
+      result.audit_time = moment().format('YYYY-MM-DD HH:mm:ss')
+      result.audit_result = "已通过"
       return Promise.all([
         employment_term.create({
           agent_guid: guid,
-          term_from: year + '-' + month + '-' + day,
-          term_to: term
+          term_from: date.format('YYYY-MM-DD'),
+          term_to: term.format('YYYY-MM-DD')
         }),
         agent.create({
           user_account: result.employee_user_account,
@@ -478,9 +467,6 @@ var exec = {
         team,
         team_agent,
         createList,
-        result.status = "已审核",
-        result.audit_time = new Date().toLocaleString(),
-        result.audit_result = "已通过",
         result.save()
       ])
     }).then(function() {
@@ -530,9 +516,9 @@ var exec = {
 
 
     return employment.findAll().then((result) => {
-        var employeeList = []
-        addEmployment(userinfo.name, employeeList, result)
-        return employeeList
+      var employeeList = []
+      addEmployment(userinfo.name, employeeList, result)
+      return employeeList
     }).then((result) => {
       var condition = {}
       condition.status = '已审核'
@@ -593,10 +579,11 @@ var exec = {
     })
   },
   createEmployment(req, res, next) {
+    var moment = require('moment')
     var employer = req.body.employer
     var roleCode = req.body.roleCode
     var brandGuid = req.body.brandGuid
-    var createTime = new Date().toISOString().split('.')[0].split('T').join(' ')
+    var createTime = moment().format('YYYY-MM-DD HH:mm:ss')
 
     var uuid = require('node-uuid')
     var guid = uuid.v1()
