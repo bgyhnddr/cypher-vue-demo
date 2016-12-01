@@ -202,6 +202,7 @@ var exec = {
     var deadline = req.body.deadline
     var publishEmploymentGuid = req.body.publishEmploymentGuid
 
+    var moment = require('moment')
     var uuid = require('node-uuid')
     var guid = uuid.v1()
 
@@ -272,9 +273,8 @@ var exec = {
       var overtime = false
 
       if (result[3] != null) {
-        var startDate = new Date(result[3].create_time)
-        var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
-        if (endDate <= new Date()) {
+        var startDate = new Date(result[2].create_time)
+        if (new Date() - startDate > 2 * 3600 * 1000) {
           overtime = true
         }
       }
@@ -321,9 +321,8 @@ var exec = {
             brand_role_code: employmentData.publishEmploymentInfo.brand_role_code,
             brand_guid: employmentData.publishEmploymentInfo.brand_guid,
             employee_user_account: guid,
-            employer_time: new Date().toISOString().split('.')[0].split('T').join(' '),
+            employer_time: moment().format('YYYY-MM-DD HH:mm:ss'),
             audit_user_account: audit_user_account,
-            deadline: endDate.toISOString().split('.')[0].split('T').join(' '),
             status: "未审核"
           }, {
             transaction: t
@@ -394,9 +393,7 @@ var exec = {
         return Promise.reject("招募信息读取出错")
       } else {
         var startDate = new Date(result.create_time)
-        var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
-
-        result.status = result.status && endDate <= new Date()
+        result.status = result.status && (new Date() - startDate <= 2 * 3600 * 1000)
         return result
       }
     })
@@ -454,8 +451,7 @@ var exec = {
 
       if (result[2] != null) {
         var startDate = new Date(result[2].create_time)
-        var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
-        if (endDate <= new Date()) {
+        if (new Date() - startDate > 2 * 3600 * 1000) {
           overtime = true
         }
       }
