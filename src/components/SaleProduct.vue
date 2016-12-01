@@ -20,16 +20,14 @@
     <div>© 2016 ShareWin.me 粤ICP备14056388号</div>
     <x-button type="primary" @click="showComfirm=true">出售此货品</x-button>
   </div>
-  <!--出售按钮二次确认-->
   <confirm :show.sync="showComfirm" title="" confirm-text="确认" cancel-text="取消" @on-confirm="saleProduct">
     <p style="text-align:center;">确定出售此商品吗？</p>
   </confirm>
-  <!--出售成功下一步操作-->
   <confirm :show.sync="showSuccessNextStep" title="" confirm-text="继续扫码" cancel-text="返回" @on-confirm="runWxScanQRCode" @on-cancel="goToHomePage">
     <p style="text-align:center;">请进行下一步操作？</p>
   </confirm>
-  <!--非owner查看出售-->
   <confirm :show.sync="showUnableToSale" title="" confirm-text="继续扫码" cancel-text="返回" @on-confirm="runWxScanQRCode" @on-cancel="goToHomePage">
+    <img alt="X" />
     <p style="text-align:center;">您无权查看此货品</p>
   </confirm>
   <!-- 已出售 -->
@@ -42,7 +40,7 @@
       <cell title="零售价 ：￥" :value.sync="soldProductInfo.retailPrice"></cell>
       <cell title="状态 ：" :value.sync="soldProductInfo.status"></cell>
       <cell title="销售员 ：" :value.sync="soldProductInfo.soldBy">
-        <x-button type="primary">查看授权证书</x-button>
+        <x-button type="primary" >查看授权证书</x-button>
       </cell>
       <cell title="出售时间 ：" :value.sync="soldProductInfo.soldDate"></cell>
       <cell title="查验次数 ：" :value.sync="soldProductInfo.scanNum"></cell>
@@ -58,11 +56,11 @@
   </div>
   <alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
   <alert :show.sync="showCatchError" button-text="确认" @on-hide="catchErrorHandled">{{catchErrorMsg}}</alert>
-
   <alert :show.sync="showNoSaleError" button-text="我知道了" @on-hide="goToHomePage">
     <img alt="！" />
     <p>{{noSaleErrorMsg}}</p>
   </alert>
+
 </div>
 </template>
 
@@ -130,7 +128,6 @@ export default {
       saleAPI.showPack({
         packcode: this.$route.params.packcode
       }).then(function(result) {
-        console.log(JSON.stringify(result))
         if (result.sold) { //判断是否出售
           that.soldProductInfo.name = "幸运银内裤"
           that.soldProductInfo.retailPrice = "139.00"
@@ -153,7 +150,7 @@ export default {
           authAPI.getUser().then(function(result) {
             if (result.name != undefined) {
               //判断是否owner
-              if (result.name == owner || owner == "") { //TODO: owner为空或者owner为上级
+              if (result.name == owner || owner == null) {
                 that.showSoldModel = false
                 that.showUnsoldModel = true
               } else {
@@ -259,7 +256,6 @@ export default {
     },
     runWxScanQRCode() {
       this.showUnsoldModel = false
-      console.log("调起微信扫一扫")
 
       window.wx.scanQRCode({
         needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
