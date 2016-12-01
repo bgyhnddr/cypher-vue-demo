@@ -46,7 +46,8 @@ module.exports = function() {
 
         employable_rule.create({ employer_brand_role_code: "brand_role4", employable_brand_role_code: "brand_role5" }),
 
-        brand_detail.create({ brand_guid: "brand1", key: "companyName", value: "贝利龙" }),
+        brand_detail.create({ brand_guid: "brand1", key: "companyName", value: "广州市贝利龙发展有限公司" }),
+        brand_detail.create({ brand_guid: "brand1", key: "servicesPhone", value: "400-9999-633" }),
 
         agent_detail.create({ agent_guid: "agent1", key: "name", value: "孙源" }),
         agent_detail.create({ agent_guid: "agent1", key: "wechat", value: "weSunYuan" }),

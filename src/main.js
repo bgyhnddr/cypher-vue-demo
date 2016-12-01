@@ -72,6 +72,12 @@ router.beforeEach((tran) => {
         tran.next()
         return
     }
+  } else if (FirstPath == "saleManagement") {
+    switch (SecPath) {
+      case "sale":
+        tran.next()
+        return
+    }
   } else if (FirstPath == "test") {
     tran.next()
     return
