@@ -1,7 +1,6 @@
 var express = require('express')
 var session = require('express-session')
 var bodyParser = require('body-parser')
-var OAuth = require('./wechat/oauth')
 
 var getClientAddress = function(req) {
   return (req.headers['x-forwarded-for'] || '').split(',')[0] ||
@@ -34,18 +33,20 @@ module.exports = (app) => {
   var api = new OAuth(appid, apps)
   var WechatAPI = require('wechat-api')
   var wechatapi = new WechatAPI(appid, apps)
+
+
   app.use('/wechat/:action', function(req, res, next) {
     require('./wechat/wechat-api')(req, res, next, api, wechatapi)
   })
 
 
 
-  app.use('/g/:id', function(req, res) {
-    OAuth(req, res, next, api, wechatapi).then((result) => {
+  app.use('/g/:id', function(req, res, next) {
+    require('./wechat/oauth')(req, res, next, api, wechatapi).then((result) => {
       if (result) {
-        //已经关注
+        res.send("已关注，功能开发中，扫描的id为：" + req.params.id)
       } else {
-        //未关�
+        res.redirect('/static/FocusOn.html')
       }
     }).catch((e) => {
       res.status(500).send(e)

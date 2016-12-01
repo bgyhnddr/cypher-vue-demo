@@ -1,6 +1,6 @@
 module.exports = function(req, res, next, api, wechatapi) {
   return new Promise((resolve, reject) => {
-    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl
     if (req.query.code) {
       api.getAccessToken(req.query.code, (err, result) => {
         if (result.errcode) {
