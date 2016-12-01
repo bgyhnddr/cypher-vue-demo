@@ -46,11 +46,13 @@
   </div>
 </div>
 <!--Home Page Search-->
+  <div class="homePage-list">
 <home-page-search :show-home-page-model.sync="showHomePageModel" :keyword.sync="keyword" :user-level.sync="user.userLevel"></home-page-search>
 <div>
+
   <alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
   <alert :show.sync="showCatchError" button-text="确认" @on-hide="onHide">{{catchErrorMsg}}</alert>
-</div>
+</div></div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
@@ -424,5 +426,30 @@ table.platform-message p:nth-child(1) {
 
 .weui_cells {
     margin-top: 0;
+}
+.homePage-list  .weui_dialog_ft {
+  width: 89%;
+  margin: 8% auto;
+    background: #0bb20c;
+  line-height: 35px;
+  border-radius: 2px;
+}
+
+.homePage-list .weui_dialog_bd {
+  color: #000000;
+  font-size: 5.2vw;
+  /*17px*/
+  font-family: "微软雅黑";
+  margin-top: 5%;
+}
+
+.homePage-list .weui_btn_dialog.primary {
+  font-size: 4.9vw;
+  /*16px*/
+  color: #fff;
+}
+
+.homePage-list  .weui_dialog {
+  width: 92%;
 }
 </style>

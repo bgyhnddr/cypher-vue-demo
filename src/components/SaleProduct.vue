@@ -30,6 +30,7 @@
   </div>
 
 </div>
+<div class="saleProduct-sell-sure">
   <confirm :show.sync="showComfirm" title="" confirm-text="确认" cancel-text="取消" @on-confirm="saleProduct">
     <p style="text-align:center;">确定出售此商品吗？</p>
   </confirm>
@@ -40,6 +41,7 @@
     <img alt="X" />
     <p style="text-align:center;">您无权查看此货品</p>
   </confirm>
+</div>
   <!-- 已出售 -->
   <div v-if="showSoldModel">
       <div class="saleProduct-unsold-box">
@@ -479,5 +481,46 @@ border-radius: 0;
     left: 63%;
     border-radius: 2px;
 }
+/*button*/
+.saleProduct-sell-sure .weui_dialog_ft {
+  width: 89%;
+  margin: 8% auto;
+  line-height: 35px;
+  border-radius: 2px;
+    border: 0
+}
+.saleProduct-sell-sure  .weui_dialog_ft:after{ border: 0}
+.saleProduct-sell-sure .weui_dialog_confirm .weui_dialog_ft a{
+  background: none;
+  border: 0;
+  line-height: 31px;
+}
+.saleProduct-sell-sure .weui_dialog_ft a:nth-child(1){
+  background: #9b9b9b;
+color: #fff;
+font-size: 4.5vw;
+}
+.saleProduct-sell-sure .weui_dialog_ft a:nth-child(2){
+  background: #21c36d;
+  margin-left: 3%;
+font-size: 4.5vw;
 
+}
+.saleProduct-sell-sure .weui_dialog_bd {
+  color: #000000;
+  font-size: 5.2vw;
+  /*17px*/
+  font-family: "微软雅黑";
+      margin: 5% 0 12% 0;
+}
+
+.saleProduct-sell-sure .weui_btn_dialog.primary {
+  font-size: 4.9vw;
+  /*16px*/
+  color: #fff;
+}
+
+.saleProduct-sell-sure  .weui_dialog {
+  width: 92%;
+}
 </style>
