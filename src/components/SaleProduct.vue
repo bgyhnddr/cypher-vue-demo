@@ -75,8 +75,8 @@
 
 </div>
 <div class="saleProduct-unsold-sure">
-<alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
-<alert :show.sync="showCatchError" button-text="确认" @on-hide="catchErrorHandled">{{catchErrorMsg}}</alert>
+<div class="saleProduct-unsold-Thereisno"><alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
+<alert :show.sync="showCatchError" button-text="确认" @on-hide="catchErrorHandled">{{catchErrorMsg}}</alert></div>
 <alert :show.sync="showNoSaleError" button-text="我知道了" @on-hide="goToHomePage">
   <img  src="/static/TestIMG/exclamation.png" />
   <p>{{{noSaleErrorMsg}}}</p>
@@ -616,5 +616,22 @@ button.weui_btn.saleProduct-unsold-button.weui_btn_primary {
 }
 .saleProduct-sell-notsure .weui_dialog_ft {
     margin: 4% auto!important;}
+.saleProduct-unsold-Thereisno{
+
+
+}
+.saleProduct-unsold-Thereisno .weui_dialog_bd {
+  color: #000000;
+  font-size: 5.2vw;
+  /*17px*/
+  font-family: "微软雅黑";
+  margin: 5% 0 12% 0;
+  text-align: center!important;
+}
+
+
+.saleProduct-unsold-Thereisno .weui_dialog_ft{
+  margin: 8% auto;
+}
 
 </style>
