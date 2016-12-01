@@ -205,9 +205,9 @@ var exec = {
             brand_role_code: employmentData.publishEmploymentInfo.brand_role_code,
             brand_guid: employmentData.publishEmploymentInfo.brand_guid,
             employee_user_account: guid,
-            employer_time: employmentData.publishEmploymentInfo.create_time,
+            employer_time: new Date().toISOString().split('.')[0].split('T').join(' '),
             audit_user_account: audit_user_account,
-            deadline: deadline,
+            deadline: endDate.toISOString().split('.')[0].split('T').join(' '),
             status: "未审核"
           }, {
             transaction: t
