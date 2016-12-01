@@ -23,4 +23,10 @@ export default {
     checkBeforeSubmit(params) {
         return httpRequest.post(path + 'checkBeforeSubmit', params)
     },
+    getAgentDetail(params) {
+        return httpRequest.post(path + 'getAgentDetail', params)
+    },
+    getBrandDetail(params) {
+        return httpRequest.post(path + 'getBrandDetail', params)
+    },
 }

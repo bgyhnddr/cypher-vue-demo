@@ -280,7 +280,6 @@ export default {
       this.$route.router.go('/homePage')
     },
     goToMyCertificate() {
-      return 
       this.$route.router.go("/accountManagement/CertificateInfo/" + this.soldProductInfo.salerID + "/sale/#/#/" + this.$route.params.packcode)
     },
     runWxScanQRCode() {
