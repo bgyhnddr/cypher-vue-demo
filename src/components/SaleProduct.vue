@@ -35,10 +35,12 @@
   <confirm :show.sync="showSuccessNextStep" title="" confirm-text="继续扫码" cancel-text="返回" @on-confirm="runWxScanQRCode" @on-cancel="goToHomePage">
     <p style="text-align:center;">请进行下一步操作？</p>
   </confirm>
+  <div class="saleProduct-sell-notsure">
   <confirm :show.sync="showUnableToSale" title="" confirm-text="继续扫码" cancel-text="返回" @on-confirm="runWxScanQRCode" @on-cancel="goToHomePage">
-    <img alt="X" />
+    <img  src="/static/TestIMG/notexclamation.png" />
     <p style="text-align:center;">您无权查看此货品</p>
   </confirm>
+</div>
 </div>
 <!-- 已出售 -->
 <div v-if="showSoldModel">
@@ -72,12 +74,13 @@
 </div>
 
 </div>
+<div class="saleProduct-unsold-sure">
 <alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
 <alert :show.sync="showCatchError" button-text="确认" @on-hide="catchErrorHandled">{{catchErrorMsg}}</alert>
 <alert :show.sync="showNoSaleError" button-text="我知道了" @on-hide="goToHomePage">
-  <img alt="！" />
-  <p>{{noSaleErrorMsg}}</p>
-</alert>
+  <img  src="/static/TestIMG/exclamation.png" />
+  <p>{{{noSaleErrorMsg}}}</p>
+</alert></div>
 </template>
 
 <script>
@@ -185,7 +188,7 @@ export default {
               }
             } else {
               that.showNoSaleError = true
-              that.noSaleErrorMsg = "该货品尚未登记，如有疑问，请与厂家联系"
+              that.noSaleErrorMsg = "该货品尚未登记<br/>如有疑问，请与厂家联系"
             }
           })
 
@@ -555,6 +558,7 @@ button.weui_btn.saleProduct-unsold-button.weui_btn_primary {
   /*17px*/
   font-family: "微软雅黑";
   margin: 5% 0 12% 0;
+  text-align: center!important;
 }
 
 .saleProduct-sell-sure .weui_btn_dialog.primary {
@@ -566,4 +570,51 @@ button.weui_btn.saleProduct-unsold-button.weui_btn_primary {
 .saleProduct-sell-sure .weui_dialog {
   width: 92%;
 }
+
+/*提示框*/
+.saleProduct-unsold-sure  .weui_dialog_ft {
+  width: 89%;
+    margin: 4% auto;
+    background: #0bb20c;
+  line-height: 35px;
+  border-radius: 2px;
+}
+
+.saleProduct-unsold-sure  .weui_dialog_bd {
+  color: #000000;
+  font-size: 5.2vw;
+  /*17px*/
+  font-family: "微软雅黑";
+  margin-top: 0;
+}
+
+.saleProduct-unsold-sure .weui_btn_dialog.primary {
+  font-size: 4.9vw;
+  /*16px*/
+  color: #fff;
+      background: #21c36d;
+}
+
+.saleProduct-unsold-sure  .weui_dialog {
+  width: 92%;
+}
+.saleProduct-unsold-sure img{
+    width: 28%;
+}
+.saleProduct-unsold-sure .weui_dialog_hd {
+    padding: 0.2em 0 .5em!important;
+}
+.saleProduct-sell-sure img {
+    width: 28%;
+    margin: auto;
+}
+.saleProduct-sell-notsure   .weui_dialog_hd {
+    padding: 0.2em 0 .5em!important;
+}
+.saleProduct-sell-notsure  .weui_dialog_bd{
+    margin: 0 0 5% 0!important
+}
+.saleProduct-sell-notsure .weui_dialog_ft {
+    margin: 4% auto!important;}
+
 </style>
