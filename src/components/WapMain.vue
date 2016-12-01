@@ -164,6 +164,7 @@ export default {
         this.$on('displayShowBack', function(flag) {
           this.ShowBack = flag
         })
+        document.body.style.background = '#f2f2f2'
         return '货品出售'
       }
 
