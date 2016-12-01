@@ -161,6 +161,9 @@ export default {
         return '修改手机号'
       } else if (this.$route.name === 'SaleProduct') {
         this.ShowBack = true
+        this.$on('displayShowBack', function(flag) {
+          this.ShowBack = flag
+        })
         return '货品出售'
       }
 
@@ -257,9 +260,13 @@ export default {
           } else if (this.$route.params.locate == "auditInfo") {
             this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/audit')
             return
-          } else if (this.$route.params.locate == "history")
+          } else if (this.$route.params.locate == "history"){
             this.$route.router.go('/employManagement/auditInfo/' + this.$route.params.from + '/' + this.$route.params.employmentID + '/' + this.$route.params.brandID + '/history')
-          return
+            return
+          }else if (this.$route.params.locate == "sale"){
+            this.$route.router.go('/saleManagement/sale/' + this.$route.params.from)
+            return
+          }
         } else if (SecPath == "checkPwd") {
           this.$route.router.go('/accountManagement')
           return
