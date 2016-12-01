@@ -393,6 +393,10 @@ var exec = {
       if (result == null) {
         return Promise.reject("招募信息读取出错")
       } else {
+        var startDate = new Date(result.create_time)
+        var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
+
+        result.status = result.status && endDate <= new Date()
         return result
       }
     })

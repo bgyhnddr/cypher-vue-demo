@@ -70,10 +70,7 @@ export default {
 
             if (account == that.publishEmploymentData.employer_user_account) { //判断是否发起人
 
-              var startDate = new Date(result.create_time)
-              var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
-
-              if (result.status == false || endDate <= new Date()) {
+              if (result.status == false) {
                 that.showRemindMsg = true
                 that.remindMsg = "招募已关闭"
               } else {
