@@ -402,6 +402,7 @@ button.weui_btn.saleProduct-sell-button.weui_btn_primary {
   border-radius: 0;
   font-size: 5.2vw;
   line-height: 2.3em;
+  z-index: 100000
 }
 
 .saleProduct-sell-box .weui_btn:after {

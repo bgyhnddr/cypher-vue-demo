@@ -51,8 +51,10 @@
         <button class="weui_btn weui_btn_primary" :class="classes" @click="submit">确认申请</button>
       </div>
     </div>
+    <div class="fillin-list">
     <alert :show.sync="showMsg" button-text="确认" @on-hide="onHide">{{errorMsg}}</alert>
     <alert :show.sync="showSubmitMsg" button-text="确认">{{submitMsg}}</alert>
+  </div>
   </div>
   <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
@@ -617,5 +619,30 @@ export default {
   font-size: 3.9vw;
   color: #d22d23;
   text-align: right
+}
+.fillin-list .weui_dialog_ft {
+  width: 89%;
+  margin: 8% auto;
+    background: #0bb20c;
+  line-height: 35px;
+  border-radius: 2px;
+}
+
+.fillin-list .weui_dialog_bd {
+  color: #000000;
+  font-size: 5.2vw;
+  /*17px*/
+  font-family: "微软雅黑";
+  margin-top: 5%;
+}
+
+.fillin-list .weui_btn_dialog.primary {
+  font-size: 4.9vw;
+  /*16px*/
+  color: #fff;
+}
+
+.fillin-list  .weui_dialog {
+  width: 92%;
 }
 </style>
