@@ -306,7 +306,7 @@ export default {
 /*未出售*/
 
 .saleProduct-sell-height {
-  min-height: 450px;
+  min-height: 460px;
 }
 
 .saleProduct-sell-box {
