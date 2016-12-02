@@ -337,7 +337,7 @@ export default {
           employmentData: this.employmentData,
           publishEmploymentGuid: this.employmentData.publishEmploymentInfo.guid
         }).then(function(result) {
-          that.$route.router.go("/employManagement/employmentSubmission")
+          location.href = "/#!/employManagement/employmentSubmission"
         }).catch(function(err) {
           if (err == "招募已关闭，请关闭本页面") {
             that.showMsg = true
