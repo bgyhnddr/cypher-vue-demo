@@ -104,7 +104,6 @@ export default {
 				}
 			}).then(function(result) {
 				that.clear()
-				console.log(result)
 				if (result.body) {
 					that.fileId = result.body.id
 					that.fileName = result.body.name
@@ -126,24 +125,9 @@ export default {
 			this.percent = 0
 			this.uploadRequest = undefined
 			this.file = ""
-		},
-		getJsConfig() {
-			request.post('/wechat/getJsConfig', {
-				list: ['scanQRCode', 'chooseImage', 'uploadImage'],
-				url: window.location.href
-			}).then((result) => {
-				window.wx.config(result)
-				wx.error(function(res) {
-					window.alert(JSON.stringify(res))
-				})
-			}).catch((err) => {
-				window.alert(err)
-			})
 		}
 	},
 	ready() {
-		window.location.href = location.origin + location.hash
-		this.getJsConfig()
 	}
 }
 </script>

@@ -117,7 +117,6 @@ var exec = {
         return result
       }
     })
-
   },
   getRoleName(req, res, next) {
     var brand_role_code = req.body.brand_role_code
@@ -403,7 +402,6 @@ var exec = {
     }).then(function(result) {
       var date = new Date()
       var term = new Date()
-      console.log(termNum)
       term.setMonth(term.getMonth() + termNum)
 
       for (var item in result.employment_details) {
@@ -651,6 +649,7 @@ var exec = {
     var user_account = req.session.userInfo.name
     var order
 
+    var moment = require('moment')
     var brand_role = require('../../db/models/brand_role')
     var publish_employment = require('../../db/models/publish_employment')
 
@@ -691,27 +690,17 @@ var exec = {
       return result.filter((o) => {
         return o.status && (new Date() - new Date(o.create_time) <= 2 * 3600 * 1000)
       })
+    }).then((result) => {
+      return {
+        currentList: result,
+        nowDateString: new Date().Format('yyyy-MM-dd hh:mm:ss')
+      }
     })
-  },
-  closeOverduePublishEmployment(req, res, next) {
-    var delectItemList = req.body.delectItemList
-
-    var publish_employment = require('../../db/models/publish_employment')
-
-    for (var item in delectItemList) {
-      publish_employment.findOne({
-        where: {
-          guid: delectItemList[item]
-        }
-      }).then(function(result) {
-        result.status = false
-        result.save()
-      })
-    }
   },
   getCurrentInfo(req, res, next) {
     var guid = req.body.guid
 
+    var moment = require('moment')
     var publish_employment = require('../../db/models/publish_employment')
     var employment = require('../../db/models/employment')
     var brand_role = require('../../db/models/brand_role')
@@ -721,7 +710,11 @@ var exec = {
 
     return publish_employment.findOne({
       where: {
-        guid: guid
+        guid: guid,
+        status: true,
+        create_time: {
+          $gt: moment().subtract(2, 'hours').format('YYYY-MM-DD HH:mm:ss')
+        }
       },
       include: [{
         model: employment
@@ -730,9 +723,12 @@ var exec = {
       }]
     }).then(function(result) {
       if (result == null) {
-        return Promise.reject("查找招募详情异常")
+        return Promise.reject("招募已关闭或查找招募信息异常，请稍后再操作")
       } else {
-        return result
+        return {
+          publish_employment: result,
+          nowDateString: moment().format('YYYY-MM-DD HH:mm:ss')
+        }
       }
     })
   },
@@ -814,7 +810,7 @@ var exec = {
   },
   getCurrentListLength(req, res, next) {
     var user_account = req.session.userInfo.name
-    var nowString = req.body.nowString
+    var moment = require('moment')
 
     var publish_employment = require('../../db/models/publish_employment')
 
@@ -823,7 +819,7 @@ var exec = {
         employer_user_account: user_account,
         status: true,
         create_time: {
-          $gt: nowString
+          $gt: moment().subtract(2, 'hours').format('YYYY-MM-DD HH:mm:ss')
         }
       }
     }).then(function(result) {

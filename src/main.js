@@ -18,6 +18,7 @@ import authCallback from './extend/auth-callback'
 import authAPI from './api/auth'
 import checkPermission from './extend/check-permission'
 
+
 Vue.use(require('vue-resource'))
 Vue.http.interceptors.push(timei)
 Vue.http.interceptors.push(authCallback)
@@ -182,4 +183,17 @@ router.beforeEach((tran) => {
   })
 })
 
-router.start(App, 'app');
+router.start(App, 'app')
+
+var request = require('./extend/http-request')
+request.post('/wechat/getJsConfig', {
+  list: ['scanQRCode', 'chooseImage', 'uploadImage'],
+  url: window.location.href.split('#')[0]
+}).then((result) => {
+  window.wx.config(result)
+  window.wx.error(function(res) {
+    console.log(JSON.stringify(res))
+  })
+}).catch((err) => {
+  window.alert(err)
+})
