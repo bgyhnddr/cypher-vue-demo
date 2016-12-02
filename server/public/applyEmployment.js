@@ -1,3 +1,5 @@
+require('../../src/extend/date-format').dateformat()
+
 var exec = {
   getBrandInfo(req, res, next) {
     var user_account = req.body.user_account
@@ -202,7 +204,6 @@ var exec = {
     var deadline = req.body.deadline
     var publishEmploymentGuid = req.body.publishEmploymentGuid
 
-    var moment = require('moment')
     var uuid = require('node-uuid')
     var guid = uuid.v1()
 
@@ -321,7 +322,7 @@ var exec = {
             brand_role_code: employmentData.publishEmploymentInfo.brand_role_code,
             brand_guid: employmentData.publishEmploymentInfo.brand_guid,
             employee_user_account: guid,
-            employer_time: moment().format('YYYY-MM-DD HH:mm:ss'),
+            employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
             audit_user_account: audit_user_account,
             status: "未审核"
           }, {

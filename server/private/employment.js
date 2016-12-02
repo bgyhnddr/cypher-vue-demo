@@ -382,7 +382,6 @@ var exec = {
     var agent_detail = require('../../db/models/agent_detail')
     var agent_brand_role = require('../../db/models/agent_brand_role')
 
-    var moment = require('moment')
     var uuid = require('node-uuid')
     var guid = uuid.v1()
 
@@ -402,10 +401,10 @@ var exec = {
         model: employment_detail
       }]
     }).then(function(result) {
-      var date = moment()
-      var term = moment()
+      var date = new Date()
+      var term = new Date()
       console.log(termNum)
-      term.month(term.month() + termNum)
+      term.setMonth(term.getMonth() + termNum)
 
       for (var item in result.employment_details) {
         createList = agent_detail.create({
@@ -443,13 +442,13 @@ var exec = {
       }
 
       result.status = "已审核"
-      result.audit_time = moment().format('YYYY-MM-DD HH:mm:ss')
+      result.audit_time = new Date().Format('yyyy-MM-dd hh:mm')
       result.audit_result = "已通过"
       return Promise.all([
         employment_term.create({
           agent_guid: guid,
-          term_from: date.format('YYYY-MM-DD'),
-          term_to: term.format('YYYY-MM-DD')
+          term_from: date.Format('YYYY-MM-DD'),
+          term_to: term.Format('YYYY-MM-DD')
         }),
         agent.create({
           user_account: result.employee_user_account,
@@ -484,7 +483,7 @@ var exec = {
       }
     }).then(function(result) {
       result.status = "已审核"
-      result.audit_time = moment().format('YYYY-MM-DD HH:mm:ss')
+      result.audit_time = new Date().Format('yyyy-MM-dd hh:mm')
       result.audit_result = "已拒绝"
       result.reject_reason = reason
       return result.save()
@@ -579,11 +578,10 @@ var exec = {
     })
   },
   createEmployment(req, res, next) {
-    var moment = require('moment')
     var employer = req.body.employer
     var roleCode = req.body.roleCode
     var brandGuid = req.body.brandGuid
-    var createTime = moment().format('YYYY-MM-DD HH:mm:ss')
+    var createTime = new Date().Format('yyyy-MM-dd hh:mm')
 
     var uuid = require('node-uuid')
     var guid = uuid.v1()
@@ -651,73 +649,49 @@ var exec = {
   getCurrentList(req, res, next) {
     var selectMsg = req.body.key
     var user_account = req.session.userInfo.name
-    var select = null
+    var order
 
     var brand_role = require('../../db/models/brand_role')
     var publish_employment = require('../../db/models/publish_employment')
 
     publish_employment.belongsTo(brand_role)
 
-    switch (selectMsg) {
-      case "timeAsc":
-        select = "publish_employment.created_at ASC" //时间由远到近
-        return publish_employment.findAll({
-          where: {
-            employer_user_account: user_account,
-            status: true
-          },
-          include: [{
-            model: brand_role
-          }],
-          order: select
-        })
-      case "timeDesc":
-        select = "publish_employment.created_at DESC" //时间由近到远
-        return publish_employment.findAll({
-          where: {
-            employer_user_account: user_account,
-            status: true
-          },
-          include: [{
-            model: brand_role
-          }],
-          order: select
-        })
-      case "levelDesc":
-        select = "brand_role.level DESC" // 等级由低到高
-        return publish_employment.findAll({
-          where: {
-            employer_user_account: user_account,
-            status: true
-          },
-          include: [{
-            model: brand_role
-          }],
-          order: [
+    return Promise.resolve().then(() => {
+      switch (selectMsg) {
+        case "timeAsc":
+          order = "publish_employment.created_at ASC" //时间由远到近
+        case "timeDesc":
+          order = "publish_employment.created_at DESC" //时间由近到远
+        case "levelDesc":
+          order = [
             [{
               model: brand_role
             }, 'level', 'DESC'],
             ['created_at', 'DESC']
           ]
-        })
-      case "levelAsc":
-        select = "brand_role.level ASC" // 等级由高到低
-        return publish_employment.findAll({
-          where: {
-            employer_user_account: user_account,
-            status: true
-          },
-          include: [{
-            model: brand_role
-          }],
-          order: [
+        case "levelAsc":
+          order = [
             [{
               model: brand_role
             }, 'level', 'ASC'],
             ['created_at', 'DESC']
           ]
-        })
-    }
+      }
+      return publish_employment.findAll({
+        where: {
+          employer_user_account: user_account,
+          status: true
+        },
+        include: [{
+          model: brand_role
+        }],
+        order: order
+      })
+    }).then((result) => {
+      return result.filter((o) => {
+        return o.status && (new Date() - new Date(o.create_time) <= 2 * 3600 * 1000)
+      })
+    })
   },
   closeOverduePublishEmployment(req, res, next) {
     var delectItemList = req.body.delectItemList

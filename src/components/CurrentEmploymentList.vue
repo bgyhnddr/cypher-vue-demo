@@ -85,12 +85,6 @@ export default {
             } else {
               that.data = showItemList
             }
-            // 关闭时间已经超过2小时的招募
-            if (delectItemList.length != 0) {
-              employmentAPI.closeOverduePublishEmployment({
-                delectItemList: delectItemList
-              })
-            }
           }
         }).catch(function(err) {
           that.showMsg = true
