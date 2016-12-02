@@ -194,6 +194,9 @@ export default {
           this.showErrorNoHandled = true
           this.errorMsgNoHandled = "该功能正在开发中"
         }
+      } else if (item.title === "成员招募" && this.user.userLevel === "4") {
+        this.showErrorNoHandled = true
+        this.errorMsgNoHandled = "你所属的等级暂无成员招募功能"
       } else {
         this.$route.router.go(item.link)
       }
