@@ -109,11 +109,7 @@ export default {
           that.errorMsg = err
         })
 
-        var nowDate = new Date()
-        var nowString = new Date(nowDate.getTime() - 2 * 3600 * 1000).Format('yyyy-MM-dd hh:mm:ss')
-        employmentAPI.getCurrentListLength({
-          nowString: nowString
-        }).then(function(result) {
+        employmentAPI.getCurrentListLength().then(function(result) {
           if (result != 0) {
             that.currentListLength = result.length
           } else {

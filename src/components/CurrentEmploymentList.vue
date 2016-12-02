@@ -54,7 +54,8 @@ export default {
         value: "等级由低到高"
       }],
       showMsg: false,
-      errorMsg: null
+      errorMsg: null,
+      nowDateString: null
     }
   },
   methods: {
@@ -64,33 +65,12 @@ export default {
         employmentAPI.getCurrentList({
           key: val
         }).then(function(result) {
-          if (result.length == 0) {
+          if (result.currentList.length == 0) {
             that.showMsg = true
             that.errorMsg = "暂无记录"
           } else {
-            var delectItemList = []
-            var showItemList = []
-            for (var item in result) {
-              // 筛选已经超过2小时的招募
-              if (new Date() >= new Date(new Date(result[item].create_time).getTime() + 2 * 3600 * 1000)) {
-                delectItemList.push(result[item].guid)
-              } else {
-                showItemList.push(result[item])
-              }
-            }
-
-            if (showItemList.length == 0) {
-              that.showMsg = true
-              that.errorMsg = "暂无记录"
-            } else {
-              that.data = showItemList
-            }
-            // 关闭时间已经超过2小时的招募
-            if (delectItemList.length != 0) {
-              employmentAPI.closeOverduePublishEmployment({
-                delectItemList: delectItemList
-              })
-            }
+              that.data = result.currentList
+              that.nowDateString = result.nowDateString
           }
         }).catch(function(err) {
           that.showMsg = true
@@ -108,7 +88,7 @@ export default {
       var startDate = new Date(createTime)
       var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
 
-      var remainingSec = endDate.getTime() - new Date().getTime()
+      var remainingSec = endDate.getTime() - new Date(this.nowDateString).getTime()
 
       var hour = parseInt(remainingSec / 3600 / 1000)
       var min = parseInt((remainingSec - hour * 3600 * 1000) / (1000 * 60))

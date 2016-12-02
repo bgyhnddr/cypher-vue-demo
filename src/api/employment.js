@@ -50,9 +50,6 @@ export default {
   getCurrentList(params) {
     return httpRequest.post(path + 'getCurrentList', params)
   },
-  closeOverduePublishEmployment(params) {
-    return httpRequest.post(path + 'closeOverduePublishEmployment', params)
-  },
   getCurrentInfo(params) {
     return httpRequest.post(path + 'getCurrentInfo', params)
   },
@@ -65,7 +62,7 @@ export default {
   getEmploymentInfo() {
     return httpRequest.post(path + 'getEmploymentInfo')
   },
-  getCurrentListLength(params) {
-    return httpRequest.post(path + 'getCurrentListLength' , params)
+  getCurrentListLength() {
+    return httpRequest.post(path + 'getCurrentListLength')
   },
 }

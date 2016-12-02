@@ -17,20 +17,6 @@ export default {
     }
   },
   methods: {
-    getJsConfig() {
-      request.post('/wechat/getJsConfig', {
-        list: ['scanQRCode', 'chooseImage', 'uploadImage'],
-        url: window.location.href
-      }).then((result) => {
-        window.wx.config(result)
-      })
-    },
-    scan() {
-      window.wx.scanQRCode({
-        needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-        scanType: ["qrCode", "barCode"]
-      })
-    },
     choose() {
       var that = this
       wx.chooseImage({
@@ -51,7 +37,6 @@ export default {
     }
   },
   ready() {
-    this.getJsConfig()
     this.$els.qr.appendChild(qrcanvas({
       data: 'http://localhost:8080/#!/employManagement/brandAuthorization/2c2cd470-b21d-11e6-920e-6b9af5cfe498/%E8%B4%9D%E5%88%A9%E9%BE%99'
     }))

@@ -185,10 +185,8 @@ export default {
             that.employmentData.guid = guid
             that.employmentData.showGuid = guid.split("-")[4]
 
-            var startDate = new Date(result.create_time)
-            var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
               //招募已关闭
-            if (result.status == false || endDate <= new Date()) {
+            if (result.status == false) {
               that.showMsg = true
               that.errorMsg = "招募已关闭，请关闭本页面"
             } else {

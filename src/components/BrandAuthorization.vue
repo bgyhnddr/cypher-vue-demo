@@ -70,10 +70,7 @@ export default {
 
             if (account == that.publishEmploymentData.employer_user_account) { //判断是否发起人
 
-              var startDate = new Date(result.create_time)
-              var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
-
-              if (result.status == false || endDate <= new Date()) {
+              if (result.status == false) {
                 that.showRemindMsg = true
                 that.remindMsg = "招募已关闭"
               } else {
@@ -118,18 +115,6 @@ export default {
       })
       wx.onMenuShareTimeline({
         link: window.location.href, // 分享链接
-      })
-    },
-    getJsConfig() {
-      var that = this
-      request.post('/wechat/getJsConfig', {
-        list: ['scanQRCode', 'chooseImage', 'uploadImage'],
-        url: window.location.href
-      }).then((result) => {
-        window.wx.config(result)
-        window.wx.ready(() => {
-          that.listenShare()
-        })
       })
     }
   },

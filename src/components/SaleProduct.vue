@@ -143,8 +143,6 @@ export default {
     init() {
       var that = this
 
-      this.getJsConfig()
-
       saleAPI.showPack({
         packcode: this.$route.params.packcode
       }).then(function(result) {
@@ -297,19 +295,6 @@ export default {
     },
     catchErrorHandled() {
       this.$route.router.go('/homePage')
-    },
-    getJsConfig() {
-      request.post('/wechat/getJsConfig', {
-        list: ['scanQRCode'],
-        url: window.location.href
-      }).then((result) => {
-        window.wx.config(result)
-        wx.error(function(res) {
-          window.alert(JSON.stringify(res))
-        })
-      }).catch((err) => {
-        window.alert(err)
-      })
     }
   },
   ready() {
