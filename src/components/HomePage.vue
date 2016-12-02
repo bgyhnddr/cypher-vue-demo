@@ -163,7 +163,6 @@ export default {
       var that = this
       that.getBrandName()
       that.getShowItem()
-      this.getJsConfig()
     },
     search() {
       this.$broadcast('search')
@@ -198,14 +197,6 @@ export default {
       } else {
         this.$route.router.go(item.link)
       }
-    },
-    getJsConfig() {
-      request.post('/wechat/getJsConfig', {
-        list: ['scanQRCode'],
-        url: window.location.href
-      }).then((result) => {
-        window.wx.config(result)
-      })
     },
     onHide() {
       authAPI.logout()

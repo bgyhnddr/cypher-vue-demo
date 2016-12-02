@@ -116,18 +116,6 @@ export default {
       wx.onMenuShareTimeline({
         link: window.location.href, // 分享链接
       })
-    },
-    getJsConfig() {
-      var that = this
-      request.post('/wechat/getJsConfig', {
-        list: ['scanQRCode', 'chooseImage', 'uploadImage'],
-        url: window.location.href
-      }).then((result) => {
-        window.wx.config(result)
-        window.wx.ready(() => {
-          that.listenShare()
-        })
-      })
     }
   },
   ready() {
