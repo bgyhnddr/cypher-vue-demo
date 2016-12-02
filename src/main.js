@@ -192,7 +192,7 @@ request.post('/wechat/getJsConfig', {
 }).then((result) => {
   window.wx.config(result)
   window.wx.error(function(res) {
-    console.log(JSON.stringify(res))
+    console.alert(JSON.stringify(res))
   })
 }).catch((err) => {
   window.alert(err)
