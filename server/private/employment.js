@@ -1,3 +1,4 @@
+require('../../src/extend/date-format').dateformat()
 var getTeamNum = () => {
   var team_num = require('../../db/models/team_num')
 
