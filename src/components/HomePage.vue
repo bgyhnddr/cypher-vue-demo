@@ -35,7 +35,7 @@
   <div v-if="showFuncList" class="homepage-icon">
     <flexbox :gutter="0" wrap="wrap">
       <flexbox-item :span="1/3" v-for="item in btn_list">
-        <div class="flex-demo" v-if="item.isShow">
+        <div class="flex-demo">
           <button @click="goto(item)">
             <img :src.sync="item.iconhref" alt="icon">
             <h4 class="weui_media_title">{{item.title}}</h4>
@@ -181,13 +181,6 @@ export default {
       var that = this
       employmentAPI.getBrandInfo().then(function(result) {
         that.user.userLevel = result.brand_role.level
-        if (result.brand_role.level == "4") {
-          for (var item in that.btn_list) {
-            if (that.btn_list[item]['title'] == "成员招募") {
-              that.btn_list.splice(item, 1)
-            }
-          }
-        }
         that.showFuncList = true
       }).catch(function(err) {
         that.showCatchError = true

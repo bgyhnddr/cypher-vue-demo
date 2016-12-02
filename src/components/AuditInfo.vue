@@ -324,11 +324,11 @@ border-bottom:0}
 }
 
 .auditinfo-message .auditinfo-view {
-    top:40%;
+    top:10%;
 }
 
 .auditinfo-message .auditinfo-views {
-      top: 10%;
+    top: 10%;
 }
 
 .auditinfo-message .weui_cell_hd {
