@@ -49,12 +49,15 @@ var exec = {
             key: "wechat",
             value: wechat
           }
-        }]
+        }],
+        where: {
+          status: "未审核"
+        }
       })
     ]).then((result) => {
       if (result[0].length > 0) {
         return Promise.reject("该微信号已存在")
-      } else if (result[1] != null && result[1].status == "未审核") {
+      } else if (result[1] != null) {
         return Promise.reject("该微信号已存在")
       } else {
         return result
