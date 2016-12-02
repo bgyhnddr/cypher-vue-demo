@@ -96,8 +96,8 @@ export default {
       var that = this
       employAPI.getAuditHistory({
         level: that.level,
-        date_from: new Date(that.date1),
-        date_to: new Date(that.date2)
+        date_from: that.date1,
+        date_to: that.date2
       }).then(function(result) {
         if (!result[0]) {
           that.showAlert = true
