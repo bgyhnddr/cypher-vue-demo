@@ -650,7 +650,6 @@ var exec = {
     var user_account = req.session.userInfo.name
     var order
 
-    var moment = require('moment')
     var brand_role = require('../../db/models/brand_role')
     var publish_employment = require('../../db/models/publish_employment')
 
@@ -705,20 +704,20 @@ var exec = {
   getCurrentInfo(req, res, next) {
     var guid = req.body.guid
 
-    var moment = require('moment')
     var publish_employment = require('../../db/models/publish_employment')
     var employment = require('../../db/models/employment')
     var brand_role = require('../../db/models/brand_role')
 
     publish_employment.hasMany(employment)
     publish_employment.belongsTo(brand_role)
-
+    var date = new Date()
+    date.setHours(date.getHours() - 2)
     return publish_employment.findOne({
       where: {
         guid: guid,
         status: true,
         create_time: {
-          $gt: moment().subtract(2, 'hours').format('YYYY-MM-DD HH:mm:ss')
+          $gt: date.Format('yyyy-MM-dd hh:mm:ss')
         }
       },
       include: [{
@@ -730,9 +729,11 @@ var exec = {
       if (result == null) {
         return Promise.reject("招募已关闭或查找招募信息异常，请稍后再操作")
       } else {
+        var obj = result.toJSON()
+        obj.end_time_tick = new Date(obj.create_time).getTime() + 1000 * 60 * 60 * 2
         return {
-          publish_employment: result,
-          nowDateString: moment().format('YYYY-MM-DD HH:mm:ss')
+          publish_employment: obj,
+          nowDateTicket: new Date().getTime()
         }
       }
     })
@@ -815,16 +816,16 @@ var exec = {
   },
   getCurrentListLength(req, res, next) {
     var user_account = req.session.userInfo.name
-    var moment = require('moment')
 
     var publish_employment = require('../../db/models/publish_employment')
-
+    var date = new Date()
+    date.setHours(date.getHours() - 2)
     return publish_employment.findAll({
       where: {
         employer_user_account: user_account,
         status: true,
         create_time: {
-          $gt: moment().subtract(2, 'hours').format('YYYY-MM-DD HH:mm:ss')
+          $gt: date.Format('yyyy-MM-dd hh:mm:ss')
         }
       }
     }).then(function(result) {

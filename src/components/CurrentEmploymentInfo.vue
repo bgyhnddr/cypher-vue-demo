@@ -7,8 +7,8 @@
 
     <span>当前申请人数：{{applicantNum}}人</span>
 
-    <span>剩余时间：{{data.remainingTime}}</span>
-    <x-button  type="warn" @click="showCheck=true">关闭当前招募</x-button>
+    <span>剩余时间：{{data.left_time}}</span>
+    <x-button type="warn" @click="showCheck=true">关闭当前招募</x-button>
     <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
   </div>
   <alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
@@ -38,7 +38,8 @@ export default {
       data: {
         employments: [],
         brand_role: {},
-        remainingTime: null
+        remainingTime: null,
+        left_time: ""
       },
       applicantNum: null,
       showErrorNoHandled: false,
@@ -46,7 +47,9 @@ export default {
       showCatchError: false,
       catchErrorMsg: null,
       showCheck: false,
-      showCurrentInfoModel: false
+      showCurrentInfoModel: false,
+      mark: undefined,
+      nowDateTicket: undefined
     }
   },
   methods: {
@@ -58,9 +61,12 @@ export default {
       employmentAPI.getCurrentInfo({
         guid: guid
       }).then(function(result) {
-        that.data = result.publish_employment
         that.count(result.publish_employment)
         that.showCurrentInfoModel = true
+        that.nowDateTicket = result.nowDateTicket
+        that.mark = new Date().getTime()
+        result.publish_employment.left_time = that.convertTicket(result.publish_employment.end_time_tick - that.nowDateTicket)
+        that.data = result.publish_employment
       }).catch(function(err) {
         that.showCatchError = true
         that.catchErrorMsg = err
@@ -82,10 +88,28 @@ export default {
     },
     onHideError() {
       this.$route.router.go('/employManagement/currentList')
+    },
+    convertTicket(tick) {
+      var left = tick
+      if (left >= 0) {
+        var hour = Math.floor(left / (1000 * 60 * 60))
+        left = left - hour * 1000 * 60 * 60
+        var minute = Math.floor(left / (1000 * 60))
+        left = left - minute * 1000 * 60
+        var seconds = Math.floor(left / 1000)
+        return hour + "时" + minute + "分" + seconds + "秒"
+      } else {
+        return "过期"
+      }
     }
   },
   ready() {
     this.init()
+    let that = this
+    setInterval(function() {
+      let now = new Date().getTime()
+      that.data.left_time = that.convertTicket((that.data.end_time_tick - (that.nowDateTicket + now - that.mark)))
+    }, 1000)
   }
 }
 </script>
