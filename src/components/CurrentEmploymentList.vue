@@ -56,7 +56,8 @@ export default {
       showMsg: false,
       errorMsg: null,
       endDateTicket: 0,
-      interval: undefined
+      interval: undefined,
+      mark:undefined
     }
   },
   methods: {
@@ -71,6 +72,7 @@ export default {
           that.errorMsg = "暂无记录"
         } else {
           that.nowDateTicket = result.nowDateTicket
+          that.mark = new Date().getTime()
           that.data = result.currentList.map(o => {
             o.left_time = that.convertTicket(o.end_time_tick - that.nowDateTicket)
             return o
@@ -102,13 +104,12 @@ export default {
     }
   },
   ready() {
-    var mark = new Date().getTime()
     let that = this
     setInterval(function() {
       let now = new Date().getTime()
       for (var i = 0; i < that.data.length; i++) {
         var temp = that.data[i]
-        temp.left_time = that.convertTicket((temp.end_time_tick - (that.nowDateTicket + now - mark)))
+        temp.left_time = that.convertTicket((temp.end_time_tick - (that.nowDateTicket + now - that.mark)))
         that.data.$set(i, temp)
       }
     }, 1000)

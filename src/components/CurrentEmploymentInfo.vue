@@ -59,32 +59,12 @@ export default {
         guid: guid
       }).then(function(result) {
         that.data = result.publish_employment
-        that.calculateRemainingTime(result.publish_employment,result.nowDateString)
         that.count(result.publish_employment)
         that.showCurrentInfoModel = true
       }).catch(function(err) {
         that.showCatchError = true
         that.catchErrorMsg = err
       })
-    },
-    calculateRemainingTime(item,nowDateString) {
-      var createTime = item.create_time
-      var startDate = new Date(createTime)
-      var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
-
-      var remainingSec = endDate.getTime() - new Date(nowDateString).getTime()
-
-      var hour = parseInt(remainingSec / 3600 / 1000)
-      var min = parseInt((remainingSec - hour * 3600 * 1000) / (1000 * 60))
-      var sec = parseInt((remainingSec - hour * 3600 * 1000 - min * 1000 * 60) / 1000)
-
-      if (hour == 0) {
-        this.data.remainingTime = min + " 分钟 " + sec + " 秒"
-      } else if (hour == 0 && min == 0) {
-        this.data.remainingTime = sec + " 秒"
-      } else {
-        this.data.remainingTime = hour + " 小时 " + min + " 分钟 " + sec + " 秒"
-      }
     },
     count(item) {
       this.applicantNum = (item.employments != null) ? item.employments.length : 0
