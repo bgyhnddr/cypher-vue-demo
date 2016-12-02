@@ -121,7 +121,10 @@ export default {
       var that = this
       request.post('/wechat/getJsConfig', {
         list: ['scanQRCode', 'chooseImage', 'uploadImage'],
-        url: /micromessenger/i.test(window.navigator.userAgent) && /(Android);?[\s\/]+([\d.]+)?/.test(window.navigator.userAgent) ? window.location.href : window.location.origin + window.location.hash
+        url: /micromessenger/i.test(window.navigator.userAgent) &&
+              /(iPad).*OS\s([\d_]+)/.test(window.navigator.userAgent) && 
+              /(iPhone\sOS)\s([\d_]+)/.test(window.navigator.userAgent) ? 
+              window.location.origin + window.location.hash : window.location.href
       }).then((result) => {
         window.wx.config(result)
         window.wx.ready(() => {
