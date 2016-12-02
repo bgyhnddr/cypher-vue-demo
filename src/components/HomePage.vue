@@ -202,7 +202,7 @@ export default {
     getJsConfig() {
       request.post('/wechat/getJsConfig', {
         list: ['scanQRCode'],
-        url: window.location.href
+        url: location.origin + location.hash
       }).then((result) => {
         window.wx.config(result)
       })

@@ -20,7 +20,7 @@ export default {
     getJsConfig() {
       request.post('/wechat/getJsConfig', {
         list: ['scanQRCode', 'chooseImage', 'uploadImage'],
-        url: window.location.href
+        url: location.origin + location.hash
       }).then((result) => {
         window.wx.config(result)
       })
