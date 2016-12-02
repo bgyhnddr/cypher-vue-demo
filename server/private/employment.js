@@ -17,7 +17,7 @@ var getTeamNum = () => {
     }
   }).then((o) => {
     return Promise.all([
-      team_num.update({http://bgy.cyphertech.cn/
+      team_num.update({
         num: o.num + 1
       }, {
         where: {
