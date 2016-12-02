@@ -8,10 +8,9 @@
     <span>当前申请人数：{{applicantNum}}人</span>
 
     <span>剩余时间：{{data.remainingTime}}</span>
-
+    <x-button  type="warn" @click="showCheck=true">关闭当前招募</x-button>
     <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
   </div>
-  <x-button  v-if="showCurrentInfoModel" type="warn" @click="showCheck=true">关闭当前招募</x-button>
   <alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
   <alert :show.sync="showCatchError" button-text="确认" @on-hide="onHideError">{{catchErrorMsg}}</alert>
   <confirm :show.sync="showCheck" title="" confirm-text="确认" cancel-text="取消" @on-confirm="closeEmployment">
