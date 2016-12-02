@@ -196,7 +196,7 @@ export default {
         }
       } else if (item.title === "成员招募" && this.user.userLevel === "4") {
         this.showErrorNoHandled = true
-        this.errorMsgNoHandled = "你所属的等级暂无成员招募功能"
+        this.errorMsgNoHandled = "您当前等级无法使用此功能"
       } else {
         this.$route.router.go(item.link)
       }
