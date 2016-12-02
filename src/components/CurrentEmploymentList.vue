@@ -13,14 +13,14 @@
 
           <span>发起时间：{{item.create_time}}</span>
 
-          <span>剩余时间：{{calculateRemainingTime(item)}}</span>
+          <span>剩余时间：{{item.left_time}}</span>
         </div>
       </a>
     </group>
     <alert :show.sync="showMsg" button-text="确认">{{errorMsg}}</alert>
   </div>
 </div>
-  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -55,27 +55,31 @@ export default {
       }],
       showMsg: false,
       errorMsg: null,
-      nowDateString: null
+      endDateTicket: 0,
+      interval: undefined
     }
   },
   methods: {
     getData(val) {
       var that = this
-          //改变列表内容
-        employmentAPI.getCurrentList({
-          key: val
-        }).then(function(result) {
-          if (result.currentList.length == 0) {
-            that.showMsg = true
-            that.errorMsg = "暂无记录"
-          } else {
-              that.data = result.currentList
-              that.nowDateString = result.nowDateString
-          }
-        }).catch(function(err) {
+        //改变列表内容
+      employmentAPI.getCurrentList({
+        key: val
+      }).then(function(result) {
+        if (result.currentList.length == 0) {
           that.showMsg = true
-          that.errorMsg = "搜索记录出错"
-        })
+          that.errorMsg = "暂无记录"
+        } else {
+          that.nowDateTicket = result.nowDateTicket
+          that.data = result.currentList.map(o => {
+            o.left_time = that.convertTicket(o.end_time_tick - that.nowDateTicket)
+            return o
+          })
+        }
+      }).catch(function(err) {
+        that.showMsg = true
+        that.errorMsg = "搜索记录出错"
+      })
     },
     onChange(val) {
       if (val == '') {
@@ -83,32 +87,39 @@ export default {
       }
       this.getData(val)
     },
-    calculateRemainingTime(item) {
-      var createTime = item.create_time
-      var startDate = new Date(createTime)
-      var endDate = new Date(startDate.getTime() + 2 * 3600 * 1000)
-
-      var remainingSec = endDate.getTime() - new Date(this.nowDateString).getTime()
-
-      var hour = parseInt(remainingSec / 3600 / 1000)
-      var min = parseInt((remainingSec - hour * 3600 * 1000) / (1000 * 60))
-      var sec = parseInt((remainingSec - hour * 3600 * 1000 - min * 1000 * 60) / 1000)
-
-      if (hour == 0) {
-        return min + " 分钟 " + sec + " 秒"
-      } else if (hour == 0 && min == 0) {
-        return sec + " 秒"
+    convertTicket(tick) {
+      var left = tick
+      if (left >= 0) {
+        var hour = Math.floor(left / (1000 * 60 * 60))
+        left = left - hour * 1000 * 60 * 60
+        var minute = Math.floor(left / (1000 * 60))
+        left = left - minute * 1000 * 60
+        var seconds = Math.floor(left / 1000)
+        return hour + "时" + minute + "分" + seconds + "秒"
       } else {
-        return hour + " 小时 " + min + " 分钟 " + sec + " 秒"
+        return "过期"
       }
     }
+  },
+  ready() {
+    var mark = new Date().getTime()
+    let that = this
+    setInterval(function() {
+      let now = new Date().getTime()
+      for (var i = 0; i < that.data.length; i++) {
+        var temp = that.data[i]
+        temp.left_time = that.convertTicket((temp.end_time_tick - (that.nowDateTicket + now - mark)))
+        that.data.$set(i, temp)
+      }
+    }, 1000)
   }
 }
 </script>
 <style>
 .current-list {
-    min-height: 485px;
+  min-height: 485px;
 }
+
 .current-list a.current-list-list {
   background: #fff;
   margin: 3% 0;
@@ -184,23 +195,26 @@ export default {
   height: 4px;
   width: 4px;
 }
-.current-list  .weui_dialog{
-    width: 92%;
 
+.current-list .weui_dialog {
+  width: 92%;
 }
-.current-list  .weui_dialog_ft {
-    width: 89%;
-    margin: 8% auto;
-    background: #0bb20c;
-    line-height: 35px;
-    border-radius: 2px;
+
+.current-list .weui_dialog_ft {
+  width: 89%;
+  margin: 8% auto;
+  background: #0bb20c;
+  line-height: 35px;
+  border-radius: 2px;
 }
-.current-list  .weui_btn_dialog.primary{
+
+.current-list .weui_btn_dialog.primary {
   color: #fff
 }
-.current-list  .weui_dialog_bd {
-    color: #000000;
-    font-size: 5.2vw;
-    font-family: "微软雅黑";
+
+.current-list .weui_dialog_bd {
+  color: #000000;
+  font-size: 5.2vw;
+  font-family: "微软雅黑";
 }
 </style>

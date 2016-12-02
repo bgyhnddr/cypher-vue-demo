@@ -693,8 +693,12 @@ var exec = {
       })
     }).then((result) => {
       return {
-        currentList: result,
-        nowDateString: new Date().Format('yyyy-MM-dd hh:mm:ss')
+        currentList: result.map((o) => {
+          var obj = o.toJSON()
+          obj.end_time_tick = new Date(o.create_time).getTime() + 1000 * 60 * 60 * 2
+          return obj
+        }),
+        nowDateTicket: new Date().getTime()
       }
     })
   },
