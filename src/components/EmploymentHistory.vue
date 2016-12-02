@@ -10,7 +10,7 @@
       <cell v-for="item in items">
         <div slot="icon">申请人：{{item.employment_details[1].value}}</div>
         <div slot="icon">申请级别：{{item.brand_role.name}}</div>
-        <div slot="icon">申请时间：{{new Date(item.employer_time).Format('yyyy-MM-dd hh:mm:ss')}}</div>
+        <div slot="icon">申请时间：{{item.employer_time}}</div>
         <x-button mini v-link="{path: '/employManagement/auditInfo/'+item.employee_user_account+'/'+item.guid+'/'+item.brand_guid+'/history'}">查看</x-button>
       </cell>
     </group>
