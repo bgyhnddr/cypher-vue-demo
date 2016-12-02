@@ -377,7 +377,7 @@ p.saleProduct-sell-logo {
   font-size: 3vw;
   font-family: "微软雅黑";
   line-height: 1.5em;
-  margin-bottom: 10%;
+  margin-bottom: 20%;
 }
 
 button.weui_btn.saleProduct-sell-button.weui_btn_primary {
