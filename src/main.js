@@ -25,6 +25,9 @@ Vue.http.interceptors.push(authCallback)
 dateformat()
 disableHistoryBack()
 
+var attachFastClick = require('fastclick')
+attachFastClick.attach(document.body)
+
 window.state = {
   userInfo: {
     name: "",
