@@ -36,11 +36,11 @@
     <p style="text-align:center;">请进行下一步操作？</p>
   </confirm>
   <div class="saleProduct-sell-notsure">
-  <confirm :show.sync="showUnableToSale" title="" confirm-text="继续扫码" cancel-text="返回" @on-confirm="runWxScanQRCode" @on-cancel="goToHomePage">
-    <img  src="/static/TestIMG/notexclamation.png" />
-    <p style="text-align:center;">您无权查看此货品</p>
-  </confirm>
-</div>
+    <confirm :show.sync="showUnableToSale" title="" confirm-text="继续扫码" cancel-text="返回" @on-confirm="runWxScanQRCode" @on-cancel="goToHomePage">
+      <img src="/static/TestIMG/notexclamation.png" />
+      <p style="text-align:center;">您无权查看此货品</p>
+    </confirm>
+  </div>
 </div>
 <!-- 已出售 -->
 <div v-if="showSoldModel">
@@ -75,12 +75,15 @@
 
 </div>
 <div class="saleProduct-unsold-sure">
-<div class="saleProduct-unsold-Thereisno"><alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
-<alert :show.sync="showCatchError" button-text="确认" @on-hide="catchErrorHandled">{{catchErrorMsg}}</alert></div>
-<alert :show.sync="showNoSaleError" button-text="我知道了" @on-hide="goToHomePage">
-  <img  src="/static/TestIMG/exclamation.png" />
-  <p>{{{noSaleErrorMsg}}}</p>
-</alert></div>
+  <div class="saleProduct-unsold-Thereisno">
+    <alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
+    <alert :show.sync="showCatchError" button-text="确认" @on-hide="catchErrorHandled">{{catchErrorMsg}}</alert>
+  </div>
+  <alert :show.sync="showNoSaleError" button-text="我知道了" @on-hide="goToHomePage">
+    <img src="/static/TestIMG/exclamation.png" />
+    <p>{{{noSaleErrorMsg}}}</p>
+  </alert>
+</div>
 </template>
 
 <script>
@@ -193,7 +196,7 @@ export default {
         }
       }).catch(function(err) {
         if (typeof(err) != "object") {
-          if (err.match("no tag") != null) {
+          if (err.match("no tag") != null || err.match("not pack tag") != null) {
             that.showCatchError = true
             that.catchErrorMsg = "你所查询的货品不存在"
           } else {
@@ -265,12 +268,12 @@ export default {
         }
       }).catch(function(err) {
         if (typeof(err) != "object") {
-          if (err.match("no tag") != null) {
-            that.showErrorNoHandled = true
-            that.errorMsgNoHandled = "你所出售的货品不存在，无法出售"
-          } else if (err.match("no tag") != null) {
-            that.showErrorNoHandled = true
-            that.errorMsgNoHandled = "货品出售功能异常，请稍后再试"
+          if (err.match("no tag") != null || err.match("not pack tag") != null) {
+            that.showCatchError = true
+            that.showCatchError = "你所出售的货品不存在，无法出售"
+          } else if (err.match("already sold") != null) {
+            that.showCatchError = true
+            that.showCatchError = "该货品已出售"
           }
         } else {
           that.showErrorNoHandled = true
@@ -506,6 +509,7 @@ button.weui_btn.saleProduct-unsold-button.weui_btn_primary {
   border-radius: 2px;
 }
 
+
 /*button*/
 
 .saleProduct-sell-sure .weui_dialog_ft {
@@ -557,16 +561,18 @@ button.weui_btn.saleProduct-unsold-button.weui_btn_primary {
   width: 92%;
 }
 
+
 /*提示框*/
-.saleProduct-unsold-sure  .weui_dialog_ft {
+
+.saleProduct-unsold-sure .weui_dialog_ft {
   width: 89%;
-    margin: 4% auto;
-    background: #0bb20c;
+  margin: 4% auto;
+  background: #0bb20c;
   line-height: 35px;
   border-radius: 2px;
 }
 
-.saleProduct-unsold-sure  .weui_dialog_bd {
+.saleProduct-unsold-sure .weui_dialog_bd {
   color: #000000;
   font-size: 5.2vw;
   /*17px*/
@@ -578,34 +584,40 @@ button.weui_btn.saleProduct-unsold-button.weui_btn_primary {
   font-size: 4.9vw;
   /*16px*/
   color: #fff;
-      background: #21c36d;
+  background: #21c36d;
 }
 
-.saleProduct-unsold-sure  .weui_dialog {
+.saleProduct-unsold-sure .weui_dialog {
   width: 92%;
 }
-.saleProduct-unsold-sure img{
-    width: 28%;
+
+.saleProduct-unsold-sure img {
+  width: 28%;
 }
+
 .saleProduct-unsold-sure .weui_dialog_hd {
-    padding: 0.2em 0 .5em!important;
+  padding: 0.2em 0 .5em!important;
 }
+
 .saleProduct-sell-sure img {
-    width: 28%;
-    margin: auto;
+  width: 28%;
+  margin: auto;
 }
-.saleProduct-sell-notsure   .weui_dialog_hd {
-    padding: 0.2em 0 .5em!important;
+
+.saleProduct-sell-notsure .weui_dialog_hd {
+  padding: 0.2em 0 .5em!important;
 }
-.saleProduct-sell-notsure  .weui_dialog_bd{
-    margin: 0 0 5% 0!important
+
+.saleProduct-sell-notsure .weui_dialog_bd {
+  margin: 0 0 5% 0!important
 }
+
 .saleProduct-sell-notsure .weui_dialog_ft {
-    margin: 4% auto!important;}
-.saleProduct-unsold-Thereisno{
-
-
+  margin: 4% auto!important;
 }
+
+.saleProduct-unsold-Thereisno {}
+
 .saleProduct-unsold-Thereisno .weui_dialog_bd {
   color: #000000;
   font-size: 5.2vw;
@@ -615,9 +627,7 @@ button.weui_btn.saleProduct-unsold-button.weui_btn_primary {
   text-align: center!important;
 }
 
-
-.saleProduct-unsold-Thereisno .weui_dialog_ft{
+.saleProduct-unsold-Thereisno .weui_dialog_ft {
   margin: 8% auto;
 }
-
 </style>
