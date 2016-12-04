@@ -659,8 +659,10 @@ var exec = {
       switch (selectMsg) {
         case "timeAsc":
           order = "publish_employment.created_at ASC" //时间由远到近
+          break
         case "timeDesc":
           order = "publish_employment.created_at DESC" //时间由近到远
+          break
         case "levelDesc":
           order = [
             [{
@@ -668,6 +670,7 @@ var exec = {
             }, 'level', 'DESC'],
             ['created_at', 'DESC']
           ]
+          break
         case "levelAsc":
           order = [
             [{
@@ -675,6 +678,7 @@ var exec = {
             }, 'level', 'ASC'],
             ['created_at', 'DESC']
           ]
+          break
       }
       return publish_employment.findAll({
         where: {
