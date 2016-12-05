@@ -228,11 +228,11 @@ export default {
         user_account: solderAccount
       }).then(function(result) {
         var solderName = null
-        for (var index in result.agent_details) {
-          if (result.agent_details[index].key == "name") {
-            that.soldProductInfo.soldBy = result.agent_details[index].value
+        result.agent_details.map((o) => {
+          if (o.key == "name") {
+            that.soldProductInfo.soldBy = o.value
           }
-        }
+        })
       }).catch(function(err) {
         that.showErrorNoHandled = true
         that.errorMsgNoHandled = err
@@ -243,12 +243,11 @@ export default {
       var that = this
       brandInfoAPI.getBrandInfo().then(function(result) {
         that.brandInfo.brandName = result.name
-
-        for (var index in result.brand_details) {
-          if (result.brand_details[index].key == "servicesPhone") {
-            that.brandInfo.servicesPhone = result.brand_details[index].value
+        result.brand_details.map((o) => {
+          if (o.key == "servicesPhone") {
+            that.brandInfo.servicesPhone = o.value
           }
-        }
+        })
       }).catch(function(err) {
         that.showErrorNoHandled = true
         that.errorMsgNoHandled = err

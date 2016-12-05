@@ -129,9 +129,9 @@ export default {
       var countShowItem = 0
 
       //恢复全部为显示
-      for (var item in this.funcList) {
-        this.funcList[item].isShow = true
-      }
+      this.funcList.map((o) => {
+          o.isShow = true
+      })
 
       //根据级别选择显示功能
       if (this.userLevel != "0") {
