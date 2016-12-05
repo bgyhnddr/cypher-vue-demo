@@ -114,11 +114,11 @@ export default {
         this.$dispatch("backButton", this.showHomePageModel)
       } else {
         var countShowItem = this.filter(this.keyword)
-        if(countShowItem == 0){
+        if (countShowItem == 0) {
           this.showErrorNoHandled = true
           this.errorMsgNoHandled = "暂无此功能"
           this.$dispatch("backButton", this.showHomePageModel)
-        }else{
+        } else {
           this.showResult = true
           this.showHomePageModel = false
           this.$dispatch("backButton", this.showHomePageModel)
@@ -135,37 +135,38 @@ export default {
 
       //根据级别选择显示功能
       if (this.userLevel != "0") {
-        for (var item in this.funcList) {
-          if (this.funcList[item]['name'] == '成员审核') {
-            this.funcList[item].isShow = false
+        this.funcList.map((o) => {
+          if (o.name == "成员审核") {
+            o.isShow = false
           } else {
-            this.funcList[item].isShow = true
+            o.isShow = true
           }
-        }
+        })
       }
+
       if (this.userLevel == "4") {
-        for (var item in this.funcList) {
-          if (this.funcList[item].isShow == false || this.funcList[item]['name'] == '发起招募' || this.funcList[item]['name'] == '当前招募' || this.funcList[item]['name'] == '成员审核' || this.funcList[item]['name'] == '招募历史') {
-            this.funcList[item].isShow = false
+        this.funcList.map((o) => {
+          if (!o.isShow || o.name == "发起招募" || o.name == "当前招募" || o.name == "成员审核" || o.name == "招募历史") {
+            o.isShow = false
           } else {
-            this.funcList[item].isShow = true
+            o.isShow = true
           }
-        }
+        })
       }
 
       //根据搜索关键字选择显示功能
-      for (var item in this.funcList) {
-        if (this.funcList[item].name.match(keyword) == null) {
-          this.funcList[item].isShow = false
+      this.funcList.map((o) => {
+        if (o.name.match(keyword) == null) {
+          o.isShow = false
         }
-      }
+      })
 
       //计算isShow 数量
-      for (var item in this.funcList) {
-        if (this.funcList[item].isShow) {
-          countShowItem ++
+      this.funcList.map((o) => {
+        if (o.isShow) {
+          countShowItem++
         }
-      }
+      })
       return countShowItem
     }
   },
