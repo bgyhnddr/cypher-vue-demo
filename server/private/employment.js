@@ -403,7 +403,7 @@ var exec = {
     }).then(function(result) {
       var date = new Date()
       var term = new Date()
-      term.setMonth(term.getMonth() + termNum)
+      term.setMonth(term.getMonth() + parseInt(termNum))
 
       for (var item in result.employment_details) {
         createList = agent_detail.create({
