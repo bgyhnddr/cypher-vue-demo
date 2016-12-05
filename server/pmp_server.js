@@ -20,8 +20,8 @@ var Sequelize = require('sequelize')
 //     logging: false,
 // })
 
-var sequelize = new Sequelize('sharewindb', 'root', 'Cypher2015', {
-    host:'192.168.10.20',
+var sequelize = new Sequelize('pmpprod', 'pmpadmin', 'PmpStart2016', {
+    host:'rdssl1u0dsbhp7obuinml.mysql.rds.aliyuncs.com',
     dialect: 'mysql',
     timezone: '+8:00',
     pool: {
