@@ -17,16 +17,16 @@ var getTeamNum = () => {
       id: 1
     }
   }).then((o) => {
-    return Promise.all([
-      team_num.update({
-        num: o.num + 1
-      }, {
-        where: {
-          id: 1
-        }
-      }),
-      mkcode(o.num + 1)
-    ])
+    var newNum = o.num + 1
+    return team_num.update({
+        num:newNum
+    },{
+      where:{
+        id:1
+      }
+    }).then(()=>{
+      return mkcode(newNum)
+    })
   })
 }
 
@@ -42,15 +42,19 @@ var getTeamCode = (e) => {
     },
     include: team_agent
   }).then((o) => {
-    return Promise.all([
-        team_agent.count({
-          where: {
-            team_code: o.team_agent.team_code
-          }
-        }),
-        o.team_agent.team_code
-      ])
-      // return o.team_agent.team_code
+    var result = {}
+    var team_code = o.team_agent.team_code
+    return team_agent.count({
+      where:{
+        team_code:team_code
+      }
+    }).then((e)=>{
+      var newNum = (e + 1)
+      var initNum = '0000'
+      result.team_code = team_code
+      result.countNum = initNum.substring(0, ((initNum.length) - (newNum.toString().length))) + newNum
+      return result
+    })
   })
 }
 var exec = {
@@ -407,7 +411,6 @@ var exec = {
 
       for (var item in result.employment_details) {
         createList = agent_detail.create({
-          //guid test
           agent_guid: guid,
           key: result.employment_details[item]['key'],
           value: result.employment_details[item]['value']
@@ -418,24 +421,20 @@ var exec = {
         getTeamNum().then((o) => {
           team = team.create({
             brand: brand,
-            code: o[1]
+            code: o
           })
           team_agent = team_agent.create({
             agent_guid: guid,
-            team_code: o[1],
+            team_code: o,
             num: '0001'
           })
         })
       } else {
         getTeamCode(result.employer_user_account).then((o) => {
-          var num = (o[0] + 1)
-          var initNum = '0000'
-          var countNum = initNum.substring(0, ((initNum.length) - (num.toString().length))) + num
-
           team_agent = team_agent.create({
             agent_guid: guid,
-            team_code: o[1],
-            num: countNum
+            team_code: o.team_code,
+            num: o.countNum
           })
         })
       }
