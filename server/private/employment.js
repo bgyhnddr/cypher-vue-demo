@@ -456,7 +456,6 @@ var exec = {
         team_agent,
         agent_detail.bulkCreate(result.employment_details.map((o) => {
           return {
-            //guid test
             agent_guid: guid,
             key: o['key'],
             value: o['value']
