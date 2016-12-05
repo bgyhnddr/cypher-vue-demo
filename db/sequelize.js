@@ -7,6 +7,7 @@ if (!fs.existsSync("db/data")) {
 var sequelize = new Sequelize('bleman', 'cypher_admin', 'Cypher2015', {
     dialect: 'mysql',
     host: 'rdssl1u0dsbhp7obuinml.mysql.rds.aliyuncs.com',
-    port: 3306
+    port: 3306,
+    timezone: '+8:00'
 })
 module.exports = sequelize
