@@ -22,6 +22,7 @@ module.exports = function() {
 
         brand.create({ guid: "brand1", name: "贝利龙" }),
 
+        brand_role.create({ code: "brand_role0", brand_guid: "brand1", name: "品牌商", level: "-1" }),
         brand_role.create({ code: "brand_role1", brand_guid: "brand1", name: "品牌商", level: "0" }),
         brand_role.create({ code: "brand_role2", brand_guid: "brand1", name: "总代理", level: "1" }),
         brand_role.create({ code: "brand_role3", brand_guid: "brand1", name: "二级代理", level: "2" }),
@@ -31,6 +32,11 @@ module.exports = function() {
         agent.create({ user_account: "admin", guid: "agent1" }),
 
         agent_brand_role.create({ agent_guid: "agent1", brand_role_code: "brand_role1" }),
+
+        employable_rule.create({ employer_brand_role_code: "brand_role0", employable_brand_role_code: "brand_role2" }),
+        employable_rule.create({ employer_brand_role_code: "brand_role0", employable_brand_role_code: "brand_role3" }),
+        employable_rule.create({ employer_brand_role_code: "brand_role0", employable_brand_role_code: "brand_role4" }),
+        employable_rule.create({ employer_brand_role_code: "brand_role0", employable_brand_role_code: "brand_role5" }),
 
         employable_rule.create({ employer_brand_role_code: "brand_role1", employable_brand_role_code: "brand_role2" }),
         employable_rule.create({ employer_brand_role_code: "brand_role1", employable_brand_role_code: "brand_role3" }),
