@@ -19,12 +19,12 @@ var getTeamNum = () => {
   }).then((o) => {
     var newNum = o.num + 1
     return team_num.update({
-        num:newNum
-    },{
-      where:{
-        id:1
+      num: newNum
+    }, {
+      where: {
+        id: 1
       }
-    }).then(()=>{
+    }).then(() => {
       return mkcode(newNum)
     })
   })
@@ -45,10 +45,10 @@ var getTeamCode = (e) => {
     var result = {}
     var team_code = o.team_agent.team_code
     return team_agent.count({
-      where:{
-        team_code:team_code
+      where: {
+        team_code: team_code
       }
-    }).then((e)=>{
+    }).then((e) => {
       var newNum = (e + 1)
       var initNum = '0000'
       result.team_code = team_code
@@ -406,7 +406,7 @@ var exec = {
     }).then(function(result) {
       var date = new Date()
       var term = new Date()
-      term.setMonth(term.getMonth() + termNum)
+      term.setMonth(term.getMonth() + parseInt(termNum))
 
       if (result.brand_role_code == 'brand_role2') {
         getTeamNum().then((o) => {
