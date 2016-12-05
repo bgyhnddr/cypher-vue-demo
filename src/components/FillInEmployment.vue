@@ -52,9 +52,9 @@
       </div>
     </div>
     <div class="fillin-list">
-    <alert :show.sync="showMsg" button-text="确认" @on-hide="onHide">{{errorMsg}}</alert>
-    <alert :show.sync="showSubmitMsg" button-text="确认">{{submitMsg}}</alert>
-  </div>
+      <alert :show.sync="showMsg" button-text="确认" @on-hide="onHide">{{errorMsg}}</alert>
+      <alert :show.sync="showSubmitMsg" button-text="确认">{{submitMsg}}</alert>
+    </div>
   </div>
   <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
@@ -185,7 +185,7 @@ export default {
             that.employmentData.guid = guid
             that.employmentData.showGuid = guid.split("-")[4]
 
-              //招募已关闭
+            //招募已关闭
             if (result.status == false) {
               that.showMsg = true
               that.errorMsg = "招募已关闭，请关闭本页面"
@@ -233,13 +233,11 @@ export default {
       }).then(function(result) {
         that.employmentData.agentGuid = result.guid
 
-        for (var item in result.agent_details) {
-          for (var meta in result.agent_details[item]) {
-            if (meta == 'key' && result.agent_details[item][meta] == 'name') {
-              that.employmentData.employerName = result.agent_details[item]['value']
-            }
+        result.agent_details.map((o) => {
+          if (o.key == "name") {
+            that.employmentData.employerName = o.value
           }
-        }
+        })
       }).catch(function(err) {
         that.showMsg = true
         that.errorMsg = err
@@ -618,10 +616,11 @@ export default {
   color: #d22d23;
   text-align: right
 }
+
 .fillin-list .weui_dialog_ft {
   width: 89%;
   margin: 8% auto;
-    background: #0bb20c;
+  background: #0bb20c;
   line-height: 35px;
   border-radius: 2px;
 }
@@ -640,7 +639,7 @@ export default {
   color: #fff;
 }
 
-.fillin-list  .weui_dialog {
+.fillin-list .weui_dialog {
   width: 92%;
 }
 </style>
