@@ -446,8 +446,8 @@ var exec = {
       return Promise.all([
         employment_term.create({
           agent_guid: guid,
-          term_from: date.Format('YYYY-MM-DD'),
-          term_to: term.Format('YYYY-MM-DD')
+          term_from: date.Format('yyyy-MM-dd'),
+          term_to: term.Format('yyyy-MM-dd')
         }),
         agent.create({
           user_account: result.employee_user_account,
