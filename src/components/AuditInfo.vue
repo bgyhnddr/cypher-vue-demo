@@ -133,7 +133,7 @@ export default {
       showAlert: false,
       show: false,
       reason: "",
-      termNum: "12",
+      termNum: 12,
       auditInfo: {
         account: "",
         brand: "",
