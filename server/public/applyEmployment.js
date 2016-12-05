@@ -236,7 +236,10 @@ var exec = {
               value: data.wechat
             }]
           },
-        }]
+        }],
+        where: {
+          status: "未审核"
+        }
       }),
       //查找是否已注册成为代理
       agent_detail.findOne({
@@ -281,9 +284,7 @@ var exec = {
       }
 
       if (result[0] != null) {
-        if (result[0].status == "未审核" || result[0].audit_result == "已通过") {
-          return Promise.reject("您已提交申请或已成为该品牌成员，申请失败")
-        }
+        return Promise.reject("您已提交申请或已成为该品牌成员，申请失败")
       } else if (result[1] != null) {
         return Promise.reject("您已提交申请或已成为该品牌成员，申请失败")
       } else if (result[2] == null) {
@@ -426,7 +427,10 @@ var exec = {
               value: data.wechat
             }]
           },
-        }]
+        }],
+        where: {
+          status: "未审核"
+        }
       }),
       //查找是否已注册成为代理
       agent_detail.findOne({
@@ -458,9 +462,7 @@ var exec = {
       }
 
       if (result[0] != null) {
-        if (result[0].status == "未审核" || result[0].audit_result == "已通过") {
-          return Promise.reject("您已提交申请或已成为该品牌成员，申请失败")
-        }
+        return Promise.reject("您已提交申请或已成为该品牌成员，申请失败")
       } else if (result[1] != null) {
         return Promise.reject("您已提交申请或已成为该品牌成员，申请失败")
       } else if (result[2] == null) {
