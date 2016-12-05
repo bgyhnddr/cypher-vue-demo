@@ -389,7 +389,6 @@ var exec = {
     var uuid = require('node-uuid')
     var guid = uuid.v1()
 
-    var createList
     var term
 
     var team
@@ -408,14 +407,6 @@ var exec = {
       var date = new Date()
       var term = new Date()
       term.setMonth(term.getMonth() + termNum)
-
-      for (var item in result.employment_details) {
-        createList = agent_detail.create({
-          agent_guid: guid,
-          key: result.employment_details[item]['key'],
-          value: result.employment_details[item]['value']
-        })
-      }
 
       if (result.brand_role_code == 'brand_role2') {
         getTeamNum().then((o) => {
@@ -463,7 +454,14 @@ var exec = {
         }),
         team,
         team_agent,
-        createList,
+        agent_detail.bulkCreate(result.employment_details.map((o) => {
+          return {
+            //guid test
+            agent_guid: guid,
+            key: o['key'],
+            value: o['value']
+          }
+        })),
         result.save()
       ])
     }).then(function() {
@@ -658,8 +656,10 @@ var exec = {
       switch (selectMsg) {
         case "timeAsc":
           order = "publish_employment.created_at ASC" //时间由远到近
+          break
         case "timeDesc":
           order = "publish_employment.created_at DESC" //时间由近到远
+          break
         case "levelDesc":
           order = [
             [{
@@ -667,6 +667,7 @@ var exec = {
             }, 'level', 'DESC'],
             ['created_at', 'DESC']
           ]
+          break
         case "levelAsc":
           order = [
             [{
@@ -674,6 +675,7 @@ var exec = {
             }, 'level', 'ASC'],
             ['created_at', 'DESC']
           ]
+          break
       }
       return publish_employment.findAll({
         where: {
