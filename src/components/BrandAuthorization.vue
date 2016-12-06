@@ -58,35 +58,32 @@ export default {
 
 
       authAPI.getUser().then(function(result) {
-        if (result.name != undefined) { //登录状态
+        if (result.name != undefined) { 
           account = result.name
           that.loginUser = result.name
 
-          //获取发起招募信息
           applyEmploymentAPI.getPublishEmploymentInfo({
             employmentGuid: publishEmploymentID
           }).then(function(result) {
             that.publishEmploymentData = result
 
-            if (account == that.publishEmploymentData.employer_user_account) { //判断是否发起人
+            if (account == that.publishEmploymentData.employer_user_account) {
 
               if (result.status == false) {
                 that.showRemindMsg = true
                 that.remindMsg = "招募已关闭"
               } else {
-                //TODO : 页面内容搜索
-                //获取招募角色名称
                 that.getEmploymentRoleName()
                 that.showBrandAuthorizationModel = true
               }
-            } else { //非发起人状态
+            } else {
               that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID)
             }
           }).catch(function(err) {
             that.showRemindMsg = true
             that.remindMsg = err
           })
-        } else { //非登录状态
+        } else {
           that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID)
         }
       })
