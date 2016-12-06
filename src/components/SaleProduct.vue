@@ -155,7 +155,7 @@ export default {
           that.soldProductInfo.status = "已出售"
           that.soldProductInfo.salerID = result.sold_by
           that.getSolderName(result.sold_by)
-          that.soldProductInfo.soldDate = result.sold_date
+          that.soldProductInfo.soldDate = new Date(result.sold_date).Format('yyyy-MM-dd hh:mm')
           that.soldProductInfo.scanNum = result.scan_num
           that.getBrandInfo()
 
