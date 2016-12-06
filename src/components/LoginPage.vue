@@ -46,7 +46,7 @@
 
 	</div>
 </div>
-<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备<a href="http://www.miitbeian.gov.cn/">14056388</a>号</div>
 </template>
 
 <script>

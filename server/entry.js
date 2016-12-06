@@ -8,8 +8,14 @@ var getClientAddress = function(req) {
 }
 module.exports = (app) => {
   app.use('/init', function(req, res, next) {
-    var init = require('../db/init')
-    init(req, res, next)
+    if (req.hostname === 'localhost' && req.ip){
+      var init = require('../db/init')
+      console.log(req.ip)
+      init(req, res, next)
+    } else {
+      console.log(req.ip)
+      res.send("error")
+    }
   })
 
   app.use('/', express.static('mp'))
@@ -25,8 +31,8 @@ module.exports = (app) => {
   app.use(session({
     secret: '1234567890QWERTY'
   }))
-  var appid = 'wx9165b89a9a491bf0'
-  var apps = 'af55586c61c8ce8900ffa9fa7c3cfb96'
+  var appid = 'wxce792c638e72b879'
+  var apps = 'ed10895b1527b7fcc886dfa7fb37be91'
     // var appid = 'wx9165b89a9a491bf0'
     // var apps = 'af55586c61c8ce8900ffa9fa7c3cfb96'
   var OAuth = require('wechat-oauth')

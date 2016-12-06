@@ -20,7 +20,7 @@
           </tr>
           <tr>
               <td width=37%><img src="/static/TestIMG/authorization_level.png"/></td>
-            <td>{{agentInfo.brand}}{{agentInfo.brand_role}}</th>
+            <td>{{agentInfo.brand_role}}</th>
 
           </tr>
           <tr>

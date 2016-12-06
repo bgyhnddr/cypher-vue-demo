@@ -22,6 +22,7 @@ var Sequelize = require('sequelize')
 
 var sequelize = new Sequelize('pmpprod', 'pmpadmin', 'PmpStart2016', {
     host:'rdssl1u0dsbhp7obuinml.mysql.rds.aliyuncs.com',
+    port: 3306,
     dialect: 'mysql',
     timezone: '+8:00',
     pool: {
@@ -593,7 +594,7 @@ function run(){
     })
   })
   app.use(express.static('public'));
-  app.listen(80)
+  app.listen(8099)
 }
 // g.run = run
 exports.db = {
