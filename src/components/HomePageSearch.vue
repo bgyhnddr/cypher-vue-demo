@@ -33,6 +33,7 @@ import {
   XInput,
   Alert
 } from 'vux'
+import authAPI from '../api/auth'
 import agentInfoAPI from '../api/agentInfo'
 
 export default {
@@ -62,7 +63,7 @@ export default {
       }, {
         name: '当前招募',
         iconhref: '/static/TestIMG/current.png',
-        link: null,
+        link: '/employManagement/currentList',
         isShow: true
       }, {
         name: '成员审核',
@@ -77,7 +78,7 @@ export default {
       }, {
         name: '我的证书',
         iconhref: '/static/TestIMG/certificate.png',
-        link: null, //TODO
+        link: null,
         isShow: true
       }, {
         name: '修改密码',
@@ -87,12 +88,12 @@ export default {
       }, {
         name: '修改手机号',
         iconhref: '/static/TestIMG/ModifyThePhone.png',
-        link: null,
+        link: '/accountManagement/checkPwd/phone',
         isShow: true
       }, {
         name: '修改微信号',
         iconhref: '/static/TestIMG/ModifyTheWeixin.png',
-        link: null,
+        link: '/accountManagement/checkPwd/wechat',
         isShow: true
       }],
       showErrorNoHandled: false,
@@ -130,7 +131,7 @@ export default {
 
       //恢复全部为显示
       this.funcList.map((o) => {
-          o.isShow = true
+        o.isShow = true
       })
 
       //根据级别选择显示功能
@@ -174,6 +175,16 @@ export default {
     search() {
       this.search()
     }
+  },
+  ready() {
+    authAPI.getUser().then((userInfo) => {
+      var account = userInfo.name
+      this.funcList.map((o) => {
+        if (o.name.match("我的证书") != null) {
+          o.link = "/accountManagement/MyCertificate/" + account + "/account"
+        }
+      })
+    })
   }
 }
 </script>
