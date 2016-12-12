@@ -1,4 +1,3 @@
-var Sequelize = require('sequelize')
 module.exports = function(req, res, next) {
     Promise.all([
         require('./models/user'),

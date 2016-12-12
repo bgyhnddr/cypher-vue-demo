@@ -7,11 +7,6 @@ var getClientAddress = function(req) {
     req.connection.remoteAddress;
 }
 module.exports = (app) => {
-  app.use('/init', function(req, res, next) {
-    var init = require('../db/init')
-    init(req, res, next)
-  })
-
   app.use('/', express.static('mp'))
 
   // parse application/x-www-form-urlencoded
