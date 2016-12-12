@@ -7,10 +7,11 @@
       <p v-if="showRemind" class="phone-error">{{errorMsg}}</p>
       <x-button type="primary" @click="confirm">确认修改</x-button>
       <alert :show.sync="showMsg" @on-hide="onHide()" button-text="确认">您已成功修改手机号</alert>
+      <alert :show.sync="showCheckPwdErrorMsg" @on-hide="goBackCheckPwd()" button-text="确认">{{checkPwdErrorMsg}}</alert>
     </group>
   </div>
 </div>
- <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -28,7 +29,9 @@ export default {
       cellphone: "",
       showMsg: false,
       showRemind: false,
-      errorMsg: null
+      errorMsg: null,
+      showCheckPwdErrorMsg: false,
+      checkPwdErrorMsg: null,
     }
   },
   components: {
@@ -45,49 +48,62 @@ export default {
   methods: {
     confirm() {
       var that = this
-      var reg = /^(\+?0?86\-?)?1[345789]\d{9}$/  //手机号
+      var reg = /^(\+?0?86\-?)?1[345789]\d{9}$/ //手机号
 
       //检测手机号输入是否正确
       if (!reg.test(this.cellphone)) {
         that.showRemind = true
         that.errorMsg = "手机号填写错误，请重新输入"
       } else {
-          changeUserInfoAPI.changeCellphone({
-            cellphone: that.cellphone
-          }).then(function(result) {
-            if (result == true) {
-              that.showMsg = true
-            }
-          }).catch(function(err) {
-            that.showRemind = true
-            that.errorMsg = err
-          })
+        changeUserInfoAPI.changeCellphone({
+          cellphone: that.cellphone
+        }).then(function(result) {
+          if (result == true) {
+            that.showMsg = true
+          }
+        }).catch(function(err) {
+          that.showRemind = true
+          that.errorMsg = err
+        })
       }
     },
     onHide() {
       this.showMsg = false
       this.$route.router.go('/accountManagement')
+    },
+    goBackCheckPwd(){
+      this.$route.router.go('/accountManagement/checkPwd/phone')
     }
+  },
+  ready() {
+    var that = this
+    changeUserInfoAPI.getCheckPwdSession().then(function(result) {
+      if (!result) {
+        that.showCheckPwdErrorMsg = true
+        that.checkPwdErrorMsg = "请先通过登录密码验证，再修改手机号"
+      }
+    })
+
   }
 }
 </script>
 <style>
-.changepcellphone-input button.weui_btn.weui_btn_primary{
-margin-top: 9%
-
+.changepcellphone-input button.weui_btn.weui_btn_primary {
+  margin-top: 9%
 }
-.phone-error{
+
+.phone-error {
   width: 89%;
   color: rgb(210, 45, 35);
   font-family: 微软雅黑;
   font-size: 4.1vw;
   margin: auto;
-
 }
-.changepcellphone-input{
-    min-height: 485px;
 
+.changepcellphone-input {
+  min-height: 485px;
 }
+
 .changepcellphone-input .weui_label {
   font-size: 15px;
   color: #000;
@@ -96,21 +112,21 @@ margin-top: 9%
 
 .changepcellphone-input .weui_input {
   width: 92%;
-      border: 0;
-      outline: 0;
-      -webkit-appearance: none;
-      background-color: transparent;
-      font-size: inherit;
-      color: inherit;
-      height: inherit;
-      line-height: inherit;
-      border: 1px solid #d3d1d1;
-      font-family: "\5FAE\8F6F\96C5\9ED1";
-      padding-left: 5%;
-      color: #aeaeae;
-      font-size: 4.5vw;
-      padding: 8px 3%;
-      border-radius: 3px;
+  border: 0;
+  outline: 0;
+  -webkit-appearance: none;
+  background-color: transparent;
+  font-size: inherit;
+  color: inherit;
+  height: inherit;
+  line-height: inherit;
+  border: 1px solid #d3d1d1;
+  font-family: "\5FAE\8F6F\96C5\9ED1";
+  padding-left: 5%;
+  color: #aeaeae;
+  font-size: 4.5vw;
+  padding: 8px 3%;
+  border-radius: 3px;
   /*14px*/
 }
 
@@ -139,14 +155,12 @@ margin-top: 9%
 .changepcellphone-input .weui_dialog {
   width: 92%;
 }
-.changepcellphone-input .weui_cell:before{
-border-top:0
 
+.changepcellphone-input .weui_cell:before {
+  border-top: 0
 }
-.changepcellphone-input .weui_cell{
 
+.changepcellphone-input .weui_cell {
   padding: 5px 15px;
-
-
 }
 </style>

@@ -10,5 +10,8 @@ export default {
     },
     changeCellphone(params) {
         return httpRequest.post(path + 'changeCellphone', params)
-    }
+    },
+    getCheckPwdSession() {
+        return httpRequest.post(path + 'getCheckPwdSession')
+    },
 }

@@ -14,6 +14,7 @@ var exec = {
       if (result == null) {
         return Promise.reject("输入密码错误")
       } else {
+        req.session.checkPwdValue = pwd
         return true
       }
     })
@@ -88,6 +89,7 @@ var exec = {
         return Promise.reject("查找个人信息出错，请再尝试")
       }
     }).then(function() {
+      req.session.checkPwdValue = null
       return true
     })
   },
@@ -161,9 +163,29 @@ var exec = {
         return Promise.reject("查找个人信息出错，请再尝试")
       }
     }).then(function() {
+      req.session.checkPwdValue = null
       return true
     })
-  }
+  },
+  getCheckPwdSession(req, res, next) {
+    var checkPwdValue = req.session.checkPwdValue
+    var user_account = req.session.userInfo.name
+
+    var user = require('../../db/models/user')
+
+    return user.findOne({
+      where: {
+        account: user_account,
+        password: checkPwdValue
+      }
+    }).then(function(result) {
+      if (result == null) {
+        return false
+      } else {
+        return true
+      }
+    })
+  },
 }
 
 
