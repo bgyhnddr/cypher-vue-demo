@@ -10,7 +10,8 @@
     "test": "",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
     "server": "node build/run_server.js",
-    "init": "node build/init.js"
+    "init": "node build/init.js",
+    "pmp-test": "node build/pmp-test.js"
   },
   "dependencies": {
     "babel-runtime": "^6.0.0",

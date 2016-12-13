@@ -77,4 +77,18 @@ module.exports = (app) => {
       res.status(500).send(e.toString())
     }
   })
+
+  app.use('/pmp/:type/:action/:token', function(req, res, next) {
+    console.log(getClientAddress(req) + " request:" + req.originalUrl)
+    if (req.params.token != "123") {
+      res.status(404).send("token check fail")
+    } else {
+      try {
+        require('./pmp/' + req.params.type)(req, res, next)
+      } catch (e) {
+        console.log(e)
+        res.status(500).send(e.toString())
+      }
+    }
+  })
 }

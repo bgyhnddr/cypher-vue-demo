@@ -1,3 +1,4 @@
+/** @type {Object} [description] */
 var exec = {
   checkPwd(req, res, next) {
     var pwd = req.body.pwd
