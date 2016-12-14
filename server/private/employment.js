@@ -578,13 +578,9 @@ var exec = {
     var brandGuid = req.body.brandGuid
     var createTime = new Date().Format('yyyy-MM-dd hh:mm')
 
-    var uuid = require('node-uuid')
-    var guid = uuid.v1()
-
     var publish_employment = require('../../db/models/publish_employment')
 
     return publish_employment.create({
-      guid: guid,
       brand_guid: brandGuid,
       brand_role_code: roleCode,
       employer_user_account: employer,
@@ -594,7 +590,7 @@ var exec = {
       if (result == null) {
         return Promise.reject("创建招募失败")
       } else {
-        return guid
+        return result.guid
       }
     })
   },
