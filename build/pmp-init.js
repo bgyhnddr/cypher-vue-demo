@@ -1,15 +1,15 @@
 Promise.all([
-  require('./models/pmp_brand_meta'),
-  require('./models/pmp_brand'),
-  require('./models/pmp_label'),
-  require('./models/pmp_option_item'),
-  require('./models/pmp_product_label'),
-  require('./models/pmp_product_price'),
-  require('./models/pmp_product'),
-  require('./models/pmp_specification_option'),
-  require('./models/pmp_specification'),
-  require('./models/pmp_variant_image'),
-  require('./models/pmp_variant')
+  require('../db/models/pmp_brand_meta'),
+  require('../db/models/pmp_brand'),
+  require('../db/models/pmp_label'),
+  require('../db/models/pmp_option_item'),
+  require('../db/models/pmp_product_label'),
+  require('../db/models/pmp_product_price'),
+  require('../db/models/pmp_product'),
+  require('../db/models/pmp_specification_option'),
+  require('../db/models/pmp_specification'),
+  require('../db/models/pmp_variant_image'),
+  require('../db/models/pmp_variant')
 ].map((o) => o.sync({
   force: true
 }))).then(function() {

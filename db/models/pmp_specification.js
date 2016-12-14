@@ -15,4 +15,4 @@ var pmp_specification = sequelize.define(
     underscored: true
   })
 
-module.exports = pmp_specification_option
+module.exports = pmp_specification
