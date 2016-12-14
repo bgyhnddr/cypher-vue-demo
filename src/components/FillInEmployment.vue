@@ -4,7 +4,7 @@
     <h3>代理申请表</h3>
     <div v-if="!showNextFillModel">
       <div class="ApplyFor-agent-message">
-        <p>上级授权号&nbsp;:&nbsp;{{employmentData.showGuid}}</p>
+        <p>上级授权号&nbsp;:&nbsp;</p>
         <p>上级代理&nbsp;:&nbsp;{{employmentData.employerName}}</p>
         <p>您当前代理级别为&nbsp;:&nbsp;
           <label>{{employmentData.brandRoleName}}</label>
@@ -143,8 +143,8 @@ export default {
         brandRoleName: "",
         brandInfo: {},
         employerName: {},
-        guid: "",
-        showGuid: "",
+        // guid: "",
+        // showGuid: "",
       },
       showNextFillModel: false,
       IDTypeList: ['身份证', '回乡证', '护照'],
@@ -181,9 +181,9 @@ export default {
             that.$route.router.go('/employManagement/brandAuthorization/' + publishEmploymentID)
           } else { //非发起人或者未登录
 
-            var guid = uuid.v1()
-            that.employmentData.guid = guid
-            that.employmentData.showGuid = guid.split("-")[4]
+            // var guid = uuid.v1()
+            // that.employmentData.guid = guid
+            // that.employmentData.showGuid = guid.split("-")[4]
 
             //招募已关闭
             if (result.status == false) {

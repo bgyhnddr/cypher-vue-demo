@@ -3,7 +3,7 @@ var sequelize = require('../sequelize')
 
 var employment = sequelize.define(
     'employment', {
-        guid: { type: Sequelize.UUID, primaryKey: true, unique: true },
+        guid: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV4 },
         publish_employment_guid: Sequelize.STRING,
         brand_guid: Sequelize.STRING,
         brand_role_code: Sequelize.STRING,
