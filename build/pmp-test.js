@@ -323,6 +323,50 @@ Promise.all([
           }
         })
       })
+    }).then((vid) => {
+      console.log("\n为测试商品3添加一个标签")
+      return testfunction("submitProduct", {
+        id: "3",
+        pmp_product_labels: [{
+          pmp_label: {
+            name: "新增标签"
+          }
+        }]
+      }).then(() => {
+        return testfunction("getProduct", {
+          id: "3"
+        }).then((result) => {
+          if (result.pmp_product_labels.length > 0 &&
+            result.pmp_product_labels[0].pmp_label.name == "新增标签") {
+            console.log("通过")
+          } else {
+            console.log(result)
+            console.log("不通过")
+          }
+        })
+      })
+    }).then((vid) => {
+      console.log("\n为测试商品3添加一个价格")
+      return testfunction("submitProduct", {
+        id: "3",
+        pmp_product_prices: [{
+          brand_role_code: "1",
+          price: "1",
+          price_unit: "RMB"
+        }]
+      }).then(() => {
+        return testfunction("getProduct", {
+          id: "3"
+        }).then((result) => {
+          if (result.pmp_product_prices.length > 0 &&
+            result.pmp_product_prices[0].price_unit == "RMB") {
+            console.log("通过")
+          } else {
+            console.log(result)
+            console.log("不通过")
+          }
+        })
+      })
     })
   })
 }).catch((e) => {

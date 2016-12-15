@@ -242,7 +242,7 @@ var exec = {
                 }
               }
               result.pmp_label_id = label.id
-              result.product_id = obj.id
+              result.pmp_product_id = obj.id
               return result.save()
             })
           }))
@@ -253,7 +253,7 @@ var exec = {
       if (obj["pmp_product_prices"] != undefined) {
         var productPriceUpsertList = []
         obj["pmp_product_prices"].forEach((pp) => {
-          pp.product_id = obj.id
+          pp.pmp_product_id = obj.id
           productPriceUpsertList.push(pmp_product_price.upsert(pp))
         })
         return Promise.all(productPriceUpsertList)
