@@ -368,6 +368,8 @@ Promise.all([
         })
       })
     })
+  }).then(() => {
+    console.log("submitProduct 测试完毕")
   })
 }).catch((e) => {
   console.log(e)
