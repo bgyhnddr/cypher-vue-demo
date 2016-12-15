@@ -130,7 +130,7 @@ Promise.all([
     }
   }
   var testfunction = (action, params) => {
-    return require('../server/pmp/commodity')({
+    return require('../server/pmp/product')({
       params: {
         action
       },
@@ -140,8 +140,8 @@ Promise.all([
   }
 
   Promise.resolve("beginTest").then(() => {
-    console.log("\n测试getCommoditys")
-    return testfunction("getCommoditys", {
+    console.log("\n测试getProducts")
+    return testfunction("getProducts", {
       pmp_brand_id: "1",
       filterKey: "",
       page: "0",
@@ -154,7 +154,8 @@ Promise.all([
       }
     })
   }).then(() => {
-    return testfunction("getCommodity", {
+    console.log("\n测试getProduct")
+    return testfunction("getProduct", {
       id: "1"
     }).then((result) => {
       if (result.id == 1) {
@@ -215,13 +216,13 @@ Promise.all([
       }
     })
   }).then(() => {
-    console.log("\n测试submitCommodity")
+    console.log("\n测试submitProduct")
     console.log("\n创建测试商品3")
-    return testfunction("submitCommodity", {
+    return testfunction("submitProduct", {
       pmp_brand_id: 1,
       name: "测试商品3"
     }).then(() => {
-      return testfunction("getCommoditys", {
+      return testfunction("getProducts", {
         pmp_brand_id: "1",
         filterKey: "",
         page: "0",
@@ -234,13 +235,93 @@ Promise.all([
         console.log(result)
         console.log("不通过")
       }
-    }).then(()=>{
+    }).then(() => {
       console.log("\n修改商品3名字为测试商品3改")
-      return testfunction("submitCommodity", {
-        pmp_brand_id: 1,
-        name: "测试商品3"
-      }).then(()=>{
-        
+      return testfunction("submitProduct", {
+        id: "3",
+        name: "测试商品3改"
+      }).then(() => {
+        return testfunction("getProduct", {
+          id: "3"
+        }).then((result) => {
+          if (result.name == "测试商品3改") {
+            console.log("通过")
+          } else {
+            console.log(result)
+            console.log("不通过")
+          }
+        })
+      })
+    }).then(() => {
+      console.log("\n为测试商品3改添加一个规格")
+      return testfunction("submitProduct", {
+        id: "3",
+        pmp_variants: [{
+          name: "测试规格"
+        }]
+      }).then(() => {
+        return testfunction("getProduct", {
+          id: "3"
+        }).then((result) => {
+          if (result.pmp_variants.length > 0 && result.pmp_variants[0].name == "测试规格") {
+            console.log("通过")
+            return result.pmp_variants[0].id
+          } else {
+            console.log(result)
+            console.log("不通过")
+          }
+        })
+      })
+    }).then((vid) => {
+      console.log("\n为测试商品3规格添加一个图片")
+      return testfunction("submitProduct", {
+        id: "3",
+        pmp_variants: [{
+          id: vid,
+          pmp_variant_images: [{
+            attachment_id: "1"
+          }]
+        }]
+      }).then(() => {
+        return testfunction("getProduct", {
+          id: "3"
+        }).then((result) => {
+          if (result.pmp_variants.length > 0 &&
+            result.pmp_variants[0].name == "测试规格" &&
+            result.pmp_variants[0].pmp_variant_images.length > 0 &&
+            result.pmp_variants[0].pmp_variant_images[0].attachment_id == "1") {
+            console.log("通过")
+            return vid
+          } else {
+            console.log(result)
+            console.log("不通过")
+          }
+        })
+      })
+    }).then((vid) => {
+      console.log("\n为测试商品3规格添加一个型号")
+      return testfunction("submitProduct", {
+        id: "3",
+        pmp_variants: [{
+          id: vid,
+          pmp_specifications: [{
+            name: "测试型号"
+          }]
+        }]
+      }).then(() => {
+        return testfunction("getProduct", {
+          id: "3"
+        }).then((result) => {
+          if (result.pmp_variants.length > 0 &&
+            result.pmp_variants[0].name == "测试规格" &&
+            result.pmp_variants[0].pmp_specifications.length > 0 &&
+            result.pmp_variants[0].pmp_specifications[0].name == "测试型号") {
+            console.log("通过")
+          } else {
+            console.log(result)
+            console.log("不通过")
+          }
+        })
       })
     })
   })
