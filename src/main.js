@@ -91,6 +91,9 @@ router.beforeEach((tran) => {
   } else if (FirstPath == "test") {
     tran.next()
     return
+  } else if (FirstPath == "productManagement") {
+    tran.next()
+    return
   }
 
   // switch (name) {
