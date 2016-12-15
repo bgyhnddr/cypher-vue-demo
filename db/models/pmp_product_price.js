@@ -9,7 +9,7 @@ var pmp_product_price = sequelize.define(
       primaryKey: true
     },
     pmp_product_id: Sequelize.INTEGER,
-    brand_role_id: Sequelize.INTEGER,
+    brand_role_code: Sequelize.STRING,
     price: Sequelize.DECIMAL(10, 2),
     price_unit: Sequelize.STRING
   }, {

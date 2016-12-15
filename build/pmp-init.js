@@ -13,8 +13,6 @@ Promise.all([
 ].map((o) => o.sync({
   force: true
 }))).then(function() {
-
-}).then(function() {
   console.log("ok")
 }).catch(function(err) {
   console.log(err)

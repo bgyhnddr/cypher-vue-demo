@@ -10,7 +10,7 @@ var pmp_product = sequelize.define(
     },
     pmp_brand_id: Sequelize.INTEGER,
     name: Sequelize.STRING,
-    status: Sequelize.INTEGER,
+    on_sell: Sequelize.BOOLEAN,
     description: Sequelize.STRING(511)
   }, {
     underscored: true

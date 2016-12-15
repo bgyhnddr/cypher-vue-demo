@@ -12,7 +12,7 @@ var pmp_brand = sequelize.define(
     app_key: Sequelize.STRING(18),
     name: Sequelize.STRING,
     company: Sequelize.STRING,
-    status: Sequelize.INTEGER
+    status: Sequelize.STRING
   }, {
     underscored: true
   })

@@ -9,7 +9,7 @@ var pmp_product_label = sequelize.define(
       primaryKey: true
     },
     pmp_product_id: Sequelize.INTEGER,
-    label_id: Sequelize.INTEGER
+    pmp_label_id: Sequelize.INTEGER
   }, {
     underscored: true
   })

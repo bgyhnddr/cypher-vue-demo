@@ -10,7 +10,7 @@ var pmp_specification = sequelize.define(
     },
     pmp_variant_id: Sequelize.INTEGER,
     name: Sequelize.STRING,
-    status: Sequelize.INTEGER
+    on_sell: Sequelize.BOOLEAN
   }, {
     underscored: true
   })
