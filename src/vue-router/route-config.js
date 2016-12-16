@@ -157,6 +157,9 @@ export function configRouter(router) {
     '/productManagement/productSetting': {
       component: require('../components/PMP/ProductSetting.vue')
     },
+    '/MyProduct': {
+      component: require('../components/PMP/MyProduct.vue')
+    },
     '/test': {
       component: require('../components/Test.vue')
     }

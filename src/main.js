@@ -96,17 +96,6 @@ router.beforeEach((tran) => {
     return
   }
 
-  // switch (name) {
-  //     case "FillInEmployment":
-  //     case "EmploymentSubmission":
-  //     case "PhoneVerification":
-  //     case "resetpwd":
-  //     case "BrandAuthorization":
-  //     case "SuccessPage":
-  //         tran.next()
-  //         return
-  // }
-
   function CheckInfo() {
     if (checkPermission(['agentInfo', 'employment'])) {
       authAPI.CheckUserBrand().then(function(result) {
@@ -150,7 +139,6 @@ router.beforeEach((tran) => {
         switch (SecPath) {
           case undefined:
           case "MyCertificate":
-          // case "CertificateInfo":
           case "checkPwd":
           case "changeWechat":
           case "changeCellPhone":
@@ -174,6 +162,8 @@ router.beforeEach((tran) => {
             break
 
         }
+      } else if (FirstPath == "MyProduct") {
+        tran.next()
       } else if (path == '/index') {
         router.go('homePage')
       }
