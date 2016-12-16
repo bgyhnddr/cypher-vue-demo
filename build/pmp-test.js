@@ -132,7 +132,8 @@ Promise.all([
   var testfunction = (action, params) => {
     return require('../server/pmp/product')({
       params: {
-        action
+        action,
+        token: "123"
       },
       query: params,
       body: params
