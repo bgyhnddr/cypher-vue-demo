@@ -10,7 +10,10 @@ var pmp_label = sequelize.define(
     },
     pmp_brand_id: Sequelize.INTEGER,
     type: Sequelize.STRING,
-    name: Sequelize.STRING
+    name: {
+      type: Sequelize.STRING,
+      unique: true
+    }
   }, {
     underscored: true
   })
