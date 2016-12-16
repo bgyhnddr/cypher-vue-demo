@@ -120,6 +120,11 @@ export default {
           })
         }
       }, {
+        title: '我的货品',
+        link: '/MyProduct',
+        iconhref: '/static/TestIMG/goods.png',
+        isShow: true
+      },{
         title: '订货管理',
         link: '',
         iconhref: '/static/TestIMG/order.png',
@@ -134,12 +139,7 @@ export default {
         link: '',
         iconhref: '/static/TestIMG/team.png',
         isShow: true
-      }, {
-        title: '我的货品',
-        link: '',
-        iconhref: '/static/TestIMG/goods.png',
-        isShow: true
-      }, {
+      },{
         title: '',
         link: '',
         iconhref: '/static/TestIMG/more.png',
