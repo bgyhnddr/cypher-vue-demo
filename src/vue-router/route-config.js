@@ -152,9 +152,10 @@ export function configRouter(router) {
         'changeCellPhone': {
           component: require('../components/ChangeCellPhone.vue')
         }
-
-
       }
+    },
+    '/MyProduct': {
+      component: require('../components/PMP/MyProduct.vue')
     },
     '/test': {
       component: require('../components/Test.vue')
