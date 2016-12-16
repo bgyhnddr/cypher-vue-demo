@@ -218,7 +218,7 @@ var exec = {
                 obj["pmp_product_labels"].forEach((pl) => {
                     productLabelUpsertList.push(pmp_label.findOrCreate({
                         where: {
-                            id: pl.pmp_label.id
+                            name: pl.pmp_label.name
                         }
                     }).spread((result) => {
                         for (var col in pl.pmp_label) {
