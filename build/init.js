@@ -23,7 +23,9 @@ Promise.all([
   require('../db/models/publish_employment')
 ].map((o) => o.sync({
   force: true
-}))).then(() => {
+}))).then(()=>{
+  return require('../db/init_data')()
+}).then(() => {
   return require('../db/init_app_data')()
 }).then(function() {
   console.log("ok")
