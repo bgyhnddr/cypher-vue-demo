@@ -4,11 +4,11 @@ var sequelize = require('../sequelize')
 var pmp_variant_image = sequelize.define(
   'pmp_variant_image', {
     id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
       primaryKey: true
     },
-    pmp_variant_id: Sequelize.INTEGER,
+    pmp_variant_id: Sequelize.UUID,
     attachment_id: Sequelize.INTEGER
   }, {
     underscored: true

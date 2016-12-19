@@ -4,11 +4,11 @@ var sequelize = require('../sequelize')
 var pmp_variant = sequelize.define(
   'pmp_variant', {
     id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
       primaryKey: true
     },
-    pmp_product_id: Sequelize.INTEGER,
+    pmp_product_id: Sequelize.UUID,
     name: Sequelize.STRING,
     on_sell: Sequelize.BOOLEAN
   }, {
