@@ -4,7 +4,7 @@
     <x-header :left-options="{showBack: true,backText:'返回'}" @click="onClickBack">我的货品</x-header>
     <group>
       <!--货品管理-->
-      <a class="weui_cell" v-link="">
+      <a class="weui_cell" v-link="{path: '/productManagement/productSetting'}">
         <div class="weui_cell_hd">
           <img>
         </div>
