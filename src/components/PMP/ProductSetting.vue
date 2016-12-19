@@ -17,7 +17,7 @@
     <div v-else>
       <scroller lock-x scrollbar-y use-pullup :pullup-config="pullUpScroller.pullupConfig" height="280px" @pullup:loading="loadProduct">
         <div>
-          <group v-for="productItem in productsData.list">
+          <group v-for="productItem in productsData.getProducts.list">
             <a class="weui_cell" v-link="">
               <div class="weui_cell_hd">
                 <img alt="产品图片">
@@ -35,7 +35,7 @@
         </div>
       </scroller>
     </div>
-    <p :show.sync="alert.showNoHanderMsg">{{alert.msgNoHandled}}</p>
+    <alert :show.sync="alert.showNoHanderMsg" button-text="确认">{{alert.msgNoHandled}}</alert>
   </div>
   <x-button @click="addProduct">添加商品</x-button>
 </div>
@@ -78,8 +78,11 @@ export default {
         list: ["全部", "出售商品", "停售商品"]
       },
       productsData: {
-        end: null,
-        list: []
+        getProducts:{
+          end: null,
+          list: []
+        },
+        page: null
       },
       showModel: {
         showProductContainer: false,
@@ -105,15 +108,37 @@ export default {
       console.log("选择:" + item)
     },
     loadProduct(uuid) {
-      console.log("加载更多")
+      var that = this
+      this.alert.showNoHanderMsg = false
+      this.alert.msgNoHandled = null
+
       setTimeout(() => {
-        if (this.productsData.end == false) {
+        if (this.productsData.end) {
           this.$broadcast('pullup:done', uuid)
           this.alert.showNoHanderMsg = true
           this.alert.msgNoHandled = "亲，已加载完了"
         } else {
           setTimeout(() => {
             this.$broadcast('pullup:reset', uuid)
+
+            pmpProductAPI.getProducts({
+              page: that.productsData.page,
+              count: 2
+            }).then(function(result) {
+              if (result.list.length == 0) {
+                that.alert.showNoHanderMsg = true
+                that.alert.msgNoHandled = "亲，已加载完了"
+              } else {
+                console.log(JSON.stringify(result))
+                result.list.map
+                result.list.map((o) => {
+                  that.productsData.getProducts.list.push(o)
+                })
+                that.productsData.getProducts.end = result.end
+                that.productsData.page += 1
+              }
+              that.showModel.showProductContainer = true
+            })
           }, 10)
         }
       }, 2000)
@@ -127,13 +152,16 @@ export default {
   },
   ready() {
     var that = this
-    pmpProductAPI.getProducts().then(function(result) {
+    pmpProductAPI.getProducts({
+      count: 2
+    }).then(function(result) {
       if (result.list.length == 0) {
         that.showModel.showNoProduct = true
       } else {
         console.log(JSON.stringify(result))
-        that.productsData = result
+        that.productsData.getProducts = result
         that.showModel.showNoProduct = false
+        that.productsData.page = 1
       }
       that.showModel.showProductContainer = true
     })
