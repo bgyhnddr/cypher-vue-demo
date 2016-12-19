@@ -20,7 +20,7 @@
           <group v-for="productItem in productsData.getProducts.list">
             <a class="weui_cell" v-link="">
               <div class="weui_cell_hd">
-                <img alt="产品图片">
+                <img src="{{'/service/public/upload/getAttachment?id=' + productItem.pmp_variants[0].pmp_variant_images[0].attachment_id}}" width="50px" height="50px" alt="产品图片">
               </div>
               <div class="weui_cell_bd weui_cell_primary">
                 <p>{{productItem.name}}</p>
