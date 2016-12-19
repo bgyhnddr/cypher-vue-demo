@@ -269,7 +269,8 @@ var getBrandId = (token) => {
   var pmp_brand = require('../../db/models/pmp_brand')
   return pmp_brand.findOne({
     where: {
-      access_token: token
+      access_token: token,
+      status: "ACT"
     }
   }).then((result) => {
     if (result != null) {
