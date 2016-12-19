@@ -24,10 +24,7 @@
         </div>
         <div class="weui_cell_ft" :class="{'with_arrow': true}"></div>
       </div>
-      <div class="weui_cell" v-if="BtnFlag" @click="addDescribe">
-        <x-button plain>添加商品规格介绍</x-button>
-      </div>
-      <div class="weui_cell" v-if="!BtnFlag">
+      <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
           <p>商品描述</p>
           <x-textarea :max="200" placeholder="请输入商品描述" :value.sync = "ProductInfo.description"></x-textarea>
@@ -72,7 +69,6 @@ export default {
   data() {
     return {
       showMainPage:true,
-      BtnFlag: true,
       ProductInfo: {
         "id": "",
         "pmp_brand_id": "",
@@ -91,9 +87,6 @@ export default {
     },
     EditPrice(){
       this.showMainPage = false
-    },
-    addDescribe() {
-      this.BtnFlag = false
     },
     submitProduct(){
       console.log(this.ProductInfo)

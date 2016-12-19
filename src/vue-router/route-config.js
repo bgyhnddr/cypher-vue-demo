@@ -157,8 +157,8 @@ export function configRouter(router) {
     '/productManagement/productSetting': {
       component: require('../components/PMP/ProductSetting.vue')
     },
-    '/productManagement/addProduct': {
-      component: require('../components/PMP/AddProduct.vue')
+    '/productManagement/editProduct': {
+      component: require('../components/PMP/EditProduct.vue')
     },
     '/productManagement': {
       component: require('../components/PMP/ProductManagement.vue')
