@@ -1,6 +1,7 @@
 <template>
 <div>
-  <x-header :left-options="leftOptions" @click="headerGoBack">我的货品</x-header>
+  <x-header :left-options="leftOptions">我的货品</x-header>
+  <div slot="left" @click="headerGoBack">&lt; 返回</div>
   <div @click="openSearchComponent">
     <img alt="搜索按钮" />
   </div>
@@ -20,7 +21,7 @@
           <group v-for="productItem in productsData.getProducts.list">
             <a class="weui_cell" v-link="">
               <div class="weui_cell_hd">
-                <img alt="产品图片">
+                <img src="{{'/service/public/upload/getAttachment?id=' + productItem.pmp_variants[0].pmp_variant_images[0].attachment_id}}" width="50px" height="50px" alt="产品图片">
               </div>
               <div class="weui_cell_bd weui_cell_primary">
                 <p>{{productItem.name}}</p>
@@ -40,6 +41,7 @@
     <x-button @click="addProduct">添加商品</x-button>
   </div>
   <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+</div>
 </template>
 
 <script>
@@ -68,8 +70,8 @@ export default {
   data() {
     return {
       leftOptions: {
-        showBack: true,
-        backText: "返回",
+        showBack: false,
+        backText: null,
         preventGoBack: false
       },
       tabItems: {
