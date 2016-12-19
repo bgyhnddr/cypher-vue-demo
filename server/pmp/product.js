@@ -11,9 +11,11 @@ var exec = {
     var on_sell = req.query.on_sell
 
     var pmp_product = require('../../db/models/pmp_product')
+    var pmp_product_price = require('../../db/models/pmp_product_price')
     var pmp_variant = require('../../db/models/pmp_variant')
     var pmp_variant_image = require('../../db/models/pmp_variant_image')
     pmp_product.hasMany(pmp_variant)
+    pmp_product.hasMany(pmp_product_price)
     pmp_variant.hasMany(pmp_variant_image)
 
     var where = {
@@ -260,7 +262,7 @@ var exec = {
         return Promise.all(productPriceUpsertList)
       }
     }).then(() => {
-      return "OK"
+      return obj.id
     })
   }
 }
