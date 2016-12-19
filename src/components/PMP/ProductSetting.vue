@@ -115,30 +115,25 @@ export default {
     chooseTabItem(item) {
       var that = this
 
-      console.log("选择:" + item + "======" + this.productsData.chooseTab)
+      this.productsData.chooseTab = item
+      that.showModel.showProductContainer = false
 
-      if (typeof(this.productsData.chooseTab) != typeof(item) || this.productsData.chooseTab != item) {
-        this.productsData.chooseTab = item
-        that.showModel.showProductContainer = false
+      pmpProductAPI.getProducts({
+        page: 0,
+        on_sell: this.productsData.chooseTab
+      }).then(function(result) {
+        if (result.list.length == 0) {
+          that.showModel.showNoProduct = true
+        } else {
+          that.productsData.getProducts.end = result.end
+          that.productsData.getProducts.list = result.list
+          that.productsData.page = 1
 
-        pmpProductAPI.getProducts({
-          page: 0,
-          on_sell: this.productsData.chooseTab
-        }).then(function(result) {
-          console.log(JSON.stringify(result))
-          if (result.list.length == 0) {
-            that.showModel.showNoProduct = true
-          } else {
-            that.productsData.getProducts.end = result.end
-            that.productsData.getProducts.list = result.list
-            that.productsData.page = 1
+          that.showModel.showNoProduct = false
+        }
+        that.showModel.showProductContainer = true
+      })
 
-            that.showModel.showNoProduct = false
-          }
-          that.showModel.showProductContainer = true
-        })
-
-      }
     },
     loadProduct(uuid) {
       var that = this
