@@ -121,7 +121,7 @@ export default {
         }
       }, {
         title: '我的货品',
-        link: '/MyProduct',
+        link: '/productManagement',
         iconhref: '/static/TestIMG/goods.png',
         isShow: true
       },{

@@ -91,9 +91,6 @@ router.beforeEach((tran) => {
   } else if (FirstPath == "test") {
     tran.next()
     return
-  } else if (FirstPath == "productManagement") {
-    tran.next()
-    return
   }
 
   function CheckInfo() {
@@ -162,7 +159,7 @@ router.beforeEach((tran) => {
             break
 
         }
-      } else if (FirstPath == "MyProduct") {
+      } else if (FirstPath == "productManagement") {
         tran.next()
       } else if (path == '/index') {
         router.go('homePage')
