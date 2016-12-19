@@ -357,7 +357,7 @@ table.platform-message p:nth-child(1) {
 .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo h4 {
     color: gray;
 }
-.homepage-icon .vux-flexbox-item:nth-child(5) .flex-demo button img,
+
 .homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo button img,
 .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo button img,
 .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo button img {
@@ -376,7 +376,7 @@ table.platform-message p:nth-child(1) {
 
     width: 61%!important;
 }
-.homepage-icon .vux-flexbox-item:nth-child(5) .flex-demo,
+
 .homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo,
 .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo,
 .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo {
