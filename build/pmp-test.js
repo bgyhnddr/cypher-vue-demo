@@ -32,7 +32,8 @@ Promise.all([
         app_key: "123",
         app_secret: "123",
         name: "测试brand",
-        company: "测试公司"
+        company: "测试公司",
+        status: "ACT"
       }),
       pmp_specification_option.create({
         pmp_brand_id: 1,
