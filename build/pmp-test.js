@@ -60,11 +60,17 @@ Promise.all([
       pmp_product.bulkCreate([{
         pmp_brand_id: 1,
         name: "测试商品1",
-        description: "测试商品1描述"
+        description: "测试商品1描述",
+        on_sell: true
       }, {
         pmp_brand_id: 1,
         name: "测试商品2",
-        description: "测试商品2描述"
+        description: "测试商品2描述",
+        on_sell: false
+      }, {
+        pmp_brand_id: 1,
+        name: "测试商品3",
+        description: "测试商品3描述"
       }])
     ]),
     pmp_variant.bulkCreate([{
@@ -141,14 +147,44 @@ Promise.all([
   }
 
   Promise.resolve("beginTest").then(() => {
-    console.log("\n测试getProducts")
+    console.log("\n测试getProducts获取所有商品")
     return testfunction("getProducts", {
       pmp_brand_id: "1",
       filterKey: "",
       page: "0",
       count: "10"
     }).then((result) => {
-      if (result.list.length == 2) {
+      if (result.list.length == 3) {
+        console.log("通过")
+      } else {
+        console.log("不通过")
+      }
+    })
+  }).then(() => {
+    console.log("\n测试getProducts获取on_sell商品")
+    return testfunction("getProducts", {
+      pmp_brand_id: "1",
+      filterKey: "",
+      page: "0",
+      count: "10",
+      on_sell: true
+    }).then((result) => {
+      if (result.list.length == 1 && result.list[0].on_sell) {
+        console.log("通过")
+      } else {
+        console.log("不通过")
+      }
+    })
+  }).then(() => {
+    console.log("\n测试getProducts获取非on_sell商品")
+    return testfunction("getProducts", {
+      pmp_brand_id: "1",
+      filterKey: "",
+      page: "0",
+      count: "10",
+      on_sell: false
+    }).then((result) => {
+      if (result.list.length == 1 && !result.list[0].on_sell) {
         console.log("通过")
       } else {
         console.log("不通过")
@@ -218,10 +254,10 @@ Promise.all([
     })
   }).then(() => {
     console.log("\n测试submitProduct")
-    console.log("\n创建测试商品3")
+    console.log("\n创建测试商品")
     return testfunction("submitProduct", {
       pmp_brand_id: 1,
-      name: "测试商品3"
+      name: "测试商品"
     }).then(() => {
       return testfunction("getProducts", {
         pmp_brand_id: "1",
@@ -230,22 +266,22 @@ Promise.all([
         count: "10"
       })
     }).then((result) => {
-      if (result.list.length == 3) {
+      if (result.list.length == 4) {
         console.log("通过")
       } else {
         console.log(result)
         console.log("不通过")
       }
     }).then(() => {
-      console.log("\n修改商品3名字为测试商品3改")
+      console.log("\n修改测试商品名字为测试商品改")
       return testfunction("submitProduct", {
-        id: "3",
-        name: "测试商品3改"
+        id: "4",
+        name: "测试商品改"
       }).then(() => {
         return testfunction("getProduct", {
-          id: "3"
+          id: "4"
         }).then((result) => {
-          if (result.name == "测试商品3改") {
+          if (result.name == "测试商品改") {
             console.log("通过")
           } else {
             console.log(result)
@@ -254,15 +290,15 @@ Promise.all([
         })
       })
     }).then(() => {
-      console.log("\n为测试商品3改添加一个规格")
+      console.log("\n为测试商品改添加一个规格")
       return testfunction("submitProduct", {
-        id: "3",
+        id: "4",
         pmp_variants: [{
           name: "测试规格"
         }]
       }).then(() => {
         return testfunction("getProduct", {
-          id: "3"
+          id: "4"
         }).then((result) => {
           if (result.pmp_variants.length > 0 && result.pmp_variants[0].name == "测试规格") {
             console.log("通过")
@@ -274,9 +310,9 @@ Promise.all([
         })
       })
     }).then((vid) => {
-      console.log("\n为测试商品3规格添加一个图片")
+      console.log("\n为测试商品规格添加一个图片")
       return testfunction("submitProduct", {
-        id: "3",
+        id: "4",
         pmp_variants: [{
           id: vid,
           pmp_variant_images: [{
@@ -285,7 +321,7 @@ Promise.all([
         }]
       }).then(() => {
         return testfunction("getProduct", {
-          id: "3"
+          id: "4"
         }).then((result) => {
           if (result.pmp_variants.length > 0 &&
             result.pmp_variants[0].name == "测试规格" &&
@@ -300,9 +336,9 @@ Promise.all([
         })
       })
     }).then((vid) => {
-      console.log("\n为测试商品3规格添加一个型号")
+      console.log("\n为测试商品规格添加一个型号")
       return testfunction("submitProduct", {
-        id: "3",
+        id: "4",
         pmp_variants: [{
           id: vid,
           pmp_specifications: [{
@@ -311,7 +347,7 @@ Promise.all([
         }]
       }).then(() => {
         return testfunction("getProduct", {
-          id: "3"
+          id: "4"
         }).then((result) => {
           if (result.pmp_variants.length > 0 &&
             result.pmp_variants[0].name == "测试规格" &&
@@ -325,9 +361,9 @@ Promise.all([
         })
       })
     }).then((vid) => {
-      console.log("\n为测试商品3添加一个标签")
+      console.log("\n为测试商品添加一个标签")
       return testfunction("submitProduct", {
-        id: "3",
+        id: "4",
         pmp_product_labels: [{
           pmp_label: {
             name: "新增标签"
@@ -335,7 +371,7 @@ Promise.all([
         }]
       }).then(() => {
         return testfunction("getProduct", {
-          id: "3"
+          id: "4"
         }).then((result) => {
           if (result.pmp_product_labels.length > 0 &&
             result.pmp_product_labels[0].pmp_label.name == "新增标签") {
@@ -347,9 +383,9 @@ Promise.all([
         })
       })
     }).then((vid) => {
-      console.log("\n为测试商品3添加一个价格")
+      console.log("\n为测试商品添加一个价格")
       return testfunction("submitProduct", {
-        id: "3",
+        id: "4",
         pmp_product_prices: [{
           brand_role_code: "1",
           price: "1",
@@ -357,7 +393,7 @@ Promise.all([
         }]
       }).then(() => {
         return testfunction("getProduct", {
-          id: "3"
+          id: "4"
         }).then((result) => {
           if (result.pmp_product_prices.length > 0 &&
             result.pmp_product_prices[0].price_unit == "RMB") {
