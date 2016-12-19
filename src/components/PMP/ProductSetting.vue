@@ -41,6 +41,7 @@
     <x-button @click="addProduct">添加商品</x-button>
   </div>
   <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+</div>
 </template>
 
 <script>
