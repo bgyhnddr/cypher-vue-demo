@@ -1,15 +1,15 @@
 <template>
 <div>
-  <x-header :left-options="leftOptions">我的货品</x-header>
+  <x-header :left-options="leftOptions" @click="headerGoBack">我的货品</x-header>
   <div @click="openSearchComponent">
     <img alt="搜索按钮" />
   </div>
 </div>
 <div>
   <tab>
-    <tab-item :selected="tabItems.default === item" v-for="item in tabItems.list" @click="chooseTabItem(item)">{{item}}</tab-item>
+    <tab-item :selected="tabItems.default === item.key" v-for="item in tabItems.list" @click="chooseTabItem(item.value)">{{item.key}}</tab-item>
   </tab>
-  <div v-show="showModel.showProductContainer">
+  <div v-if="showModel.showProductContainer">
     <div v-if="showModel.showNoProduct">
       <p>没有任何商品哦~</p>
       <p>赶快去添加吧</p>
@@ -17,7 +17,7 @@
     <div v-else>
       <scroller lock-x scrollbar-y use-pullup :pullup-config="pullUpScroller.pullupConfig" height="280px" @pullup:loading="loadProduct">
         <div>
-          <group v-for="productItem in productsData.list">
+          <group v-for="productItem in productsData.getProducts.list">
             <a class="weui_cell" v-link="">
               <div class="weui_cell_hd">
                 <img alt="产品图片">
@@ -35,11 +35,11 @@
         </div>
       </scroller>
     </div>
-    <p :show.sync="alert.showNoHanderMsg">{{alert.msgNoHandled}}</p>
   </div>
-  <x-button @click="addProduct">添加商品</x-button>
-</div>
-<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+  <div>
+    <x-button @click="addProduct">添加商品</x-button>
+  </div>
+  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -63,8 +63,7 @@ export default {
     XButton,
     Tab,
     TabItem,
-    Scroller,
-    Alert
+    Scroller
   },
   data() {
     return {
@@ -75,11 +74,24 @@ export default {
       },
       tabItems: {
         default: "全部",
-        list: ["全部", "出售商品", "停售商品"]
+        list: [{
+          key: "全部",
+          value: undefined
+        }, {
+          key: "出售商品",
+          value: 1
+        }, {
+          key: "停售商品",
+          value: 0
+        }]
       },
       productsData: {
-        end: null,
-        list: []
+        getProducts: {
+          end: null,
+          list: []
+        },
+        page: 0,
+        chooseTab: null
       },
       showModel: {
         showProductContainer: false,
@@ -93,30 +105,62 @@ export default {
           upContent: '上拉加载更多',
           loadingContent: '加载中...'
         }
-      },
-      alert: {
-        showNoHanderMsg: false,
-        msgNoHandled: null
       }
     }
   },
   methods: {
+    headerGoBack() {
+      this.$route.router.go("/productManagement")
+    },
     chooseTabItem(item) {
-      console.log("选择:" + item)
+      var that = this
+
+      this.productsData.chooseTab = item
+      that.showModel.showProductContainer = false
+
+      pmpProductAPI.getProducts({
+        page: 0,
+        on_sell: this.productsData.chooseTab
+      }).then(function(result) {
+        if (result.list.length == 0) {
+          that.showModel.showNoProduct = true
+        } else {
+          that.productsData.getProducts.end = result.end
+          that.productsData.getProducts.list = result.list
+          that.productsData.page = 1
+
+          that.showModel.showNoProduct = false
+        }
+        that.showModel.showProductContainer = true
+      })
+
     },
     loadProduct(uuid) {
-      console.log("加载更多")
-      setTimeout(() => {
-        if (this.productsData.end == false) {
-          this.$broadcast('pullup:done', uuid)
-          this.alert.showNoHanderMsg = true
-          this.alert.msgNoHandled = "亲，已加载完了"
-        } else {
-          setTimeout(() => {
-            this.$broadcast('pullup:reset', uuid)
-          }, 10)
-        }
-      }, 2000)
+      var that = this
+
+      pmpProductAPI.getProducts({
+        page: this.productsData.page,
+        on_sell: this.productsData.chooseTab
+      }).then(function(result) {
+
+        setTimeout(() => {
+          if (result.list.length == 0) {
+            that.$broadcast('pullup:done', uuid)
+          } else {
+            setTimeout(() => {
+              that.$broadcast('pullup:reset', uuid)
+
+              result.list.map((o) => {
+                that.productsData.getProducts.list.push(o)
+              })
+              that.productsData.getProducts.end = result.end
+              that.productsData.page += 1
+
+            }, 10)
+          }
+        }, 2000)
+
+      })
     },
     addProduct() {
       console.log("添加商品")
@@ -126,17 +170,7 @@ export default {
     }
   },
   ready() {
-    var that = this
-    pmpProductAPI.getProducts().then(function(result) {
-      if (result.list.length == 0) {
-        that.showModel.showNoProduct = true
-      } else {
-        console.log(JSON.stringify(result))
-        that.productsData = result
-        that.showModel.showNoProduct = false
-      }
-      that.showModel.showProductContainer = true
-    })
+    this.chooseTabItem()
   }
 }
 </script>
