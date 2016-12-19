@@ -1,6 +1,7 @@
 <template>
 <div>
-  <x-header :left-options="leftOptions" @click="headerGoBack">我的货品</x-header>
+  <x-header :left-options="leftOptions">我的货品</x-header>
+  <div slot="left" @click="headerGoBack">&lt; 返回</div>
   <div @click="openSearchComponent">
     <img alt="搜索按钮" />
   </div>
@@ -68,8 +69,8 @@ export default {
   data() {
     return {
       leftOptions: {
-        showBack: true,
-        backText: "返回",
+        showBack: false,
+        backText: null,
         preventGoBack: false
       },
       tabItems: {
