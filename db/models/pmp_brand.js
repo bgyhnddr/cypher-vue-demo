@@ -4,8 +4,8 @@ var sequelize = require('../sequelize')
 var pmp_brand = sequelize.define(
   'pmp_brand', {
     id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
       primaryKey: true
     },
     access_token: Sequelize.STRING(128),
