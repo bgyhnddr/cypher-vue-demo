@@ -81,11 +81,8 @@ export default {
     ProductInfo: {
       type: Object
     },
-    showMainPage: {
-      type: Boolean
-    },
-    showEditProductLabelModel: {
-      type: Boolean
+    currentActive:{
+      type: String
     }
   },
   data() {
@@ -112,8 +109,7 @@ export default {
       this.inputDate.chooseLabelItems = []
       this.inputDate.inputLabel = null
       this.showInputModel = true
-      this.showMainPage = true
-      this.showEditProductLabelModel = false
+      this.currentActive = "MainPage"
     },
     getHistoryLabels() {
       var that = this
