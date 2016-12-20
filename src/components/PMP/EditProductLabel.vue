@@ -227,10 +227,17 @@ export default {
 </script>
 <style lang="less">
 .checker-item {
-    border: 1px solid #ececec;
-    padding: 5px 15px;
+    width: 100px;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    margin-right: 6px;
 }
 .checker-item-selected {
-    border: 1px solid green;
+    background: #ffffff url("/static/TestIMG/checker-active.png") no-repeat right bottom;
+    border-color: #ff4a00;
 }
 </style>
