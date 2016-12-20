@@ -77,6 +77,7 @@ export default {
   props: {
     ProductInfo: {
       type: Object
+      
     },
     showMainPage: {
       type: Boolean
