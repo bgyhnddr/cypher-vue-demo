@@ -59,6 +59,17 @@ export default {
     CheckerItem,
     Alert
   },
+  props: {
+    productInfo: {
+      type: Object
+    },
+    showMainPage: {
+      type: Boolean
+    },
+    showEditProductLabelModel:{
+      type: Boolean
+    }
+  },
   data() {
     return {
       leftOptions: {
@@ -80,6 +91,8 @@ export default {
   methods: {
     headerGoBack() {
       console.log("返回编辑商品首页")
+      this.showMainPage = true
+      this.showEditProductLabelModel = false
     },
     getHistoryLabels() {
       var that = this
@@ -104,7 +117,7 @@ export default {
     edit() {
       console.log("编辑")
     },
-    chooseHistoryLabel(historyLabelItem){
+    chooseHistoryLabel(historyLabelItem) {
       console.log("选择" + historyLabelItem.name)
 
 
