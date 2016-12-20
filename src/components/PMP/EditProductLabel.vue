@@ -5,32 +5,47 @@
   <div @click="headerGoBack">完成</div>
 </div>
 <div>
-  <flexbox :gutter="0">
-    <flexbox-item :span="1/2">
-      <x-input class="weui_cell_primary" title="" :value.sync="inputDate.inputLabel" placeholder="请输入标签" :show-clear=false :required="false"></x-input>
-    </flexbox-item>
-    <flexbox-item :span="1/4">
-      <div class="flex-demo">
-        <x-button type="primary" @click="add">添加</x-button>
-      </div>
-    </flexbox-item>
-    <flexbox-item :span="1/4">
-      <div class="flex-demo">
-        <x-button type="primary" @click="edit">编辑</x-button>
-      </div>
-    </flexbox-item>
-  </flexbox>
+  <div v-if="showInputModel">
+    <flexbox :gutter="0">
+      <flexbox-item :span="1/2">
+        <x-input class="weui_cell_primary" title="" :value.sync="inputDate.inputLabel" placeholder="请输入标签" :show-clear=false :required="false"></x-input>
+      </flexbox-item>
+      <flexbox-item :span="1/4">
+        <div>
+          <x-button type="primary" @click="add">添加</x-button>
+        </div>
+      </flexbox-item>
+      <flexbox-item :span="1/4">
+        <div>
+          <x-button type="primary" @click="edit">编辑</x-button>
+        </div>
+      </flexbox-item>
+    </flexbox>
+  </div>
+  <div v-else>
+    <flexbox :gutter="0">
+      <flexbox-item :span="1/4">
+        <div>
+          <x-button type="primary" @click="remove">删除</x-button>
+        </div>
+      </flexbox-item>
+      <flexbox-item :span="1/4">
+        <div>
+          <x-button type="primary" @click="cancel">取消</x-button>
+        </div>
+      </flexbox-item>
+    </flexbox>
+  </div>
   <div>
-    <checker :value.sync="inputDate.chooseCheckItem" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
-      <checker-item v-for="labelItem in historyLabels" :value="labelItem.name">{{labelItem.name}}</checker-item>
+    <checker :value.sync="inputDate.chooseLabelItems" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
+      <checker-item v-for="productLabelItem in productInfo.pmp_product_labels" :value="productLabelItem">{{productLabelItem}}</checker-item>
     </checker>
   </div>
   <div>
     <p>历史标签</p>
-    <button v-for="labelItem in historyLabels" @click="chooseHistoryLabel(labelItem)">{{labelItem.name}}</button>
+    <button :id.sync="labelItem.id" v-for="labelItem in historyLabels" @click="chooseHistoryLabel(labelItem)">{{labelItem.name}}</button>
   </div>
 </div>
-
 <div>
   <alert :show.sync="alert.showErrorNoHandled" button-text="确认">{{alert.errorMsgNoHandled}}</alert>
 </div>
@@ -61,12 +76,35 @@ export default {
   },
   props: {
     productInfo: {
-      type: Object
+      id: {
+        type: String
+      },
+      pmp_brand_id: {
+        type: String
+      },
+      name: {
+        type: String
+      },
+      on_sell: {
+        type: Boolean
+      },
+      description: {
+        type: String
+      },
+      pmp_variants: {
+        type: Array
+      },
+      pmp_product_labels: {
+        type: Array
+      },
+      pmp_product_prices: {
+        type: Array
+      }
     },
     showMainPage: {
       type: Boolean
     },
-    showEditProductLabelModel:{
+    showEditProductLabelModel: {
       type: Boolean
     }
   },
@@ -77,9 +115,10 @@ export default {
         backText: null,
         preventGoBack: false
       },
+      showInputModel: true,
       inputDate: {
-        label: null,
-        chooseCheckItem: [],
+        inputLabel: null,
+        chooseLabelItems: [],
       },
       historyLabels: null,
       alert: {
@@ -90,38 +129,127 @@ export default {
   },
   methods: {
     headerGoBack() {
-      console.log("返回编辑商品首页")
+      this.showInputModel = true
       this.showMainPage = true
       this.showEditProductLabelModel = false
     },
     getHistoryLabels() {
       var that = this
       pmpProductAPI.getLabels().then(function(result) {
-        console.log(JSON.stringify(result))
         that.historyLabels = result
+      }).catch(function(err) {
+        this.alert.showErrorNoHandled = true
+        this.alert.errorMsgNoHandled = "读取我的所有品类标签异常"
       })
     },
     add() {
-      console.log("添加")
+      var that = this
+      var addOperationFlag = false
+
       if (this.inputDate.inputLabel == null || this.inputDate.inputLabel.trim() == "") {
         this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "请输入标签"
+        this.alert.errorMsgNoHandled = "请输入品类标签名"
       } else if (this.inputDate.inputLabel.trim().length > 15) {
         this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "您所输入的标签超过15个字符，请再次编辑"
+        this.alert.errorMsgNoHandled = "您所输入的品类标签超过15个字符"
       } else {
-        var inputLabel = this.inputDate.inputLabel.trim()
-        console.log(inputLabel)
+        if (this.checkLabelItemLength()) {
+          that.alert.showErrorNoHandled = true
+          that.alert.errorMsgNoHandled = "标签最多可以设置5个"
+        } else {
+          var inputLabel = this.inputDate.inputLabel.trim()
+
+          this.productInfo.pmp_product_labels.map((item) => {
+            if (item == inputLabel) {
+              that.inputDate.inputLabel = null
+
+              that.alert.showErrorNoHandled = true
+              that.alert.errorMsgNoHandled = "已添加此品类标签"
+
+              addOperationFlag = true
+            }
+          })
+
+          if (!addOperationFlag) {
+            that.inputDate.inputLabel = null
+            this.productInfo.pmp_product_labels.push(inputLabel)
+          }
+        }
       }
     },
     edit() {
-      console.log("编辑")
+      if (this.productInfo.pmp_product_labels.length == 0) {
+        this.alert.showErrorNoHandled = true
+        this.alert.errorMsgNoHandled = "暂无可编辑品类标签，请添加标签"
+      } else {
+        this.showInputModel = false
+      }
+    },
+    remove() {
+      var that = this
+      var removeItems = []
+      var newProductLabels = []
+
+      this.inputDate.chooseLabelItems.map((addItem) => {
+        that.productInfo.pmp_product_labels.map((productItem) => {
+          if (addItem == productItem) {
+            removeItems.push(addItem)
+          }
+        })
+      })
+
+      this.productInfo.pmp_product_labels.map((productItem) => {
+        var findSameItemFlag = false
+        var retentionItem = null
+        removeItems.map((removeItem) => {
+          if (removeItem == productItem) {
+            findSameItemFlag = true
+          }
+        })
+        if (!findSameItemFlag) {
+          newProductLabels.push(productItem)
+        }
+      })
+
+      this.productInfo.pmp_product_labels = newProductLabels
+      this.showInputModel = true
+    },
+    cancel() {
+      this.showInputModel = true
+    },
+    checkLabelItemLength() {
+      if (this.productInfo.pmp_product_labels.length >= 5) {
+        return true
+      } else {
+        return false
+      }
     },
     chooseHistoryLabel(historyLabelItem) {
-      console.log("选择" + historyLabelItem.name)
+      var chooseHistoryLabel = historyLabelItem
+      var addOperationFlag = false
 
+      if (this.checkLabelItemLength()) {
+        this.alert.showErrorNoHandled = true
+        this.alert.errorMsgNoHandled = "标签最多可以设置5个"
+      } else {
+        this.productInfo.pmp_product_labels.map((item) => {
+          if (item == chooseHistoryLabel.name) {
+            document.getElementById(chooseHistoryLabel.id).style.display = "none"
 
+            that.alert.showErrorNoHandled = true
+            that.alert.errorMsgNoHandled = "已添加此品类标签"
+
+            addOperationFlag = true
+          }
+        })
+
+        if (!addOperationFlag) {
+          document.getElementById(chooseHistoryLabel.id).style.display = "none"
+          this.productInfo.pmp_product_labels.push(chooseHistoryLabel.name)
+        }
+      }
     }
+
   },
   ready() {
     this.getHistoryLabels()
