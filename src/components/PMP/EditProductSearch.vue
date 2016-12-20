@@ -103,6 +103,8 @@ export default {
           filterKey: this.keyword.trim()
         }).then(function(result) {
           if (result.list.length == 0) {
+            that.keyword = null
+
             that.alert.showErrorNoHandled = true
             that.alert.errorMsgNoHandled = "无此商品"
           } else {
