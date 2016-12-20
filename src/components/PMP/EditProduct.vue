@@ -8,12 +8,13 @@
     </div>
     <group>
       <div>
-        <x-input placeholder="请输入商品名称" :required="false" :value.sync = "ProductInfo.name"></x-input>
+        <x-input placeholder="请输入商品名称" :required="false" :value.sync="ProductInfo.name"></x-input>
       </div>
       <div class="weui_cell" @click="showEditLabelPage">
         <div class="weui_cell_bd weui_cell_primary">
           <p>品类</p>
-          <p>未添加</p>
+          <p v-if="ProductInfo.pmp_product_labels.length == 0">未添加</p>
+          <p v-for="item in ProductInfo.pmp_product_labels">{{item}}</p>
         </div>
         <div class="weui_cell_ft" :class="{'with_arrow': true}"></div>
       </div>
@@ -27,8 +28,14 @@
       <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
           <p>商品描述</p>
-          <x-textarea :max="200" placeholder="请输入商品描述" :value.sync = "ProductInfo.description"></x-textarea>
+          <x-textarea :max="200" placeholder="请输入商品描述" :value.sync="ProductInfo.description"></x-textarea>
         </div>
+      </div>
+      <div class="weui_cell" v-for="item in ProductInfo.pmp_variants">
+        {{item.name}}
+        <p v-for="size in item.pmp_specifications">{{size}}</p>
+        <p v-if="ProductInfo.on_sell==false">已下架</p>
+        <div class="weui_cell_ft" :class="{'with_arrow': true}"></div>
       </div>
       <div class="weui_cell" v-if="!BtnFlag">
         <x-button plain>添加商品规格</x-button>
@@ -40,9 +47,9 @@
   </div>
   <!-- 子组件页 -->
   <div>
-    <set-product-price v-if="currentActive=='SetPricePage'" :current-active.sync = "currentActive"></set-product-price>
-    <product-operate v-if="currentActive=='OperatePage'" :current-active.sync = "currentActive" :product-info.sync="ProductInfo"></product-operate>
-    <edit-product-label v-if="currentActive=='EditLabelPage'" :current-active.sync = "currentActive" :product-info.sync="ProductInfo"></edit-product-label>
+    <set-product-price v-if="currentActive=='SetPricePage'" :current-active.sync="currentActive"></set-product-price>
+    <product-operate v-if="currentActive=='OperatePage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></product-operate>
+    <edit-product-label v-if="currentActive=='EditLabelPage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></edit-product-label>
   </div>
 </div>
 </template>
@@ -76,7 +83,7 @@ export default {
   },
   data() {
     return {
-      currentActive :"MainPage",
+      currentActive: "MainPage",
       ProductInfo: {
         "id": "",
         "pmp_brand_id": "",
@@ -93,32 +100,57 @@ export default {
     onClickBack() {
       this.$route.router.go('/productManagement/productSetting')
     },
-    showSetPricePage(){
+    showSetPricePage() {
       this.currentActive = "SetPricePage"
     },
     showEditLabelPage() {
       this.currentActive = "EditLabelPage"
     },
-    submitProduct(){
-
+    submitProduct() {
+      console.log(this.ProductInfo)
     }
   },
   ready() {
     var that = this
     var id = that.$route.params.id
-    if(id){
+    if (id) {
       that.currentActive = "OperatePage"
-      pmpProductAPI.getProduct({id:id}).then((o)=>{
-        if(o){
+      pmpProductAPI.getProduct({
+        id: id
+      }).then((o) => {
+        if (o) {
           console.log(o)
+          var specifications = []
+          var images = []
+            // var variants = [{name:"",pmp_specifications:[{name:""}],pmp_variant_images:[{attachment_id:""}]}]
           that.ProductInfo.name = o.name
-          that.ProductInfo.description = o.description
+          that.ProductInfo.pmp_brand_id = o.pmp_brand_id
+          that.ProductInfo.description = o.description == null ? "" : o.description
           that.ProductInfo.on_sell = o.on_sell
-        }else{
+            // that.ProductInfo.pmp_product_prices = o.pmp_product_prices
+          o.pmp_product_labels.forEach((p) => {
+            that.ProductInfo.pmp_product_labels.push(p.pmp_label.name)
+          })
+
+          o.pmp_variants.forEach((z) => {
+            z.pmp_specifications.forEach((e) => {
+              specifications.push(e.name)
+            })
+            z.pmp_variant_images.forEach((c) => {
+              images.push(c.attachment_id)
+            })
+            that.ProductInfo.pmp_variants.push({
+              name: z.name,
+              pmp_specifications: specifications,
+              pmp_variant_images: images
+            })
+          })
+
+        } else {
           console.log('商品读取错误')
         }
       })
-    }else{
+    } else {
       that.currentActive = "MainPage"
     }
   }

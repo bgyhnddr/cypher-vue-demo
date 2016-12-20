@@ -1,3 +1,5 @@
+var moment = require('moment')
+
 function padLeft(nr, n, str){
     return Array(n-String(nr).length+1).join(str||'0')+nr;
 }
@@ -79,6 +81,10 @@ var ProductSpecs = sequelize.define('pmp_product_spec', {
   product_retail_price: Sequelize.STRING,
 },{underscored:true});
 
+var TagViews = sequelize.define('pmp_tag_view', {
+  tagcode_viewer: Sequelize.STRING,
+},{underscored:true});
+
 function packHash(brand_id,week,year,crate_id,pack_id){
   return ((brand_id*1117+week*year+crate_id*11+pack_id*477)%3840+256).toString(16).toUpperCase()
 }
@@ -120,8 +126,8 @@ function calcPack(batch_id, brand_id, crate_startnum, crate_totalnum, crate_size
       tag_type:'B',
       batch_id: batch_id,
       supervisor_code: crate_code,
-      owner_id: '1',
-      product_id: 'none',
+      owner_id: null,
+      product_id: null,
       brand_id: brand_id,
       crate_id: crate_id,
       pack_id: 0,
@@ -143,14 +149,14 @@ function calcPack(batch_id, brand_id, crate_startnum, crate_totalnum, crate_size
         tag_type:'A',
         batch_id: batch_id,
         supervisor_code: crate_code,
-        owner_id: '1',
-        product_id: 'none',
+        owner_id: null,
+        product_id: null,
         brand_id: brand_id,
         crate_id: crate_id,
         pack_id: pack_id,
         week_year: weekyear,
         sold: false,
-        sold_by: '无',
+        sold_by: null,
         brand_name: '贝利龙',
         scan_num: 0,
       })
@@ -264,6 +270,37 @@ function show_pack(packcode){
   })
 }
 
+function show_pack_by(packcode,who){
+  var arr = packcode.split('-')
+  var tag_type = arr[0]
+  if(tag_type!=='A')return Promise.reject('not pack tag')
+
+  return PackTags.findOne({where:{full_code:packcode}})
+  .then(function(tag) {
+    if(tag){
+      if(tag.get('sold')){
+        var tagcode_viewer = packcode+'|'+who
+        return TagViews.findOrCreate({
+          where:{
+            tagcode_viewer:tagcode_viewer
+          }
+        }).then(function(hit){
+          if(hit[0]===null){
+            return tag.increment('scan_num')
+          }else{
+            return Promise.resolve(tag)
+          }
+        })
+      }else{
+        tag.set('product_name','幸运银内裤')
+        return Promise.resolve(tag)
+      }
+    }else{
+      return Promise.reject('no tag '+packcode)
+    }
+  })
+}
+
 
 function sell_pack(packcode){
   var arr = packcode.split('-')
@@ -298,7 +335,7 @@ function pack_sold_by(packcode,who){
       return tag.update({
         sold:true,
         sold_by:who,
-        sold_date:mysqlDateStr(new Date()),
+        sold_date:moment().format('YYYY-MM-DD HH:mm:ss'),
       })
     }else{
       return Promise.reject('no tag '+packcode)
@@ -310,7 +347,7 @@ function pack_takeover(packcode,newowner){
   var arr = packcode.split('-')
   var tag_type = arr[0]
   if(tag_type!=='A')return Promise.reject(packcode+' not pack tag')
-
+  
   return PackTags.findOne({
     where:{full_code:packcode}
   })
@@ -342,7 +379,7 @@ function crate_takeover(cratecode,newowner){
   // var brand_id = parseInt(arr[2])
   // var week_year = arr[3]
   // var crate_id = parseInt(arr[4])
-
+  
   return PackTags.findOne({
     where:{
       full_code:cratecode
@@ -373,7 +410,7 @@ function crate_takeover(cratecode,newowner){
         return packtag
       })
       return Promise.all(all_prom).then(function(out){
-
+        
           var trace_prom = traces.map(function(trace){
             return PackTraces.create(trace)
           })
@@ -386,6 +423,23 @@ function crate_takeover(cratecode,newowner){
   })
 }
 
+function packs_under_crate(cratecode){
+  var arr = cratecode.split('-')
+  var tag_type = arr[0]
+  if(tag_type!=='B')return Promise.reject('not crate tag')
+
+  return PackTags.findAll({
+    where:{
+      supervisor_code:cratecode,
+      tag_type:'A',
+    }
+  }).then(function(tags){
+    return tags.map(function(e){
+      return e.dataValues
+    })
+  })
+}
+
 function crate_product(cratecode,productid){
   var arr = cratecode.split('-')
   var tag_type = arr[0]
@@ -394,7 +448,7 @@ function crate_product(cratecode,productid){
   // var brand_id = parseInt(arr[2])
   // var week_year = arr[3]
   // var crate_id = parseInt(arr[4])
-
+  
   PackTags.findAll({
     where:{
       supervisor_code:cratecode,
@@ -420,6 +474,7 @@ function crate_product(cratecode,productid){
 function clearTestData(){
   return sequelize.sync({force: true})
 }
+
 function initTestData(){
   clearTestData()
   .then(function(){
@@ -450,7 +505,7 @@ function initTestData(){
 
 
 function run(){
-  initTestData()
+  // initTestData()
   var express = require('express')
   var bodyParser = require('body-parser');
   var app = express()
@@ -465,7 +520,7 @@ function run(){
     })
     .catch(function(err){
       res.send(err)
-    });
+    });    
   })
 
   //view all tags in db
@@ -606,6 +661,7 @@ exports.run = run
 exports.genauto_tags = genauto_tags
 exports.clearTestData = clearTestData
 exports.crate_takeover = crate_takeover
+exports.packs_under_crate = packs_under_crate
 exports.pack_takeover = pack_takeover
 exports.pack_sold_by = pack_sold_by
 exports.show_pack = show_pack
