@@ -19,7 +19,7 @@
       <scroller lock-x scrollbar-y use-pullup :pullup-config="pullUpScroller.pullupConfig" height="280px" @pullup:loading="loadProduct">
         <div>
           <group v-for="productItem in productsData.getProducts.list">
-            <a class="weui_cell" v-link="">
+            <a class="weui_cell" v-link="{path: '/productManagement/editProduct/'+ productItem.id}">
               <div class="weui_cell_hd">
                 <img src="{{'/service/public/upload/getAttachment?id=' + productItem.pmp_variants[0].pmp_variant_images[0].attachment_id}}" width="50px" height="50px" alt="产品图片">
               </div>
@@ -165,7 +165,7 @@ export default {
       })
     },
     addProduct() {
-      console.log("添加商品")
+      this.$route.router.go("/productManagement/editProduct")
     },
     openSearchComponent() {
       console.log("打开搜索组件")
