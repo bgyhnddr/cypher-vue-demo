@@ -8,7 +8,7 @@
     </div>
     <Group>
       <div class="weui_cell">
-        <img src="" width="100px" height="100px" alt="产品图片">
+        <img width="100px" height="100px" alt="产品图片">
       </div>
       <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
@@ -31,9 +31,12 @@
         <x-button type="default" @click="editProduct">编辑</x-button>
       </flexbox-item>
       <flexbox-item>
-        <x-button type="default">下架</x-button>
+        <x-button type="default" @click="showConfirm">{{ProductInfo.on_sell == true?"下架":"上架"}}</x-button>
       </flexbox-item>
     </flexbox>
+    <confirm :show.sync="show" title="" confirm-text= "确认" cancel-text="取消" @on-confirm="changeSellMode">
+      <p style="text-align:center;">确定{{ProductInfo.on_sell == true?"下架":"上架"}}该商品吗?</p>
+    </confirm>
   </div>
 </div>
 </template>
@@ -45,8 +48,11 @@ import {
   XHeader,
   Flexbox,
   FlexboxItem,
-  XButton
+  XButton,
+  Confirm
 } from 'vux'
+
+import pmpProductAPI from '../../api/pmp_product'
 
 export default {
   components: {
@@ -55,7 +61,8 @@ export default {
     XHeader,
     Flexbox,
     FlexboxItem,
-    XButton
+    XButton,
+    Confirm
   },
   props: {
     showMainPage: {
@@ -70,21 +77,30 @@ export default {
   },
   data() {
     return {
-
+      show: false
     }
   },
   methods: {
     onClickBack() {
       this.$route.router.go("/productManagement/productSetting")
     },
-    editProduct(){
+    editProduct() {
       this.showMainPage = true
       this.showProductOperate = false
+    },
+    showConfirm(){
+      this.show = true
+    },
+    changeSellMode() {
+      var that = this
+      var id = that.$route.params.id
+      var sellMode = that.ProductInfo.on_sell == true?false:true
+      pmpProductAPI.submitProduct({id:id,on_sell:sellMode}).then(()=>{
+          that.$route.router.go('/productManagement/productSetting')
+      })
     }
   },
-  ready() {
-
-  }
+  ready() {}
 }
 </script>
 <style>

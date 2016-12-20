@@ -83,7 +83,7 @@ export default {
         "id": "",
         "pmp_brand_id": "",
         "name": "",
-        "on_sell": true,
+        "on_sell": null,
         "description": "",
         "pmp_variants": [],
         "pmp_product_labels": [],
@@ -113,6 +113,7 @@ export default {
           console.log(o)
           that.ProductInfo.name = o.name
           that.ProductInfo.description = o.description
+          that.ProductInfo.on_sell = o.on_sell
         }else{
           console.log('商品读取错误')
         }
