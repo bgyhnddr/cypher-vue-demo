@@ -8,13 +8,20 @@
     <x-input class="weui_cell_primary" title='' placeholder="输入搜索商品名称" :value.sync="keyword" :show-clear=false :required="false"></x-input>
     <button @click="search">搜索</button>
   </group>
-  <div v-if="showSearchProductModel">
-    <scroller lock-x scrollbar-y use-pullup :pullup-config="pullUpScroller.pullupConfig" height="280px" @pullup:loading="loadProduct">
+  <div v-if="showModel.showSearchProductModel">
+    <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" height="280px" @pullup:loading="loadProduct">
       <group v-for="productItem in productsData.getProducts.list">
         <cell :title="productItem.name" @click="goToEditProduct(productItem.id)" inline-desc="￥ " value="">
             <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" width="50px" height="50px" alt="产品图片"/>
         </cell>
       </group>
+      <div v-show="showModel.hideScroller" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" >
+        <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
+        <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'" >{{pullUpScroller.pullupConfig.upContent}}</span>
+        <span v-show="pullUpScroller.pullupStatus === 'loading'">
+          <span>{{pullUpScroller.pullupConfig.loadingContent}}</span>
+        </span>
+      </div>
     </scroller>
   </div>
 </div>
@@ -48,7 +55,7 @@ export default {
   },
   watch: {
     'keyword' () {
-      this.showSearchProductModel = false
+      this.showModel.showSearchProductModel = false
     },
   },
   data() {
@@ -58,7 +65,10 @@ export default {
         backText: null,
         preventGoBack: false
       },
-      showSearchProductModel: false,
+      showModel: {
+        showSearchProductModel: false,
+        hideScroller: true,
+      },
       keyword: null,
       productsData: {
         getProducts: {
@@ -90,6 +100,8 @@ export default {
     },
     search() {
       var that = this
+      this.pullUpScroller.pullupStatus = 'default'
+      this.showModel.hideScroller = true
 
       if (this.keyword == null || this.keyword.trim() == "") {
         this.alert.showErrorNoHandled = true
@@ -108,7 +120,11 @@ export default {
             that.productsData.getProducts.list = result.list
             that.productsData.page = 1
 
-            that.showSearchProductModel = true
+            if (result.end) {
+              that.showModel.hideScroller = false
+            }
+
+            that.showModel.showSearchProductModel = true
           }
         }).catch(function(err) {
           that.alert.showCatchError = true
@@ -123,20 +139,17 @@ export default {
       }).then(function(result) {
 
         setTimeout(() => {
-          if (result.list.length == 0) {
+          if (result.end) {
             that.$broadcast('pullup:done', uuid)
           } else {
-            setTimeout(() => {
-              that.$broadcast('pullup:reset', uuid)
-
-              result.list.map((o) => {
-                that.productsData.getProducts.list.push(o)
-              })
-              that.productsData.getProducts.end = result.end
-              that.productsData.page += 1
-
-            }, 10)
+            that.$broadcast('pullup:reset', uuid)
+            that.productsData.page += 1
           }
+
+          result.list.map((o) => {
+            that.productsData.getProducts.list.push(o)
+          })
+          that.productsData.getProducts.end = result.end
         }, 2000)
 
       }).catch(function(err) {
