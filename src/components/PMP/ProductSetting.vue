@@ -1,10 +1,10 @@
 <template>
-<div>
+<div class="vux-demo-header-box wapmain-header" slot="header">
   <x-header :left-options="leftOptions">我的货品</x-header>
-  <div slot="left" class="onclick-back" @click="headerGoBack">&lt; 返回</div>
-  <div @click="openSearchComponent">
-    <img alt="搜索按钮" />
-  </div>
+  <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
+</div>
+<div @click="openSearchComponent">
+  <img alt="搜索按钮" />
 </div>
 <div>
   <tab>

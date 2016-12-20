@@ -1,7 +1,9 @@
 <template>
 <div>
-  <x-header :left-options="leftOptions">添加品类</x-header>
-  <div slot="left" class="onclick-back" @click="headerGoBack">&lt; 返回</div>
+  <div class="vux-demo-header-box wapmain-header" slot="header">
+    <x-header :left-options="leftOptions">添加品类</x-header>
+    <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
+  </div>
   <div @click="headerGoBack">完成</div>
 </div>
 <div>
@@ -79,11 +81,8 @@ export default {
     ProductInfo: {
       type: Object
     },
-    showMainPage: {
-      type: Boolean
-    },
-    showEditProductLabelModel: {
-      type: Boolean
+    currentActive:{
+      type: String
     }
   },
   data() {
@@ -110,8 +109,7 @@ export default {
       this.inputDate.chooseLabelItems = []
       this.inputDate.inputLabel = null
       this.showInputModel = true
-      this.showMainPage = true
-      this.showEditProductLabelModel = false
+      this.currentActive = "MainPage"
     },
     getHistoryLabels() {
       var that = this
