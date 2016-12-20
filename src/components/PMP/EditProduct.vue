@@ -40,7 +40,10 @@
   </div>
   <!-- 子组件页 -->
   <div>
-    <set-product-price v-if="!showMainPage" :show-main-page.sync="showMainPage"></set-product-price>
+    <set-product-price :show-main-page.sync="showMainPage" :show-set-price.sync="showSetPrice"></set-product-price>
+  </div>
+  <div>
+    <product-info :show-main-page.sync="showMainPage" :show-product-info.sync="showProductInfo"></product-info>
   </div>
 </div>
 </template>
@@ -55,6 +58,7 @@ import {
   XTextarea
 } from 'vux'
 import SetProductPrice from './SetProductPrice'
+import ProductInfo from './ProductInfo'
 
 export default {
   components: {
@@ -64,11 +68,15 @@ export default {
     XInput,
     XButton,
     XTextarea,
-    SetProductPrice
+    SetProductPrice,
+    ProductInfo
   },
   data() {
     return {
       showMainPage:true,
+      showProductInfo:false,
+      showSetPrice:false,
+      showSetLabels:false,
       ProductInfo: {
         "id": "",
         "pmp_brand_id": "",
@@ -87,12 +95,17 @@ export default {
     },
     EditPrice(){
       this.showMainPage = false
+      this.showSetPrice = true
     },
     submitProduct(){
       console.log(this.ProductInfo)
     }
   },
   ready() {
+    var id = this.$route.params.id
+    if(id){
+
+    }
   }
 }
 </script>
