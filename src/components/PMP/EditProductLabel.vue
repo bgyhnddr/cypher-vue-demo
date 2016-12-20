@@ -61,8 +61,7 @@ import {
   XButton,
   Checker,
   CheckerItem,
-  Alert,
-  EditProductLabel,
+  Alert
 } from 'vux'
 import pmpProductAPI from '../../api/pmp_product'
 
