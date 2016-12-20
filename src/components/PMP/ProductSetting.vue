@@ -165,7 +165,7 @@ export default {
       })
     },
     addProduct() {
-      console.log("添加商品")
+      this.$route.router.go("/productManagement/editProduct")
     },
     openSearchComponent() {
       console.log("打开搜索组件")
