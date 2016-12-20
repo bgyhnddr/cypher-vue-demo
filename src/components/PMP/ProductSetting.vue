@@ -41,7 +41,6 @@
     <x-button @click="addProduct">添加商品</x-button>
     <alert :show.sync="showCatchError" button-text="确认" @on-hide="errorHandled">{{catchErrorMsg}}</alert>
   </div>
-  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </div>
 </template>
 
@@ -180,9 +179,9 @@ export default {
       this.$route.router.go("/productManagement/editProduct")
     },
     openSearchComponent() {
-      console.log("打开搜索组件")
+      this.$route.router.go("/productManagement/editProductSearch")
     },
-    errorHandled(){
+    errorHandled() {
       this.$route.router.go("/productManagement")
     }
   },

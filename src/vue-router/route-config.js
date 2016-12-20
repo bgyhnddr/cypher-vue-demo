@@ -160,6 +160,9 @@ export function configRouter(router) {
     '/productManagement/editProductLabel': {
       component: require('../components/PMP/EditProductLabel.vue')
     },
+    '/productManagement/editProductSearch': {
+      component: require('../components/PMP/EditProductSearch.vue')
+    },
     '/productManagement/editProduct': {
       component: require('../components/PMP/EditProduct.vue')
     },
