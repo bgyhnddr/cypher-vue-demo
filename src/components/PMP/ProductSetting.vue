@@ -39,6 +39,7 @@
   </div>
   <div>
     <x-button @click="addProduct">添加商品</x-button>
+    <alert :show.sync="showCatchError" button-text="确认" @on-hide="errorHandled">{{catchErrorMsg}}</alert>
   </div>
   <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </div>
@@ -107,6 +108,10 @@ export default {
           upContent: '上拉加载更多',
           loadingContent: '加载中...'
         }
+      },
+      alert: {
+        showCatchError: false,
+        catchErrorMsg: null
       }
     }
   },
@@ -134,6 +139,9 @@ export default {
           that.showModel.showNoProduct = false
         }
         that.showModel.showProductContainer = true
+      }).catch(function(err) {
+        that.alert.showCatchError = true
+        that.alert.catchErrorMsg = "读取我的货品信息异常，请稍后再试"
       })
 
     },
@@ -162,6 +170,9 @@ export default {
           }
         }, 2000)
 
+      }).catch(function(err) {
+        that.alert.showCatchError = true
+        that.alert.catchErrorMsg = "读取我的货品信息异常，请稍后再试"
       })
     },
     addProduct() {
@@ -169,6 +180,9 @@ export default {
     },
     openSearchComponent() {
       console.log("打开搜索组件")
+    },
+    errorHandled(){
+      this.$route.router.go("/productManagement")
     }
   },
   ready() {
