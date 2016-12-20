@@ -21,15 +21,11 @@
           <group v-for="productItem in productsData.getProducts.list">
             <a class="weui_cell" v-link="{path: '/productManagement/editProduct/'+ productItem.id}">
               <div class="weui_cell_hd">
-                <img src="{{'/service/public/upload/getAttachment?id=' + productItem.pmp_variants[0].pmp_variant_images[0].attachment_id}}" width="50px" height="50px" alt="产品图片">
+                <img :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" width="50px" height="50px" alt="产品图片">
               </div>
               <div class="weui_cell_bd weui_cell_primary">
                 <p>{{productItem.name}}</p>
                 <p>￥ </p>
-              </div>
-              <div class="weui_cell_ft" :class="{'with_arrow': true}">
-                <slot name="value"></slot>
-                <slot></slot>
               </div>
             </a>
           </group>
@@ -180,6 +176,9 @@ export default {
     },
     openSearchComponent() {
       this.$route.router.go("/productManagement/editProductSearch")
+    },
+    getProductImgHref(fileId){
+      return '/service/public/upload/getAttachment?id=' + fileId
     },
     errorHandled() {
       this.$route.router.go("/productManagement")
