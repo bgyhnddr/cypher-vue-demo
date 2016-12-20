@@ -107,6 +107,7 @@ export default {
   methods: {
     headerGoBack() {
       this.inputDate.chooseLabelItems = []
+      this.inputDate.inputLabel = null
       this.showInputModel = true
       this.showMainPage = true
       this.showEditProductLabelModel = false
