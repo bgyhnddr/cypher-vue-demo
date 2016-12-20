@@ -10,7 +10,7 @@
       <div>
         <x-input placeholder="请输入商品名称" :required="false" :value.sync = "ProductInfo.name"></x-input>
       </div>
-      <div class="weui_cell" @click="editProductLabelModel">
+      <div class="weui_cell" @click="showEditLabelPage">
         <div class="weui_cell_bd weui_cell_primary">
           <p>品类</p>
           <p>未添加</p>
@@ -41,9 +41,8 @@
   <!-- 子组件页 -->
   <div>
     <set-product-price v-if="currentActive=='SetPricePage'" :current-active.sync = "currentActive"></set-product-price>
-  </div>
-  <div>
     <product-operate v-if="currentActive=='OperatePage'" :current-active.sync = "currentActive" :product-info.sync="ProductInfo"></product-operate>
+    <edit-product-label v-if="currentActive=='EditLabelPage'" :current-active.sync = "currentActive" :product-info.sync="ProductInfo"></edit-product-label>
   </div>
 </div>
 </template>
@@ -97,9 +96,8 @@ export default {
     showSetPricePage(){
       this.currentActive = "SetPricePage"
     },
-    editProductLabelModel() {
-      this.showMainPage = false
-      this.showEditProductLabelModel = true
+    showEditLabelPage() {
+      this.currentActive = "EditLabelPage"
     },
     submitProduct(){
 
