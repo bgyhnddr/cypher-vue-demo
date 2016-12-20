@@ -38,7 +38,7 @@
   </div>
   <div>
     <checker :value.sync="inputDate.chooseLabelItems" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
-      <checker-item v-for="productLabelItem in productInfo.pmp_product_labels" :value="productLabelItem">{{productLabelItem}}</checker-item>
+      <checker-item v-for="productLabelItem in ProductInfo.pmp_product_labels" :value="productLabelItem">{{productLabelItem}}</checker-item>
     </checker>
   </div>
   <div>
@@ -75,31 +75,8 @@ export default {
     Alert
   },
   props: {
-    productInfo: {
-      id: {
-        type: String
-      },
-      pmp_brand_id: {
-        type: String
-      },
-      name: {
-        type: String
-      },
-      on_sell: {
-        type: Boolean
-      },
-      description: {
-        type: String
-      },
-      pmp_variants: {
-        type: Array
-      },
-      pmp_product_labels: {
-        type: Array
-      },
-      pmp_product_prices: {
-        type: Array
-      }
+    ProductInfo: {
+      type: Object
     },
     showMainPage: {
       type: Boolean
@@ -130,6 +107,7 @@ export default {
   methods: {
     headerGoBack() {
       this.inputDate.chooseLabelItems = []
+      this.inputDate.inputLabel = null
       this.showInputModel = true
       this.showMainPage = true
       this.showEditProductLabelModel = false
@@ -160,7 +138,7 @@ export default {
         } else {
           var inputLabel = this.inputDate.inputLabel.trim()
 
-          this.productInfo.pmp_product_labels.map((item) => {
+          this.ProductInfo.pmp_product_labels.map((item) => {
             if (item == inputLabel) {
               that.inputDate.inputLabel = null
 
@@ -173,13 +151,13 @@ export default {
 
           if (!addOperationFlag) {
             that.inputDate.inputLabel = null
-            this.productInfo.pmp_product_labels.push(inputLabel)
+            this.ProductInfo.pmp_product_labels.push(inputLabel)
           }
         }
       }
     },
     edit() {
-      if (this.productInfo.pmp_product_labels.length == 0) {
+      if (this.ProductInfo.pmp_product_labels.length == 0) {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "暂无可编辑品类标签，请添加标签"
       } else {
@@ -192,14 +170,14 @@ export default {
       var newProductLabels = []
 
       this.inputDate.chooseLabelItems.map((addItem) => {
-        that.productInfo.pmp_product_labels.map((productItem) => {
+        that.ProductInfo.pmp_product_labels.map((productItem) => {
           if (addItem == productItem) {
             removeItems.push(addItem)
           }
         })
       })
 
-      this.productInfo.pmp_product_labels.map((productItem) => {
+      this.ProductInfo.pmp_product_labels.map((productItem) => {
         var findSameItemFlag = false
         var retentionItem = null
         removeItems.map((removeItem) => {
@@ -212,7 +190,7 @@ export default {
         }
       })
 
-      this.productInfo.pmp_product_labels = newProductLabels
+      this.ProductInfo.pmp_product_labels = newProductLabels
       this.inputDate.chooseLabelItems = []
       this.showInputModel = true
     },
@@ -221,7 +199,7 @@ export default {
       this.inputDate.chooseLabelItems = []
     },
     checkLabelItemLength() {
-      if (this.productInfo.pmp_product_labels.length >= 5) {
+      if (this.ProductInfo.pmp_product_labels.length >= 5) {
         return true
       } else {
         return false
@@ -235,7 +213,7 @@ export default {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "标签最多可以设置5个"
       } else {
-        this.productInfo.pmp_product_labels.map((item) => {
+        this.ProductInfo.pmp_product_labels.map((item) => {
           if (item == chooseHistoryLabel.name) {
             document.getElementById(chooseHistoryLabel.id).style.display = "none"
 
@@ -248,7 +226,7 @@ export default {
 
         if (!addOperationFlag) {
           document.getElementById(chooseHistoryLabel.id).style.display = "none"
-          this.productInfo.pmp_product_labels.push(chooseHistoryLabel.name)
+          this.ProductInfo.pmp_product_labels.push(chooseHistoryLabel.name)
         }
       }
     }
