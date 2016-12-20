@@ -35,7 +35,7 @@
   </div>
   <div>
     <x-button @click="addProduct">添加商品</x-button>
-    <alert :show.sync="showCatchError" button-text="确认" @on-hide="errorHandled">{{catchErrorMsg}}</alert>
+    <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
   </div>
 </div>
 </template>
