@@ -22,7 +22,7 @@
             <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
           </cell>
         </group>
-        <div v-show="showModel.hideScroller" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" style="position: absolute; width: 100%; height: 40px; bottom: -40px; text-align: center;">
+        <div v-show="showModel.hideScroller" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" >
           <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
           <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'">{{pullUpScroller.pullupConfig.upContent}}</span>
           <span v-show="pullUpScroller.pullupStatus === 'loading'">
