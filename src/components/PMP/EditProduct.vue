@@ -10,7 +10,7 @@
       <div>
         <x-input placeholder="请输入商品名称" :required="false" :value.sync = "ProductInfo.name"></x-input>
       </div>
-      <div class="weui_cell">
+      <div class="weui_cell" @click="editProductLabelModel">
         <div class="weui_cell_bd weui_cell_primary">
           <p>品类</p>
           <p>未添加</p>
@@ -41,9 +41,8 @@
   <!-- 子组件页 -->
   <div>
     <set-product-price :show-main-page.sync="showMainPage" :show-set-price.sync="showSetPrice"></set-product-price>
-  </div>
-  <div>
     <product-operate :show-main-page.sync="showMainPage" :show-product-operate.sync="showProductOperate" :product-info.sync="ProductInfo"></product-operate>
+    <edit-product-label :show-main-page.sync="showMainPage" :show-edit-product-label-model.sync="showEditProductLabelModel"  :product-info.sync="ProductInfo"></edit-product-label>
   </div>
 </div>
 </template>
@@ -61,6 +60,7 @@ import {
 import pmpProductAPI from '../../api/pmp_product'
 import SetProductPrice from './SetProductPrice'
 import ProductOperate from './ProductOperate'
+import EditProductLabel from './EditProductLabel'
 
 export default {
   components: {
@@ -71,12 +71,14 @@ export default {
     XButton,
     XTextarea,
     SetProductPrice,
-    ProductOperate
+    ProductOperate,
+    EditProductLabel
   },
   data() {
     return {
       showMainPage:false,
       showProductOperate:false,
+      showEditProductLabelModel:false,
       showSetPrice:false,
       showSetLabels:false,
       ProductInfo: {
@@ -98,6 +100,10 @@ export default {
     showSetPricePage(){
       this.showMainPage = false
       this.showSetPrice = true
+    },
+    editProductLabelModel() {
+      this.showMainPage = false
+      this.showEditProductLabelModel = true
     },
     submitProduct(){
 
