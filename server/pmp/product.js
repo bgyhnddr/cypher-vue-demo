@@ -31,10 +31,10 @@ var exec = {
     }
 
     return pmp_product.findAndCountAll({
-      include: {
+      include: [{
         model: pmp_variant,
         include: pmp_variant_image
-      },
+      }, pmp_product_price],
       where: where,
       offset: page * count,
       limit: count

@@ -4,11 +4,11 @@ var sequelize = require('../sequelize')
 var pmp_product = sequelize.define(
   'pmp_product', {
     id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
       primaryKey: true
     },
-    pmp_brand_id: Sequelize.INTEGER,
+    pmp_brand_id: Sequelize.UUID,
     name: Sequelize.STRING,
     on_sell: Sequelize.BOOLEAN,
     description: Sequelize.STRING(511)
