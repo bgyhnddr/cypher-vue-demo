@@ -50,6 +50,11 @@ export default {
     XInput,
     Alert
   },
+  watch: {
+    'keyword' () {
+      this.showSearchProductModel = false
+    },
+  },
   data() {
     return {
       leftOptions: {
@@ -89,14 +94,13 @@ export default {
     },
     search() {
       var that = this
-      console.log("搜索")
 
       if (this.keyword == null || this.keyword.trim() == "") {
         this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "输入需要搜索的关键字"
+        this.alert.errorMsgNoHandled = "请输入需要搜索的关键字"
       } else {
         pmpProductAPI.getProducts({
-          filterKey: this.keyword
+          filterKey: this.keyword.trim()
         }).then(function(result) {
           if (result.list.length == 0) {
             that.alert.showErrorNoHandled = true
