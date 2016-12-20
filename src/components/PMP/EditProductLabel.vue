@@ -115,8 +115,8 @@ export default {
       pmpProductAPI.getLabels().then(function(result) {
         that.historyLabels = result
       }).catch(function(err) {
-        this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "读取我的所有品类标签异常"
+        that.alert.showErrorNoHandled = true
+        that.alert.errorMsgNoHandled = "读取我的所有品类标签异常"
       })
     },
     add() {
