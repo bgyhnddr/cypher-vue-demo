@@ -1,7 +1,7 @@
 <template>
 <div>
   <x-header :left-options="leftOptions">我的货品</x-header>
-  <div slot="left" @click="headerGoBack">&lt; 返回</div>
+  <div slot="left" class="onclick-back" @click="headerGoBack">&lt; 返回</div>
   <div @click="openSearchComponent">
     <img alt="搜索按钮" />
   </div>
@@ -66,7 +66,8 @@ export default {
     XButton,
     Tab,
     TabItem,
-    Scroller
+    Scroller,
+    Alert
   },
   data() {
     return {
