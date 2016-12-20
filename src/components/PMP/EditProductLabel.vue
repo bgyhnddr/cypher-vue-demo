@@ -129,6 +129,7 @@ export default {
   },
   methods: {
     headerGoBack() {
+      this.inputDate.chooseLabelItems = []
       this.showInputModel = true
       this.showMainPage = true
       this.showEditProductLabelModel = false
@@ -212,10 +213,12 @@ export default {
       })
 
       this.productInfo.pmp_product_labels = newProductLabels
+      this.inputDate.chooseLabelItems = []
       this.showInputModel = true
     },
     cancel() {
       this.showInputModel = true
+      this.inputDate.chooseLabelItems = []
     },
     checkLabelItemLength() {
       if (this.productInfo.pmp_product_labels.length >= 5) {
