@@ -80,7 +80,7 @@ export default {
     ProductInfo: {
       type: Object
     },
-    currentActive:{
+    currentActive: {
       type: String
     }
   },
@@ -175,20 +175,10 @@ export default {
         })
       })
 
-      this.ProductInfo.pmp_product_labels.map((productItem) => {
-        var findSameItemFlag = false
-        var retentionItem = null
-        removeItems.map((removeItem) => {
-          if (removeItem == productItem) {
-            findSameItemFlag = true
-          }
-        })
-        if (!findSameItemFlag) {
-          newProductLabels.push(productItem)
-        }
+      removeItems.map((removeItem) => {
+        that.ProductInfo.pmp_product_labels.$remove(removeItem)
       })
 
-      this.ProductInfo.pmp_product_labels = newProductLabels
       this.inputDate.chooseLabelItems = []
       this.showInputModel = true
     },
