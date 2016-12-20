@@ -106,6 +106,7 @@ export default {
   },
   methods: {
     headerGoBack() {
+      //
       this.inputDate.chooseLabelItems = []
       this.inputDate.inputLabel = null
       this.showInputModel = true
