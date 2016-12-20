@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- 主页 -->
-  <div v-if="showMainPage">
+  <div v-if="currentActive=='MainPage'">
     <div class="vux-demo-header-box wapmain-header" slot="header">
       <x-header :left-options="{showBack: false}">添加商品</x-header>
       <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
@@ -40,10 +40,10 @@
   </div>
   <!-- 子组件页 -->
   <div>
-    <set-product-price :show-main-page.sync="showMainPage" :show-set-price.sync="showSetPrice"></set-product-price>
+    <set-product-price v-if="currentActive=='SetPricePage'" :current-active.sync = "currentActive"></set-product-price>
   </div>
   <div>
-    <product-operate :show-main-page.sync="showMainPage" :show-product-operate.sync="showProductOperate" :product-info.sync="ProductInfo"></product-operate>
+    <product-operate v-if="currentActive=='OperatePage'" :current-active.sync = "currentActive" :product-info.sync="ProductInfo"></product-operate>
   </div>
 </div>
 </template>
@@ -75,10 +75,7 @@ export default {
   },
   data() {
     return {
-      showMainPage:false,
-      showProductOperate:false,
-      showSetPrice:false,
-      showSetLabels:false,
+      currentActive :"MainPage",
       ProductInfo: {
         "id": "",
         "pmp_brand_id": "",
@@ -96,8 +93,7 @@ export default {
       this.$route.router.go('/productManagement/productSetting')
     },
     showSetPricePage(){
-      this.showMainPage = false
-      this.showSetPrice = true
+      this.currentActive = "SetPricePage"
     },
     submitProduct(){
 
@@ -107,7 +103,7 @@ export default {
     var that = this
     var id = that.$route.params.id
     if(id){
-      that.showProductOperate = true
+      that.currentActive = "OperatePage"
       pmpProductAPI.getProduct({id:id}).then((o)=>{
         if(o){
           console.log(o)
@@ -119,7 +115,7 @@ export default {
         }
       })
     }else{
-      that.showMainPage = true
+      that.currentActive = "MainPage"
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-<div v-show="showProductOperate">
+<div>
   <!-- 主页 -->
   <div>
     <div class="vux-demo-header-box wapmain-header" slot="header">
@@ -65,11 +65,8 @@ export default {
     Confirm
   },
   props: {
-    showMainPage: {
-      type: Boolean
-    },
-    showProductOperate: {
-      type: Boolean
+    currentActive: {
+      type: String
     },
     ProductInfo: {
       type: Object
@@ -85,8 +82,7 @@ export default {
       this.$route.router.go("/productManagement/productSetting")
     },
     editProduct() {
-      this.showMainPage = true
-      this.showProductOperate = false
+      this.currentActive = "MainPage"
     },
     showConfirm(){
       this.show = true
