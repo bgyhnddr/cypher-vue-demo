@@ -1,7 +1,7 @@
 <template>
 <div>
   <x-header :left-options="leftOptions">添加品类</x-header>
-  <div @click="headerGoBack">&lt; 返回</div>
+  <div slot="left" class="onclick-back" @click="headerGoBack">&lt; 返回</div>
   <div @click="headerGoBack">完成</div>
 </div>
 <div>
@@ -60,6 +60,7 @@ import {
   Checker,
   CheckerItem,
   Alert,
+  EditProductLabel,
 } from 'vux'
 import pmpProductAPI from '../../api/pmp_product'
 
