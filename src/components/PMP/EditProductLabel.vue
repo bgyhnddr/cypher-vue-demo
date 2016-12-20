@@ -194,6 +194,7 @@ export default {
       }
     },
     chooseHistoryLabel(historyLabelItem) {
+      var that = this
       var chooseHistoryLabel = historyLabelItem
       var addOperationFlag = false
 
