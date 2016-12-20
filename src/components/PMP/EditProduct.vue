@@ -17,7 +17,7 @@
         </div>
         <div class="weui_cell_ft" :class="{'with_arrow': true}"></div>
       </div>
-      <div class="weui_cell" @click="EditPrice">
+      <div class="weui_cell" @click="showSetPricePage">
         <div class="weui_cell_bd weui_cell_primary">
           <p>商品价格</p>
           <p>设置等级价格目录表</p>
@@ -43,7 +43,7 @@
     <set-product-price :show-main-page.sync="showMainPage" :show-set-price.sync="showSetPrice"></set-product-price>
   </div>
   <div>
-    <product-info :show-main-page.sync="showMainPage" :show-product-info.sync="showProductInfo"></product-info>
+    <product-operate :show-main-page.sync="showMainPage" :show-product-operate.sync="showProductOperate" :product-info.sync="ProductInfo"></product-operate>
   </div>
 </div>
 </template>
@@ -57,8 +57,10 @@ import {
   XButton,
   XTextarea
 } from 'vux'
+
+import pmpProductAPI from '../../api/pmp_product'
 import SetProductPrice from './SetProductPrice'
-import ProductInfo from './ProductInfo'
+import ProductOperate from './ProductOperate'
 
 export default {
   components: {
@@ -69,12 +71,12 @@ export default {
     XButton,
     XTextarea,
     SetProductPrice,
-    ProductInfo
+    ProductOperate
   },
   data() {
     return {
-      showMainPage:true,
-      showProductInfo:false,
+      showMainPage:false,
+      showProductOperate:false,
       showSetPrice:false,
       showSetLabels:false,
       ProductInfo: {
@@ -93,18 +95,30 @@ export default {
     onClickBack() {
       this.$route.router.go('/productManagement/productSetting')
     },
-    EditPrice(){
+    showSetPricePage(){
       this.showMainPage = false
       this.showSetPrice = true
     },
     submitProduct(){
-      console.log(this.ProductInfo)
+
     }
   },
   ready() {
-    var id = this.$route.params.id
+    var that = this
+    var id = that.$route.params.id
     if(id){
-
+      that.showProductOperate = true
+      pmpProductAPI.getProduct({id:id}).then((o)=>{
+        if(o){
+          console.log(o)
+          that.ProductInfo.name = o.name
+          that.ProductInfo.description = o.description
+        }else{
+          console.log('商品读取错误')
+        }
+      })
+    }else{
+      that.showMainPage = true
     }
   }
 }
