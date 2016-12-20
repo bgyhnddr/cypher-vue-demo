@@ -44,8 +44,6 @@
     <product-operate :show-main-page.sync="showMainPage" :show-product-operate.sync="showProductOperate" :product-info.sync="ProductInfo"></product-operate>
     <edit-product-label :show-main-page.sync="showMainPage" :show-edit-product-label-model.sync="showEditProductLabelModel"  :product-info.sync="ProductInfo"></edit-product-label>
   </div>
-  <div>
-      </div>
 </div>
 </template>
 
