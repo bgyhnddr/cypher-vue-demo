@@ -160,6 +160,9 @@ export function configRouter(router) {
     '/productManagement/editProduct': {
       component: require('../components/PMP/EditProduct.vue')
     },
+    '/productManagement/editProduct/:id': {
+      component: require('../components/PMP/EditProduct.vue')
+    },
     '/productManagement': {
       component: require('../components/PMP/ProductManagement.vue')
     },
