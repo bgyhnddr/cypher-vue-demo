@@ -16,7 +16,7 @@
       <p>赶快去添加吧</p>
     </div>
     <div v-else>
-      <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" height="280px" @pullup:loading="loadProduct">
+      <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus"  @pullup:loading="loadProduct">
         <group v-for="productItem in productsData.getProducts.list">
           <cell :title="productItem.name" @click="goToEditProduct(productItem.id)" inline-desc="￥ ">
             <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
