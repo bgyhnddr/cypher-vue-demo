@@ -25,6 +25,16 @@
         </div>
         <div class="weui_cell_ft" :class="{'with_arrow': true}"></div>
       </div>
+      <div class="weui_cell" v-for="item in BrandRole">
+        <flexbox>
+          <flexbox-item>
+            <p>{{item.name}}</p>
+          </flexbox-item>
+          <flexbox-item>
+            <p>{{item.price}}</p>
+          </flexbox-item>
+        </flexbox>
+      </div>
       <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
           <p>商品描述</p>
@@ -61,7 +71,9 @@ import {
   XHeader,
   XInput,
   XButton,
-  XTextarea
+  XTextarea,
+  Flexbox,
+  FlexboxItem
 } from 'vux'
 
 import pmpProductAPI from '../../api/pmp_product'
@@ -79,7 +91,9 @@ export default {
     XTextarea,
     SetProductPrice,
     ProductOperate,
-    EditProductLabel
+    EditProductLabel,
+    Flexbox,
+    FlexboxItem
   },
   data() {
     return {
@@ -93,7 +107,8 @@ export default {
         "pmp_variants": [],
         "pmp_product_labels": [],
         "pmp_product_prices": []
-      }
+      },
+      BrandRole: []
     }
   },
   methods: {
@@ -116,40 +131,57 @@ export default {
     if (id) {
       that.currentActive = "OperatePage"
       pmpProductAPI.getProduct({
-        id: id
-      }).then((o) => {
-        if (o) {
-          console.log(o)
-          var specifications = []
-          var images = []
-            // var variants = [{name:"",pmp_specifications:[{name:""}],pmp_variant_images:[{attachment_id:""}]}]
-          that.ProductInfo.name = o.name
-          that.ProductInfo.pmp_brand_id = o.pmp_brand_id
-          that.ProductInfo.description = o.description == null ? "" : o.description
-          that.ProductInfo.on_sell = o.on_sell
-            // that.ProductInfo.pmp_product_prices = o.pmp_product_prices
-          o.pmp_product_labels.forEach((p) => {
-            that.ProductInfo.pmp_product_labels.push(p.pmp_label.name)
+          id: id
+        }).then((o) => {
+          if (o) {
+            console.log(o)
+            var specifications = []
+            var images = []
+              // var variants = [{name:"",pmp_specifications:[{name:""}],pmp_variant_images:[{attachment_id:""}]}]
+            that.ProductInfo.name = o.name
+            that.ProductInfo.pmp_brand_id = o.pmp_brand_id
+            that.ProductInfo.description = o.description == null ? "" : o.description
+            that.ProductInfo.on_sell = o.on_sell
+              //标签
+            o.pmp_product_labels.forEach((p) => {
+                that.ProductInfo.pmp_product_labels.push(p.pmp_label.name)
+              })
+              //规格
+            o.pmp_variants.forEach((z) => {
+                z.pmp_specifications.forEach((e) => {
+                  specifications.push(e.name)
+                })
+                z.pmp_variant_images.forEach((c) => {
+                  images.push(c.attachment_id)
+                })
+                that.ProductInfo.pmp_variants.push({
+                  name: z.name,
+                  pmp_specifications: specifications,
+                  pmp_variant_images: images
+                })
+              })
+              //价格
+            o.pmp_product_prices.forEach((b) => {
+              that.ProductInfo.pmp_product_prices.push({
+                brand_role_code:b.brand_role_code,
+                price:b.price
+              })
+            })
+          } else {
+            console.log('商品读取错误')
+          }
+        })
+        //获取代理信息，显示代理价格
+        pmpProductAPI.getBrandRoles(this.ProductInfo.pmp_brand_id).then((o)=>{
+          o.forEach((e)=>{
+            that.ProductInfo.pmp_product_prices.filter(z=>z.brand_role_code == e.level).forEach((x)=>{
+              that.BrandRole.push({
+                name:e.name,
+                price:x.price
+              })
+            })
           })
-
-          o.pmp_variants.forEach((z) => {
-            z.pmp_specifications.forEach((e) => {
-              specifications.push(e.name)
-            })
-            z.pmp_variant_images.forEach((c) => {
-              images.push(c.attachment_id)
-            })
-            that.ProductInfo.pmp_variants.push({
-              name: z.name,
-              pmp_specifications: specifications,
-              pmp_variant_images: images
-            })
-          })
-
-        } else {
-          console.log('商品读取错误')
-        }
-      })
+        })
     } else {
       that.currentActive = "MainPage"
     }
