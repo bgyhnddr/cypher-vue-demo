@@ -25,7 +25,7 @@
         </div>
         <div class="weui_cell_ft" :class="{'with_arrow': true}"></div>
       </div>
-      <div class="weui_cell" v-for="item in BrandRole">
+      <div class="weui_cell" v-for="item in PriceInfo">
         <flexbox>
           <flexbox-item>
             <p>{{item.name}}</p>
@@ -108,7 +108,7 @@ export default {
         "pmp_product_labels": [],
         "pmp_product_prices": []
       },
-      BrandRole: []
+      PriceInfo: []
     }
   },
   methods: {
@@ -175,7 +175,7 @@ export default {
         pmpProductAPI.getBrandRoles(this.ProductInfo.pmp_brand_id).then((o)=>{
           o.forEach((e)=>{
             that.ProductInfo.pmp_product_prices.filter(z=>z.brand_role_code == e.level).forEach((x)=>{
-              that.BrandRole.push({
+              that.PriceInfo.push({
                 name:e.name,
                 price:x.price
               })
