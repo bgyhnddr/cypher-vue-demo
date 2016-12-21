@@ -1,3 +1,25 @@
+var getBoxCodes = (code) => {
+  var pmp_server = require('../pmp_server')
+  return pmp_server.packs_under_crate(code).then((result) => {
+    return result.map(o => o.full_code)
+  })
+}
+
+var getBrandId = (token) => {
+  var pmp_brand = require('../../db/models/pmp_brand')
+  return pmp_brand.findOne({
+    where: {
+      access_token: token,
+      status: "ACT"
+    }
+  }).then((result) => {
+    if (result != null) {
+      return result.id
+    } else {
+      return Promise.reject("check access_token fail")
+    }
+  })
+}
 var exec = {
   /**
    * 获取商品列表
@@ -8,6 +30,7 @@ var exec = {
     var count = req.query.count == undefined ? 5 : parseInt(req.query.count)
     var page = req.query.page == undefined ? 0 : parseInt(req.query.page)
     var sort = req.query.sort == undefined ? {} : req.query.sort
+    var order = req.query.order
     var on_sell = req.query.on_sell
 
     var pmp_product = require('../../db/models/pmp_product')
@@ -30,6 +53,11 @@ var exec = {
       where.on_sell = on_sell
     }
 
+    var orderstring = "created_at DESC"
+    if (order) {
+      orderstring = order.key + " " + (order.asc ? "" : "DESC")
+    }
+
     return pmp_product.findAndCountAll({
       include: [{
         model: pmp_variant,
@@ -37,7 +65,8 @@ var exec = {
       }, pmp_product_price],
       where: where,
       offset: page * count,
-      limit: count
+      limit: count,
+      order: orderstring
     }).then((result) => {
       return {
         end: (result.rows.length + page * count) >= result.count,
@@ -188,17 +217,12 @@ var exec = {
         var variantUpsertList = []
         obj["pmp_variants"].forEach((v) => {
           v.pmp_product_id = product.id
-          variantUpsertList.push(pmp_variant.findOrCreate({
-            where: {
-              id: v.id
-            }
-          }).spread((result) => {
-            for (var col in v) {
-              if (typeof(v[col]) != "object") {
-                result[col] = v[col]
+          variantUpsertList.push(pmp_variant.upsert(v).then(() => {
+            return pmp_variant.findOne({
+              where: {
+                id: v.id
               }
-            }
-            return result.save()
+            })
           }).then((variant) => {
             var variantDetailUpsertList = []
             if (v["pmp_variant_images"] != undefined) {
@@ -222,31 +246,16 @@ var exec = {
       if (obj["pmp_product_labels"] != undefined) {
         var productLabelUpsertList = []
         obj["pmp_product_labels"].forEach((pl) => {
-          productLabelUpsertList.push(pmp_label.findOrCreate({
-            where: {
-              name: pl.pmp_label.name
-            }
-          }).spread((result) => {
-            for (var col in pl.pmp_label) {
-              if (typeof(pl.pmp_label[col]) != "object") {
-                result[col] = pl.pmp_label[col]
-              }
-            }
-            return result.save()
-          }).then((label) => {
-            return pmp_product_label.findOrCreate({
+          productLabelUpsertList.push(pmp_label.upsert(pl.pmp_label).then(() => {
+            return pmp_label.findOne({
               where: {
-                id: pl.id
+                name: pl.pmp_label.name
               }
-            }).spread((result) => {
-              for (var col in pl) {
-                if (typeof(pl[col]) != "object") {
-                  result[col] = pl[col]
-                }
-              }
-              result.pmp_label_id = label.id
-              result.pmp_product_id = obj.id
-              return result.save()
+            })
+          }).then((label) => {
+            return pmp_product_label.upsert({
+              pmp_label_id: label.id,
+              pmp_product_id: obj.id
             })
           }))
         })
@@ -264,23 +273,72 @@ var exec = {
     }).then(() => {
       return obj.id
     })
-  }
-}
+  },
+  /**
+   * 根据产品获取产品的规格
+   * get
+   */
+  getSpecifications(req, res) {
+    var pmp_product_id = req.query.pmp_product_id == undefined ? "" : req.query.pmp_product_id
+    var pmp_specification = require('../../db/models/pmp_specification')
+    var pmp_variant = require('../../db/models/pmp_variant')
 
-var getBrandId = (token) => {
-  var pmp_brand = require('../../db/models/pmp_brand')
-  return pmp_brand.findOne({
-    where: {
-      access_token: token,
-      status: "ACT"
-    }
-  }).then((result) => {
-    if (result != null) {
-      return result.id
-    } else {
-      return Promise.reject("check access_token fail")
-    }
-  })
+    pmp_specification.belongsTo(pmp_variant)
+    return pmp_specification.findAll({
+      include: {
+        model: pmp_variant,
+        where: {
+          pmp_product_id: pmp_product_id
+        }
+      }
+    })
+  },
+  /**
+   * 获取盒号集合
+   * get
+   */
+  getBoxCodes(req, res) {
+    var code = req.query.code == undefined ? "" : req.query.code
+    return getBoxCodes(code)
+  },
+  /**
+   * 提交关联扫描结果
+   * post
+   */
+  submitCountResult(req, res) {
+    var pmp_product_id = req.body.pmp_product_id == undefined ? "" : req.body.pmp_product_id
+    var countList = req.body.countList == undefined ? [] : req.body.countList
+    var pmp_outcome_count = require('../../db/models/pmp_outcome_count')
+    var pmp_goods = require('../../db/models/pmp_goods')
+
+    return Promise.all(countList.map((o) => {
+      return pmp_outcome_count.create({
+        pmp_specification_id: o.pmp_specification_id,
+        goods_code: o.goods_code,
+        counter_user_account: req.session.userInfo.name,
+        count_time: new Date()
+      }).then((result) => {
+        return getBoxCodes(o.goods_code).then((codes) => {
+          return Promise.all(codes.map((code) => {
+            return pmp_outcome_count.create({
+              pmp_specification_id: o.pmp_specification_id,
+              goods_code: code,
+              counter_user_account: req.session.userInfo.name,
+              count_time: new Date(),
+              pmp_outcome_count_id: result.id
+            }).then((created) => {
+              return pmp_goods.upsert({
+                pmp_specification_id: o.pmp_specification_id,
+                goods_code: code,
+                pmp_outcome_count_id: created.id,
+                owner_user_account: req.session.userInfo.name
+              })
+            })
+          }))
+        })
+      })
+    }))
+  }
 }
 
 
