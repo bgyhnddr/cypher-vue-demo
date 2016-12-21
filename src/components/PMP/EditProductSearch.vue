@@ -11,15 +11,9 @@
   <div v-if="showSearchProductModel">
     <scroller lock-x scrollbar-y use-pullup :pullup-config="pullUpScroller.pullupConfig" height="280px" @pullup:loading="loadProduct">
       <group v-for="productItem in productsData.getProducts.list">
-        <a class="weui_cell" v-link="{path: '/productManagement/editProduct/'+ productItem.id}">
-          <div class="weui_cell_hd">
-            <img :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" width="50px" height="50px" alt="产品图片">
-          </div>
-          <div class="weui_cell_bd weui_cell_primary">
-            <p>{{productItem.name}}</p>
-            <p>￥ </p>
-          </div>
-        </a>
+        <cell :title="productItem.name" @click="goToEditProduct(productItem.id)" inline-desc="￥ " value="">
+            <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" width="50px" height="50px" alt="产品图片"/>
+        </cell>
       </group>
     </scroller>
   </div>
@@ -37,6 +31,7 @@ import {
   XHeader,
   Scroller,
   Group,
+  Cell,
   XInput,
   Alert
 } from 'vux'
@@ -47,6 +42,7 @@ export default {
     XHeader,
     Scroller,
     Group,
+    Cell,
     XInput,
     Alert
   },
@@ -147,6 +143,9 @@ export default {
         that.alert.showCatchError = true
         that.alert.catchErrorMsg = "读取我的货品信息异常，请稍后再试"
       })
+    },
+    goToEditProduct(productId){
+      this.$route.router.go("/productManagement/editProduct/" + productId)
     },
     getProductImgHref(fileId){
       return '/service/public/upload/getAttachment?id=' + fileId

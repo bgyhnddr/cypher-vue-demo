@@ -19,15 +19,9 @@
       <scroller lock-x scrollbar-y use-pullup :pullup-config="pullUpScroller.pullupConfig" height="280px" @pullup:loading="loadProduct">
         <div>
           <group v-for="productItem in productsData.getProducts.list">
-            <a class="weui_cell" v-link="{path: '/productManagement/editProduct/'+ productItem.id}">
-              <div class="weui_cell_hd">
-                <img :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" width="50px" height="50px" alt="产品图片">
-              </div>
-              <div class="weui_cell_bd weui_cell_primary">
-                <p>{{productItem.name}}</p>
-                <p>￥ </p>
-              </div>
-            </a>
+            <cell :title="productItem.name" @click="goToEditProduct(productItem.id)" inline-desc="￥ " >
+              <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片"/>
+            </cell>
           </group>
         </div>
       </scroller>
@@ -132,6 +126,8 @@ export default {
           that.productsData.getProducts.list = result.list
           that.productsData.page = 1
 
+          // if()
+
           that.showModel.showNoProduct = false
         }
         that.showModel.showProductContainer = true
@@ -171,13 +167,16 @@ export default {
         that.alert.catchErrorMsg = "读取我的货品信息异常，请稍后再试"
       })
     },
+    goToEditProduct(productId){
+      this.$route.router.go("/productManagement/editProduct/" + productId)
+    },
     addProduct() {
       this.$route.router.go("/productManagement/editProduct")
     },
     openSearchComponent() {
       this.$route.router.go("/productManagement/editProductSearch")
     },
-    getProductImgHref(fileId){
+    getProductImgHref(fileId) {
       return '/service/public/upload/getAttachment?id=' + fileId
     },
     errorHandled() {
