@@ -22,7 +22,7 @@
             <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
           </cell>
         </group>
-        <div v-show="showModel.hideScroller" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" >
+        <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" >
           <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
           <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'">{{pullUpScroller.pullupConfig.upContent}}</span>
           <span v-show="pullUpScroller.pullupStatus === 'loading'">
@@ -94,7 +94,7 @@ export default {
       showModel: {
         showProductContainer: false,
         showNoProduct: true,
-        hideScroller: true,
+        showPullUpSlot: true,
       },
       pullUpScroller: {
         pullupStatus: 'default',
@@ -121,7 +121,7 @@ export default {
       this.productsData.chooseTab = item
       this.showModel.showProductContainer = false
       this.productsData.page = 0
-      this.showModel.hideScroller = true
+      this.showModel.showPullUpSlot = true
       this.pullUpScroller.pullupStatus = 'default'
 
       pmpProductAPI.getProducts({
@@ -136,7 +136,7 @@ export default {
           that.productsData.page = 1
 
           if (result.end) {
-            that.showModel.hideScroller = false
+            that.showModel.showPullUpSlot = false
           }
 
           that.showModel.showNoProduct = false

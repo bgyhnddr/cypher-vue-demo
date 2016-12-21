@@ -45,7 +45,7 @@
   </div>
   <div>
     <p>历史标签</p>
-    <button :id.sync="labelItem.id" v-for="labelItem in historyLabels" @click="chooseHistoryLabel(labelItem)">{{labelItem.name}}</button>
+    <button v-for="labelItem in historyLabels" @click="chooseHistoryLabel(labelItem)">{{labelItem.name}}</button>
   </div>
 </div>
 <div>
@@ -194,6 +194,7 @@ export default {
       }
     },
     chooseHistoryLabel(historyLabelItem) {
+      var that = this
       var chooseHistoryLabel = historyLabelItem
       var addOperationFlag = false
 
@@ -203,7 +204,7 @@ export default {
       } else {
         this.ProductInfo.pmp_product_labels.map((item) => {
           if (item == chooseHistoryLabel.name) {
-            document.getElementById(chooseHistoryLabel.id).style.display = "none"
+            that.historyLabels.$remove(historyLabelItem)
 
             that.alert.showErrorNoHandled = true
             that.alert.errorMsgNoHandled = "已添加此品类标签"
@@ -213,7 +214,7 @@ export default {
         })
 
         if (!addOperationFlag) {
-          document.getElementById(chooseHistoryLabel.id).style.display = "none"
+          this.historyLabels.$remove(historyLabelItem)
           this.ProductInfo.pmp_product_labels.push(chooseHistoryLabel.name)
         }
       }
