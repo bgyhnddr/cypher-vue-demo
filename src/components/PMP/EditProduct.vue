@@ -31,7 +31,7 @@
             <p>{{item.name}}</p>
           </flexbox-item>
           <flexbox-item>
-            <p>{{item.price[0].price}}</p>
+            <p>{{item.price}}</p>
           </flexbox-item>
         </flexbox>
       </div>
@@ -142,7 +142,6 @@ export default {
             that.ProductInfo.pmp_brand_id = o.pmp_brand_id
             that.ProductInfo.description = o.description == null ? "" : o.description
             that.ProductInfo.on_sell = o.on_sell
-              // that.ProductInfo.pmp_product_prices = o.pmp_product_prices
               //标签
             o.pmp_product_labels.forEach((p) => {
                 that.ProductInfo.pmp_product_labels.push(p.pmp_label.name)
@@ -172,13 +171,13 @@ export default {
             console.log('商品读取错误')
           }
         })
+        //获取代理信息，显示代理价格
         pmpProductAPI.getBrandRoles(this.ProductInfo.pmp_brand_id).then((o)=>{
           o.forEach((e)=>{
             that.ProductInfo.pmp_product_prices.filter(z=>z.brand_role_code == e.level).forEach((x)=>{
-              console.log(x.price)
               that.BrandRole.push({
                 name:e.name,
-                price:that.ProductInfo.pmp_product_prices.filter(z=>z.brand_role_code == e.level)
+                price:x.price
               })
             })
           })
