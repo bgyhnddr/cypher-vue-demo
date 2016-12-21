@@ -23,36 +23,8 @@
           <img>
         </div>
         <div class="weui_cell_bd weui_cell_primary">
-          <p>入库计划</p>
-          <p>添加货品入库计划</p>
-        </div>
-        <div class="weui_cell_ft" :class="{'with_arrow': true}">
-          <slot name="value"></slot>
-          <slot></slot>
-        </div>
-      </a>
-      <!--入库盘点-->
-      <a class="weui_cell" v-link="">
-        <div class="weui_cell_hd">
-          <img>
-        </div>
-        <div class="weui_cell_bd weui_cell_primary">
-          <p>入库盘点</p>
-          <p>盘点需入库货品</p>
-        </div>
-        <div class="weui_cell_ft" :class="{'with_arrow': true}">
-          <slot name="value"></slot>
-          <slot></slot>
-        </div>
-      </a>
-      <!--盘点统计-->
-      <a class="weui_cell" v-link="">
-        <div class="weui_cell_hd">
-          <img>
-        </div>
-        <div class="weui_cell_bd weui_cell_primary">
-          <p>盘点统计</p>
-          <p>查看入库货品统计</p>
+          <p>货品关联</p>
+          <p>关联货品信息</p>
         </div>
         <div class="weui_cell_ft" :class="{'with_arrow': true}">
           <slot name="value"></slot>
