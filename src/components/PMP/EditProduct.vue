@@ -49,9 +49,13 @@
       </div>
     </group>
     <div>
-      <x-button plain @click="submitProduct">加入商品</x-button>
+      <x-button plain @click="showSubmit">加入商品</x-button>
     </div>
   </div>
+  <confirm :show.sync="showConfirm" title="" confirm-text= "确认" cancel-text="取消" @on-confirm="submitProduct">
+    <p style="text-align:center;">您确认加入商品吗?</p>
+  </confirm>
+  <alert :show.sync="showAlert" button-Text="好的">{{alertMsg}}</alert>
   <!-- 子组件页 -->
   <div>
     <set-product-price v-if="currentActive=='SetPricePage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></set-product-price>
@@ -65,6 +69,7 @@
 import {
   Group,
   Cell,
+  Confirm,
   Alert,
   XHeader,
   XInput,
@@ -83,6 +88,7 @@ export default {
   components: {
     Group,
     Cell,
+    Confirm,
     Alert,
     XHeader,
     XInput,
@@ -107,10 +113,16 @@ export default {
         "pmp_product_labels": [],
         "pmp_product_prices": []
       },
-      PriceInfo: []
+      PriceInfo: [],
+      alertMsg:"",
+      showAlert:false,
+      showConfirm:false
     }
   },
   methods: {
+    valid() {
+      return this.ProductInfo.name && this.ProductInfo.pmp_product_prices.length > 0
+    },
     onClickBack() {
       this.$route.router.go('/productManagement/productSetting')
     },
@@ -119,6 +131,19 @@ export default {
     },
     showEditLabelPage() {
       this.currentActive = "EditLabelPage"
+    },
+    showSubmit(){
+      var that = this
+      if (that.valid()) {
+        that.showConfirm = true
+      } else {
+        if(!that.ProductInfo.name){
+          that.alertMsg = "请输入商品名称"
+        }else if(that.ProductInfo.pmp_product_prices.length==0){
+          that.alertMsg = "请设置商品价格"
+        }
+        that.showAlert = true
+      }
     },
     submitProduct() {
       var that = this
@@ -129,7 +154,7 @@ export default {
         name: Info.name,
         on_sell: Info.on_sell,
         description: Info.description,
-        pmp_product_labels:Info.pmp_product_labels.map(c=>c={pmp_label:{name:c}}),
+        pmp_product_labels: Info.pmp_product_labels.map(c => c = {pmp_label: {name: c}}),
         pmp_product_prices: Info.pmp_product_prices
       }).then(() => {
         that.$route.router.go('/productManagement/productSetting')
