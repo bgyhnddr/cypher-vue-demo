@@ -25,16 +25,12 @@
         </div>
         <div class="weui_cell_ft" :class="{'with_arrow': true}"></div>
       </div>
-      <div class="weui_cell" v-for="item in PriceInfo">
-        <flexbox>
-          <flexbox-item>
-            <p>{{item.name}}</p>
-          </flexbox-item>
-          <flexbox-item>
-            <p>{{item.price}}</p>
-          </flexbox-item>
-        </flexbox>
-      </div>
+      <table border="1" width="100%" v-if="ProductInfo.pmp_product_prices.length>0">
+        <tr v-for="item in ProductInfo.pmp_product_prices">
+          <th>{{item.brand_role_name}}</th>
+          <th>{{item.price}}元</th>
+        </tr>
+      </table>
       <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
           <p>商品描述</p>
@@ -57,7 +53,7 @@
   </div>
   <!-- 子组件页 -->
   <div>
-    <set-product-price v-if="currentActive=='SetPricePage'" :current-active.sync="currentActive"></set-product-price>
+    <set-product-price v-if="currentActive=='SetPricePage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></set-product-price>
     <product-operate v-if="currentActive=='OperatePage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></product-operate>
     <edit-product-label v-if="currentActive=='EditLabelPage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></edit-product-label>
   </div>
@@ -162,9 +158,9 @@ export default {
               })
               //价格
             o.pmp_product_prices.forEach((b) => {
-              that.ProductInfo.pmp_product_prices.push({
-                brand_role_code:b.brand_role_code,
-                price:b.price
+              that.PriceInfo.push({
+                code: b.brand_role_code,
+                price: b.price
               })
             })
           } else {
@@ -172,16 +168,19 @@ export default {
           }
         })
         //获取代理信息，显示代理价格
-        pmpProductAPI.getBrandRoles(this.ProductInfo.pmp_brand_id).then((o)=>{
-          o.forEach((e)=>{
-            that.ProductInfo.pmp_product_prices.filter(z=>z.brand_role_code == e.level).forEach((x)=>{
-              that.PriceInfo.push({
-                name:e.name,
-                price:x.price
+      pmpProductAPI.getBrandRoles(that.ProductInfo.pmp_brand_id).then((o) => {
+        if (that.PriceInfo.length > 0) {
+          o.forEach((e) => {
+            that.PriceInfo.filter(z => z.code == e.level).forEach((x) => {
+              that.ProductInfo.pmp_product_prices.push({
+                brand_role_name: e.name,
+                brand_role_code: e.level,
+                price: x.price.toFixed(2)
               })
             })
           })
-        })
+        }
+      })
     } else {
       that.currentActive = "MainPage"
     }

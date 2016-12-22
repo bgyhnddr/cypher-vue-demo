@@ -5,8 +5,27 @@
     <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
   </div>
   <div>
-
+    <table border="1" width="100%">
+      <tr>
+        <th>级别名称</th>
+        <th>进货价</th>
+      </tr>
+      <tr v-for="item in BrandRole">
+        <th>{{item.name}}</th>
+        <th>
+          <x-input :value.sync="item.price" @on-change="onChange">元</x-input>
+        </th>
+      </tr>
+    </table>
   </div>
+  <flexbox>
+    <flexbox-item>
+      <x-button type="default" @click="SubmitPrice">确认</x-button>
+    </flexbox-item>
+    <flexbox-item>
+      <x-button type="default" @click="ResetPrice">重置</x-button>
+    </flexbox-item>
+  </flexbox>
 </div>
 </template>
 
@@ -14,32 +33,88 @@
 import {
   Group,
   Alert,
-  XHeader
+  XHeader,
+  Flexbox,
+  FlexboxItem,
+  XButton,
+  XInput
 } from 'vux'
+
+import pmpProductAPI from '../../api/pmp_product'
 
 export default {
   components: {
     Group,
     Alert,
-    XHeader
+    XHeader,
+    Flexbox,
+    FlexboxItem,
+    XButton,
+    XInput
   },
   props: {
     currentActive: {
       type: String
+    },
+    ProductInfo: {
+      type: Object
     }
   },
   data() {
     return {
-
+      BrandRole: []
     }
   },
   methods: {
     onClickBack() {
       this.currentActive = "MainPage"
+    },
+    ResetPrice() {
+      this.BrandRole.forEach((o) => {
+        o.price = "0.00"
+      })
+    },
+    SubmitPrice() {
+      if (this.ProductInfo.pmp_product_prices.length == 0) {
+        this.BrandRole.forEach((o) => {
+          this.ProductInfo.pmp_product_prices.push({
+            brand_role_name: o.name,
+            brand_role_code: o.level,
+            price: o.price
+          })
+        })
+      } else {
+        this.BrandRole.forEach((o) => {
+          this.ProductInfo.pmp_product_prices.filter(i => i.brand_role_code == o.level).map((t) => {
+            t.brand_role_name = o.name
+            t.brand_role_code = o.level
+            t.price = o.price
+          })
+        })
+      }
+
+      console.log(this.BrandRole)
+      console.log(this.ProductInfo.pmp_product_prices)
+    },
+    onChange(val) {
+      console.log(val)
     }
   },
   ready() {
-
+    //获取代理信息
+    var price = this.ProductInfo.pmp_product_prices
+    pmpProductAPI.getBrandRoles(this.ProductInfo.pmp_brand_id).then((o) => {
+      o.forEach((c) => {
+        var setPrice = price.filter(d => d.brand_role_code == c.level)
+        var MergePrice = setPrice[0] === undefined ? "0.00" : setPrice[0].price
+        this.BrandRole.push({
+          name: c.name,
+          level: c.level,
+          price: price.length == 0 ? "0.00" : MergePrice
+        })
+      })
+    })
+    console.log(this.ProductInfo.pmp_product_prices)
   }
 }
 </script>
