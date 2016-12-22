@@ -39,10 +39,10 @@
   <div v-else>
     <flexbox>
       <flexbox-item>
-        <x-button type="warn" @click="changeProductOnSell">{{onSellText}}</x-button>
+        <x-button type="warn" @click="changeProductOnSell(onSellText)">{{onSellText}}</x-button>
       </flexbox-item>
       <flexbox-item>
-        <x-button type="primary" @click="">修改</x-button>
+        <x-button type="primary" @click="changeProductInfo">修改</x-button>
       </flexbox-item>
     </flexbox>
   </div>
@@ -172,10 +172,14 @@ export default {
     getProductImages() {
       var images = []
       this.ProductInfo.pmp_variants.map((o) => {
-        if (o.id == this.chooseSpecification) {
-          o.pmp_variant_images.map((productImageItem) => {
-            images.push(productImageItem.attachment_id)
-          })
+        if (o.id == null) {
+          images = o.pmp_variant_images
+        } else {
+          if (o.id == this.chooseSpecification) {
+            o.pmp_variant_images.map((productImageItem) => {
+              images.push(productImageItem.attachment_id)
+            })
+          }
         }
       })
       return images
@@ -214,10 +218,25 @@ export default {
           pmp_variant_images: this.inputDate.variantImages
         })
       }
-    },
-    changeProductOnSell() {
 
-      this.ProductInfo.pmp_variants
+      this.currentActive = "MainPage"
+    },
+    changeProductOnSell(onSellText) {
+      this.ProductInfo.pmp_variants.map((o) => {
+        if (onSellText == "下架") {
+          o.on_sell = false
+        } else {
+          o.on_sell = true
+        }
+      })
+
+      this.currentActive = "MainPage"
+    },
+    changeProductInfo() {
+      this.ProductInfo.pmp_variants = []
+      this.confirm()
+
+      this.currentActive = "MainPage"
     },
     getConfirmSpecifications() {
       var onSellSpecifications = []
@@ -258,6 +277,8 @@ export default {
     }
   },
   ready() {
+    this.showModel.showEditSpecificationModel = false
+
     if (this.isFirstTimeAddSpecification()) {
       this.showModel.showAddButtonModel = true
 
@@ -268,12 +289,14 @@ export default {
       this.getSpecificationOptions()
       this.inputDate.variant = this.getProductVariantName()
       this.inputDate.variantImages = this.getProductImages()
+      console.log(JSON.stringify(this.inputDate.variantImages))
       this.inputDate.chooseSpecificationItems = this.getProductSpecifications()
       if (this.isOnSell()) {
         this.onSellText = "下架"
       } else {
         this.onSellText = "上架"
       }
+      console.log(JSON.stringify(this.ProductInfo))
     }
 
     this.showModel.showEditSpecificationModel = true
