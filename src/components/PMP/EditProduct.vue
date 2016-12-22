@@ -49,11 +49,11 @@
       </div>
     </group>
     <div>
-      <x-button plain @click="showSubmit">加入商品</x-button>
+      <x-button plain @click="showSubmit">{{BtnMsg}}商品</x-button>
     </div>
   </div>
   <confirm :show.sync="showConfirm" title="" confirm-text= "确认" cancel-text="取消" @on-confirm="submitProduct">
-    <p style="text-align:center;">您确认加入商品吗?</p>
+    <p style="text-align:center;">您确认{{BtnMsg}}该商品吗?</p>
   </confirm>
   <alert :show.sync="showAlert" button-Text="好的">{{alertMsg}}</alert>
   <!-- 子组件页 -->
@@ -115,6 +115,7 @@ export default {
       },
       PriceInfo: [],
       alertMsg:"",
+      BtnMsg:"",
       showAlert:false,
       showConfirm:false
     }
@@ -157,7 +158,12 @@ export default {
         pmp_product_labels: Info.pmp_product_labels.map(c => c = {pmp_label: {name: c}}),
         pmp_product_prices: Info.pmp_product_prices
       }).then(() => {
-        that.$route.router.go('/productManagement/productSetting')
+        if(id){
+          that.alertMsg = "商品已保存"
+          that.showAlert = true
+        }else{
+          that.$route.router.go('/productManagement/productSetting')
+        }
       })
       console.log(this.ProductInfo)
     }
@@ -166,6 +172,7 @@ export default {
     var that = this
     var id = that.$route.params.id
     if (id) {
+      that.BtnMsg = "保存"
       that.currentActive = "OperatePage"
       pmpProductAPI.getProduct({
           id: id
@@ -231,6 +238,7 @@ export default {
         }
       })
     } else {
+      that.BtnMsg = "加入"
       that.currentActive = "MainPage"
     }
   }
