@@ -8,7 +8,7 @@
     <x-input title='规格' placeholder="如颜色、款式" :value.sync="inputDate.variant" :show-clear=false :required="false"></x-input>
   </div>
   <div>
-    <img v-for="image in inputDate.variantImages" :src="getSpecificationImgHref(image)" width="50px" height="50px" alt="款式图片" />
+    <img v-for="image in inputDate.variantImages" :src="getSpecificationImgHref(image)" track-by="$index" width="50px" height="50px" alt="款式图片" />
     <flexbox>
       <flexbox-item>
         <employment-headimg-upload :file-id.sync="inputDate.addImageFileId"></employment-headimg-upload>
@@ -198,6 +198,11 @@ export default {
 
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "请选择图片"
+      } else if (this.inputDate.variantImages.length == 5) {
+        this.inputDate.addImageFileId = null
+        
+        this.alert.showErrorNoHandled = true
+        this.alert.errorMsgNoHandled = "您已选择超过5张图片"
       } else {
         var addImageFileId = this.inputDate.addImageFileId
         this.inputDate.addImageFileId = null
@@ -220,9 +225,9 @@ export default {
       } else {
         var newProductFlag = null
 
-        if(this.isFirstTimeAddSpecification()){
+        if (this.isFirstTimeAddSpecification()) {
           newProductFlag = true
-        }else{
+        } else {
           this.ProductInfo.pmp_variants.map((o) => {
             if (o.name == this.chooseSpecification && o.id == null) {
               newProductFlag = true
@@ -248,7 +253,7 @@ export default {
     },
     changeProductOnSell() {
       this.ProductInfo.pmp_variants.map((o) => {
-          o.on_sell = !o.on_sell
+        o.on_sell = !o.on_sell
       })
 
       this.currentActive = "MainPage"
@@ -308,9 +313,9 @@ export default {
       this.inputDate.closeComfirmFlag = chooseText
     },
     closeComfirm() {
-      if(this.inputDate.closeComfirmFlag == "onSell"){
+      if (this.inputDate.closeComfirmFlag == "onSell") {
         this.changeProductOnSell()
-      }else{
+      } else {
         this.changeProductInfo()
       }
 
