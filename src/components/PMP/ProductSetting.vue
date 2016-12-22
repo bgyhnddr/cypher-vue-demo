@@ -16,13 +16,18 @@
       <p>赶快去添加吧</p>
     </div>
     <div v-else>
-      <scroller lock-x scrollbar-y use-pullup :pullup-config="pullUpScroller.pullupConfig" height="280px" @pullup:loading="loadProduct">
-        <div>
-          <group v-for="productItem in productsData.getProducts.list">
-            <cell :title="productItem.name" @click="goToEditProduct(productItem.id)" inline-desc="￥ " >
-              <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片"/>
-            </cell>
-          </group>
+      <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" height="280px" @pullup:loading="loadProduct">
+        <group v-for="productItem in productsData.getProducts.list">
+          <cell :title="productItem.name" @click="goToEditProduct(productItem.id)" inline-desc="￥ ">
+            <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
+          </cell>
+        </group>
+        <div v-show="showModel.hideScroller" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" >
+          <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
+          <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'">{{pullUpScroller.pullupConfig.upContent}}</span>
+          <span v-show="pullUpScroller.pullupStatus === 'loading'">
+            <span>{{pullUpScroller.pullupConfig.loadingContent}}</span>
+          </span>
         </div>
       </scroller>
     </div>
@@ -88,7 +93,8 @@ export default {
       },
       showModel: {
         showProductContainer: false,
-        showNoProduct: true
+        showNoProduct: true,
+        hideScroller: true,
       },
       pullUpScroller: {
         pullupStatus: 'default',
@@ -113,10 +119,13 @@ export default {
       var that = this
 
       this.productsData.chooseTab = item
-      that.showModel.showProductContainer = false
+      this.showModel.showProductContainer = false
+      this.productsData.page = 0
+      this.showModel.hideScroller = true
+      this.pullUpScroller.pullupStatus = 'default'
 
       pmpProductAPI.getProducts({
-        page: 0,
+        page: this.productsData.page,
         on_sell: this.productsData.chooseTab
       }).then(function(result) {
         if (result.list.length == 0) {
@@ -126,7 +135,9 @@ export default {
           that.productsData.getProducts.list = result.list
           that.productsData.page = 1
 
-          // if()
+          if (result.end) {
+            that.showModel.hideScroller = false
+          }
 
           that.showModel.showNoProduct = false
         }
@@ -146,20 +157,17 @@ export default {
       }).then(function(result) {
 
         setTimeout(() => {
-          if (result.list.length == 0) {
+          if (result.end) {
             that.$broadcast('pullup:done', uuid)
           } else {
-            setTimeout(() => {
-              that.$broadcast('pullup:reset', uuid)
-
-              result.list.map((o) => {
-                that.productsData.getProducts.list.push(o)
-              })
-              that.productsData.getProducts.end = result.end
-              that.productsData.page += 1
-
-            }, 10)
+            that.$broadcast('pullup:reset', uuid)
+            that.productsData.page += 1
           }
+
+          result.list.map((o) => {
+            that.productsData.getProducts.list.push(o)
+          })
+          that.productsData.getProducts.end = result.end
         }, 2000)
 
       }).catch(function(err) {
@@ -167,7 +175,7 @@ export default {
         that.alert.catchErrorMsg = "读取我的货品信息异常，请稍后再试"
       })
     },
-    goToEditProduct(productId){
+    goToEditProduct(productId) {
       this.$route.router.go("/productManagement/editProduct/" + productId)
     },
     addProduct() {
@@ -188,3 +196,9 @@ export default {
   }
 }
 </script>
+
+<style lang="less">
+.xs-plugin-pullup-container {
+    text-align: center;
+}
+</style>

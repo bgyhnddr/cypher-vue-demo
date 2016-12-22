@@ -10,6 +10,9 @@ var pmp_specification_option = require('../db/models/pmp_specification_option')
 var pmp_specification = require('../db/models/pmp_specification')
 var pmp_variant_image = require('../db/models/pmp_variant_image')
 var pmp_variant = require('../db/models/pmp_variant')
+var pmp_outcome_count = require('../db/models/pmp_outcome_count')
+var pmp_goods = require('../db/models/pmp_goods')
+var pmp_goods_meta = require('../db/models/pmp_goods_meta')
 
 
 var pmp_brand_id
@@ -24,7 +27,10 @@ Promise.all([
   pmp_specification_option,
   pmp_specification,
   pmp_variant_image,
-  pmp_variant
+  pmp_variant,
+  pmp_outcome_count,
+  pmp_goods,
+  pmp_goods_meta
 ].map((o) => o.sync({
   force: true
 }))).then((result) => {
@@ -134,14 +140,23 @@ Promise.all([
     }
   }
   var testfunction = (action, params) => {
-    return require('../server/pmp/product')({
-      params: {
-        action,
-        token: "123"
-      },
-      query: params,
-      body: params
-    }, cres)
+    try {
+      return require('../server/pmp/product')({
+        session: {
+          userInfo: {
+            name: "testman"
+          }
+        },
+        params: {
+          action,
+          token: "123"
+        },
+        query: params,
+        body: params
+      }, cres)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   Promise.resolve("beginTest").then(() => {
@@ -184,6 +199,20 @@ Promise.all([
       on_sell: false
     }).then((result) => {
       if (result.list.length == 1 && !result.list[0].on_sell) {
+        console.log("通过")
+      } else {
+        console.log("不通过")
+      }
+    })
+  }).then(() => {
+    console.log("测试getProducts商品1")
+    return testfunction("getProducts", {
+      pmp_brand_id: pmp_brand_id,
+      filterKey: "1",
+      page: "0",
+      count: "10"
+    }).then((result) => {
+      if (result.list.length == 1 && result.end) {
         console.log("通过")
       } else {
         console.log("不通过")
@@ -284,6 +313,14 @@ Promise.all([
         id: id,
         pmp_variants: [{
           name: "测试规格"
+        },{
+          name: "测试规格t1"
+        },{
+          name: "测试规格t2"
+        },{
+          name: "测试规格t3"
+        },{
+          name: "测试规格t4"
         }]
       }).then(() => {
         return testfunction("getProduct", {
@@ -377,6 +414,21 @@ Promise.all([
           brand_role_code: "1",
           price: "1",
           price_unit: "RMB"
+        },
+        {
+          brand_role_code: "2",
+          price: "2",
+          price_unit: "RMB"
+        },
+        {
+          brand_role_code: "2",
+          price: "2",
+          price_unit: "RMB"
+        },
+        {
+          brand_role_code: "2",
+          price: "2",
+          price_unit: "RMB"
         }]
       }).then(() => {
         return testfunction("getProduct", {
@@ -385,14 +437,64 @@ Promise.all([
           if (result.pmp_product_prices.length > 0 &&
             result.pmp_product_prices[0].price_unit == "RMB") {
             console.log("通过")
+            return result
           } else {
             console.log("不通过")
           }
         })
       })
     })
-  }).then(() => {
+  }).then((result) => {
     console.log("submitProduct 测试完毕")
+    return result
+  }).then((result) => {
+    console.log("测试根据产品获取规格集合")
+    return testfunction("getSpecifications", {
+      pmp_product_id: result.id
+    }).then((list) => {
+      if (list.length == 1) {
+        console.log("通过")
+        return result
+      } else {
+        console.log("不通过")
+      }
+    })
+  }).then((result) => {
+    console.log("测试通过箱子号B-55C-88-4716-0004获取盒子号")
+    var pmp_server = require('../server/pmp_server')
+    return pmp_server.clearTestData().then(() => {
+      return pmp_server.genauto_tags({
+        brand_id: '88',
+        crate_totalnum: '7',
+        crate_size: '4'
+      }, new Date('2016-11-21'))
+    }).then(() => {
+      return testfunction("getBoxCodes", {
+        code: "B-55C-88-4716-0004"
+      })
+    }).then((list) => {
+      if (list.length > 0) {
+        console.log("通过")
+        return result
+      } else {
+        console.log("不通过")
+      }
+    })
+  }).then((result) => {
+    console.log("提交扫描结果")
+    return testfunction("submitCountResult", {
+      pmp_product_id: result.id,
+      countList: [{
+        pmp_specification_id: result.pmp_variants[0].pmp_specifications[0].id,
+        goods_code: "B-55C-88-4716-0004"
+      }]
+    }).then(() => {
+      return pmp_goods.findAll()
+    }).then((result)=>{
+      console.log("通过")
+    })
+  }).then(() => {
+    console.log("ok")
   })
 }).catch((e) => {
   console.log(e)

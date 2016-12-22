@@ -9,7 +9,10 @@ Promise.all([
   require('../db/models/pmp_specification_option'),
   require('../db/models/pmp_specification'),
   require('../db/models/pmp_variant_image'),
-  require('../db/models/pmp_variant')
+  require('../db/models/pmp_variant'),
+  require('../db/models/pmp_goods'),
+  require('../db/models/pmp_goods_meta'),
+  require('../db/models/pmp_outcome_count')
 ].map((o) => o.sync({
   force: true
 }))).then(function() {

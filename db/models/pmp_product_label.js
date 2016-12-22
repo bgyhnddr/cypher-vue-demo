@@ -8,8 +8,14 @@ var pmp_product_label = sequelize.define(
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true
     },
-    pmp_product_id: Sequelize.UUID,
-    pmp_label_id: Sequelize.UUID
+    pmp_product_id: {
+      type: Sequelize.UUID,
+      unique: "plunique"
+    },
+    pmp_label_id: {
+      type: Sequelize.UUID,
+      unique: "plunique"
+    }
   }, {
     underscored: true
   })

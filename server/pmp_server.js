@@ -347,7 +347,7 @@ function pack_takeover(packcode,newowner){
   var arr = packcode.split('-')
   var tag_type = arr[0]
   if(tag_type!=='A')return Promise.reject(packcode+' not pack tag')
-  
+
   return PackTags.findOne({
     where:{full_code:packcode}
   })
@@ -379,7 +379,7 @@ function crate_takeover(cratecode,newowner){
   // var brand_id = parseInt(arr[2])
   // var week_year = arr[3]
   // var crate_id = parseInt(arr[4])
-  
+
   return PackTags.findOne({
     where:{
       full_code:cratecode
@@ -410,7 +410,7 @@ function crate_takeover(cratecode,newowner){
         return packtag
       })
       return Promise.all(all_prom).then(function(out){
-        
+
           var trace_prom = traces.map(function(trace){
             return PackTraces.create(trace)
           })
@@ -448,7 +448,7 @@ function crate_product(cratecode,productid){
   // var brand_id = parseInt(arr[2])
   // var week_year = arr[3]
   // var crate_id = parseInt(arr[4])
-  
+
   PackTags.findAll({
     where:{
       supervisor_code:cratecode,
@@ -520,7 +520,7 @@ function run(){
     })
     .catch(function(err){
       res.send(err)
-    });    
+    });
   })
 
   //view all tags in db
