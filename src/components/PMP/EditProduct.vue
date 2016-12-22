@@ -126,14 +126,13 @@ export default {
       var Info = that.ProductInfo
       pmpProductAPI.submitProduct({
         id: id,
-        pmp_brand_id:Info.pmp_brand_id,
-        name:Info.name,
-        on_sell:Info.on_sell,
-        description:Info.description,
-        // pmp_product_labels:Info.pmp_product_labels,
+        name: Info.name,
+        on_sell: Info.on_sell,
+        description: Info.description,
+        pmp_product_labels:Info.pmp_product_labels.map(c=>c={pmp_label:{name:c}}),
         pmp_product_prices: Info.pmp_product_prices
-      }).then((o) => {
-
+      }).then(() => {
+        that.$route.router.go('/productManagement/productSetting')
       })
       console.log(this.ProductInfo)
     }
@@ -152,7 +151,6 @@ export default {
             var images = []
               // var variants = [{id:",name:"",pmp_specifications:[{name:""}],pmp_variant_images:[{attachment_id:""}]}]
             that.ProductInfo.name = o.name
-            that.ProductInfo.pmp_brand_id = o.pmp_brand_id
             that.ProductInfo.description = o.description == null ? "" : o.description
             that.ProductInfo.on_sell = o.on_sell
               //标签
@@ -187,7 +185,7 @@ export default {
           }
         })
         //获取代理信息，显示代理价格
-      pmpProductAPI.getBrandRoles(that.ProductInfo.pmp_brand_id).then((o) => {
+      pmpProductAPI.getBrandRoles().then((o) => {
         if (that.PriceInfo.length > 0) {
           o.forEach((e) => {
             var setPrice = that.PriceInfo.filter(d => d.code == e.level)

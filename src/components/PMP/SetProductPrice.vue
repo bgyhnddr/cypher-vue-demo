@@ -103,7 +103,7 @@ export default {
   ready() {
     //获取代理信息
     var price = this.ProductInfo.pmp_product_prices
-    pmpProductAPI.getBrandRoles(this.ProductInfo.pmp_brand_id).then((o) => {
+    pmpProductAPI.getBrandRoles().then((o) => {
       o.forEach((c) => {
         var setPrice = price.filter(d => d.brand_role_code == c.level)
         var MergePrice = setPrice[0] === undefined ? "0.00" : setPrice[0].price
