@@ -200,6 +200,7 @@ var exec = {
     var pmp_label = require('../../db/models/pmp_label')
     var pmp_product_price = require('../../db/models/pmp_product_price')
     var obj = req.body
+    obj.pmp_brand_id = pmp_brand_id
     return pmp_product.findOrCreate({
       where: {
         id: obj.id
