@@ -121,6 +121,20 @@ export default {
       this.currentActive = "EditLabelPage"
     },
     submitProduct() {
+      var that = this
+      var id = that.$route.params.id
+      var Info = that.ProductInfo
+      pmpProductAPI.submitProduct({
+        id: id,
+        pmp_brand_id:Info.pmp_brand_id,
+        name:Info.name,
+        on_sell:Info.on_sell,
+        description:Info.description,
+        // pmp_product_labels:Info.pmp_product_labels,
+        pmp_product_prices: Info.pmp_product_prices
+      }).then((o) => {
+
+      })
       console.log(this.ProductInfo)
     }
   },
@@ -156,7 +170,7 @@ export default {
                 that.ProductInfo.pmp_variants.push({
                   id: z.id,
                   name: z.name,
-                  on_sell:z.on_sell,
+                  on_sell: z.on_sell,
                   pmp_specifications: specifications,
                   pmp_variant_images: images
                 })
