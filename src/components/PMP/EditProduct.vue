@@ -171,13 +171,20 @@ export default {
       pmpProductAPI.getBrandRoles(that.ProductInfo.pmp_brand_id).then((o) => {
         if (that.PriceInfo.length > 0) {
           o.forEach((e) => {
-            that.PriceInfo.filter(z => z.code == e.level).forEach((x) => {
-              that.ProductInfo.pmp_product_prices.push({
-                brand_role_name: e.name,
-                brand_role_code: e.level,
-                price: x.price.toFixed(2)
-              })
+            var setPrice = that.PriceInfo.filter(d => d.code == e.level)
+            var MergePrice = setPrice[0] === undefined ? "0.00" : setPrice[0].price
+            that.ProductInfo.pmp_product_prices.push({
+              brand_role_name: e.name,
+              brand_role_code: e.level,
+              price: parseFloat(MergePrice).toFixed(2)
             })
+            // that.PriceInfo.filter(z => z.code == e.level).forEach((x) => {
+            //   that.ProductInfo.pmp_product_prices.push({
+            //     brand_role_name: e.name,
+            //     brand_role_code: e.level,
+            //     price: x.price.toFixed(2)
+            //   })
+            // })
           })
         }
       })

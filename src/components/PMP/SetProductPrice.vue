@@ -80,7 +80,7 @@ export default {
           this.ProductInfo.pmp_product_prices.push({
             brand_role_name: o.name,
             brand_role_code: o.level,
-            price: o.price
+            price: parseFloat(o.price).toFixed(2)
           })
         })
       } else {
@@ -88,11 +88,11 @@ export default {
           this.ProductInfo.pmp_product_prices.filter(i => i.brand_role_code == o.level).map((t) => {
             t.brand_role_name = o.name
             t.brand_role_code = o.level
-            t.price = o.price
+            t.price = parseFloat(o.price).toFixed(2)
           })
         })
       }
-
+      this.onClickBack()
       console.log(this.BrandRole)
       console.log(this.ProductInfo.pmp_product_prices)
     },
