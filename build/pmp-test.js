@@ -163,7 +163,6 @@ Promise.all([
     console.log("pmp_brand_id=" + pmp_brand_id)
     console.log("测试getProducts获取所有商品")
     return testfunction("getProducts", {
-      pmp_brand_id: pmp_brand_id,
       filterKey: "",
       page: "0",
       count: "10"
@@ -177,7 +176,6 @@ Promise.all([
   }).then(() => {
     console.log("测试getProducts获取on_sell商品")
     return testfunction("getProducts", {
-      pmp_brand_id: pmp_brand_id,
       filterKey: "",
       page: "0",
       count: "10",
@@ -192,7 +190,6 @@ Promise.all([
   }).then(() => {
     console.log("测试getProducts获取非on_sell商品")
     return testfunction("getProducts", {
-      pmp_brand_id: pmp_brand_id,
       filterKey: "",
       page: "0",
       count: "10",
@@ -207,7 +204,6 @@ Promise.all([
   }).then(() => {
     console.log("测试getProducts商品1")
     return testfunction("getProducts", {
-      pmp_brand_id: pmp_brand_id,
       filterKey: "1",
       page: "0",
       count: "10"
@@ -220,9 +216,7 @@ Promise.all([
     })
   }).then(() => {
     console.log("测试getLabels")
-    return testfunction("getLabels", {
-      pmp_brand_id: pmp_brand_id
-    }).then((result) => {
+    return testfunction("getLabels").then((result) => {
       if (result.length == 2) {
         console.log("通过")
         return result[0].pmp_product_labels[0].id
@@ -236,9 +230,7 @@ Promise.all([
     return testfunction("deleteLabels", {
       ids: [id]
     }).then(() => {
-      return testfunction("getLabels", {
-        pmp_brand_id: pmp_brand_id
-      })
+      return testfunction("getLabels")
     }).then((result) => {
       if (result.length == 1) {
         console.log("通过")
@@ -258,9 +250,7 @@ Promise.all([
     })
   }).then(() => {
     console.log("测试getSpecificationOptions")
-    return testfunction("getSpecificationOptions", {
-      pmp_brand_id: pmp_brand_id
-    }).then((result) => {
+    return testfunction("getSpecificationOptions").then((result) => {
       if (result.length == 1 && result[0].pmp_option_items.length == 6) {
         console.log("通过")
       } else {
@@ -271,11 +261,9 @@ Promise.all([
     console.log("测试submitProduct")
     console.log("创建测试商品")
     return testfunction("submitProduct", {
-      pmp_brand_id: pmp_brand_id,
       name: "测试商品"
     }).then((id) => {
       return testfunction("getProducts", {
-        pmp_brand_id: pmp_brand_id,
         filterKey: "",
         page: "0",
         count: "10"

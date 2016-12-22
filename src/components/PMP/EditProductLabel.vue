@@ -7,7 +7,7 @@
   <div @click="headerGoBack">完成</div>
 </div>
 <div>
-  <div v-if="showInputModel">
+  <div v-if="showModel.showInputModel">
     <flexbox :gutter="0">
       <flexbox-item :span="1/2">
         <x-input class="weui_cell_primary" title="" :value.sync="inputDate.inputLabel" placeholder="请输入标签" :show-clear=false :required="false"></x-input>
@@ -38,14 +38,17 @@
       </flexbox-item>
     </flexbox>
   </div>
-  <div>
+  <div v-if="showModel.showStaticCheckerModel">
+      <div v-for="productLabelItem in ProductInfo.pmp_product_labels" :value="productLabelItem">{{productLabelItem}}</div>
+  </div>
+  <div v-if="!showModel.showStaticCheckerModel">
     <checker :value.sync="inputDate.chooseLabelItems" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
       <checker-item v-for="productLabelItem in ProductInfo.pmp_product_labels" :value="productLabelItem">{{productLabelItem}}</checker-item>
     </checker>
   </div>
   <div>
     <p>历史标签</p>
-    <button :id.sync="labelItem.id" v-for="labelItem in historyLabels" @click="chooseHistoryLabel(labelItem)">{{labelItem.name}}</button>
+    <button v-for="labelItem in historyLabels" @click="chooseHistoryLabel(labelItem)">{{labelItem.name}}</button>
   </div>
 </div>
 <div>
@@ -91,7 +94,10 @@ export default {
         backText: null,
         preventGoBack: false
       },
-      showInputModel: true,
+      showModel:{
+        showStaticCheckerModel: true,
+        showInputModel: true,
+      },
       inputDate: {
         inputLabel: null,
         chooseLabelItems: [],
@@ -107,7 +113,7 @@ export default {
     headerGoBack() {
       this.inputDate.chooseLabelItems = []
       this.inputDate.inputLabel = null
-      this.showInputModel = true
+      this.showModel.showInputModel = true
       this.currentActive = "MainPage"
     },
     getHistoryLabels() {
@@ -159,7 +165,8 @@ export default {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "暂无可编辑品类标签，请添加标签"
       } else {
-        this.showInputModel = false
+        this.showModel.showStaticCheckerModel = false
+        this.showModel.showInputModel = false
       }
     },
     remove() {
@@ -180,10 +187,13 @@ export default {
       })
 
       this.inputDate.chooseLabelItems = []
-      this.showInputModel = true
+      this.showModel.showStaticCheckerModel = true
+      this.showModel.showInputModel = true
+
     },
     cancel() {
-      this.showInputModel = true
+      this.showModel.showStaticCheckerModel = true
+      this.showModel.showInputModel = true
       this.inputDate.chooseLabelItems = []
     },
     checkLabelItemLength() {
@@ -194,6 +204,7 @@ export default {
       }
     },
     chooseHistoryLabel(historyLabelItem) {
+      var that = this
       var chooseHistoryLabel = historyLabelItem
       var addOperationFlag = false
 
@@ -203,7 +214,7 @@ export default {
       } else {
         this.ProductInfo.pmp_product_labels.map((item) => {
           if (item == chooseHistoryLabel.name) {
-            document.getElementById(chooseHistoryLabel.id).style.display = "none"
+            that.historyLabels.$remove(historyLabelItem)
 
             that.alert.showErrorNoHandled = true
             that.alert.errorMsgNoHandled = "已添加此品类标签"
@@ -213,7 +224,7 @@ export default {
         })
 
         if (!addOperationFlag) {
-          document.getElementById(chooseHistoryLabel.id).style.display = "none"
+          this.historyLabels.$remove(historyLabelItem)
           this.ProductInfo.pmp_product_labels.push(chooseHistoryLabel.name)
         }
       }

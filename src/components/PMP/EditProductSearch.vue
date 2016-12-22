@@ -9,13 +9,13 @@
     <button @click="search">搜索</button>
   </group>
   <div v-if="showModel.showSearchProductModel">
-    <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" height="280px" @pullup:loading="loadProduct">
+    <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
       <group v-for="productItem in productsData.getProducts.list">
         <cell :title="productItem.name" @click="goToEditProduct(productItem.id)" inline-desc="￥ " value="">
             <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" width="50px" height="50px" alt="产品图片"/>
         </cell>
       </group>
-      <div v-show="showModel.hideScroller" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" >
+      <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" >
         <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
         <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'" >{{pullUpScroller.pullupConfig.upContent}}</span>
         <span v-show="pullUpScroller.pullupStatus === 'loading'">
@@ -67,7 +67,7 @@ export default {
       },
       showModel: {
         showSearchProductModel: false,
-        hideScroller: true,
+        showPullUpSlot: true,
       },
       keyword: null,
       productsData: {
@@ -101,7 +101,7 @@ export default {
     search() {
       var that = this
       this.pullUpScroller.pullupStatus = 'default'
-      this.showModel.hideScroller = true
+      this.showModel.showPullUpSlot = true
 
       if (this.keyword == null || this.keyword.trim() == "") {
         this.alert.showErrorNoHandled = true
@@ -121,7 +121,7 @@ export default {
             that.productsData.page = 1
 
             if (result.end) {
-              that.showModel.hideScroller = false
+              that.showModel.showPullUpSlot = false
             }
 
             that.showModel.showSearchProductModel = true
