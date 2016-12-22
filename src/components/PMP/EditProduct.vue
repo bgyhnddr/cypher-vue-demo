@@ -10,43 +10,40 @@
       <div>
         <x-input placeholder="请输入商品名称" :required="false" :value.sync="ProductInfo.name"></x-input>
       </div>
-      <div class="weui_cell" @click="showEditLabelPage">
-        <div class="weui_cell_bd weui_cell_primary">
-          <p>品类</p>
-          <p v-if="ProductInfo.pmp_product_labels.length == 0">未添加</p>
-          <p v-for="item in ProductInfo.pmp_product_labels">{{item}}</p>
+      <cell is-link @click="showEditLabelPage">
+        <span v-if="ProductInfo.pmp_product_labels.length == 0">未添加</span>
+        <span v-for="item in ProductInfo.pmp_product_labels">{{item}}</span>
+        <div slot="icon">
+          <span>品类</span>
         </div>
-        <div class="weui_cell_ft" :class="{'with_arrow': true}"></div>
-      </div>
-      <div class="weui_cell" @click="showSetPricePage">
-        <div class="weui_cell_bd weui_cell_primary">
-          <p>商品价格</p>
-          <p>设置等级价格目录表</p>
+      </cell>
+      <cell is-link @click="showSetPricePage">
+        <span>设置等级价格目录表</span>
+        <div slot="icon">
+          <span>商品价格</span>
         </div>
-        <div class="weui_cell_ft" :class="{'with_arrow': true}"></div>
-      </div>
-      <div class="weui_cell" v-for="item in BrandRole">
-        <flexbox>
-          <flexbox-item>
-            <p>{{item.name}}</p>
-          </flexbox-item>
-          <flexbox-item>
-            <p>{{item.price}}</p>
-          </flexbox-item>
-        </flexbox>
-      </div>
-      <div class="weui_cell">
-        <div class="weui_cell_bd weui_cell_primary">
-          <p>商品描述</p>
-          <x-textarea :max="200" placeholder="请输入商品描述" :value.sync="ProductInfo.description"></x-textarea>
+      </cell>
+      <table border="1" width="100%" v-if="ProductInfo.pmp_product_prices.length>0">
+        <tr v-for="item in ProductInfo.pmp_product_prices">
+          <th>{{item.brand_role_name}}</th>
+          <th>{{item.price}}元</th>
+        </tr>
+      </table>
+      <cell>
+        <div slot="icon">
+          <span>商品描述</span>
         </div>
-      </div>
-      <div class="weui_cell" v-for="item in ProductInfo.pmp_variants">
-        {{item.name}}
-        <p v-for="size in item.pmp_specifications">{{size}}</p>
-        <p v-if="ProductInfo.on_sell==false">已下架</p>
-        <div class="weui_cell_ft" :class="{'with_arrow': true}"></div>
-      </div>
+      </cell>
+      <x-textarea :max="200" placeholder="请输入商品描述" :value.sync="ProductInfo.description"></x-textarea>
+      <cell title="" is-link v-for="item in ProductInfo.pmp_variants">
+        <div slot="icon">
+          <span>{{item.name}}</span>
+        </div>
+        <div slot="after-title">
+          <span v-for="size in item.pmp_specifications">{{size}}</span>
+        </div>
+        <span v-if="item.on_sell">已下架</span>
+      </cell>
       <div class="weui_cell" v-if="!BtnFlag">
         <x-button plain>添加商品规格</x-button>
       </div>
@@ -57,7 +54,7 @@
   </div>
   <!-- 子组件页 -->
   <div>
-    <set-product-price v-if="currentActive=='SetPricePage'" :current-active.sync="currentActive"></set-product-price>
+    <set-product-price v-if="currentActive=='SetPricePage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></set-product-price>
     <product-operate v-if="currentActive=='OperatePage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></product-operate>
     <edit-product-label v-if="currentActive=='EditLabelPage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></edit-product-label>
   </div>
@@ -67,6 +64,7 @@
 <script>
 import {
   Group,
+  Cell,
   Alert,
   XHeader,
   XInput,
@@ -84,6 +82,7 @@ import EditProductLabel from './EditProductLabel'
 export default {
   components: {
     Group,
+    Cell,
     Alert,
     XHeader,
     XInput,
@@ -108,7 +107,7 @@ export default {
         "pmp_product_labels": [],
         "pmp_product_prices": []
       },
-      BrandRole: []
+      PriceInfo: []
     }
   },
   methods: {
@@ -137,7 +136,7 @@ export default {
             console.log(o)
             var specifications = []
             var images = []
-              // var variants = [{name:"",pmp_specifications:[{name:""}],pmp_variant_images:[{attachment_id:""}]}]
+              // var variants = [{id:",name:"",pmp_specifications:[{name:""}],pmp_variant_images:[{attachment_id:""}]}]
             that.ProductInfo.name = o.name
             that.ProductInfo.pmp_brand_id = o.pmp_brand_id
             that.ProductInfo.description = o.description == null ? "" : o.description
@@ -155,16 +154,18 @@ export default {
                   images.push(c.attachment_id)
                 })
                 that.ProductInfo.pmp_variants.push({
+                  id: z.id,
                   name: z.name,
+                  on_sell:z.on_sell,
                   pmp_specifications: specifications,
                   pmp_variant_images: images
                 })
               })
               //价格
             o.pmp_product_prices.forEach((b) => {
-              that.ProductInfo.pmp_product_prices.push({
-                brand_role_code:b.brand_role_code,
-                price:b.price
+              that.PriceInfo.push({
+                code: b.brand_role_code,
+                price: b.price
               })
             })
           } else {
@@ -172,16 +173,26 @@ export default {
           }
         })
         //获取代理信息，显示代理价格
-        pmpProductAPI.getBrandRoles(this.ProductInfo.pmp_brand_id).then((o)=>{
-          o.forEach((e)=>{
-            that.ProductInfo.pmp_product_prices.filter(z=>z.brand_role_code == e.level).forEach((x)=>{
-              that.BrandRole.push({
-                name:e.name,
-                price:x.price
+      pmpProductAPI.getBrandRoles(that.ProductInfo.pmp_brand_id).then((o) => {
+        if (that.PriceInfo.length > 0) {
+          o.forEach((e) => {
+            var setPrice = that.PriceInfo.filter(d => d.code == e.level)
+            var MergePrice = setPrice[0] === undefined ? "0.00" : setPrice[0].price
+            that.ProductInfo.pmp_product_prices.push({
+                brand_role_name: e.name,
+                brand_role_code: e.level,
+                price: parseFloat(MergePrice).toFixed(2)
               })
-            })
+              // that.PriceInfo.filter(z => z.code == e.level).forEach((x) => {
+              //   that.ProductInfo.pmp_product_prices.push({
+              //     brand_role_name: e.name,
+              //     brand_role_code: e.level,
+              //     price: x.price.toFixed(2)
+              //   })
+              // })
           })
-        })
+        }
+      })
     } else {
       that.currentActive = "MainPage"
     }
