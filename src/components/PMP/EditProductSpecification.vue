@@ -246,13 +246,9 @@ export default {
         this.currentActive = "MainPage"
       }
     },
-    changeProductOnSell(onSellText) {
+    changeProductOnSell() {
       this.ProductInfo.pmp_variants.map((o) => {
-        if (onSellText == "下架") {
-          o.on_sell = false
-        } else {
-          o.on_sell = true
-        }
+          o.on_sell = !o.on_sell
       })
 
       this.currentActive = "MainPage"
