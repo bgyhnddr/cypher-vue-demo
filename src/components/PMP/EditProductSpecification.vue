@@ -39,10 +39,10 @@
   <div v-else>
     <flexbox>
       <flexbox-item>
-        <x-button type="warn" @click="changeProductOnSell(onSellText)">{{onSellText}}</x-button>
+        <x-button type="warn" @click="showCheckConfirm('onSell')">{{onSellText}}</x-button>
       </flexbox-item>
       <flexbox-item>
-        <x-button type="primary" @click="changeProductInfo">修改</x-button>
+        <x-button type="primary" @click="showCheckConfirm('edit')">修改</x-button>
       </flexbox-item>
     </flexbox>
   </div>
@@ -50,6 +50,9 @@
 <div>
   <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
   <alert :show.sync="alert.showErrorNoHandled" button-text="好的">{{alert.errorMsgNoHandled}}</alert>
+  <confirm :show.sync="alert.showCheckConfirm" title="" confirm-text="取消" cancel-text="确认" @on-cancel="closeComfirm">
+    <p style="text-align:center;">{{alert.confirmModelText}}</p>
+  </confirm>
 </div>
 </template>
 
@@ -62,7 +65,8 @@ import {
   CheckerItem,
   Flexbox,
   FlexboxItem,
-  Alert
+  Alert,
+  Confirm
 } from 'vux'
 import pmpProductAPI from '../../api/pmp_product'
 import EmploymentHeadimgUpload from '../extend/employment-headimg-upload'
@@ -77,6 +81,7 @@ export default {
     Flexbox,
     FlexboxItem,
     Alert,
+    Confirm,
     EmploymentHeadimgUpload
   },
   props: {
@@ -102,6 +107,7 @@ export default {
         chooseSpecificationItems: [],
         variantImages: [],
         addImageFileId: null,
+        closeComfirmFlag: null
       },
       showModel: {
         showEditSpecificationModel: false,
@@ -113,7 +119,9 @@ export default {
         showCatchError: false,
         catchErrorMsg: null,
         showErrorNoHandled: false,
-        errorMsgNoHandled: null
+        errorMsgNoHandled: null,
+        showCheckConfirm: false,
+        confirmModelText: null
       }
     }
   },
@@ -129,10 +137,23 @@ export default {
         return false
       }
     },
+    getProductSpecifications() {
+      var specifications = []
+      this.ProductInfo.pmp_variants.map((o) => {
+        if (o.name == this.chooseSpecification) {
+          o.pmp_specifications.map((productSpecificationItem) => {
+            if (productSpecificationItem.on_sell) {
+              specifications.push(productSpecificationItem.name)
+            }
+          })
+        }
+      })
+      return specifications
+    },
     getProductVariantName() {
       var variantName = null
       this.ProductInfo.pmp_variants.map((o) => {
-        if (o.id == this.chooseSpecification) {
+        if (o.name == this.chooseSpecification) {
           variantName = o.name
         }
       })
@@ -141,7 +162,7 @@ export default {
     isOnSell() {
       var isOnSellFlag = null
       this.ProductInfo.pmp_variants.map((o) => {
-        if (o.id == this.chooseSpecification) {
+        if (o.name == this.chooseSpecification) {
           isOnSellFlag = o.on_sell
         }
       })
@@ -156,26 +177,13 @@ export default {
         that.alert.catchErrorMsg = "读取商品尺寸异常"
       })
     },
-    getProductSpecifications() {
-      var specifications = []
-      this.ProductInfo.pmp_variants.map((o) => {
-        if (o.id == this.chooseSpecification) {
-          o.pmp_specifications.map((productSpecificationItem) => {
-            if (productSpecificationItem.on_sell) {
-              specifications.push(productSpecificationItem.name)
-            }
-          })
-        }
-      })
-      return specifications
-    },
     getProductImages() {
       var images = []
       this.ProductInfo.pmp_variants.map((o) => {
-        if (o.id == null) {
-          images = o.pmp_variant_images
-        } else {
-          if (o.id == this.chooseSpecification) {
+        if (o.name == this.chooseSpecification) {
+          if (o.id == null) {
+            images = o.pmp_variant_images
+          } else {
             o.pmp_variant_images.map((productImageItem) => {
               images.push(productImageItem.attachment_id)
             })
@@ -210,16 +218,33 @@ export default {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "商品图片不能为空"
       } else {
+        var newProductFlag = null
 
-        this.ProductInfo.pmp_variants.push({
-          name: this.inputDate.variant,
-          on_sell: true,
-          pmp_specifications: this.getConfirmSpecifications(),
-          pmp_variant_images: this.inputDate.variantImages
-        })
+        if(this.isFirstTimeAddSpecification()){
+          newProductFlag = true
+        }else{
+          this.ProductInfo.pmp_variants.map((o) => {
+            if (o.name == this.chooseSpecification && o.id == null) {
+              newProductFlag = true
+            } else {
+              newProductFlag = false
+            }
+          })
+        }
+
+        if (newProductFlag == true) {
+          this.ProductInfo.pmp_variants.push({
+            name: this.inputDate.variant,
+            on_sell: true,
+            pmp_specifications: this.getConfirmSpecifications(),
+            pmp_variant_images: this.inputDate.variantImages
+          })
+        } else {
+          console.log("非首次添加的商品")
+        }
+
+        this.currentActive = "MainPage"
       }
-
-      this.currentActive = "MainPage"
     },
     changeProductOnSell(onSellText) {
       this.ProductInfo.pmp_variants.map((o) => {
@@ -269,6 +294,28 @@ export default {
         return null
       } else {
         return '/service/public/upload/getAttachment?id=' + fileId
+      }
+    },
+    showCheckConfirm(chooseText) {
+      if (chooseText == "onSell") {
+        if (this.isOnSell()) {
+          this.alert.confirmModelText = "确定下架吗？"
+        } else {
+          this.alert.confirmModelText = "确定上架吗？"
+        }
+        this.alert.showCheckConfirm = true
+      } else if (chooseText == 'edit') {
+        this.alert.confirmModelText = "确定修改该商品规格吗？"
+        this.alert.showCheckConfirm = true
+      }
+
+      this.inputDate.closeComfirmFlag = chooseText
+    },
+    closeComfirm() {
+      if(this.inputDate.closeComfirmFlag == "onSell"){
+        this.changeProductOnSell()
+      }else{
+        this.changeProductInfo()
       }
 
     },
