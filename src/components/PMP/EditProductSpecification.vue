@@ -306,8 +306,8 @@ export default {
           this.ProductInfo.pmp_variants.map((o, index) => {
             if (index == this.inputDate.editPmpVariantsIndex) {
               o.name = this.inputDate.variant
-              o.pmp_specifications = this.getConfirmSpecifications(),
-                o.pmp_variant_images = this.inputDate.variantImages
+              o.pmp_specifications = this.getConfirmSpecifications()
+              o.pmp_variant_images = this.inputDate.variantImages
             }
           })
         }
