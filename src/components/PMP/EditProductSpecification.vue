@@ -316,8 +316,10 @@ export default {
       }
     },
     changeProductOnSell() {
-      this.ProductInfo.pmp_variants.map((o) => {
-        o.on_sell = !o.on_sell
+      this.ProductInfo.pmp_variants.map((o, index) => {
+          if (index == this.inputDate.editPmpVariantsIndex) {
+            o.on_sell = !o.on_sell
+          }
       })
 
       this.currentActive = "MainPage"
