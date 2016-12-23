@@ -208,6 +208,7 @@ export default {
               //价格
             o.pmp_product_prices.forEach((b) => {
               that.PriceInfo.push({
+                id:b.id,
                 code: b.brand_role_code,
                 price: b.price
               })
@@ -221,11 +222,14 @@ export default {
         if (that.PriceInfo.length > 0) {
           o.forEach((e) => {
             var setPrice = that.PriceInfo.filter(d => d.code == e.level)
+            var PriceID = setPrice[0] === undefined ? "" : setPrice[0].id
             var MergePrice = setPrice[0] === undefined ? "0.00" : setPrice[0].price
             that.ProductInfo.pmp_product_prices.push({
+                id:PriceID,
                 brand_role_name: e.name,
                 brand_role_code: e.level,
-                price: parseFloat(MergePrice).toFixed(2)
+                price: parseFloat(MergePrice).toFixed(2),
+                price_unit:"RMB"
               })
               // that.PriceInfo.filter(z => z.code == e.level).forEach((x) => {
               //   that.ProductInfo.pmp_product_prices.push({
