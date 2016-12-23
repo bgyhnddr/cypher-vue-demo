@@ -295,6 +295,7 @@ export default {
       }
 
       var confirmSpecifaications = this.getConfirmSpecifications()
+      var confirmImages = this.getConfirmImages()
       if (isCheckedFlag || this.confirmBeforeCheck()) {
         if (this.inputDate.editPmpVariantsIndex == null && this.chooseSpecification == null) {
 
@@ -302,7 +303,7 @@ export default {
             name: this.inputDate.variant,
             on_sell: true,
             pmp_specifications: confirmSpecifaications,
-            pmp_variant_images: this.inputDate.variantImages
+            pmp_variant_images: confirmImages
           })
         } else if (this.inputDate.editPmpVariantsIndex != null) {
           this.ProductInfo.pmp_variants.map((o, index) => {
@@ -310,7 +311,7 @@ export default {
             if (index == this.inputDate.editPmpVariantsIndex) {
               o.name = this.inputDate.variant
               o.pmp_specifications = confirmSpecifaications
-              o.pmp_variant_images = this.inputDate.variantImages
+              o.pmp_variant_images = confirmImages
             }
           })
         }
@@ -337,7 +338,7 @@ export default {
             on_sell: false
           })
         })
-      }else{
+      } else {
         this.ProductInfo.pmp_variants.map((o, index) => {
           if (index == this.inputDate.editPmpVariantsIndex) {
             addSpecifications = o.pmp_specifications
@@ -357,6 +358,38 @@ export default {
       })
 
       return addSpecifications
+    },
+    getConfirmImages(){
+      var addImages = []
+
+      if (this.inputDate.editPmpVariantsIndex == null) {
+        this.inputDate.variantImages.map((option) => {
+            addImages.push({attachment_id: option})
+        })
+      } else {
+        this.ProductInfo.pmp_variants.map((o, index) => {
+          if (index == this.inputDate.editPmpVariantsIndex) {
+
+            this.inputDate.variantImages.map((addItem) =>{
+              o.pmp_variant_images.map((originalItem) =>{
+                if(addItem == originalItem.attachment_id){
+                  addImages.push(originalItem)
+                }
+              })
+            })
+
+            addImages.map((o) =>{
+              this.inputDate.variantImages.$remove(o.attachment_id)
+            })
+
+            this.inputDate.variantImages.map((option) =>{
+              addImages.push({attachment_id: option})
+            })
+          }
+        })
+      }
+
+      return addImages
     },
     getSpecificationImgHref(fileId) {
       if (fileId == null) {
