@@ -218,12 +218,16 @@ var exec = {
         var variantUpsertList = []
         obj["pmp_variants"].forEach((v) => {
           v.pmp_product_id = product.id
-          variantUpsertList.push(pmp_variant.upsert(v).then(() => {
-            return pmp_variant.findOne({
-              where: {
-                id: v.id
-              }
-            })
+          variantUpsertList.push(Promise.resolve().then(() => {
+            if (v.id) {
+              return pmp_variant.findOne({
+                where: {
+                  id: v.id
+                }
+              })
+            } else {
+              return pmp_variant.create(v)
+            }
           }).then((variant) => {
             var variantDetailUpsertList = []
             if (v["pmp_variant_images"] != undefined) {
