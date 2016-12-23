@@ -293,60 +293,77 @@ export default {
       if (status == "edit") {
         isCheckedFlag = true
       }
+      // console.log("修改前Variants")
+      // console.log(JSON.stringify(this.ProductInfo.pmp_variants))
 
+      var confirmSpecifaications = this.getConfirmSpecifications()
       if (isCheckedFlag || this.confirmBeforeCheck()) {
         if (this.inputDate.editPmpVariantsIndex == null && this.chooseSpecification == null) {
+
           this.ProductInfo.pmp_variants.push({
             name: this.inputDate.variant,
             on_sell: true,
-            pmp_specifications: this.getConfirmSpecifications(),
+            pmp_specifications: confirmSpecifaications,
             pmp_variant_images: this.inputDate.variantImages
           })
         } else if (this.inputDate.editPmpVariantsIndex != null) {
           this.ProductInfo.pmp_variants.map((o, index) => {
+
             if (index == this.inputDate.editPmpVariantsIndex) {
               o.name = this.inputDate.variant
-              o.pmp_specifications = this.getConfirmSpecifications()
+              o.pmp_specifications = confirmSpecifaications
               o.pmp_variant_images = this.inputDate.variantImages
             }
           })
         }
-
+        // console.log("修改后Variants")
+        // console.log(JSON.stringify(this.ProductInfo.pmp_variants))
         this.currentActive = "MainPage"
       }
     },
     changeProductOnSell() {
       this.ProductInfo.pmp_variants.map((o, index) => {
-          if (index == this.inputDate.editPmpVariantsIndex) {
-            o.on_sell = !o.on_sell
-          }
+        if (index == this.inputDate.editPmpVariantsIndex) {
+          o.on_sell = !o.on_sell
+        }
       })
 
       this.currentActive = "MainPage"
     },
     getConfirmSpecifications() {
-      var onSellSpecifications = []
       var addSpecifications = []
 
-      this.specificationOptions.map((option) => {
-        this.inputDate.chooseSpecificationItems.map((chooseItem) => {
-          if (option.name == chooseItem) {
-            onSellSpecifications.push(option.name)
+      if (this.inputDate.editPmpVariantsIndex == null) {
+        // console.log("修改前o.pmp_specifications!!!")
+        // console.log("[]")
+        this.specificationOptions.map((option) => {
+          addSpecifications.push({
+            name: option.name,
+            on_sell: false
+          })
+        })
+      }else{
+        this.ProductInfo.pmp_variants.map((o, index) => {
+          if (index == this.inputDate.editPmpVariantsIndex) {
+            // console.log("修改前o.pmp_specifications！！！")
+            // console.log(JSON.stringify(o.pmp_specifications))
+            addSpecifications = o.pmp_specifications
+            addSpecifications.map((item) => {
+              item.on_sell = false
+            })
           }
         })
-        addSpecifications.push({
-          name: option.name,
-          on_sell: false
-        })
-      })
+      }
 
-      addSpecifications.map((item) => {
-        onSellSpecifications.map((onSellItem) => {
+      this.inputDate.chooseSpecificationItems.map((onSellItem) => {
+        addSpecifications.map((item) => {
           if (onSellItem == item.name) {
             item.on_sell = true
           }
         })
       })
+      // console.log("修改后o.pmp_specifications！！！")
+      // console.log(JSON.stringify(addSpecifications))
 
       return addSpecifications
     },
