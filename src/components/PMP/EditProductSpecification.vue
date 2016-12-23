@@ -293,8 +293,6 @@ export default {
       if (status == "edit") {
         isCheckedFlag = true
       }
-      // console.log("修改前Variants")
-      // console.log(JSON.stringify(this.ProductInfo.pmp_variants))
 
       var confirmSpecifaications = this.getConfirmSpecifications()
       if (isCheckedFlag || this.confirmBeforeCheck()) {
@@ -316,8 +314,7 @@ export default {
             }
           })
         }
-        // console.log("修改后Variants")
-        // console.log(JSON.stringify(this.ProductInfo.pmp_variants))
+
         this.currentActive = "MainPage"
       }
     },
@@ -334,8 +331,6 @@ export default {
       var addSpecifications = []
 
       if (this.inputDate.editPmpVariantsIndex == null) {
-        // console.log("修改前o.pmp_specifications!!!")
-        // console.log("[]")
         this.specificationOptions.map((option) => {
           addSpecifications.push({
             name: option.name,
@@ -345,8 +340,6 @@ export default {
       }else{
         this.ProductInfo.pmp_variants.map((o, index) => {
           if (index == this.inputDate.editPmpVariantsIndex) {
-            // console.log("修改前o.pmp_specifications！！！")
-            // console.log(JSON.stringify(o.pmp_specifications))
             addSpecifications = o.pmp_specifications
             addSpecifications.map((item) => {
               item.on_sell = false
@@ -362,8 +355,6 @@ export default {
           }
         })
       })
-      // console.log("修改后o.pmp_specifications！！！")
-      // console.log(JSON.stringify(addSpecifications))
 
       return addSpecifications
     },
