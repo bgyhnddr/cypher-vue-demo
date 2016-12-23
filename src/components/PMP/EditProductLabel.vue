@@ -39,7 +39,7 @@
     </flexbox>
   </div>
   <div v-if="showModel.showStaticCheckerModel">
-      <div v-for="productLabelItem in ProductInfo.pmp_product_labels" :value="productLabelItem">{{productLabelItem}}</div>
+      <div v-for="productLabelItem in ProductInfo.pmp_product_labels" >{{productLabelItem}}</div>
   </div>
   <div v-if="!showModel.showStaticCheckerModel">
     <checker :value.sync="inputDate.chooseLabelItems" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
@@ -172,7 +172,6 @@ export default {
     remove() {
       var that = this
       var removeItems = []
-      var newProductLabels = []
 
       this.inputDate.chooseLabelItems.map((addItem) => {
         that.ProductInfo.pmp_product_labels.map((productItem) => {
