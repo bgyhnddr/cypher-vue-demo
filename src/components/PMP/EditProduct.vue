@@ -40,7 +40,9 @@
           <span>{{item.name}}</span>
         </div>
         <div slot="after-title">
-          <span v-for="size in item.pmp_specifications">{{size.name}}</span>
+          <span v-for="size in item.pmp_specifications">
+            <span v-if="size.on_sell">{{size.name}}<span>
+          </span>
         </div>
         <span v-if="item.on_sell==false">已下架</span>
       </cell>
@@ -138,7 +140,6 @@ export default {
       this.currentActive = "EditLabelPage"
     },
     showSpecificationPage(e){
-      console.log(this.ProductInfo)
       if(e==null){
         this.chooseSpecification = null
       }else{
@@ -163,6 +164,7 @@ export default {
       var that = this
       var id = that.$route.params.id
       var Info = that.ProductInfo
+      console.log(Info.pmp_variants)
       pmpProductAPI.submitProduct({
         id: id,
         name: Info.name,
@@ -179,7 +181,7 @@ export default {
           that.$route.router.go('/productManagement/productSetting')
         }
       })
-      console.log(this.ProductInfo)
+      // console.log(this.ProductInfo)
     }
   },
   ready() {
