@@ -277,12 +277,12 @@ export default {
       if (this.inputDate.variant == null || this.inputDate.variant.trim() == "") {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "请输入商品规格"
-      } else if (this.inputDate.chooseSpecificationItems.length == 0) {
-        this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "请选择商品尺寸"
       } else if (this.inputDate.variantImages.length == 0) {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "商品图片不能为空"
+      } else if (this.inputDate.chooseSpecificationItems.length == 0) {
+        this.alert.showErrorNoHandled = true
+        this.alert.errorMsgNoHandled = "请选择商品尺寸"
       } else {
         confirmFlag = true
       }
@@ -376,7 +376,6 @@ export default {
       if (this.inputDate.closeComfirmFlag == "onSell") {
         this.changeProductOnSell()
       } else {
-
         this.confirm("edit")
       }
     },
