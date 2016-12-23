@@ -164,11 +164,11 @@ export default {
       var that = this
       var id = that.$route.params.id
       var Info = that.ProductInfo
-      console.log(Info.pmp_variants)
+      console.log(JSON.stringify(that.ProductInfo.pmp_variants))
       pmpProductAPI.submitProduct({
         id: id,
         name: Info.name,
-        on_sell: Info.on_sell,
+        on_sell: Info.on_sell==null?true:Info.on_sell,
         description: Info.description,
         pmp_variants:Info.pmp_variants,
         pmp_product_labels: Info.pmp_product_labels.map(c => c = {pmp_label: {name: c}}),
@@ -195,9 +195,6 @@ export default {
         }).then((o) => {
           if (o) {
             console.log(o)
-            var specifications = []
-            var images = []
-              // var variants = [{id:",name:"",pmp_specifications:[{name:""}],pmp_variant_images:[{attachment_id:""}]}]
             that.ProductInfo.name = o.name
             that.ProductInfo.description = o.description == null ? "" : o.description
             that.ProductInfo.on_sell = o.on_sell
@@ -207,6 +204,8 @@ export default {
               })
               //规格
             o.pmp_variants.forEach((z) => {
+              var specifications = []
+              var images = []
                 z.pmp_specifications.forEach((e) => {
                   specifications.push({
                     id:e.id,
@@ -236,10 +235,12 @@ export default {
                 price: b.price
               })
             })
+            console.log(JSON.stringify(that.ProductInfo.pmp_variants))
           } else {
             console.log('商品读取错误')
           }
         })
+
         //获取代理信息，显示代理价格
       pmpProductAPI.getBrandRoles().then((o) => {
         if (that.PriceInfo.length > 0) {
@@ -254,13 +255,6 @@ export default {
                 price: parseFloat(MergePrice).toFixed(2),
                 price_unit:"RMB"
               })
-              // that.PriceInfo.filter(z => z.code == e.level).forEach((x) => {
-              //   that.ProductInfo.pmp_product_prices.push({
-              //     brand_role_name: e.name,
-              //     brand_role_code: e.level,
-              //     price: x.price.toFixed(2)
-              //   })
-              // })
           })
         }
       })
