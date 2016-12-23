@@ -60,7 +60,9 @@
     </flexbox>
   </div>
   <div v-if="showModel.showAddButtonModel">
-    <x-button @click="confirm('add')">确定添加</x-button>
+    <div v-if="showModel.showAddImageModel">
+      <x-button @click="confirm('add')">确定添加</x-button>
+    </div>
   </div>
   <div v-else>
     <flexbox v-if="showModel.showAddImageModel">
