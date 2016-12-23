@@ -58,7 +58,7 @@ var exec = {
       orderstring = order.key + " " + (order.asc ? "" : "DESC")
     }
 
-    return pmp_product.findAndCountAll({
+    return pmp_product.findAll({
       include: [{
         model: pmp_variant,
         include: pmp_variant_image
@@ -67,7 +67,18 @@ var exec = {
       offset: page * count,
       limit: count,
       order: orderstring
+    }).then((list) => {
+      return pmp_product.count({
+        where: where
+      }).then((count) => {
+        return {
+          rows: list,
+          count: count
+        }
+      })
     }).then((result) => {
+      console.log(result.rows.length)
+      console.log(result.count)
       return {
         end: (result.rows.length + page * count) >= result.count,
         list: result.rows
