@@ -35,16 +35,18 @@
         </div>
       </cell>
       <x-textarea :max="200" placeholder="请输入商品描述" :value.sync="ProductInfo.description"></x-textarea>
-      <cell title="" is-link v-for="item in ProductInfo.pmp_variants">
+      <cell title="" is-link v-for="item in ProductInfo.pmp_variants" @click="showSpecificationPage(item.name)">
         <div slot="icon">
           <span>{{item.name}}</span>
         </div>
         <div slot="after-title">
-          <span v-for="size in item.pmp_specifications">{{size}}</span>
+          <span v-for="size in item.pmp_specifications">
+            <span v-if="size.on_sell">{{size.name}}<span>
+          </span>
         </div>
-        <span v-if="item.on_sell">已下架</span>
+        <span v-if="item.on_sell==false">已下架</span>
       </cell>
-      <div class="weui_cell" v-if="!BtnFlag">
+      <div class="weui_cell" v-if="!BtnFlag" @click="showSpecificationPage()">
         <x-button plain>添加商品规格</x-button>
       </div>
     </group>
@@ -61,6 +63,7 @@
     <set-product-price v-if="currentActive=='SetPricePage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></set-product-price>
     <product-operate v-if="currentActive=='OperatePage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></product-operate>
     <edit-product-label v-if="currentActive=='EditLabelPage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></edit-product-label>
+    <edit-product-specification v-if="currentActive=='EditSpecificationPage'" :current-active.sync="currentActive" :choose-specification.sync="chooseSpecification" :product-info.sync="ProductInfo"><edit-product-specification>
   </div>
 </div>
 </template>
@@ -83,6 +86,7 @@ import pmpProductAPI from '../../api/pmp_product'
 import SetProductPrice from './SetProductPrice'
 import ProductOperate from './ProductOperate'
 import EditProductLabel from './EditProductLabel'
+import EditProductSpecification from './EditProductSpecification'
 
 export default {
   components: {
@@ -97,6 +101,7 @@ export default {
     SetProductPrice,
     ProductOperate,
     EditProductLabel,
+    EditProductSpecification,
     Flexbox,
     FlexboxItem
   },
@@ -114,6 +119,7 @@ export default {
         "pmp_product_prices": []
       },
       PriceInfo: [],
+      chooseSpecification:null,
       alertMsg:"",
       BtnMsg:"",
       showAlert:false,
@@ -133,6 +139,14 @@ export default {
     showEditLabelPage() {
       this.currentActive = "EditLabelPage"
     },
+    showSpecificationPage(e){
+      if(e==null){
+        this.chooseSpecification = null
+      }else{
+        this.chooseSpecification = e
+      }
+      this.currentActive = "EditSpecificationPage"
+    },
     showSubmit(){
       var that = this
       if (that.valid()) {
@@ -150,11 +164,13 @@ export default {
       var that = this
       var id = that.$route.params.id
       var Info = that.ProductInfo
+      console.log(Info.pmp_variants)
       pmpProductAPI.submitProduct({
         id: id,
         name: Info.name,
         on_sell: Info.on_sell,
         description: Info.description,
+        pmp_variants:Info.pmp_variants,
         pmp_product_labels: Info.pmp_product_labels.map(c => c = {pmp_label: {name: c}}),
         pmp_product_prices: Info.pmp_product_prices
       }).then(() => {
@@ -165,7 +181,7 @@ export default {
           that.$route.router.go('/productManagement/productSetting')
         }
       })
-      console.log(this.ProductInfo)
+      // console.log(this.ProductInfo)
     }
   },
   ready() {
@@ -192,10 +208,17 @@ export default {
               //规格
             o.pmp_variants.forEach((z) => {
                 z.pmp_specifications.forEach((e) => {
-                  specifications.push(e.name)
+                  specifications.push({
+                    id:e.id,
+                    name:e.name,
+                    on_sell:e.on_sell
+                  })
                 })
                 z.pmp_variant_images.forEach((c) => {
-                  images.push(c.attachment_id)
+                  images.push({
+                    id:c.id,
+                    attachment_id:c.attachment_id
+                  })
                 })
                 that.ProductInfo.pmp_variants.push({
                   id: z.id,
