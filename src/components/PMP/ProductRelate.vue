@@ -33,6 +33,9 @@
         <x-button type="default" @click="ScanQRCode">扫码</x-button>
       </flexbox-item>
     </flexbox>
+    <confirm :show.sync="showConfirm" title="" confirm-text="是" cancel-text="否" @on-confirm="SubmitRelate(ScanResult)" @on-cancel = "onClickBack">
+      <p style="text-align:center;">是否将箱{{ScanResult}}关联到{{ProductInfo.name}}{{ProductInfo.variant}}{{ProductInfo.specification}}里？</p>
+    </confirm>
   </div>
 </div>
 </template>
@@ -45,7 +48,8 @@ import {
   Cell,
   Flexbox,
   FlexboxItem,
-  XButton
+  XButton,
+  Confirm
 } from 'vux'
 
 import pmpProductAPI from '../../api/pmp_product'
@@ -58,7 +62,8 @@ export default {
     Cell,
     Flexbox,
     FlexboxItem,
-    XButton
+    XButton,
+    Confirm
   },
   data() {
     return {
@@ -68,7 +73,9 @@ export default {
         specification: ""
       },
       CountList: [],
-      BoxList: []
+      BoxList: [],
+      ScanResult:"",
+      showConfirm:false
     }
   },
   methods: {
@@ -81,6 +88,21 @@ export default {
       }else{
         this.BoxList[e].show = true
       }
+    },
+    SubmitRelate(e){
+      that.CountList.push({
+        pmp_specification_id: that.$route.params.id,
+        goods_code: e
+      })
+      pmpProductAPI.getBoxCodes({
+        code: result
+      }).then((o) => {
+        that.BoxList.push({
+          code: e,
+          box: o,
+          show: false
+        })
+      })
     },
     SubmitResult() {
       pmpProductAPI.submitCountResult({countList:this.CountList}).then((o) => {
@@ -96,19 +118,8 @@ export default {
         scanType: ["qrCode", "barCode"],
         success: function(res) {
           var result = res.resultStr
-          that.CountList.push({
-            pmp_specification_id: that.$route.params.id,
-            goods_code: result
-          })
-          pmpProductAPI.getBoxCodes({
-            code: result
-          }).then((o) => {
-            that.BoxList.push({
-              code: result,
-              box: o,
-              show: false
-            })
-          })
+          that.ScanResult = result
+          that.showConfirm = true
         }
       })
     }
