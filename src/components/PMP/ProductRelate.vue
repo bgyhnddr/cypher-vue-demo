@@ -95,7 +95,6 @@ export default {
         needResult: 1,
         scanType: ["qrCode", "barCode"],
         success: function(res) {
-          window.alert(res.result)
           var result = res.resultStr
           that.CountList.push({
             pmp_specification_id: that.$route.params.id,
