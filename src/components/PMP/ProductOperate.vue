@@ -8,7 +8,9 @@
     </div>
     <Group>
       <div class="weui_cell">
-        <img width="100px" height="100px" alt="产品图片">
+        <div v-for="item in ProductInfo.pmp_variants">
+          <img width="100px" height="100px" :src="getProductImgHref(item.pmp_variant_images[0].attachment_id)" alt="产品图片">
+        </div>
       </div>
       <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
@@ -86,6 +88,9 @@ export default {
     },
     showConfirm(){
       this.show = true
+    },
+    getProductImgHref(fileId) {
+      return '/service/public/upload/getAttachment?id=' + fileId
     },
     changeSellMode() {
       var that = this
