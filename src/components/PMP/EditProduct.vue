@@ -23,6 +23,7 @@
           <span>商品价格</span>
         </div>
       </cell>
+      <div v-if="ProductInfo.pmp_product_prices.length==0">数据加载失败</div>
       <table border="1" width="100%" v-if="ProductInfo.pmp_product_prices.length>0">
         <tr v-for="item in ProductInfo.pmp_product_prices">
           <th>{{item.brand_role_name}}</th>
@@ -168,25 +169,47 @@ export default {
       var Info = that.ProductInfo
       console.log(JSON.stringify(that.ProductInfo.pmp_variants))
       pmpProductAPI.submitProduct({
-          id: id,
-          name: Info.name,
-          on_sell: Info.on_sell == null ? true : Info.on_sell,
-          description: Info.description,
-          pmp_variants: Info.pmp_variants,
-          pmp_product_labels: Info.pmp_product_labels.map(c => c = {
-            pmp_label: {
-              name: c
-            }
-          }),
-          pmp_product_prices: Info.pmp_product_prices
-        }).then(() => {
-          if (id) {
-            that.alertMsg = "商品已保存"
-            that.showAlert = true
-          } else {
-            that.$route.router.go('/productManagement/productSetting')
+        id: id,
+        name: Info.name,
+        on_sell: Info.on_sell == null ? true : Info.on_sell,
+        description: Info.description,
+        pmp_variants: Info.pmp_variants,
+        pmp_product_labels: Info.pmp_product_labels.map(c => c = {
+          pmp_label: {
+            name: c
           }
-        })
+        }),
+        pmp_product_prices: Info.pmp_product_prices
+      }).then(() => {
+        if (id) {
+          that.alertMsg = "商品已保存"
+          that.showAlert = true
+        } else {
+          that.$route.router.go('/productManagement/productSetting')
+        }
+      })
+    }
+  },
+  watch: {
+    'PriceInfo': function(val, oldvalue) {
+      var that = this
+        //获取代理信息，显示代理价格
+      pmpProductAPI.getBrandRoles().then((o) => {
+        if (that.PriceInfo.length > 0) {
+          o.forEach((e) => {
+            var setPrice = that.PriceInfo.filter(d => d.code == e.level)
+            var PriceID = setPrice[0] === undefined ? "" : setPrice[0].id
+            var MergePrice = setPrice[0] === undefined ? "0.00" : setPrice[0].price
+            that.ProductInfo.pmp_product_prices.push({
+              id: PriceID,
+              brand_role_name: e.name,
+              brand_role_code: e.level,
+              price: parseFloat(MergePrice).toFixed(2),
+              price_unit: "RMB"
+            })
+          })
+        }
+      })
     }
   },
   ready() {
@@ -243,24 +266,6 @@ export default {
           console.log(JSON.stringify(that.ProductInfo.pmp_variants))
         } else {
           console.log('商品读取错误')
-        }
-      })
-
-      //获取代理信息，显示代理价格
-      pmpProductAPI.getBrandRoles().then((o) => {
-        if (that.PriceInfo.length > 0) {
-          o.forEach((e) => {
-            var setPrice = that.PriceInfo.filter(d => d.code == e.level)
-            var PriceID = setPrice[0] === undefined ? "" : setPrice[0].id
-            var MergePrice = setPrice[0] === undefined ? "0.00" : setPrice[0].price
-            that.ProductInfo.pmp_product_prices.push({
-              id: PriceID,
-              brand_role_name: e.name,
-              brand_role_code: e.level,
-              price: parseFloat(MergePrice).toFixed(2),
-              price_unit: "RMB"
-            })
-          })
         }
       })
     } else {
