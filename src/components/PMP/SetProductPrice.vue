@@ -27,6 +27,7 @@
     </flexbox-item>
   </flexbox>
 </div>
+<alert :show.sync="showAlert" button-Text="好的" @on-hide="Hide">请正确输入金额</alert>
 </template>
 
 <script>
@@ -62,43 +63,59 @@ export default {
   },
   data() {
     return {
-      BrandRole: []
+      BrandRole: [],
+      InputValid:true,
+      showAlert:false
     }
   },
   methods: {
     onClickBack() {
-      this.currentActive = "MainPage"
+      if(this.InputValid){
+        this.currentActive = "MainPage"
+      }
     },
     ResetPrice() {
       this.BrandRole.forEach((o) => {
         o.price = "0.00"
       })
     },
+    Hide(){
+      this.InputValid = true
+    },
     SubmitPrice() {
       if (this.ProductInfo.pmp_product_prices.length == 0) {
         this.BrandRole.forEach((o) => {
-          this.ProductInfo.pmp_product_prices.push({
-            brand_role_name: o.name,
-            brand_role_code: o.level,
-            price: parseFloat(o.price).toFixed(2),
-            price_unit:"RMB"
-          })
+          if(isNaN(o.price)||o.price==""){
+            this.showAlert = true
+            this.InputValid = false
+            o.price = "0.00"
+          }else{
+            this.ProductInfo.pmp_product_prices.push({
+              brand_role_name: o.name,
+              brand_role_code: o.level,
+              price: parseFloat(o.price).toFixed(2),
+              price_unit:"RMB"
+            })
+          }
         })
       } else {
         this.BrandRole.forEach((o) => {
-          this.ProductInfo.pmp_product_prices.filter(i => i.brand_role_code == o.level).map((t) => {
-            t.brand_role_name = o.name
-            t.brand_role_code = o.level
-            t.price = parseFloat(o.price).toFixed(2)
-          })
+          if(isNaN(o.price)||o.price==""){
+            this.showAlert = true
+            this.InputValid = false
+            o.price = "0.00"
+          }else{
+            this.ProductInfo.pmp_product_prices.filter(i => i.brand_role_code == o.level).map((t) => {
+              t.brand_role_name = o.name
+              t.brand_role_code = o.level
+              t.price = parseFloat(o.price).toFixed(2)
+            })
+          }
         })
       }
       this.onClickBack()
-      console.log(this.BrandRole)
-      console.log(this.ProductInfo.pmp_product_prices)
     },
     onChange(val) {
-      console.log(val)
     }
   },
   ready() {
