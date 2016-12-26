@@ -77,8 +77,6 @@ var exec = {
         }
       })
     }).then((result) => {
-      console.log(result.rows.length)
-      console.log(result.count)
       return {
         end: (result.rows.length + page * count) >= result.count,
         list: result.rows
@@ -262,6 +260,7 @@ var exec = {
       if (obj["pmp_product_labels"] != undefined) {
         var productLabelUpsertList = []
         obj["pmp_product_labels"].forEach((pl) => {
+          pl.pmp_label.pmp_brand_id = pmp_brand_id
           productLabelUpsertList.push(pmp_label.upsert(pl.pmp_label).then(() => {
             return pmp_label.findOne({
               where: {
