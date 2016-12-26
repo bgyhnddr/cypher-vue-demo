@@ -8,7 +8,7 @@
     </div>
     <Group>
       <div class="weui_cell">
-        <img width="100px" height="100px" alt="产品图片">
+        <swiper :list="PickInfo.ImgList" auto style="width:80%;margin:0 auto;" height="180px" dots-class="custom-bottom" dots-position="center"></swiper>
       </div>
       <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
@@ -17,7 +17,7 @@
       </div>
       <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
-          <p>￥</p>
+          <p>￥{{PickInfo.Sell_Price[0].price.toFixed(2)}}</p>
         </div>
       </div>
       <div class="weui_cell">
@@ -49,7 +49,8 @@ import {
   Flexbox,
   FlexboxItem,
   XButton,
-  Confirm
+  Confirm,
+  Swiper
 } from 'vux'
 
 import pmpProductAPI from '../../api/pmp_product'
@@ -62,13 +63,17 @@ export default {
     Flexbox,
     FlexboxItem,
     XButton,
-    Confirm
+    Confirm,
+    Swiper
   },
   props: {
     currentActive: {
       type: String
     },
     ProductInfo: {
+      type: Object
+    },
+    PickInfo:{
       type: Object
     }
   },
