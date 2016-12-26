@@ -89,14 +89,13 @@ export default {
             this.showAlert = true
             this.InputValid = false
             o.price = "0.00"
-          }else{
-            this.ProductInfo.pmp_product_prices.push({
-              brand_role_name: o.name,
-              brand_role_code: o.level,
-              price: parseFloat(o.price).toFixed(2),
-              price_unit:"RMB"
-            })
           }
+          this.ProductInfo.pmp_product_prices.push({
+            brand_role_name: o.name,
+            brand_role_code: o.level,
+            price: parseFloat(o.price).toFixed(2),
+            price_unit:"RMB"
+          })
         })
       } else {
         this.BrandRole.forEach((o) => {
