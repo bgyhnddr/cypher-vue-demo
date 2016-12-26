@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     onClickBack() {
-      this.$route.router.go('/index')
+      this.$route.router.go('/homePage')
     },
     getPersonalInfo() {
       var that = this
