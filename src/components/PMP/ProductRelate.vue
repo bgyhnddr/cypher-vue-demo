@@ -96,7 +96,7 @@ export default {
         goods_code: e
       })
       pmpProductAPI.getBoxCodes({
-        code: result
+        code: e
       }).then((o) => {
         that.BoxList.push({
           code: e,
