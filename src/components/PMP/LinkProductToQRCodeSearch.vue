@@ -20,11 +20,11 @@
           <label>{{productItem.pmp_variant.name}}</label>
           <label>{{productItem.name}}</label>
         </div>
-        <x-button @click="runWxScanQRCode(productItem)">扫码</x-button>
+        <x-button @click="goTo(productItem.pmp_variant.id)">扫码</x-button>
       </div>
-      <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" >
+      <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up">
         <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
-        <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'" >{{pullUpScroller.pullupConfig.upContent}}</span>
+        <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'">{{pullUpScroller.pullupConfig.upContent}}</span>
         <span v-show="pullUpScroller.pullupStatus === 'loading'">
           <span>{{pullUpScroller.pullupConfig.loadingContent}}</span>
         </span>
@@ -45,8 +45,8 @@ import {
   XHeader,
   Scroller,
   Group,
-  Cell,
   XInput,
+  XButton,
   Alert
 } from 'vux'
 import pmpProductAPI from '../../api/pmp_product'
@@ -56,8 +56,8 @@ export default {
     XHeader,
     Scroller,
     Group,
-    Cell,
     XInput,
+    XButton,
     Alert
   },
   watch: {
@@ -82,7 +82,8 @@ export default {
           end: null,
           list: []
         },
-        page: 0
+        page: 0,
+        chooseProduct: null
       },
       pullUpScroller: {
         pullupStatus: 'default',
@@ -114,7 +115,7 @@ export default {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "请输入需要搜索的关键字"
       } else {
-        pmpProductAPI.getProducts({
+        pmpProductAPI.getSpecifications({
           filterKey: this.keyword.trim()
         }).then(function(result) {
           if (result.list.length == 0) {
@@ -164,25 +165,11 @@ export default {
         that.alert.catchErrorMsg = "读取我的货品信息异常，请稍后再试"
       })
     },
-    goToEditProduct(productId){
-      this.$route.router.go("/productManagement/editProduct/" + productId)
+    goTo(productVariantId) {
+      this.$route.router.go("/productManagement/productRelate/" + productVariantId)
     },
-    getProductImgHref(fileId){
+    getProductImgHref(fileId) {
       return '/service/public/upload/getAttachment?id=' + fileId
-    },
-    getRetailPrice(pmp_product_prices) {
-      var retailPrice = null
-      pmp_product_prices.map((o) => {
-        if (o.brand_role_code == "4") {
-          retailPrice = o.price.toFixed(2)
-        }
-      })
-
-      if(retailPrice == null){
-        retailPrice = ""
-      }
-
-      return "￥ " + retailPrice
     },
     errorHandled() {
       this.$route.router.go("/productManagement/productSetting")
