@@ -8,18 +8,13 @@
     </div>
     <Group>
       <div class="weui_cell">
-        <swiper :list="PickInfo.ImgList" auto style="width:80%;margin:0 auto;" height="180px" dots-class="custom-bottom" dots-position="center"></swiper>
+        <swiper :list="ImgList" auto style="width:80%;margin:0 auto;" height="180px" dots-class="custom-bottom" dots-position="center"></swiper>
       </div>
       <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
           <p>{{ProductInfo.name}}</p>
         </div>
       </div>
-      <!-- <div class="weui_cell">
-        <div class="weui_cell_bd weui_cell_primary">
-          <p>￥{{PickInfo.Sell_Price[0].price.toFixed(2)}}</p>
-        </div>
-      </div> -->
       <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
           <p>{{ProductInfo.description}}</p>
@@ -34,7 +29,7 @@
         <x-button type="default" @click="showConfirm">{{ProductInfo.on_sell == true?"下架":"上架"}}</x-button>
       </flexbox-item>
     </flexbox>
-    <confirm :show.sync="show" title="" confirm-text= "确认" cancel-text="取消" @on-confirm="changeSellMode">
+    <confirm :show.sync="show" title="" confirm-text="确认" cancel-text="取消" @on-confirm="changeSellMode">
       <p style="text-align:center;">确定{{ProductInfo.on_sell == true?"下架":"上架"}}该商品吗?</p>
     </confirm>
   </div>
@@ -72,14 +67,12 @@ export default {
     },
     ProductInfo: {
       type: Object
-    },
-    PickInfo:{
-      type: Object
     }
   },
   data() {
     return {
-      show: false
+      show: false,
+      ImgList: []
     }
   },
   methods: {
@@ -89,19 +82,44 @@ export default {
     editProduct() {
       this.currentActive = "MainPage"
     },
-    showConfirm(){
+    showConfirm() {
       this.show = true
+    },
+    getProductImgHref(fileId) {
+      return '/service/public/upload/getAttachment?id=' + fileId
     },
     changeSellMode() {
       var that = this
       var id = that.$route.params.id
-      var sellMode = that.ProductInfo.on_sell == true?false:true
-      pmpProductAPI.submitProduct({id:id,on_sell:sellMode}).then(()=>{
-          that.$route.router.go('/productManagement/productSetting')
+      var sellMode = that.ProductInfo.on_sell == true ? false : true
+      pmpProductAPI.submitProduct({
+        id: id,
+        on_sell: sellMode
+      }).then(() => {
+        that.$route.router.go('/productManagement/productSetting')
       })
     }
   },
-  ready() {}
+  watch: {
+    'ProductInfo.pmp_variants': function(val, oldvalue) {
+      var that = this
+      if (that.ProductInfo) {
+        that.ImgList = that.ProductInfo.pmp_variants.map((e) => {
+          if (e.pmp_variant_images && e.pmp_variant_images.length > 0) {
+            return {
+              img: that.getProductImgHref(e.pmp_variant_images[0].attachment_id)
+            }
+          } else {
+            return {
+              img: ""
+            }
+          }
+        })
+      }
+    }
+  },
+  ready() {
+  }
 }
 </script>
 <style>
