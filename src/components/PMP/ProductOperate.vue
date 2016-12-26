@@ -15,11 +15,11 @@
           <p>{{ProductInfo.name}}</p>
         </div>
       </div>
-      <div class="weui_cell">
+      <!-- <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
           <p>￥{{PickInfo.Sell_Price[0].price.toFixed(2)}}</p>
         </div>
-      </div>
+      </div> -->
       <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
           <p>{{ProductInfo.description}}</p>

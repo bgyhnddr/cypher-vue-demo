@@ -301,13 +301,13 @@ Promise.all([
         id: id,
         pmp_variants: [{
           name: "测试规格"
-        },{
+        }, {
           name: "测试规格t1"
-        },{
+        }, {
           name: "测试规格t2"
-        },{
+        }, {
           name: "测试规格t3"
-        },{
+        }, {
           name: "测试规格t4"
         }]
       }).then(() => {
@@ -402,18 +402,15 @@ Promise.all([
           brand_role_code: "1",
           price: "1",
           price_unit: "RMB"
-        },
-        {
+        }, {
           brand_role_code: "2",
           price: "2",
           price_unit: "RMB"
-        },
-        {
+        }, {
           brand_role_code: "2",
           price: "2",
           price_unit: "RMB"
-        },
-        {
+        }, {
           brand_role_code: "2",
           price: "2",
           price_unit: "RMB"
@@ -438,9 +435,11 @@ Promise.all([
   }).then((result) => {
     console.log("测试根据产品获取规格集合")
     return testfunction("getSpecifications", {
-      pmp_product_id: result.id
-    }).then((list) => {
-      if (list.length == 1) {
+      filterKey: "",
+      page: "0",
+      count: "10"
+    }).then((res) => {
+      if (res.list.length == 1 && res.end) {
         console.log("通过")
         return result
       } else {
@@ -478,7 +477,7 @@ Promise.all([
       }]
     }).then(() => {
       return pmp_goods.findAll()
-    }).then((result)=>{
+    }).then((result) => {
       console.log("通过")
     })
   }).then(() => {

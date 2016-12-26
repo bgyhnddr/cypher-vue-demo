@@ -293,18 +293,47 @@ var exec = {
    * 根据产品获取产品的规格
    * get
    */
-  getSpecifications(req, res) {
+  getSpecifications(req, res, pmp_brand_id) {
     var pmp_product_id = req.query.pmp_product_id == undefined ? "" : req.query.pmp_product_id
     var pmp_specification = require('../../db/models/pmp_specification')
     var pmp_variant = require('../../db/models/pmp_variant')
+    var pmp_product = require('../../db/models/pmp_product')
 
     pmp_specification.belongsTo(pmp_variant)
+    pmp_variant.belongsTo(pmp_product)
+
+    var filterKey = req.query.filterKey == undefined ? "" : req.query.filterKey
+    var count = req.query.count == undefined ? 5 : parseInt(req.query.count)
+    var page = req.query.page == undefined ? 0 : parseInt(req.query.page)
+    var sort = req.query.sort == undefined ? {} : req.query.sort
+    var order = req.query.order
+
+    var orderstring = "created_at DESC"
+    if (order) {
+      orderstring = order.key + " " + (order.asc ? "" : "DESC")
+    }
+
     return pmp_specification.findAll({
       include: {
         model: pmp_variant,
-        where: {
-          pmp_product_id: pmp_product_id
+        include: {
+          model: pmp_product,
+          where: {
+            pmp_brand_id: pmp_brand_id
+          }
         }
+      }
+    }).then((list) => {
+      if (filterKey) {
+        list = list.filter((o) => {
+          return (o.pmp_variant.pmp_product.name + o.name).indexOf(filterKey) >= 0
+        })
+      }
+      return [list.slice(page * count, page * count + count), list.length]
+    }).then((result) => {
+      return {
+        end: (result[0].length + page * count) >= result[1],
+        list: result[0]
       }
     })
   },
