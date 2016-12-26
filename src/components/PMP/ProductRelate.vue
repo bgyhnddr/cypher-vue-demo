@@ -18,7 +18,7 @@
           <span>箱号：{{item.code}}</span>
         </div>
         <div v-if="item.show">
-          <div>盒号：</div>
+          <div v-if="item.box.length>0">盒号：</div>
           <div v-for="box in item.box">
             <div slot="icon">{{box}}</div>
           </div>
