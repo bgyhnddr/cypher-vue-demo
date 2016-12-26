@@ -18,7 +18,7 @@
         </div>
       </a>
       <!--入库管理-->
-      <a class="weui_cell" v-link="">
+      <a class="weui_cell" v-link="{path: 'productManagement/linkProductToQRCode'}">
         <div class="weui_cell_hd">
           <img>
         </div>
