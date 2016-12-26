@@ -61,7 +61,7 @@
   <!-- 子组件页 -->
   <div>
     <set-product-price v-if="currentActive=='SetPricePage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></set-product-price>
-    <product-operate v-if="currentActive=='OperatePage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></product-operate>
+    <product-operate v-if="currentActive=='OperatePage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo" :pick-info.sync="PickInfo"></product-operate>
     <edit-product-label v-if="currentActive=='EditLabelPage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></edit-product-label>
     <edit-product-specification v-if="currentActive=='EditSpecificationPage'" :current-active.sync="currentActive" :choose-specification.sync="chooseSpecification" :product-info.sync="ProductInfo"><edit-product-specification>
   </div>
@@ -118,6 +118,10 @@ export default {
         "pmp_product_labels": [],
         "pmp_product_prices": []
       },
+      PickInfo:{
+        Sell_Price:"",
+        ImgList:[]
+      },
       PriceInfo: [],
       chooseSpecification:null,
       alertMsg:"",
@@ -138,6 +142,9 @@ export default {
     },
     showEditLabelPage() {
       this.currentActive = "EditLabelPage"
+    },
+    getProductImgHref(fileId) {
+      return '/service/public/upload/getAttachment?id=' + fileId
     },
     showSpecificationPage(e){
       if(e==null){
@@ -198,6 +205,7 @@ export default {
             that.ProductInfo.name = o.name
             that.ProductInfo.description = o.description == null ? "" : o.description
             that.ProductInfo.on_sell = o.on_sell
+            that.PickInfo.Sell_Price = o.pmp_product_prices.filter(i => i.brand_role_code == "4")
               //标签
             o.pmp_product_labels.forEach((p) => {
                 that.ProductInfo.pmp_product_labels.push(p.pmp_label.name)
@@ -206,6 +214,7 @@ export default {
             o.pmp_variants.forEach((z) => {
               var specifications = []
               var images = []
+              that.PickInfo.ImgList.push({img: that.getProductImgHref(z.pmp_variant_images[0].attachment_id)})
                 z.pmp_specifications.forEach((e) => {
                   specifications.push({
                     id:e.id,

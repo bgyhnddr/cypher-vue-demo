@@ -8,9 +8,7 @@
     </div>
     <Group>
       <div class="weui_cell">
-        <div v-for="item in ProductInfo.pmp_variants">
-          <img width="100px" height="100px" :src="getProductImgHref(item.pmp_variant_images[0].attachment_id)" alt="产品图片">
-        </div>
+        <swiper :list="PickInfo.ImgList" auto style="width:80%;margin:0 auto;" height="180px" dots-class="custom-bottom" dots-position="center"></swiper>
       </div>
       <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
@@ -19,7 +17,7 @@
       </div>
       <div class="weui_cell">
         <div class="weui_cell_bd weui_cell_primary">
-          <p>￥</p>
+          <p>￥{{PickInfo.Sell_Price[0].price.toFixed(2)}}</p>
         </div>
       </div>
       <div class="weui_cell">
@@ -51,7 +49,8 @@ import {
   Flexbox,
   FlexboxItem,
   XButton,
-  Confirm
+  Confirm,
+  Swiper
 } from 'vux'
 
 import pmpProductAPI from '../../api/pmp_product'
@@ -64,13 +63,17 @@ export default {
     Flexbox,
     FlexboxItem,
     XButton,
-    Confirm
+    Confirm,
+    Swiper
   },
   props: {
     currentActive: {
       type: String
     },
     ProductInfo: {
+      type: Object
+    },
+    PickInfo:{
       type: Object
     }
   },
@@ -88,9 +91,6 @@ export default {
     },
     showConfirm(){
       this.show = true
-    },
-    getProductImgHref(fileId) {
-      return '/service/public/upload/getAttachment?id=' + fileId
     },
     changeSellMode() {
       var that = this
