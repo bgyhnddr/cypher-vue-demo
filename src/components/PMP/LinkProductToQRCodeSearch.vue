@@ -5,16 +5,23 @@
 </div>
 <div>
   <group>
-    <x-input class="weui_cell_primary" title='' placeholder="输入搜索商品名称" :value.sync="keyword" :show-clear=false :required="false"></x-input>
+    <x-input class="weui_cell_primary" title='' placeholder="搜索商品名称" :value.sync="keyword" :show-clear=false :required="false"></x-input>
     <button @click="search">搜索</button>
   </group>
   <div v-if="showModel.showSearchProductModel">
     <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
-      <group v-for="productItem in productsData.getProducts.list">
-        <cell :title="productItem.name" @click="goToEditProduct(productItem.id)" :inline-desc="getRetailPrice(productItem.pmp_product_prices)" value="">
-            <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" width="50px" height="50px" alt="产品图片"/>
-        </cell>
-      </group>
+      <div v-for="productItem in productsData.getProducts.list">
+        <div>
+          <label>{{$index + 1}} .</label>
+        </div>
+        <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variant.pmp_variant_images[0].attachment_id)" alt="产品图片" />
+        <div>
+          <label>{{productItem.pmp_variant.pmp_product.name}}</label>
+          <label>{{productItem.pmp_variant.name}}</label>
+          <label>{{productItem.name}}</label>
+        </div>
+        <x-button @click="runWxScanQRCode(productItem)">扫码</x-button>
+      </div>
       <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" >
         <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
         <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'" >{{pullUpScroller.pullupConfig.upContent}}</span>

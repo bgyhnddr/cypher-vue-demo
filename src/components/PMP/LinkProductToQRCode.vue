@@ -7,13 +7,9 @@
   <img alt="搜索按钮" />
 </div>
 <div>
-  <tab>
-    <tab-item :selected="tabItems.default === item.key" v-for="item in tabItems.list" @click="chooseTabItem(item.value)">{{item.key}}</tab-item>
-  </tab>
   <div v-if="showModel.showProductContainer">
     <div v-if="showModel.showNoProduct">
-      <p>没有任何商品哦~</p>
-      <p>赶快去添加吧</p>
+      <p>暂时没有任何货品哦~</p>
     </div>
     <div v-else>
       <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
@@ -21,55 +17,52 @@
           <div>
             <label>{{$index + 1}} .</label>
           </div>
-          <div :title="productItem.name" @click="goToEditProduct(productItem.id)" :inline-desc="getRetailPrice(productItem.pmp_product_prices)">
-            <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
-            <div>
-              <label>{{productItem.name}}</label>
-              <label>{{productItem.name}}</label>
-            </div>
+          <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variant.pmp_variant_images[0].attachment_id)" alt="产品图片" />
+          <div>
+            <label>{{productItem.pmp_variant.pmp_product.name}}</label>
+            <label>{{productItem.pmp_variant.name}}</label>
+            <label>{{productItem.name}}</label>
           </div>
-          <!-- <group v-for="productItem in productsData.getProducts.list">
-          <cell :title="productItem.name" @click="goToEditProduct(productItem.id)" :inline-desc="getRetailPrice(productItem.pmp_product_prices)">
-            <p>{{$index + 1}}<p>
-            <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
-          </cell>
-        </group> -->
-          <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up">
-            <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
-            <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'">{{pullUpScroller.pullupConfig.upContent}}</span>
-            <span v-show="pullUpScroller.pullupStatus === 'loading'">
-              <span>{{pullUpScroller.pullupConfig.loadingContent}}</span>
-            </span>
-          </div>
+          <x-button @click="runWxScanQRCode(productItem)">扫码</x-button>
+        </div>
+        <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up">
+          <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
+          <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'">{{pullUpScroller.pullupConfig.upContent}}</span>
+          <span v-show="pullUpScroller.pullupStatus === 'loading'">
+            <span>{{pullUpScroller.pullupConfig.loadingContent}}</span>
+          </span>
+        </div>
       </scroller>
-      </div>
     </div>
   </div>
+  <div>
+    <confirm :show.sync="alert.showComfirm" title="" confirm-text="否" cancel-text="是" @on-cancel="showProductLinkedDetailPage">
+      <p style="text-align:center;">是否将箱 {{alert.comfirmMsg}}
+        <label>(规格)</label> 里？</p>
+    </confirm>
+    <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
+    <alert :show.sync="alert.showErrorNoHandled" button-text="确认">{{alert.errorMsgNoHandled}}</alert>
+  </div>
+</div>
 </template>
 
 <script>
 import {
   XHeader,
-  Group,
-  Cell,
   XButton,
-  Tab,
-  TabItem,
   Scroller,
-  Alert
+  Alert,
+  Confirm
 } from 'vux'
 import pmpProductAPI from '../../api/pmp_product'
 
 export default {
   components: {
     XHeader,
-    Group,
-    Cell,
     XButton,
-    Tab,
-    TabItem,
     Scroller,
-    Alert
+    Alert,
+    Confirm
   },
   data() {
     return {
@@ -78,27 +71,14 @@ export default {
         backText: null,
         preventGoBack: false
       },
-      tabItems: {
-        default: "全部",
-        list: [{
-          key: "全部",
-          value: undefined
-        }, {
-          key: "出售商品",
-          value: 1
-        }, {
-          key: "停售商品",
-          value: 0
-        }]
-      },
       productsData: {
         getProducts: {
           end: null,
           list: []
         },
         page: 0,
-        chooseTab: null,
-        productAndSpecificationItems: null,
+        chooseTab: 1,
+        chooseProduct: null
       },
       showModel: {
         showProductContainer: false,
@@ -116,7 +96,11 @@ export default {
       },
       alert: {
         showCatchError: false,
-        catchErrorMsg: null
+        catchErrorMsg: null,
+        showComfirm: false,
+        comfirmMsg: null,
+        showErrorNoHandled: false,
+        errorMsgNoHandled: null
       }
     }
   },
@@ -124,17 +108,17 @@ export default {
     headerGoBack() {
       this.$route.router.go("/productManagement")
     },
-    chooseTabItem(item) {
+    getProducts(item) {
       var that = this
 
-      this.productsData.chooseTab = item
       this.showModel.showProductContainer = false
       this.productsData.page = 0
       this.showModel.showPullUpSlot = true
       this.pullUpScroller.pullupStatus = 'default'
 
-      pmpProductAPI.getProducts({
+      pmpProductAPI.getSpecifications({
         page: this.productsData.page,
+        count: 2,
         on_sell: this.productsData.chooseTab
       }).then(function(result) {
         if (result.list.length == 0) {
@@ -142,8 +126,6 @@ export default {
         } else {
           that.productsData.getProducts.end = result.end
           that.productsData.getProducts.list = result.list
-
-          that.productsData.productAndSpecificationItems = that.getProductAndSpecificationItems(result.list)
           that.productsData.page = 1
 
           if (result.end) {
@@ -162,8 +144,9 @@ export default {
     loadProduct(uuid) {
       var that = this
 
-      pmpProductAPI.getProducts({
+      pmpProductAPI.getSpecifications({
         page: this.productsData.page,
+        count: 2,
         on_sell: this.productsData.chooseTab
       }).then(function(result) {
 
@@ -186,73 +169,43 @@ export default {
         that.alert.catchErrorMsg = "读取我的货品信息异常，请稍后再试"
       })
     },
-    getProductAndSpecificationItems(products) {
-      var productAndSpecificationItems = null
-      var productName = null
-      var variantName = null
-      var varicantImage = null
-      var specificationName = null
+    runWxScanQRCode(productItem) {
+      console.log("扫码")
 
-      if (products.length > 0) {
-
-        products.map((productItem) => {
-          if (productItem.pmp_variants.length > 0) {
-            productName = productItem.name
-
-            productItem.pmp_variants.map((variantItem) => {
-              if (variantItem.pmp_specifications.length > 0) {
-                variantName = variantItem.name
-                varicantImage = variantItem.pmp_variant_images[0].attachment_id
-
-                variantItem.pmp_specifications.map((specificationItem) => {
-                  specificationName = specificationItem.name
-
-                  productAndSpecificationItems.push({
-                    varicantImage: varicantImage,
-                    productName: productName,
-                    variantName: variantName,
-                    specificationName: specificationName
-                  })
-
-                })
-              }
-            })
-          }
-        })
-      }
-
-      console.log(JSON.stringify(productAndSpecificationItems))
-      return productAndSpecificationItems
+      var boxCode = ""
+      this.linkToQRCode(boxCode, productItem)
     },
-    goToEditProduct(productId) {
-      this.$route.router.go("/productManagement/editProduct/" + productId)
+    linkToQRCode(boxCode, productItem) {
+      var checkFlag = this.checkBoxCode(boxCode)
+      if (checkFlag) {
+        this.alert.showComfirm = true
+        this.alert.comfirmMsg = boxCode + " 关联到" + productItem.pmp_variant.pmp_product.name +
+          " " + productItem.pmp_variant.name + " " + productItem.name
+        this.productsData.chooseProduct = productItem
+      } else {
+        alert.showErrorNoHandled = true
+        alert.errorMsgNoHandled = "扫码结果错误，请重新再扫一次"
+      }
+    },
+    checkBoxCode(boxCode) {
+      return true
     },
     openSearchPage() {
       this.$route.router.go("/productManagement/linkProductToQRCodeSearch")
     },
+    showProductLinkedDetailPage() {
+      console.log(JSON.stringify(this.productsData.chooseProduct))
+      // this.$route.router.go("/productManagement/linkProductToQRCodeSearch")
+    },
     getProductImgHref(fileId) {
       return '/service/public/upload/getAttachment?id=' + fileId
-    },
-    getRetailPrice(pmp_product_prices) {
-      var retailPrice = null
-      pmp_product_prices.map((o) => {
-        if (o.brand_role_code == "4") {
-          retailPrice = o.price.toFixed(2)
-        }
-      })
-
-      if (retailPrice == null) {
-        retailPrice = ""
-      }
-
-      return "￥ " + retailPrice
     },
     errorHandled() {
       this.$route.router.go("/productManagement")
     }
   },
   ready() {
-    this.chooseTabItem()
+    this.getProducts()
   }
 }
 </script>
