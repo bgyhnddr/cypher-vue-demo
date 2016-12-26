@@ -77,8 +77,6 @@ var exec = {
         }
       })
     }).then((result) => {
-      console.log(result.rows.length)
-      console.log(result.count)
       return {
         end: (result.rows.length + page * count) >= result.count,
         list: result.rows
