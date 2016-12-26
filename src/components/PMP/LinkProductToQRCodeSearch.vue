@@ -96,7 +96,7 @@ export default {
   },
   methods: {
     headerGoBack() {
-      this.$route.router.go("/productManagement/linkProductToQRCodeSearch")
+      this.$route.router.go("/productManagement/linkProductToQRCode")
     },
     search() {
       var that = this

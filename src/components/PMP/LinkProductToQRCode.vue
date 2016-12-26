@@ -32,10 +32,6 @@
       </scroller>
     </div>
   </div>
-  <div>
-    <x-button @click="addProduct">添加商品</x-button>
-    <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
-  </div>
 </div>
 </template>
 
@@ -177,9 +173,6 @@ export default {
     },
     goToEditProduct(productId) {
       this.$route.router.go("/productManagement/editProduct/" + productId)
-    },
-    addProduct() {
-      this.$route.router.go("/productManagement/editProduct")
     },
     openSearchPage() {
       this.$route.router.go("/productManagement/linkProductToQRCodeSearch")
