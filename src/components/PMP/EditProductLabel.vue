@@ -47,7 +47,7 @@
     </checker>
   </div>
   <div>
-    <p>历史标签</p>
+    <p>历史品类</p>
     <button v-for="labelItem in historyLabels" @click="chooseHistoryLabel(labelItem)">{{labelItem.name}}</button>
   </div>
 </div>
