@@ -11,7 +11,7 @@
   <div v-if="showModel.showSearchProductModel">
     <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
       <group v-for="productItem in productsData.getProducts.list">
-        <cell :title="productItem.name" @click="goToEditProduct(productItem.id)" :inline-desc="getRetailPrice(productItem.pmp_product_prices)" value="">
+        <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
             <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" width="50px" height="50px" alt="产品图片"/>
         </cell>
       </group>
@@ -162,20 +162,6 @@ export default {
     },
     getProductImgHref(fileId){
       return '/service/public/upload/getAttachment?id=' + fileId
-    },
-    getRetailPrice(pmp_product_prices) {
-      var retailPrice = null
-      pmp_product_prices.map((o) => {
-        if (o.brand_role_code == "4") {
-          retailPrice = o.price.toFixed(2)
-        }
-      })
-
-      if(retailPrice == null){
-        retailPrice = ""
-      }
-
-      return "￥ " + retailPrice
     },
     errorHandled() {
       this.$route.router.go("/productManagement/productSetting")
