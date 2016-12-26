@@ -166,7 +166,7 @@ export function configRouter(router) {
     '/productManagement/linkProductToQRCodeSearch': {
       component: require('../components/PMP/LinkProductToQRCodeSearch.vue')
     },
-    '/productManagement/productRelate/:id/:code': {
+    '/productManagement/productRelate/:id': {
       component: require('../components/PMP/ProductRelate.vue')
     },
     '/productManagement/editProduct': {
