@@ -160,6 +160,12 @@ export function configRouter(router) {
     '/productManagement/editProductSearch': {
       component: require('../components/PMP/EditProductSearch.vue')
     },
+    '/productManagement/linkProductToQRCode': {
+      component: require('../components/PMP/LinkProductToQRCode.vue')
+    },
+    '/productManagement/linkProductToQRCodeSearch': {
+      component: require('../components/PMP/LinkProductToQRCodeSearch.vue')
+    },
     '/productManagement/editProduct': {
       component: require('../components/PMP/EditProduct.vue')
     },
