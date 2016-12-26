@@ -106,7 +106,7 @@ export default {
     },
     SubmitResult() {
       pmpProductAPI.submitCountResult({countList:this.CountList}).then((o) => {
-        console.log(o)
+        this.onClickBack()
       })
     },
     ScanQRCode() {
