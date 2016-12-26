@@ -16,13 +16,13 @@
       <p>赶快去添加吧</p>
     </div>
     <div v-else>
-      <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus"  @pullup:loading="loadProduct">
+      <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
         <group v-for="productItem in productsData.getProducts.list">
-          <cell :title="productItem.name" @click="goToEditProduct(productItem.id)" inline-desc="￥ ">
+          <cell :title="productItem.name" @click="goToEditProduct(productItem.id)" :inline-desc="getRetailPrice(productItem.pmp_product_prices)">
             <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
           </cell>
         </group>
-        <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up" >
+        <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up">
           <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
           <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'">{{pullUpScroller.pullupConfig.upContent}}</span>
           <span v-show="pullUpScroller.pullupStatus === 'loading'">
@@ -186,6 +186,20 @@ export default {
     },
     getProductImgHref(fileId) {
       return '/service/public/upload/getAttachment?id=' + fileId
+    },
+    getRetailPrice(pmp_product_prices) {
+      var retailPrice = null
+      pmp_product_prices.map((o) => {
+        if (o.brand_role_code == "4") {
+          retailPrice = o.price.toFixed(2)
+        }
+      })
+
+      if(retailPrice == null){
+        retailPrice = ""
+      }
+
+      return "￥ " + retailPrice
     },
     errorHandled() {
       this.$route.router.go("/productManagement")
