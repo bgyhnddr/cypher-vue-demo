@@ -90,27 +90,28 @@ export default {
     ScanQRCode() {
       //测试箱号
       var that = this
-      var result = "B-55C-88-4716-0004"
+      // var result = "B-55C-88-4716-0004"
       window.wx.scanQRCode({
         needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
         scanType: ["qrCode", "barCode"],
         success: function(res) {
-          window.alert(res) // 当needResult 为 1 时，扫码返回的结果
+          window.alert(res.result) // 当needResult 为 1 时，扫码返回的结果
+          var result = res.result
+          that.CountList.push({
+            pmp_specification_id: that.$route.params.id,
+            goods_code: result
+          })
+          pmpProductAPI.getBoxCodes({
+            code: result
+          }).then((o) => {
+            that.BoxList.push({
+              code: result,
+              box: o,
+              show: false
+            })
+          })
         }
       })
-      // that.CountList.push({
-      //   pmp_specification_id: that.$route.params.id,
-      //   goods_code: result
-      // })
-      // pmpProductAPI.getBoxCodes({
-      //   code: result
-      // }).then((o) => {
-      //   that.BoxList.push({
-      //     code: result,
-      //     box: o,
-      //     show: false
-      //   })
-      // })
     }
   },
   ready() {
