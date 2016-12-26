@@ -33,6 +33,7 @@
         <x-button type="default" @click="ScanQRCode">扫码</x-button>
       </flexbox-item>
     </flexbox>
+    <alert :show.sync="showAlert" button-Text="好的">{{alertMsg}}</alert>
     <confirm :show.sync="showConfirm" title="" confirm-text="是" cancel-text="否" @on-confirm="SubmitRelate(ScanResult)" @on-cancel = "onClickBack">
       <p style="text-align:center;">是否将箱{{ScanResult}}关联到{{ProductInfo.name}}{{ProductInfo.variant}}{{ProductInfo.specification}}里？</p>
     </confirm>
@@ -75,6 +76,8 @@ export default {
       CountList: [],
       BoxList: [],
       ScanResult:"",
+      alertMsg:"",
+      showAlert:false,
       showConfirm:false
     }
   },
@@ -106,9 +109,15 @@ export default {
       })
     },
     SubmitResult() {
-      pmpProductAPI.submitCountResult({countList:this.CountList}).then((o) => {
-        this.onClickBack()
-      })
+      var that = this
+      if(that.CountList.length==0){
+        that.showAlert = true
+        that.alertMsg = "请添加货品关联"
+      }else{
+        pmpProductAPI.submitCountResult({countList:that.CountList}).then((o) => {
+          that.onClickBack()
+        })
+      }
     },
     ScanQRCode() {
       //测试箱号
