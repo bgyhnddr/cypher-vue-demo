@@ -260,6 +260,7 @@ var exec = {
       if (obj["pmp_product_labels"] != undefined) {
         var productLabelUpsertList = []
         obj["pmp_product_labels"].forEach((pl) => {
+          pl.pmp_label.pmp_brand_id = pmp_brand_id
           productLabelUpsertList.push(pmp_label.upsert(pl.pmp_label).then(() => {
             return pmp_label.findOne({
               where: {
