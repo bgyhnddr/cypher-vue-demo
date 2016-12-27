@@ -1,41 +1,39 @@
 <template>
-<div class="vux-demo-header-box wapmain-header" slot="header">
+<div id="header" class="vux-demo-header-box wapmain-header" slot="header">
   <x-header :left-options="leftOptions">我的货品</x-header>
   <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
 </div>
-<div @click="openSearchComponent">
+<div id="search-icon" @click="openSearchComponent">
   <img alt="搜索按钮" />
 </div>
+<tab id="tab">
+  <tab-item :selected="tabItems.default === item.key" v-for="item in tabItems.list" @click="chooseTabItem(item.value)">{{item.key}}</tab-item>
+</tab>
+<div id="scrollerDiv" v-show="showModel.showProductContainer">
+  <div v-if="showModel.showNoProduct">
+    <p>没有任何商品哦~</p>
+    <p>赶快去添加吧</p>
+  </div>
+  <div v-else>
+    <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
+      <group v-for="productItem in productsData.getProducts.list">
+        <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
+          <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
+        </cell>
+      </group>
+      <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up">
+        <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
+        <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'">{{pullUpScroller.pullupConfig.upContent}}</span>
+        <span v-show="pullUpScroller.pullupStatus === 'loading'">
+          <span>{{pullUpScroller.pullupConfig.loadingContent}}</span>
+        </span>
+      </div>
+    </scroller>
+  </div>
+</div>
+<x-button id="add-button" @click="addProduct">添加商品</x-button>
 <div>
-  <tab>
-    <tab-item :selected="tabItems.default === item.key" v-for="item in tabItems.list" @click="chooseTabItem(item.value)">{{item.key}}</tab-item>
-  </tab>
-  <div v-if="showModel.showProductContainer">
-    <div v-if="showModel.showNoProduct">
-      <p>没有任何商品哦~</p>
-      <p>赶快去添加吧</p>
-    </div>
-    <div v-else>
-      <scroller lock-x scrollbar-y use-pullup height="250px" :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
-        <group v-for="productItem in productsData.getProducts.list">
-          <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
-            <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
-          </cell>
-        </group>
-        <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up">
-          <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
-          <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'">{{pullUpScroller.pullupConfig.upContent}}</span>
-          <span v-show="pullUpScroller.pullupStatus === 'loading'">
-            <span>{{pullUpScroller.pullupConfig.loadingContent}}</span>
-          </span>
-        </div>
-      </scroller>
-    </div>
-  </div>
-  <div>
-    <x-button @click="addProduct">添加商品</x-button>
-    <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
-  </div>
+  <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
 </div>
 </template>
 
@@ -120,6 +118,7 @@ export default {
 
       this.productsData.chooseTab = item
       this.showModel.showProductContainer = false
+      this.showModel.showNoProduct = true
       this.productsData.page = 0
       this.showModel.showPullUpSlot = true
       this.pullUpScroller.pullupStatus = 'default'
@@ -131,6 +130,8 @@ export default {
         if (result.list.length == 0) {
           that.showModel.showNoProduct = true
         } else {
+
+          that.loadScrollerHight()
           that.productsData.getProducts.end = result.end
           that.productsData.getProducts.list = result.list
           that.productsData.page = 1
@@ -186,6 +187,18 @@ export default {
     },
     getProductImgHref(fileId) {
       return '/service/public/upload/getAttachment?id=' + fileId
+    },
+    loadScrollerHight() {
+      var clientHeight = document.documentElement.clientHeight
+      var headerHeight = document.getElementById("header").offsetHeight
+      var searchDivHeight = document.getElementById("search-icon").offsetHeight
+      var TabHeight = document.getElementById("tab").offsetHeight
+      var addButtonHeight = document.getElementById("add-button").offsetHeight
+
+      var scrollerHight = clientHeight - (headerHeight + searchDivHeight + TabHeight + addButtonHeight)
+
+      document.getElementById("scrollerDiv").style.height = scrollerHight + "px"
+
     },
     errorHandled() {
       this.$route.router.go("/productManagement")
