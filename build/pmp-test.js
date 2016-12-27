@@ -441,7 +441,19 @@ Promise.all([
     }).then((res) => {
       if (res.list.length == 1 && res.end) {
         console.log("通过")
-        return result
+        return [result, res.list[0].id]
+      } else {
+        console.log("不通过")
+      }
+    })
+  }).then((result) => {
+    console.log("获取单个规格")
+    return testfunction("getSpecification", {
+      id: result[1]
+    }).then((res) => {
+      if (res.id == result[1]) {
+        console.log("通过")
+        return result[0]
       } else {
         console.log("不通过")
       }
