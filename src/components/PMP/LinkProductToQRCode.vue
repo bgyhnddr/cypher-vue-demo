@@ -17,22 +17,34 @@
     </div>
     <div v-else>
       <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
-        <group v-for="productItem in productsData.getProducts.list">
+        <div v-for="productItem in productsData.getProducts.list">
+          <div>
+            <label>{{$index + 1}} .</label>
+          </div>
+          <div :title="productItem.name" @click="goToEditProduct(productItem.id)" :inline-desc="getRetailPrice(productItem.pmp_product_prices)">
+            <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
+            <div>
+              <label>{{productItem.name}}</label>
+              <label>{{productItem.name}}</label>
+            </div>
+          </div>
+          <!-- <group v-for="productItem in productsData.getProducts.list">
           <cell :title="productItem.name" @click="goToEditProduct(productItem.id)" :inline-desc="getRetailPrice(productItem.pmp_product_prices)">
+            <p>{{$index + 1}}<p>
             <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
           </cell>
-        </group>
-        <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up">
-          <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
-          <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'">{{pullUpScroller.pullupConfig.upContent}}</span>
-          <span v-show="pullUpScroller.pullupStatus === 'loading'">
-            <span>{{pullUpScroller.pullupConfig.loadingContent}}</span>
-          </span>
-        </div>
+        </group> -->
+          <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up">
+            <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
+            <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'">{{pullUpScroller.pullupConfig.upContent}}</span>
+            <span v-show="pullUpScroller.pullupStatus === 'loading'">
+              <span>{{pullUpScroller.pullupConfig.loadingContent}}</span>
+            </span>
+          </div>
       </scroller>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -85,7 +97,8 @@ export default {
           list: []
         },
         page: 0,
-        chooseTab: null
+        chooseTab: null,
+        productAndSpecificationItems: null,
       },
       showModel: {
         showProductContainer: false,
@@ -129,6 +142,8 @@ export default {
         } else {
           that.productsData.getProducts.end = result.end
           that.productsData.getProducts.list = result.list
+
+          that.productsData.productAndSpecificationItems = that.getProductAndSpecificationItems(result.list)
           that.productsData.page = 1
 
           if (result.end) {
@@ -171,6 +186,44 @@ export default {
         that.alert.catchErrorMsg = "读取我的货品信息异常，请稍后再试"
       })
     },
+    getProductAndSpecificationItems(products) {
+      var productAndSpecificationItems = null
+      var productName = null
+      var variantName = null
+      var varicantImage = null
+      var specificationName = null
+
+      if (products.length > 0) {
+
+        products.map((productItem) => {
+          if (productItem.pmp_variants.length > 0) {
+            productName = productItem.name
+
+            productItem.pmp_variants.map((variantItem) => {
+              if (variantItem.pmp_specifications.length > 0) {
+                variantName = variantItem.name
+                varicantImage = variantItem.pmp_variant_images[0].attachment_id
+
+                variantItem.pmp_specifications.map((specificationItem) => {
+                  specificationName = specificationItem.name
+
+                  productAndSpecificationItems.push({
+                    varicantImage: varicantImage,
+                    productName: productName,
+                    variantName: variantName,
+                    specificationName: specificationName
+                  })
+
+                })
+              }
+            })
+          }
+        })
+      }
+
+      console.log(JSON.stringify(productAndSpecificationItems))
+      return productAndSpecificationItems
+    },
     goToEditProduct(productId) {
       this.$route.router.go("/productManagement/editProduct/" + productId)
     },
@@ -188,7 +241,7 @@ export default {
         }
       })
 
-      if(retailPrice == null){
+      if (retailPrice == null) {
         retailPrice = ""
       }
 
