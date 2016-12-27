@@ -1,44 +1,42 @@
 <template>
-<div class="vux-demo-header-box wapmain-header" slot="header">
+<div id="header" class="vux-demo-header-box wapmain-header" slot="header">
   <x-header :left-options="leftOptions">货品关联</x-header>
   <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
 </div>
-<div @click="openSearchPage">
+<div id="searchDiv" @click="openSearchPage">
   <img alt="搜索按钮" />
 </div>
+<div id="scrollerDiv" v-show="showModel.showProductContainer">
+  <div v-if="showModel.showNoProduct">
+    <p>暂时没有任何货品哦~</p>
+  </div>
+  <div v-else>
+    <scroller :height.sync="scrollerHeight" lock-x scrollbar-y use-pullup height="250px" :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
+      <div v-for="productItem in productsData.getProducts.list">
+        <div>
+          <label>{{$index + 1}} .</label>
+        </div>
+        <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variant.pmp_variant_images[0].attachment_id)" alt="产品图片" />
+        <div>
+          <label>{{productItem.pmp_variant.pmp_product.name}}</label>
+          <label>{{productItem.pmp_variant.name}}</label>
+          <label>{{productItem.name}}</label>
+        </div>
+        <x-button @click="goToProductRelatePage(productItem.id)">扫码</x-button>
+      </div>
+      <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up">
+        <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
+        <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'">{{pullUpScroller.pullupConfig.upContent}}</span>
+        <span v-show="pullUpScroller.pullupStatus === 'loading'">
+          <span>{{pullUpScroller.pullupConfig.loadingContent}}</span>
+        </span>
+      </div>
+    </scroller>
+  </div>
+</div>
+<div id="footer" class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 <div>
-  <div v-if="showModel.showProductContainer">
-    <div v-if="showModel.showNoProduct">
-      <p>暂时没有任何货品哦~</p>
-    </div>
-    <div v-else>
-      <scroller lock-x scrollbar-y use-pullup height="250px" :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
-        <div v-for="productItem in productsData.getProducts.list">
-          <div>
-            <label>{{$index + 1}} .</label>
-          </div>
-          <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variant.pmp_variant_images[0].attachment_id)" alt="产品图片" />
-          <div>
-            <label>{{productItem.pmp_variant.pmp_product.name}}</label>
-            <label>{{productItem.pmp_variant.name}}</label>
-            <label>{{productItem.name}}</label>
-          </div>
-          <x-button @click="goToProductRelatePage(productItem.id)">扫码</x-button>
-        </div>
-        <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up">
-          <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
-          <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'">{{pullUpScroller.pullupConfig.upContent}}</span>
-          <span v-show="pullUpScroller.pullupStatus === 'loading'">
-            <span>{{pullUpScroller.pullupConfig.loadingContent}}</span>
-          </span>
-        </div>
-      </scroller>
-    </div>
-  </div>
-  <div>
-    <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
-  </div>
-  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+  <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
 </div>
 </template>
 
@@ -72,6 +70,7 @@ export default {
         },
         page: 0
       },
+      scrollerHeight: "0px",
       showModel: {
         showProductContainer: false,
         showNoProduct: true,
@@ -110,6 +109,7 @@ export default {
         if (result.list.length == 0) {
           that.showModel.showNoProduct = true
         } else {
+          that.loadScrollerHight()
           that.productsData.getProducts.end = result.end
           that.productsData.getProducts.list = result.list
           that.productsData.page = 1
@@ -161,6 +161,21 @@ export default {
     },
     getProductImgHref(fileId) {
       return '/service/public/upload/getAttachment?id=' + fileId
+    },
+    loadScrollerHight() {
+      var clientHeight = document.documentElement.clientHeight
+      var headerHeight = document.getElementById("header").offsetHeight
+      var searchDivHeight = document.getElementById("searchDiv").offsetHeight
+      var footerHeight = document.getElementById("footer").offsetHeight
+
+      var scrollerHight = clientHeight - (headerHeight + searchDivHeight + footerHeight)
+      console.log(headerHeight + "px")
+      console.log(searchDivHeight + "px")
+      console.log(footerHeight + "px")
+      console.log(scrollerHight + "px")
+
+      document.getElementById("scrollerDiv").style.height = scrollerHight + "px"
+      this.scrollerHeight = scrollerHight + "px"
     },
     errorHandled() {
       this.$route.router.go("/productManagement")
