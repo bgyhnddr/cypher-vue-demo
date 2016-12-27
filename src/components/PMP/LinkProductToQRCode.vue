@@ -43,6 +43,7 @@
     <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
     <alert :show.sync="alert.showErrorNoHandled" button-text="确认">{{alert.errorMsgNoHandled}}</alert>
   </div>
+  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </div>
 </template>
 
@@ -77,7 +78,6 @@ export default {
           list: []
         },
         page: 0,
-        chooseTab: 1,
         chooseProduct: null
       },
       showModel: {
@@ -117,9 +117,7 @@ export default {
       this.pullUpScroller.pullupStatus = 'default'
 
       pmpProductAPI.getSpecifications({
-        page: this.productsData.page,
-        count: 2,
-        on_sell: this.productsData.chooseTab
+        page: this.productsData.page
       }).then(function(result) {
         if (result.list.length == 0) {
           that.showModel.showNoProduct = true
@@ -145,9 +143,7 @@ export default {
       var that = this
 
       pmpProductAPI.getSpecifications({
-        page: this.productsData.page,
-        count: 2,
-        on_sell: this.productsData.chooseTab
+        page: this.productsData.page
       }).then(function(result) {
 
         setTimeout(() => {
