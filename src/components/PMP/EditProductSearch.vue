@@ -9,7 +9,7 @@
     <button @click="search">搜索</button>
   </group>
   <div v-if="showModel.showSearchProductModel">
-    <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
+    <scroller lock-x scrollbar-y use-pullup  height="250px" :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
       <group v-for="productItem in productsData.getProducts.list">
         <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
             <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" width="50px" height="50px" alt="产品图片"/>

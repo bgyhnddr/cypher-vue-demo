@@ -9,7 +9,7 @@
     <button @click="search">搜索</button>
   </group>
   <div v-if="showModel.showSearchProductModel">
-    <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
+    <scroller lock-x scrollbar-y use-pullup  height="250px" :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
       <div v-for="productItem in productsData.getProducts.list">
         <div>
           <label>{{$index + 1}} .</label>
