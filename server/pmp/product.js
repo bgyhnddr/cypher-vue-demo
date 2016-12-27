@@ -29,7 +29,6 @@ var exec = {
     var filterKey = req.query.filterKey == undefined ? "" : req.query.filterKey
     var count = req.query.count == undefined ? 5 : parseInt(req.query.count)
     var page = req.query.page == undefined ? 0 : parseInt(req.query.page)
-    var sort = req.query.sort == undefined ? {} : req.query.sort
     var order = req.query.order
     var on_sell = req.query.on_sell
 
@@ -290,11 +289,10 @@ var exec = {
     })
   },
   /**
-   * 根据产品获取产品的规格
+   * 获取产品规格列表
    * get
    */
   getSpecifications(req, res, pmp_brand_id) {
-    var pmp_product_id = req.query.pmp_product_id == undefined ? "" : req.query.pmp_product_id
     var pmp_specification = require('../../db/models/pmp_specification')
     var pmp_variant = require('../../db/models/pmp_variant')
     var pmp_variant_image = require('../../db/models/pmp_variant_image')
@@ -307,10 +305,9 @@ var exec = {
     var filterKey = req.query.filterKey == undefined ? "" : req.query.filterKey
     var count = req.query.count == undefined ? 5 : parseInt(req.query.count)
     var page = req.query.page == undefined ? 0 : parseInt(req.query.page)
-    var sort = req.query.sort == undefined ? {} : req.query.sort
     var order = req.query.order
 
-    var orderstring = "created_at DESC"
+    var orderstring = "pmp_specification.created_at DESC"
     if (order) {
       orderstring = order.key + " " + (order.asc ? "" : "DESC")
     }
@@ -324,7 +321,8 @@ var exec = {
             pmp_brand_id: pmp_brand_id
           }
         }, pmp_variant_image]
-      }
+      },
+      order: orderstring
     }).then((list) => {
       if (filterKey) {
         list = list.filter((o) => {
@@ -336,6 +334,38 @@ var exec = {
       return {
         end: (result[0].length + page * count) >= result[1],
         list: result[0]
+      }
+    })
+  },
+  /**
+   * 获取产品规格
+   * get
+   */
+  getSpecification(req, res) {
+    var id = req.query.id == undefined ? "" : req.query.id
+    var pmp_specification = require('../../db/models/pmp_specification')
+    var pmp_variant = require('../../db/models/pmp_variant')
+    var pmp_variant_image = require('../../db/models/pmp_variant_image')
+    var pmp_product = require('../../db/models/pmp_product')
+
+    pmp_specification.belongsTo(pmp_variant)
+    pmp_variant.belongsTo(pmp_product)
+    pmp_variant.hasMany(pmp_variant_image)
+
+
+    return pmp_specification.findOne({
+      include: {
+        model: pmp_variant,
+        include: [pmp_product, pmp_variant_image]
+      },
+      where: {
+        id: id
+      }
+    }).then((result) => {
+      if (result != null) {
+        return result
+      } else {
+        return Promise.reject("not found")
       }
     })
   },
@@ -352,7 +382,6 @@ var exec = {
    * post
    */
   submitCountResult(req, res) {
-    var pmp_product_id = req.body.pmp_product_id == undefined ? "" : req.body.pmp_product_id
     var countList = req.body.countList == undefined ? [] : req.body.countList
     var pmp_outcome_count = require('../../db/models/pmp_outcome_count')
     var pmp_goods = require('../../db/models/pmp_goods')

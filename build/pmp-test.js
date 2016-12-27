@@ -441,7 +441,19 @@ Promise.all([
     }).then((res) => {
       if (res.list.length == 1 && res.end) {
         console.log("通过")
-        return result
+        return [result, res.list[0].id]
+      } else {
+        console.log("不通过")
+      }
+    })
+  }).then((result) => {
+    console.log("获取单个规格")
+    return testfunction("getSpecification", {
+      id: result[1]
+    }).then((res) => {
+      if (res.id == result[1]) {
+        console.log("通过")
+        return result[0]
       } else {
         console.log("不通过")
       }
@@ -470,7 +482,6 @@ Promise.all([
   }).then((result) => {
     console.log("提交扫描结果")
     return testfunction("submitCountResult", {
-      pmp_product_id: result.id,
       countList: [{
         pmp_specification_id: result.pmp_variants[0].pmp_specifications[0].id,
         goods_code: "B-55C-88-4716-0004"
