@@ -20,7 +20,7 @@
           <label>{{productItem.pmp_variant.name}}</label>
           <label>{{productItem.name}}</label>
         </div>
-        <x-button @click="goTo(productItem.pmp_variant.id)">扫码</x-button>
+        <x-button @click="goToProductRelatePage(productItem.pmp_variant.id)">扫码</x-button>
       </div>
       <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up">
         <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
@@ -82,8 +82,7 @@ export default {
           end: null,
           list: []
         },
-        page: 0,
-        chooseProduct: null
+        page: 0
       },
       pullUpScroller: {
         pullupStatus: 'default',
@@ -165,7 +164,7 @@ export default {
         that.alert.catchErrorMsg = "读取我的货品信息异常，请稍后再试"
       })
     },
-    goTo(productVariantId) {
+    goToProductRelatePage(productVariantId) {
       this.$route.router.go("/productManagement/productRelate/" + productVariantId)
     },
     getProductImgHref(fileId) {
