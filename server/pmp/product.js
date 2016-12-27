@@ -294,7 +294,6 @@ var exec = {
    * get
    */
   getSpecifications(req, res, pmp_brand_id) {
-    var pmp_product_id = req.query.pmp_product_id == undefined ? "" : req.query.pmp_product_id
     var pmp_specification = require('../../db/models/pmp_specification')
     var pmp_variant = require('../../db/models/pmp_variant')
     var pmp_variant_image = require('../../db/models/pmp_variant_image')
@@ -352,7 +351,6 @@ var exec = {
    * post
    */
   submitCountResult(req, res) {
-    var pmp_product_id = req.body.pmp_product_id == undefined ? "" : req.body.pmp_product_id
     var countList = req.body.countList == undefined ? [] : req.body.countList
     var pmp_outcome_count = require('../../db/models/pmp_outcome_count')
     var pmp_goods = require('../../db/models/pmp_goods')
