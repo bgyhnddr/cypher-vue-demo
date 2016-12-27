@@ -25,6 +25,12 @@ export default {
         return httpRequest.post(path + 'submitProduct' + token, params)
     },
     getSpecifications(params) {
-        return httpRequest.get(path + 'submitProduct' + token, params)
+        return httpRequest.get(path + 'getSpecifications' + token, params)
+    },
+    getBoxCodes(params) {
+        return httpRequest.get(path + 'getBoxCodes' + token, params)
+    },
+    submitCountResult(params) {
+        return httpRequest.post(path + 'submitCountResult' + token, params)
     },
 }
