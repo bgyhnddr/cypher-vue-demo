@@ -24,4 +24,7 @@ export default {
     submitProduct(params) {
         return httpRequest.post(path + 'submitProduct' + token, params)
     },
+    getSpecifications(params) {
+        return httpRequest.get(path + 'submitProduct' + token, params)
+    },
 }
