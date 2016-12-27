@@ -15,7 +15,7 @@
     <p>赶快去添加吧</p>
   </div>
   <div v-else>
-    <scroller lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
+    <scroller :height.sync="scrollerHeight" lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
       <group v-for="productItem in productsData.getProducts.list">
         <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
           <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
@@ -89,6 +89,7 @@ export default {
         page: 0,
         chooseTab: null
       },
+      scrollerHeight: "0px",
       showModel: {
         showProductContainer: false,
         showNoProduct: true,
@@ -198,7 +199,7 @@ export default {
       var scrollerHight = clientHeight - (headerHeight + searchDivHeight + TabHeight + addButtonHeight)
 
       document.getElementById("scrollerDiv").style.height = scrollerHight + "px"
-
+      this.scrollerHeight = scrollerHight + "px"
     },
     errorHandled() {
       this.$route.router.go("/productManagement")
