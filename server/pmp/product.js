@@ -297,10 +297,12 @@ var exec = {
     var pmp_product_id = req.query.pmp_product_id == undefined ? "" : req.query.pmp_product_id
     var pmp_specification = require('../../db/models/pmp_specification')
     var pmp_variant = require('../../db/models/pmp_variant')
+    var pmp_variant_image = require('../../db/models/pmp_variant_image')
     var pmp_product = require('../../db/models/pmp_product')
 
     pmp_specification.belongsTo(pmp_variant)
     pmp_variant.belongsTo(pmp_product)
+    pmp_variant.hasMany(pmp_variant_image)
 
     var filterKey = req.query.filterKey == undefined ? "" : req.query.filterKey
     var count = req.query.count == undefined ? 5 : parseInt(req.query.count)
@@ -316,12 +318,12 @@ var exec = {
     return pmp_specification.findAll({
       include: {
         model: pmp_variant,
-        include: {
+        include: [{
           model: pmp_product,
           where: {
             pmp_brand_id: pmp_brand_id
           }
-        }
+        }, pmp_variant_image]
       }
     }).then((list) => {
       if (filterKey) {
