@@ -27,6 +27,9 @@ export default {
     getSpecifications(params) {
         return httpRequest.get(path + 'getSpecifications' + token, params)
     },
+    getSpecification(params) {
+        return httpRequest.get(path + 'getSpecification' + token, params)
+    },
     getBoxCodes(params) {
         return httpRequest.get(path + 'getBoxCodes' + token, params)
     },
