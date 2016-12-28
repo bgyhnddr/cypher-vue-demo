@@ -18,7 +18,7 @@
           <span>箱号：{{item.code}}</span>
         </div>
         <div v-if="item.show">
-          <div>盒号：</div>
+          <div v-if="item.box.length>0">盒号：</div>
           <div v-for="box in item.box">
             <div slot="icon">{{box}}</div>
           </div>
@@ -33,6 +33,10 @@
         <x-button type="default" @click="ScanQRCode">扫码</x-button>
       </flexbox-item>
     </flexbox>
+    <alert :show.sync="showAlert" button-Text="好的">{{alertMsg}}</alert>
+    <confirm :show.sync="showConfirm" title="" confirm-text="是" cancel-text="否" @on-confirm="SubmitRelate(ScanResult)" @on-cancel = "onClickBack">
+      <p style="text-align:center;">是否将箱{{ScanResult}}关联到{{ProductInfo.name}}{{ProductInfo.variant}}{{ProductInfo.specification}}里？</p>
+    </confirm>
   </div>
 </div>
 </template>
@@ -45,7 +49,8 @@ import {
   Cell,
   Flexbox,
   FlexboxItem,
-  XButton
+  XButton,
+  Confirm
 } from 'vux'
 
 import pmpProductAPI from '../../api/pmp_product'
@@ -58,7 +63,8 @@ export default {
     Cell,
     Flexbox,
     FlexboxItem,
-    XButton
+    XButton,
+    Confirm
   },
   data() {
     return {
@@ -68,7 +74,11 @@ export default {
         specification: ""
       },
       CountList: [],
-      BoxList: []
+      BoxList: [],
+      ScanResult:"",
+      alertMsg:"",
+      showAlert:false,
+      showConfirm:false
     }
   },
   methods: {
@@ -82,10 +92,32 @@ export default {
         this.BoxList[e].show = true
       }
     },
-    SubmitResult() {
-      pmpProductAPI.submitCountResult({countList:this.CountList}).then((o) => {
-        console.log(o)
+    SubmitRelate(e){
+      var that = this
+      that.CountList.push({
+        pmp_specification_id: that.$route.params.id,
+        goods_code: e
       })
+      pmpProductAPI.getBoxCodes({
+        code: e
+      }).then((o) => {
+        that.BoxList.push({
+          code: e,
+          box: o,
+          show: false
+        })
+      })
+    },
+    SubmitResult() {
+      var that = this
+      if(that.CountList.length==0){
+        that.showAlert = true
+        that.alertMsg = "请添加货品关联"
+      }else{
+        pmpProductAPI.submitCountResult({countList:that.CountList}).then((o) => {
+          that.onClickBack()
+        })
+      }
     },
     ScanQRCode() {
       //测试箱号
@@ -95,21 +127,9 @@ export default {
         needResult: 1,
         scanType: ["qrCode", "barCode"],
         success: function(res) {
-          window.alert(res.result)
           var result = res.resultStr
-          that.CountList.push({
-            pmp_specification_id: that.$route.params.id,
-            goods_code: result
-          })
-          pmpProductAPI.getBoxCodes({
-            code: result
-          }).then((o) => {
-            that.BoxList.push({
-              code: result,
-              box: o,
-              show: false
-            })
-          })
+          that.ScanResult = result
+          that.showConfirm = true
         }
       })
     }
