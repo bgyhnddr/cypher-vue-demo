@@ -4,13 +4,13 @@
     <x-header :left-options="leftOptions">添加品类</x-header>
     <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
   </div>
-  <div @click="headerGoBack">完成</div>
+  <div @click="finish">完成</div>
 </div>
 <div>
   <div v-if="showModel.showInputModel">
     <flexbox :gutter="0">
       <flexbox-item :span="1/2">
-        <x-input class="weui_cell_primary" title="" :value.sync="inputDate.inputLabel" placeholder="请输入标签" :show-clear=false :required="false"></x-input>
+        <x-input class="weui_cell_primary" title="" :value.sync="inputData.inputLabel" placeholder="请输入标签" :show-clear=false :required="false"></x-input>
       </flexbox-item>
       <flexbox-item :span="1/4">
         <div>
@@ -39,11 +39,11 @@
     </flexbox>
   </div>
   <div v-if="showModel.showStaticCheckerModel">
-      <div v-for="productLabelItem in ProductInfo.pmp_product_labels" >{{productLabelItem}}</div>
+    <div v-for="productLabelItem in inputData.inputLabelItems">{{productLabelItem}}</div>
   </div>
   <div v-if="!showModel.showStaticCheckerModel">
-    <checker :value.sync="inputDate.chooseLabelItems" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
-      <checker-item v-for="productLabelItem in ProductInfo.pmp_product_labels" :value="productLabelItem">{{productLabelItem}}</checker-item>
+    <checker :value.sync="inputData.chooseLabelItems" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
+      <checker-item v-for="productLabelItem in inputData.inputLabelItems" :value="productLabelItem">{{productLabelItem}}</checker-item>
     </checker>
   </div>
   <div>
@@ -94,12 +94,13 @@ export default {
         backText: null,
         preventGoBack: false
       },
-      showModel:{
+      showModel: {
         showStaticCheckerModel: true,
         showInputModel: true,
       },
-      inputDate: {
+      inputData: {
         inputLabel: null,
+        inputLabelItems: [],
         chooseLabelItems: [],
       },
       historyLabels: null,
@@ -111,10 +112,29 @@ export default {
   },
   methods: {
     headerGoBack() {
-      this.inputDate.chooseLabelItems = []
-      this.inputDate.inputLabel = null
+      this.inputData.chooseLabelItems = []
+      this.inputData.inputLabel = null
       this.showModel.showInputModel = true
       this.currentActive = "MainPage"
+    },
+    finish() {
+      this.ProductInfo.pmp_product_labels = this.inputData.inputLabelItems
+
+      this.inputData.chooseLabelItems = []
+      this.inputData.inputLabel = null
+      this.showModel.showInputModel = true
+      this.currentActive = "MainPage"
+    },
+    getLabels() {
+      var labels = []
+
+      if (this.ProductInfo.pmp_product_labels.length > 0) {
+        this.ProductInfo.pmp_product_labels.map((item) => {
+          labels.push(item)
+        })
+      }
+
+      return labels
     },
     getHistoryLabels() {
       var that = this
@@ -129,10 +149,10 @@ export default {
       var that = this
       var addOperationFlag = false
 
-      if (this.inputDate.inputLabel == null || this.inputDate.inputLabel.trim() == "") {
+      if (this.inputData.inputLabel == null || this.inputData.inputLabel.trim() == "") {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "请输入品类标签名"
-      } else if (this.inputDate.inputLabel.trim().length > 15) {
+      } else if (this.inputData.inputLabel.trim().length > 15) {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "您所输入的品类标签超过15个字符"
       } else {
@@ -140,11 +160,11 @@ export default {
           that.alert.showErrorNoHandled = true
           that.alert.errorMsgNoHandled = "标签最多可以设置5个"
         } else {
-          var inputLabel = this.inputDate.inputLabel.trim()
+          var inputLabel = this.inputData.inputLabel.trim()
 
-          this.ProductInfo.pmp_product_labels.map((item) => {
+          this.inputData.inputLabelItems.map((item) => {
             if (item == inputLabel) {
-              that.inputDate.inputLabel = null
+              that.inputData.inputLabel = null
 
               that.alert.showErrorNoHandled = true
               that.alert.errorMsgNoHandled = "已添加此品类标签"
@@ -154,14 +174,14 @@ export default {
           })
 
           if (!addOperationFlag) {
-            that.inputDate.inputLabel = null
-            this.ProductInfo.pmp_product_labels.push(inputLabel)
+            that.inputData.inputLabel = null
+            that.inputData.inputLabelItems.push(inputLabel)
           }
         }
       }
     },
     edit() {
-      if (this.ProductInfo.pmp_product_labels.length == 0) {
+      if (this.inputData.inputLabelItems.length == 0) {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "暂无可编辑品类标签，请添加标签"
       } else {
@@ -173,8 +193,8 @@ export default {
       var that = this
       var removeItems = []
 
-      this.inputDate.chooseLabelItems.map((addItem) => {
-        that.ProductInfo.pmp_product_labels.map((productItem) => {
+      this.inputData.chooseLabelItems.map((addItem) => {
+        this.inputData.inputLabelItems.map((productItem) => {
           if (addItem == productItem) {
             removeItems.push(addItem)
           }
@@ -182,10 +202,10 @@ export default {
       })
 
       removeItems.map((removeItem) => {
-        that.ProductInfo.pmp_product_labels.$remove(removeItem)
+        this.inputData.inputLabelItems.$remove(removeItem)
       })
 
-      this.inputDate.chooseLabelItems = []
+      this.inputData.chooseLabelItems = []
       this.showModel.showStaticCheckerModel = true
       this.showModel.showInputModel = true
 
@@ -193,10 +213,10 @@ export default {
     cancel() {
       this.showModel.showStaticCheckerModel = true
       this.showModel.showInputModel = true
-      this.inputDate.chooseLabelItems = []
+      this.inputData.chooseLabelItems = []
     },
     checkLabelItemLength() {
-      if (this.ProductInfo.pmp_product_labels.length >= 5) {
+      if (this.inputData.inputLabelItems.length >= 5) {
         return true
       } else {
         return false
@@ -211,7 +231,7 @@ export default {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "标签最多可以设置5个"
       } else {
-        this.ProductInfo.pmp_product_labels.map((item) => {
+        this.inputData.inputLabelItems.map((item) => {
           if (item == chooseHistoryLabel.name) {
             that.historyLabels.$remove(historyLabelItem)
 
@@ -224,13 +244,14 @@ export default {
 
         if (!addOperationFlag) {
           this.historyLabels.$remove(historyLabelItem)
-          this.ProductInfo.pmp_product_labels.push(chooseHistoryLabel.name)
+          this.inputData.inputLabelItems.push(chooseHistoryLabel.name)
         }
       }
     }
 
   },
   ready() {
+    this.inputData.inputLabelItems = this.getLabels()
     this.getHistoryLabels()
   }
 }
