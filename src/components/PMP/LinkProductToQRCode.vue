@@ -12,7 +12,7 @@
   </div>
   <div v-else>
     <group v-for="productItem in productsData.getProducts.list">
-      <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
+      <cell :title="productItem.name">
         <div>
           <label>{{$index + 1}} .</label>
         </div>
