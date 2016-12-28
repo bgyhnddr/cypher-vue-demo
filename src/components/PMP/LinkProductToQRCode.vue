@@ -12,12 +12,11 @@
   </div>
   <div v-else>
     <group v-for="productItem in productsData.getProducts.list">
-      <cell :title="productItem.name">
+      <cell :title="productItem.pmp_variant.pmp_product.name">
         <div>
           <label>{{$index + 1}} .</label>
         </div>
         <div>
-          <label>{{productItem.pmp_variant.pmp_product.name}}</label>
           <label>{{productItem.pmp_variant.name}}</label>
           <label>{{productItem.name}}</label>
         </div>
