@@ -22,7 +22,7 @@
           <label>{{productItem.name}}</label>
         </div>
         <x-button @click="goToProductRelatePage(productItem.id)">扫码</x-button>
-        <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
+        <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variant.pmp_variant_images[0].attachment_id)" alt="产品图片" />
       </cell>
     </group>
     <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct">加载更多</x-button>
