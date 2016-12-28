@@ -1,31 +1,21 @@
 <template>
-<div id="header" class="vux-demo-header-box wapmain-header" slot="header">
+<div class="vux-demo-header-box wapmain-header" slot="header">
   <x-header :left-options="leftOptions"></x-header>
   <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
 </div>
-<group id="searchDiv">
+<group>
   <x-input class="weui_cell_primary" title='' placeholder="输入搜索商品名称" :value.sync="keyword" :show-clear=false :required="false"></x-input>
   <button @click="search">搜索</button>
 </group>
-<div id="scrollerDiv">
-  <div v-if="showModel.showSearchProductModel">
-    <scroller :height.sync="scrollerHeight" lock-x scrollbar-y use-pullup :pullup-status.sync="pullUpScroller.pullupStatus" @pullup:loading="loadProduct">
-      <group v-for="productItem in productsData.getProducts.list">
-        <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
-          <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" width="50px" height="50px" alt="产品图片" />
-        </cell>
-      </group>
-      <div v-show="showModel.showPullUpSlot" slot="pullup" class="xs-plugin-pullup-container xs-plugin-pullup-up">
-        <span v-show="pullUpScroller.pullupStatus === 'default'">{{pullUpScroller.pullupConfig.content}}</span>
-        <span v-show="pullUpScroller.pullupStatus === 'down' || pullUpScroller.pullupStatus === 'up'">{{pullUpScroller.pullupConfig.upContent}}</span>
-        <span v-show="pullUpScroller.pullupStatus === 'loading'">
-          <span>{{pullUpScroller.pullupConfig.loadingContent}}</span>
-        </span>
-      </div>
-    </scroller>
-  </div>
+<div v-if="showModel.showSearchProductModel">
+  <group v-for="productItem in productsData.getProducts.list">
+    <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
+      <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" width="50px" height="50px" alt="产品图片" />
+    </cell>
+  </group>
+  <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct">加载更多</x-button>
 </div>
-<div id="footer" class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 <div>
   <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{catchErrorMsg}}</alert>
   <alert :show.sync="alert.showErrorNoHandled" button-text="确认">{{alert.errorMsgNoHandled}}</alert>
@@ -35,10 +25,10 @@
 <script>
 import {
   XHeader,
-  Scroller,
   Group,
   Cell,
   XInput,
+  XButton,
   Alert
 } from 'vux'
 import pmpProductAPI from '../../api/pmp_product'
@@ -46,10 +36,10 @@ import pmpProductAPI from '../../api/pmp_product'
 export default {
   components: {
     XHeader,
-    Scroller,
     Group,
     Cell,
     XInput,
+    XButton,
     Alert
   },
   watch: {
@@ -66,9 +56,8 @@ export default {
       },
       showModel: {
         showSearchProductModel: false,
-        showPullUpSlot: true,
+        showLoadMoreBtn: false
       },
-      scrollerHeight: "0px",
       keyword: null,
       productsData: {
         getProducts: {
@@ -76,15 +65,6 @@ export default {
           list: []
         },
         page: 0
-      },
-      pullUpScroller: {
-        pullupStatus: 'default',
-        pullupConfig: {
-          content: '上拉加载更多',
-          downContent: '松开进行加载',
-          upContent: '上拉加载更多',
-          loadingContent: '加载中...'
-        }
       },
       alert: {
         showCatchError: false,
@@ -100,8 +80,6 @@ export default {
     },
     search() {
       var that = this
-      this.pullUpScroller.pullupStatus = 'default'
-      this.showModel.showPullUpSlot = true
 
       if (this.keyword == null || this.keyword.trim() == "") {
         this.alert.showErrorNoHandled = true
@@ -121,7 +99,9 @@ export default {
             that.productsData.page = 1
 
             if (result.end) {
-              that.showModel.showPullUpSlot = false
+              that.showModel.showLoadMoreBtn = false
+            } else {
+              that.showModel.showLoadMoreBtn = true
             }
 
             that.showModel.showSearchProductModel = true
@@ -132,25 +112,22 @@ export default {
         })
       }
     },
-    loadProduct(uuid) {
+    loadProduct() {
       var that = this
       pmpProductAPI.getProducts({
         page: this.productsData.page
       }).then(function(result) {
+        result.list.map((o) => {
+          that.productsData.getProducts.list.push(o)
+        })
+        that.productsData.getProducts.end = result.end
 
-        setTimeout(() => {
-          if (result.end) {
-            that.$broadcast('pullup:done', uuid)
-          } else {
-            that.$broadcast('pullup:reset', uuid)
-            that.productsData.page += 1
-          }
-
-          result.list.map((o) => {
-            that.productsData.getProducts.list.push(o)
-          })
-          that.productsData.getProducts.end = result.end
-        }, 2000)
+        if (result.end) {
+          that.showModel.showLoadMoreBtn = false
+        } else {
+          that.productsData.page += 1
+          that.showModel.showLoadMoreBtn = true
+        }
 
       }).catch(function(err) {
         that.alert.showCatchError = true
@@ -163,23 +140,9 @@ export default {
     getProductImgHref(fileId) {
       return '/service/public/upload/getAttachment?id=' + fileId
     },
-    loadScrollerHight() {
-      var clientHeight = document.documentElement.clientHeight
-      var headerHeight = document.getElementById("header").offsetHeight
-      var searchDivHeight = document.getElementById("searchDiv").offsetHeight
-      var footerHeight = document.getElementById("footer").offsetHeight
-
-      var scrollerHight = clientHeight - (headerHeight + searchDivHeight + footerHeight)
-
-      document.getElementById("scrollerDiv").style.height = scrollerHight + "px"
-      this.scrollerHeight = scrollerHight + "px"
-    },
     errorHandled() {
       this.$route.router.go("/productManagement/productSetting")
     }
-  },
-  ready() {
-    this.loadScrollerHight()
   }
 }
 </script>

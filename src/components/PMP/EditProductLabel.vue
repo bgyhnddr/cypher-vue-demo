@@ -4,7 +4,7 @@
     <x-header :left-options="leftOptions">添加品类</x-header>
     <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
   </div>
-  <div @click="finish">完成</div>
+  <div @click="confirm">完成</div>
 </div>
 <div>
   <div v-if="showModel.showInputModel">
@@ -117,7 +117,7 @@ export default {
       this.showModel.showInputModel = true
       this.currentActive = "MainPage"
     },
-    finish() {
+    confirm() {
       this.ProductInfo.pmp_product_labels = this.inputData.inputLabelItems
 
       this.inputData.chooseLabelItems = []
