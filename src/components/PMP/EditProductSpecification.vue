@@ -13,10 +13,10 @@
   </div>
   <div v-if="showModel.showAddImageModel">
     <img v-for="image in inputDate.variantImages" :src="getSpecificationImgHref(image)" track-by="$index" width="50px" height="50px" alt="款式图片" />
+    <div class="ApplyFor-agent-header">
+      <employment-headimg-upload :file-id.sync="inputDate.addImageFileId"></employment-headimg-upload>
+    </div>
     <flexbox>
-      <flexbox-item>
-        <employment-headimg-upload :file-id.sync="inputDate.addImageFileId"></employment-headimg-upload>
-      </flexbox-item>
       <flexbox-item>
         <x-button type="primary" @click="addImage">添加</x-button>
       </flexbox-item>
@@ -361,31 +361,35 @@ export default {
 
       return addSpecifications
     },
-    getConfirmImages(){
+    getConfirmImages() {
       var addImages = []
 
       if (this.inputDate.editPmpVariantsIndex == null) {
         this.inputDate.variantImages.map((option) => {
-            addImages.push({attachment_id: option})
+          addImages.push({
+            attachment_id: option
+          })
         })
       } else {
         this.ProductInfo.pmp_variants.map((o, index) => {
           if (index == this.inputDate.editPmpVariantsIndex) {
 
-            this.inputDate.variantImages.map((addItem) =>{
-              o.pmp_variant_images.map((originalItem) =>{
-                if(addItem == originalItem.attachment_id){
+            this.inputDate.variantImages.map((addItem) => {
+              o.pmp_variant_images.map((originalItem) => {
+                if (addItem == originalItem.attachment_id) {
                   addImages.push(originalItem)
                 }
               })
             })
 
-            addImages.map((o) =>{
+            addImages.map((o) => {
               this.inputDate.variantImages.$remove(o.attachment_id)
             })
 
-            this.inputDate.variantImages.map((option) =>{
-              addImages.push({attachment_id: option})
+            this.inputDate.variantImages.map((option) => {
+              addImages.push({
+                attachment_id: option
+              })
             })
           }
         })
