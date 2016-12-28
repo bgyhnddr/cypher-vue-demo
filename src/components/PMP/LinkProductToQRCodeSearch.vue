@@ -8,18 +8,20 @@
   <button @click="search">搜索</button>
 </group>
 <div v-if="showModel.showSearchProductModel">
-  <div v-for="productItem in productsData.getProducts.list">
-    <div>
-      <label>{{$index + 1}} .</label>
-    </div>
-    <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variant.pmp_variant_images[0].attachment_id)" alt="产品图片" />
-    <div>
-      <label>{{productItem.pmp_variant.pmp_product.name}}</label>
-      <label>{{productItem.pmp_variant.name}}</label>
-      <label>{{productItem.name}}</label>
-    </div>
-    <x-button @click="goToProductRelatePage(productItem.id)">扫码</x-button>
-  </div>
+  <group v-for="productItem in productsData.getProducts.list">
+    <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
+      <div>
+        <label>{{$index + 1}} .</label>
+      </div>
+      <div>
+        <label>{{productItem.pmp_variant.pmp_product.name}}</label>
+        <label>{{productItem.pmp_variant.name}}</label>
+        <label>{{productItem.name}}</label>
+      </div>
+      <x-button @click="goToProductRelatePage(productItem.id)">扫码</x-button>
+      <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
+    </cell>
+  </group>
   <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct">加载更多</x-button>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
@@ -33,6 +35,7 @@
 import {
   XHeader,
   Group,
+  Cell,
   XInput,
   XButton,
   Alert
@@ -43,6 +46,7 @@ export default {
   components: {
     XHeader,
     Group,
+    Cell,
     XInput,
     XButton,
     Alert
