@@ -4,7 +4,7 @@
     <x-header :left-options="leftOptions">添加品类</x-header>
     <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
   </div>
-  <div @click="confirm">完成</div>
+  <div v-if="showModel.showStaticCheckerModel" @click="confirm">完成</div>
 </div>
 <div>
   <div v-if="showModel.showInputModel">
