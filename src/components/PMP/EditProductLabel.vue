@@ -4,7 +4,7 @@
     <x-header :left-options="leftOptions">添加品类</x-header>
     <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
   </div>
-  <div @click="confirm">完成</div>
+  <div v-if="showModel.showStaticCheckerModel" @click="confirm">完成</div>
 </div>
 <div>
   <div v-if="showModel.showInputModel">
@@ -46,7 +46,7 @@
       <checker-item v-for="productLabelItem in inputData.inputLabelItems" :value="productLabelItem">{{productLabelItem}}</checker-item>
     </checker>
   </div>
-  <div>
+  <div v-if="showModel.showStaticCheckerModel">
     <p>历史品类</p>
     <button v-for="labelItem in historyLabels" @click="chooseHistoryLabel(labelItem)">{{labelItem.name}}</button>
   </div>
