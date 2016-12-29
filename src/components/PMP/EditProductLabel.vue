@@ -46,7 +46,7 @@
       <checker-item v-for="productLabelItem in inputData.inputLabelItems" :value="productLabelItem">{{productLabelItem}}</checker-item>
     </checker>
   </div>
-  <div>
+  <div v-if="showModel.showStaticCheckerModel">
     <p>历史品类</p>
     <button v-for="labelItem in historyLabels" @click="chooseHistoryLabel(labelItem)">{{labelItem.name}}</button>
   </div>
