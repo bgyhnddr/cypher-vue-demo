@@ -228,10 +228,12 @@ var exec = {
           v.pmp_product_id = product.id
           variantUpsertList.push(Promise.resolve().then(() => {
             if (v.id) {
-              return pmp_variant.findOne({
-                where: {
-                  id: v.id
-                }
+              return pmp_variant.upsert(v).then(() => {
+                return pmp_variant.findOne({
+                  where: {
+                    id: v.id
+                  }
+                })
               })
             } else {
               return pmp_variant.create(v)
