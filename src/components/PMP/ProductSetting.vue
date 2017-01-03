@@ -28,7 +28,8 @@
     <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct">加载更多</x-button>
   </div>
   <div>
-  <x-button @click="addProduct">添加商品</x-button>
+
+<div class="productsetting-button">  <x-button @click="addProduct">添加商品</x-button></div>
 </div>
 <div>
   <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
@@ -223,9 +224,27 @@ export default {
 #productsetting .productsetting-list{
   background-color: #fff;
   border-top:1px solid #d3d1d1; ;
-  border-bottom:1px solid #d3d1d1; ;
+  border-bottom:1px solid #d3d1d1;
+      margin-bottom: 1%;
 }
 #productsetting .weui_cell{
   padding: 4px 7px;
+}
+#productsetting .productsetting-button button.weui_btn.weui_btn_default{
+  position: fixed;
+bottom: 0;
+color: #fff;
+background: #21c36d;
+    font-family: "微软雅黑";
+      font-size: 5.2vw;/*17px*/
+      border-radius: 0;
+      border: 0
+
+}
+#productsetting .productsetting-button .weui_btn:after{
+    border-radius: 0;
+    border: 0;
+        line-height: 2.2;
+
 }
 </style>

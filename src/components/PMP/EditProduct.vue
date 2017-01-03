@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="editProduct">
   <!-- 主页 -->
   <div v-if="currentActive=='MainPage'">
     <div class="vux-demo-header-box wapmain-header" slot="header">
@@ -7,23 +7,27 @@
       <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
     </div>
     <group>
-      <div>
-        <x-input placeholder="请输入商品名称" :required="false" :value.sync="ProductInfo.name"></x-input>
+      <div class="editProduct-name">
+        <x-textarea placeholder="请输入商品名称" :required="false" :value.sync="ProductInfo.name"></x-textarea>
       </div>
+      <div class="editProduct-category">
       <cell is-link @click="showEditLabelPage">
         <span v-if="ProductInfo.pmp_product_labels.length == 0">未添加</span>
         <span v-for="item in ProductInfo.pmp_product_labels">{{item}}</span>
         <div slot="icon">
           <span>品类</span>
         </div>
+      </div>
       </cell>
+      <div class="editProduct-category">
       <cell is-link @click="showSetPricePage">
         <span>设置等级价格目录表</span>
         <div slot="icon">
           <span>商品价格</span>
         </div>
       </cell>
-      <div v-if="ProductInfo.pmp_product_prices.length==0">数据加载失败</div>
+    </div>
+    <div class="editProduct-main">
       <table border="1" width="100%" v-if="ProductInfo.pmp_product_prices.length>0">
         <tr v-for="item in ProductInfo.pmp_product_prices">
           <th>{{item.brand_role_name}}</th>
@@ -35,7 +39,9 @@
           <span>商品描述</span>
         </div>
       </cell>
+
       <x-textarea :max="200" placeholder="请输入商品描述" :value.sync="ProductInfo.description"></x-textarea>
+        </div>
       <cell title="" is-link v-for="item in ProductInfo.pmp_variants" @click="showSpecificationPage(item.name)">
         <div slot="icon">
           <span>{{item.name}}</span>
@@ -48,11 +54,13 @@
         </div>
         <span v-if="item.on_sell==false">已下架</span>
       </cell>
+      <div class="editProduct-specifications ">
       <div class="weui_cell" v-if="!BtnFlag" @click="showSpecificationPage()">
         <x-button plain>添加商品规格</x-button>
       </div>
+    </div>
     </group>
-    <div>
+    <div class="editProduct-join">
       <x-button plain @click="showSubmit">{{BtnMsg}}商品</x-button>
     </div>
   </div>
@@ -276,5 +284,67 @@ export default {
 }
 </script>
 <style>
+#editProduct .weui_cell:before{
+border: 0
+}
+#editProduct .editProduct-name {
+    background: #fff;
+    font-size: 4.5vw;
+    border-bottom: 1px solid #d3d1d1;
+        margin-bottom: 5px;
+  }
+  #editProduct .editProduct-name .weui_cell {
+    padding: 2%;}
+  #editProduct .editProduct-category {
+    background: #fff;
+    border-top: 1px solid #d3d1d1;
+    border-bottom: 1px solid #d3d1d1;
+    font-size: 4.5vw;
+      margin-top: 5px;
+}
+  #editProduct .editProduct-category .weui_cell{
+        padding: 13px 10px;
+  }
+    #editProduct .editProduct-category .weui_cell_ft {
+    color: #aeaeae;
+}
+#editProduct .editProduct-category .weui_cell_hd {
+    width: 23%;
+}
+#editProduct .editProduct-main{
+background: #fff;
+margin-top: 5px;
+border-top: 1px solid #d3d1d1;
+border-bottom: 1px solid #d3d1d1;
+}
 
+#editProduct .editProduct-main  .weui_cell{
+padding: 0
+}
+#editProduct .editProduct-main  .weui_cell_hd{
+      width:100%
+}
+#editProduct .editProduct-main  .weui_cell_hd span{
+font-size: 4.5vw;/*14px*/
+    border-bottom: 1px solid #d3d1d1;
+    width: 98%;
+    display: block;
+    padding: 2%
+}
+#editProduct .editProduct-main .weui_textarea{
+
+  color: #aeaeae;
+  font-size: 4.5vw;
+  padding: 2%;
+}
+#editProduct .editProduct-join button.weui_btn.weui_btn_default {
+    position: fixed;
+    bottom: 0;
+    color: #fff;
+    background: #fd5e5e;
+    font-family: "\5FAE\8F6F\96C5\9ED1";
+    font-size: 5.2vw;
+    border-radius: 0;
+    border: 0;
+}
 </style>
