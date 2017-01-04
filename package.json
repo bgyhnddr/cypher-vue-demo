@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
-    "test": "",
+    "test": "mocha",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
     "server": "node build/run_server.js",
     "init": "node build/init.js",
