@@ -39,6 +39,7 @@
     "wechat-oauth": "^1.2.0"
   },
   "devDependencies": {
+    "mocha": "^3.2.0",
     "babel-core": "^6.0.0",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.0.0",
