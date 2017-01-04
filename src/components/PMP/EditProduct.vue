@@ -26,8 +26,12 @@
           <span>商品价格</span>
         </div>
       </cell>
+
     </div>
     <div class="editProduct-main">
+
+      <!-- <div v-if="ProductInfo.pmp_product_prices.length==0">数据加载失败</div> -->
+
       <table border="1" width="100%" v-if="ProductInfo.pmp_product_prices.length>0">
         <tr v-for="item in ProductInfo.pmp_product_prices">
           <th>{{item.brand_role_name}}</th>
