@@ -5,7 +5,7 @@
     <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
   </div>
   <div>
-    <table border="1" width="100%">
+    <table border="0" width="100%" id="SetProductPrice" cellspacing="0" cellpadding="0" >
       <tr>
         <th>级别名称</th>
         <th>进货价</th>
@@ -18,14 +18,16 @@
       </tr>
     </table>
   </div>
+  <div class="SetProductPrice-reset">
   <flexbox>
     <flexbox-item>
-      <x-button type="default" @click="SubmitPrice">确认</x-button>
+      <x-button type="default" @click="SubmitPrice" class="SetProductPrice-reset-sure">确认</x-button>
     </flexbox-item>
     <flexbox-item>
       <x-button type="default" @click="ResetPrice">重置</x-button>
     </flexbox-item>
   </flexbox>
+</div>
 </div>
 <alert :show.sync="showAlert" button-Text="好的" @on-hide="Hide">请正确输入金额</alert>
 </template>
@@ -135,3 +137,77 @@ export default {
   }
 }
 </script>
+<style>
+#SetProductPrice{
+ font-family: "微软雅黑",Arial!important;
+ background: #fff
+}
+#SetProductPrice tr th{
+    border-bottom: 1px solid #d3d1d1;
+  font-family: "微软雅黑";
+  font-weight: normal;
+  line-height: 2.8em;
+  font-size: 4.5vw
+}
+#SetProductPrice tr th:first-child{
+
+  border-right: 1px solid #d3d1d1;
+
+
+}
+#SetProductPrice tr th:first-child{
+  width: 50%}
+  #SetProductPrice   .weui_cell{
+    padding: 0
+  }
+    #SetProductPrice  .weui_cell_hd{
+        width: 7%;
+    }
+  #SetProductPrice  .weui_cell_ft{
+    margin: 0 7% 0 2%;
+ color: #000
+    }
+  #SetProductPrice    .weui_cell_bd.weui_cell_primary {
+    border: 1px solid #d3d1d1;
+    line-height: 2.2em;}
+  #SetProductPrice     i.weui_icon.weui_icon_clear{
+    position: absolute;
+left: 69%;
+  }
+  #SetProductPrice   .weui_icon_warn:before{
+    position: absolute;
+left: 69%;
+top: 35%
+  }
+    #SetProductPrice   .weui_input{
+      text-align: center;
+    font-family: "微软雅黑",Arial;
+    font-weight: 600;
+      font-size: 4.5vw
+
+    }
+.SetProductPrice-reset{
+position: fixed;
+bottom:0;
+width: 100%
+  }
+.SetProductPrice-reset  .vux-flexbox-item{
+  margin-left:0!important;
+
+}
+.SetProductPrice-reset .weui_btn:after{
+  border-radius: 0;
+  border:0
+}
+.SetProductPrice-reset button.weui_btn.weui_btn_default {
+    background: #9b9b9b;
+    border-radius: 0;
+    font-family: "微软雅黑";
+        font-size: 5.2vw;
+    color: #fff;
+    line-height: 2.3em;
+}
+.SetProductPrice-reset button.weui_btn.SetProductPrice-reset-sure.weui_btn_default{
+  background: #21c36d
+}
+</style>

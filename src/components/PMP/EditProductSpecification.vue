@@ -3,28 +3,37 @@
   <x-header :left-options="leftOptions">添加商品规格</x-header>
   <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
 </div>
+<div id="EditProductSpecification">
+  <div class="EditProductSpecification">
 <div v-if="showModel.showEditSpecificationModel">
+  <div class="specifications">
   <div v-if="showModel.showAddImageModel">
     <x-input title='规格' placeholder="如颜色、款式" :value.sync="inputDate.variant" :show-clear=false :required="false"></x-input>
   </div>
+</div>
   <div v-if="!showModel.showAddImageModel">
     <label>规格</label>
     <label>{{inputDate.variant}}</label>
   </div>
+<div class="add-image">
   <div v-if="showModel.showAddImageModel">
     <img v-for="image in inputDate.variantImages" :src="getSpecificationImgHref(image)" track-by="$index" width="50px" height="50px" alt="款式图片" />
     <div class="ApplyFor-agent-header">
       <employment-headimg-upload :file-id.sync="inputDate.addImageFileId"></employment-headimg-upload>
     </div>
-    <flexbox>
+    <div class="add-image-editor ">
+
       <flexbox-item>
         <x-button type="primary" @click="addImage">添加</x-button>
       </flexbox-item>
       <flexbox-item>
         <x-button type="primary" @click="editImage">编辑</x-button>
       </flexbox-item>
-    </flexbox>
+
   </div>
+  </div>
+  <div class="clean"></div>
+</div>
   <div v-if="!showModel.showAddImageModel">
     <flexbox>
       <flexbox-item>
@@ -39,7 +48,9 @@
         <img :src="getSpecificationImgHref(image)" width="50px" height="50px" alt="款式图片" />
       </checker-item>
     </checker>
+
   </div>
+    <div class="clean"></div>
   <div>
     <p>尺寸（可多选）</p>
     <flexbox :gutter="0" wrap="wrap" v-if="showModel.showAddImageModel">
@@ -59,6 +70,7 @@
       </flexbox-item>
     </flexbox>
   </div>
+</div>
   <div v-if="showModel.showAddButtonModel">
     <div v-if="showModel.showAddImageModel">
       <x-button @click="confirm('add')">确定添加</x-button>
@@ -81,6 +93,7 @@
   <confirm :show.sync="alert.showCheckConfirm" title="" confirm-text="取消" cancel-text="确认" @on-cancel="closeComfirm">
     <p style="text-align:center;">{{alert.confirmModelText}}</p>
   </confirm>
+</div>
 </div>
 </template>
 
@@ -476,4 +489,70 @@ export default {
     background: #ffffff url("/static/TestIMG/checker-active.png") no-repeat right bottom;
     border-color: #ff4a00;
 }
+#EditProductSpecification .EditProductSpecification {
+  background: #fff
+}
+#EditProductSpecification .specifications{
+   border-bottom: 1px solid #999;}
+#EditProductSpecification .specifications .weui_label{
+color: #000;
+font-size: 4.5vw;
+ font-family: "微软雅黑",Arial!important;
+}
+#EditProductSpecification .specifications .weui_input{
+  font-size: 4.5vw;
+   font-family: "微软雅黑",Arial!important;
+}
+#EditProductSpecification .add-image{
+
+}
+#EditProductSpecification button.weui_btn.weui_btn_default {
+    position: fixed;
+    bottom: 0;
+    color: #fff;
+    background: #21c36d;
+    font-family: "\5FAE\8F6F\96C5\9ED1";
+    font-size: 5.2vw;
+    border-radius: 0;
+    border: 0;
+}
+#EditProductSpecification .add-image img {
+    float: left;
+    width: 22%;
+    height: auto;
+    margin: 1%;
+}
+#EditProductSpecification .add-image .ApplyFor-agent-header{
+  text-align: center;
+width: 22%;
+float: left;
+height: auto;
+  margin: 1%;
+}
+#EditProductSpecification .ApplyFor-agent-header img{
+  width: 100%
+}
+
+#EditProductSpecification .add-image .add-image-editor .vux-flexbox .vux-flexbox-item{
+  /* -webkit-box-flex: 1; */
+-ms-flex: inherit!important;
+flex: inherit!important;
+
+}
+#EditProductSpecification .add-image  .vux-flexbox-item{
+    margin-top: 3%;
+
+}
+#EditProductSpecification .add-image  .vux-flexbox-item button.weui_btn.weui_btn_primary{
+  width: 85%;
+  line-height: 1.9em;
+}
+#EditProductSpecification .add-image .add-image-editor {
+    width: 31%;
+    float: right;
+      margin-top: 1%;
+    }
+  #EditProductSpecification  .weui_btn:after{
+    border: 0
+  }
 </style>
