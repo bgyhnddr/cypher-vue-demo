@@ -94,13 +94,13 @@ export default {
     },
     SubmitRelate(e){
       var that = this
-      that.CountList.push({
-        pmp_specification_id: that.$route.params.id,
-        goods_code: e
-      })
       pmpProductAPI.getBoxCodes({
         code: e
       }).then((o) => {
+        that.CountList.push({
+          pmp_specification_id: that.$route.params.id,
+          goods_code: e
+        })
         that.BoxList.push({
           code: e,
           box: o,
@@ -128,7 +128,7 @@ export default {
     ScanQRCode() {
       //测试箱号
       var that = this
-      // that.ScanResult = "123"
+      // that.ScanResult = "B-55C-88-4716-0004"
       // that.showConfirm = true
       window.wx.scanQRCode({
         needResult: 1,
@@ -151,6 +151,9 @@ export default {
       that.ProductInfo.name = o.pmp_variant.pmp_product.name
       that.ProductInfo.variant = o.pmp_variant.name
       that.ProductInfo.specification = o.name
+    }).catch((err)=>{
+      that.alertMsg = err
+      that.showAlert = true
     })
     that.ScanQRCode()
   }
