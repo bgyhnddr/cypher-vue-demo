@@ -1,10 +1,19 @@
-before_script:
-  - npm install
-
 stages:
+  - setup
   - test
 
-job_name:
+setup:
+  stage: setup
+  script:
+    - npm install
+    
+test:
   stage: test
   script:
     - npm test
+
+cache:
+  untracked: true
+  key: "$CI_BUILD_REF_NAME"
+  paths:
+    - node_modules/

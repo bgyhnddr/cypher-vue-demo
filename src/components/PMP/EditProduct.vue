@@ -3,7 +3,7 @@
   <!-- 主页 -->
   <div v-if="currentActive=='MainPage'">
     <div class="vux-demo-header-box wapmain-header" slot="header">
-      <x-header :left-options="{showBack: false}">添加商品</x-header>
+      <x-header :left-options="{showBack: false}">{{title}}</x-header>
       <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
     </div>
     <group>
@@ -138,6 +138,7 @@ export default {
       },
       PriceInfo: [],
       chooseSpecification: null,
+      title:"",
       alertMsg: "",
       BtnMsg: "",
       showAlert: false,
@@ -202,6 +203,9 @@ export default {
         } else {
           that.$route.router.go('/productManagement/productSetting')
         }
+      }).catch((err)=>{
+        that.alertMsg = err
+        that.showAlert = true
       })
     }
   },
@@ -224,6 +228,9 @@ export default {
             })
           })
         }
+      }).catch((err)=>{
+        that.alertMsg = err
+        that.showAlert = true
       })
     }
   },
@@ -231,6 +238,7 @@ export default {
     var that = this
     var id = that.$route.params.id
     if (id) {
+      that.title = "编辑商品"
       that.BtnMsg = "保存"
       that.currentActive = "OperatePage"
       pmpProductAPI.getProduct({
@@ -282,8 +290,12 @@ export default {
         } else {
           console.log('商品读取错误')
         }
+      }).catch((err)=>{
+        that.alertMsg = err
+        that.showAlert = true
       })
     } else {
+      that.title = "添加商品"
       that.BtnMsg = "加入"
       that.currentActive = "MainPage"
     }

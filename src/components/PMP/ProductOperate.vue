@@ -3,7 +3,7 @@
   <!-- 主页 -->
   <div>
     <div class="vux-demo-header-box wapmain-header" slot="header">
-      <x-header :left-options="{showBack: false}">商品标题</x-header>
+      <x-header :left-options="{showBack: false}">{{ProductInfo.name}}</x-header>
       <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
     </div>
     <Group>
