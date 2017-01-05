@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
-    "test": "",
+    "test": "mocha",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
     "server": "node build/run_server.js",
     "init": "node build/init.js",
@@ -39,6 +39,7 @@
     "wechat-oauth": "^1.2.0"
   },
   "devDependencies": {
+    "mocha": "^3.2.0",
     "babel-core": "^6.0.0",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.0.0",

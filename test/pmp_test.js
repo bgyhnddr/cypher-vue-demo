@@ -14,6 +14,7 @@ var pmp_variant = require('../db/models/pmp_variant')
 describe('pmp', function() {
 
   before(function() {
+    this.timeout(10000);
     return Promise.all([
       pmp_brand_meta,
       pmp_brand,
