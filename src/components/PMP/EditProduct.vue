@@ -32,7 +32,7 @@
 
       <!-- <div v-if="ProductInfo.pmp_product_prices.length==0">数据加载失败</div> -->
 
-      <table border="1" width="100%" v-if="ProductInfo.pmp_product_prices.length>0">
+      <table border="0" width="100%" v-if="ProductInfo.pmp_product_prices.length>0" class="Commodity-prices " cellspacing="0" cellpadding="0" >
         <tr v-for="item in ProductInfo.pmp_product_prices">
           <th>{{item.brand_role_name}}</th>
           <th>{{item.price}}元</th>
@@ -60,7 +60,8 @@
       </cell>
       <div class="editProduct-specifications ">
       <div class="weui_cell" v-if="!BtnFlag" @click="showSpecificationPage()">
-        <x-button plain>添加商品规格</x-button>
+        <x-button plain>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;添加商品规格</x-button>
       </div>
     </div>
     </group>
@@ -300,6 +301,7 @@ export default {
 }
 </script>
 <style>
+body{    font-family: "微软雅黑",Arial!important;}
 #editProduct .weui_cell:before{
 border: 0
 }
@@ -309,6 +311,9 @@ border: 0
     border-bottom: 1px solid #d3d1d1;
         margin-bottom: 5px;
   }
+    #editProduct .weui_textarea {
+      font-family: "微软雅黑",Arial;
+    }
   #editProduct .editProduct-name .weui_cell {
     padding: 2%;}
   #editProduct .editProduct-category {
@@ -353,6 +358,11 @@ font-size: 4.5vw;/*14px*/
   font-size: 4.5vw;
   padding: 2%;
 }
+#editProduct.editProduct-main  .weui_textarea_counter {
+    color: #aeaeae;
+    text-align: right;
+    font-size: 4.5vw;
+}
 #editProduct .editProduct-join button.weui_btn.weui_btn_default {
     position: fixed;
     bottom: 0;
@@ -363,4 +373,38 @@ font-size: 4.5vw;/*14px*/
     border-radius: 0;
     border: 0;
 }
+#editProduct .editProduct-specifications .weui_cell {
+      padding: 10px 9px;
+
+}
+
+#editProduct .editProduct-specifications button.weui_btn.weui_btn_default.weui_btn_plain_default {
+  border: 1px dashed #a0a0a0;
+  border-radius: 2px;
+  font-size: 4.5vw;
+  font-family: "\5FAE\8F6F\96C5\9ED1";
+  color: #000;
+  padding: 1% 0;
+  background: url(/static/TestIMG/add_hp.png) no-repeat 25% 50%;
+  background-repeat: no-repeat;
+  background-size: 11%;
+      margin-bottom: 30%;
+}
+#editProduct  .weui_textarea_counter{
+  font-size: 4.5vw
+}
+ .Commodity-prices tbody tr th{
+   border-bottom: 1px solid #d3d1d1;
+   font-family: "微软雅黑";
+   font-weight: normal;
+   line-height: 2.1em;
+   font-size: 4.5vw
+ }
+ .Commodity-prices tbody tr th:first-child{
+
+   border-right: 1px solid #d3d1d1;
+   }
+
+
+
 </style>

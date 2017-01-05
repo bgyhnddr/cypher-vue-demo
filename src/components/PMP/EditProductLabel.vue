@@ -4,27 +4,32 @@
     <x-header :left-options="leftOptions">添加品类</x-header>
     <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
   </div>
-  <div v-if="showModel.showStaticCheckerModel" @click="confirm">完成</div>
+  <div v-if="showModel.showStaticCheckerModel" @click="confirm" class="EditProductLabel-complete">完成</div>
 </div>
-<div>
+<div id="EditProductLabel">
+  <div>
   <div v-if="showModel.showInputModel">
+    <div class="EditProductLabel-label ">
     <flexbox :gutter="0">
       <flexbox-item :span="1/2">
         <x-input class="weui_cell_primary" title="" :value.sync="inputData.inputLabel" placeholder="请输入标签" :show-clear=false :required="false"></x-input>
       </flexbox-item>
       <flexbox-item :span="1/4">
         <div>
-          <x-button type="primary" @click="add">添加</x-button>
+          <x-button type="primary" @click="add" class="EditProductLabel-add">添加</x-button>
         </div>
       </flexbox-item>
+        </div>
       <flexbox-item :span="1/4">
         <div>
-          <x-button type="primary" @click="edit">编辑</x-button>
+          <x-button type="primary" @click="edit" class="EditProductLabel-editor ">编辑</x-button>
         </div>
+
       </flexbox-item>
     </flexbox>
+<div class="clean"></div>
   </div>
-  <div v-else>
+  <div v-else class="EditProductLabel-editor-button">
     <flexbox :gutter="0">
       <flexbox-item :span="1/4">
         <div>
@@ -38,21 +43,27 @@
       </flexbox-item>
     </flexbox>
   </div>
-  <div v-if="showModel.showStaticCheckerModel">
+  <div v-if="showModel.showStaticCheckerModel"class="EditProductLabel-new ">
+    <p>新增标签</p>
     <div v-for="productLabelItem in inputData.inputLabelItems">{{productLabelItem}}</div>
+
   </div>
-  <div v-if="!showModel.showStaticCheckerModel">
+    <div class="clean"></div>
+  <div v-if="!showModel.showStaticCheckerModel" class="EditProductLabel-new-editor">
+      <p>新增标签</p>
     <checker :value.sync="inputData.chooseLabelItems" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
       <checker-item v-for="productLabelItem in inputData.inputLabelItems" :value="productLabelItem">{{productLabelItem}}</checker-item>
     </checker>
   </div>
-  <div v-if="showModel.showStaticCheckerModel">
+    <div class="clean"></div>
+  <div v-if="showModel.showStaticCheckerModel" class="EditProductLabel-history ">
     <p>历史品类</p>
     <button v-for="labelItem in historyLabels" @click="chooseHistoryLabel(labelItem)">{{labelItem.name}}</button>
   </div>
 </div>
 <div>
   <alert :show.sync="alert.showErrorNoHandled" button-text="确认">{{alert.errorMsgNoHandled}}</alert>
+</div>
 </div>
 </template>
 <script>
@@ -271,4 +282,101 @@ export default {
     background: #ffffff url("/static/TestIMG/checker-active.png") no-repeat right bottom;
     border-color: #ff4a00;
 }
+.EditProductLabel-complete{
+  position: absolute;
+    right: 6%;
+z-index: 1000;
+color: #fff;
+top: 2%;
+font-size: 4.5vw}
+#EditProductLabel .EditProductLabel-label{
+background: #fff;
+border-bottom: 1px solid #999;
+
+}
+#EditProductLabel .EditProductLabel-label .vux-flexbox-item:first-child{
+  flex: 0 0 70% !important;
+}
+#EditProductLabel .EditProductLabel-label .vux-flexbox-item:nth-child(2){
+flex: 0 0 27% !important;
+}
+#EditProductLabel .EditProductLabel-label .vux-flexbox-item:first-child input.weui_input{
+  font-size: 4.5vw;
+color: #aeaeae;
+font-family: "微软雅黑";
+}
+#EditProductLabel .weui_cell_hd{
+  width: auto;
+}
+
+#EditProductLabel button.weui_btn.EditProductLabel-add.weui_btn_primary {
+    border-radius: 2px;
+    font-size: 4.5vw;
+  margin-right: 8%;}
+  #EditProductLabel    .weui_btn:after{
+    border: 0
+  }
+  #EditProductLabel  button.weui_btn.EditProductLabel-editor.weui_btn_primary {
+    width: 24%;
+
+        float: right;
+      margin-right: 5%;
+        border-radius: 2px;
+        font-size: 4.5vw;
+            margin-top: 3%;
+            background: #5091d5
+  }
+  #EditProductLabel .EditProductLabel-new,  #EditProductLabel .EditProductLabel-history {
+      padding: 0 5%;
+  }
+
+  #EditProductLabel .EditProductLabel-new > div {
+      float: left;
+      margin: 2% 1%;
+      border: 1px solid #d3d1d1;
+      background: #fff;
+        padding: 1% 5%;
+      font-size: 4.5vw;
+      border-radius: 5px;
+  }
+#EditProductLabel   .EditProductLabel-new  p,#EditProductLabel .EditProductLabel-history p
+{
+  font-size: 4.5vw;
+  color: #595959
+}
+#EditProductLabel  .EditProductLabel-editor-button{
+  position: fixed;
+  bottom: 0;
+  width: 100%
+}
+#EditProductLabel  .EditProductLabel-editor-button .vux-flexbox-item{
+      flex: 0 0 50%!important;
+}
+#EditProductLabel  .EditProductLabel-editor-button button.weui_btn.weui_btn_primary{
+  width: 100%;
+  border-radius: 0;
+      background: #9b9b9b;
+      font-size: 5.2vw
+}
+#EditProductLabel  .EditProductLabel-editor-button .vux-flexbox-item:first-child button.weui_btn.weui_btn_primary{
+  background: #fd5e5e
+}
+#EditProductLabel .EditProductLabel-new-editor {
+  width: 90%;
+  margin: 2% auto;
+
+}
+#EditProductLabel .EditProductLabel-new-editor p{
+  font-size: 4.5vw;
+  color: #595959;
+  margin-bottom: 1%
+}
+#EditProductLabel .EditProductLabel-new-editor .vux-checker-item.vux-tap-active.checker-item{
+  font-size: 4.5vw;
+  border-radius: 5px;
+    padding: 1% 5%;
+    width: auto;
+    margin: 2% 1%;
+}
+  .clean{ clear: both;}
 </style>
