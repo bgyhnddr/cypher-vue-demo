@@ -199,6 +199,9 @@ export default {
         } else {
           that.$route.router.go('/productManagement/productSetting')
         }
+      }).catch((err)=>{
+        that.alertMsg = err
+        that.showAlert = true
       })
     }
   },
@@ -221,6 +224,9 @@ export default {
             })
           })
         }
+      }).catch((err)=>{
+        that.alertMsg = err
+        that.showAlert = true
       })
     }
   },
@@ -279,6 +285,9 @@ export default {
         } else {
           console.log('商品读取错误')
         }
+      }).catch((err)=>{
+        that.alertMsg = err
+        that.showAlert = true
       })
     } else {
       that.BtnMsg = "加入"

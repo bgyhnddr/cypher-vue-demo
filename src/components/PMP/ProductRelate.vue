@@ -119,6 +119,9 @@ export default {
       }else{
         pmpProductAPI.submitCountResult({countList:that.CountList}).then((o) => {
           that.onClickBack()
+        }).catch((err)=>{
+          that.alertMsg = err
+          that.showAlert = true
         })
       }
     },
