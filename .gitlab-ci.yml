@@ -12,7 +12,7 @@ test:
   script:
     - npm test
 
-#cache:
-#  untracked: true
-#  paths:
-#    - node_modules/
+cache:
+  untracked: true
+  paths:
+    - node_modules/
