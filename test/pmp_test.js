@@ -120,7 +120,14 @@ describe('pmp', function() {
     ])
     })
   });
+  
+  describe('demo', ()=>{
+    'bei'.should.equal('bei')
+    'bei'.should.not.equal('wang')
+    return Promise.resolve(1)
+  })
 
+  /*
   describe('product', function() {
 
     var cres = {
@@ -330,6 +337,7 @@ describe('pmp', function() {
     })
 
   })
+  */
 
 });
 
