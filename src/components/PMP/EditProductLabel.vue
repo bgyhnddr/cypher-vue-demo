@@ -330,7 +330,7 @@ font-family: "微软雅黑";
       padding: 0 5%;
   }
 
-  #EditProductLabel .EditProductLabel-new > div {
+  #EditProductLabel .EditProductLabel-new > div,  #EditProductLabel .EditProductLabel-history button {
       float: left;
       margin: 2% 1%;
       border: 1px solid #d3d1d1;
@@ -338,7 +338,9 @@ font-family: "微软雅黑";
         padding: 1% 5%;
       font-size: 4.5vw;
       border-radius: 5px;
+          font-family: "微软雅黑";
   }
+
 #EditProductLabel   .EditProductLabel-new  p,#EditProductLabel .EditProductLabel-history p
 {
   font-size: 4.5vw;
@@ -369,7 +371,11 @@ font-family: "微软雅黑";
 #EditProductLabel .EditProductLabel-new-editor p{
   font-size: 4.5vw;
   color: #595959;
-  margin-bottom: 1%
+  margin-bottom: 1%;
+      font-family: "微软雅黑";
+}
+#EditProductLabel .checker-item-selected{
+  border-color: #21c36d;
 }
 #EditProductLabel .EditProductLabel-new-editor .vux-checker-item.vux-tap-active.checker-item{
   font-size: 4.5vw;

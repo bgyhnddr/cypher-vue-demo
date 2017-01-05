@@ -46,6 +46,7 @@
 
       <x-textarea :max="200" placeholder="请输入商品描述" :value.sync="ProductInfo.description"></x-textarea>
         </div>
+        <div class="editProduct-list">
       <cell title="" is-link v-for="item in ProductInfo.pmp_variants" @click="showSpecificationPage(item.name)">
         <div slot="icon">
           <span>{{item.name}}</span>
@@ -58,6 +59,7 @@
         </div>
         <span v-if="item.on_sell==false">已下架</span>
       </cell>
+    </div>
       <div class="editProduct-specifications ">
       <div class="weui_cell" v-if="!BtnFlag" @click="showSpecificationPage()">
         <x-button plain>
@@ -342,7 +344,7 @@ font-size: 4.5vw;/*14px*/
 }
 #editProduct .editProduct-main .weui_textarea{
 
-  color: #aeaeae;
+  color: #000000;
   font-size: 4.5vw;
   padding: 2%;
 }
@@ -393,6 +395,17 @@ font-size: 4.5vw;/*14px*/
    border-right: 1px solid #d3d1d1;
    }
 
+#editProduct   .editProduct-list .weui_cell.vux-tap-active{
+background: #fff;
+margin-top: 2%;
+border-top: 1px solid #d3d1d1;
+    border-bottom: 1px solid #d3d1d1;
+    font-size: 4.5vw
+}
+#editProduct   .editProduct-list .weui_cell.vux-tap-active .weui_cell_hd{
+  width: auto;
+  margin-right: 10px
 
+}
 
 </style>
