@@ -106,6 +106,9 @@ export default {
           box: o,
           show: false
         })
+      }).catch((err)=>{
+          that.alertMsg = err
+          that.showAlert = true
       })
     },
     SubmitResult() {
@@ -122,7 +125,8 @@ export default {
     ScanQRCode() {
       //测试箱号
       var that = this
-      // var result = "B-55C-88-4716-0004"
+      // that.ScanResult = "123"
+      // that.showConfirm = true
       window.wx.scanQRCode({
         needResult: 1,
         scanType: ["qrCode", "barCode"],
