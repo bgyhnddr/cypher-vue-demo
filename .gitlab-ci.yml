@@ -4,7 +4,7 @@ before_script:
 stages:
   - test
 
-job_name:
+auto_test:
   stage: test
   script:
     - npm test
