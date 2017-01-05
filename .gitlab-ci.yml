@@ -1,10 +1,19 @@
-before_script:
-  - npm install
 
 stages:
+  - setup
   - test
 
+setup:
+  stage: setup
+  script:
+    - npm install
+    
 test:
   stage: test
   script:
     - npm test
+
+cache:
+  untracked: true
+  paths:
+    - node_modules/
