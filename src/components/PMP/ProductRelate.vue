@@ -93,6 +93,7 @@ export default {
       }
     },
     SubmitRelate(e){
+      window.alert(e)
       var that = this
       that.CountList.push({
         pmp_specification_id: that.$route.params.id,
