@@ -3,17 +3,25 @@
   <x-header :left-options="leftOptions"></x-header>
   <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
 </div>
+<div id="editProductsearch">
+  <div class="editProductsearch-search">
 <group>
   <x-input class="weui_cell_primary" title='' placeholder="输入搜索商品名称" :value.sync="keyword" :show-clear=false :required="false"></x-input>
-  <button @click="search">搜索</button>
+  <button @click="search"></button>
 </group>
-<div v-if="showModel.showSearchProductModel">
+</div>
+<div class="editProductsearch-list">
+<div v-if="showModel.showSearchProductModel" >
+  <div class="editProductsearch-list-li">
   <group v-for="productItem in productsData.getProducts.list">
     <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
       <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" width="50px" height="50px" alt="产品图片" />
     </cell>
   </group>
+</div>
   <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct">加载更多</x-button>
+</div>
+</div>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 <div>
@@ -146,3 +154,67 @@ export default {
   }
 }
 </script>
+<style>
+#editProductsearch{
+    min-height: 478px;
+}
+#editProductsearch .editProductsearch-search{
+  width: 95%;
+      margin: 1% auto;
+        border: 1px solid #d3d1d1;
+          background: #fff;
+          position: relative;
+}
+#editProductsearch .editProductsearch-search .weui_cell_hd{
+  width: auto;
+}
+#editProductsearch .editProductsearch-search  .weui_cell.weui_cell_primary{
+  padding: 0
+}
+#editProductsearch .editProductsearch-search .weui_input{
+
+  font-size: 4.5vw;
+      font-family: "微软雅黑";
+
+          line-height: 2.5em;
+          height: auto;
+          width: 100%;
+          padding-left: 2%
+
+}
+#editProductsearch .editProductsearch-search button {
+  position: absolute;
+  top: 11%;
+  right: -6%;
+  background: url(/static/TestIMG/search.png);
+  background-repeat: no-repeat;
+  border: 0;
+  background-size: 57%;
+  color: #fff;
+  width: 16%;
+  min-height: 30px;
+  z-index: 1000;
+}
+#editProductsearch .editProductsearch-list .editProductsearch-list-li>div{
+background: #fff;
+border-top: 1px solid #d3d1d1;
+border-bottom: 1px solid #d3d1d1;
+margin-bottom: 1%;
+}
+#editProductsearch .editProductsearch-list .weui_cell_hd{
+    width: 21%;
+}
+#editProductsearch .editProductsearch-list .editProductsearch-list-li>div img {
+    min-height: 62px;
+    width: 100%;
+    border: 1px solid #d3d1d1;
+}
+#editProductsearch .editProductsearch-list .weui_cell {
+    padding: 4px 7px;
+}
+#editProductsearch .editProductsearch-list p {
+    width: 91%;
+    margin: auto;
+    font-size: 4.5vw;
+}
+</style>

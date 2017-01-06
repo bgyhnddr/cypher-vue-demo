@@ -218,6 +218,19 @@ export default {
 
     background-color: #35495e!important;
 }
+#productsetting .productsetting-list img {
+    min-height: 62px;
+        width: 100%;
+        border: 1px solid #d3d1d1
+  }
+  #productsetting  .productsetting-list .weui_cell_hd{
+     width: 21%;
+  }
+    #productsetting  .productsetting-list  p{
+      width: 91%;
+margin: auto;
+font-size: 4.5vw;
+    }
 #productsetting .productsetting-li{
     margin-top: 2%;
 }
