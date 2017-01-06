@@ -11,12 +11,13 @@
           <x-input title='规格' placeholder="如颜色、款式" :value.sync="inputDate.variant" :show-clear=false :required="false"></x-input>
         </div>
       </div>
-      <div v-if="!showModel.showAddImageModel">
+      <div v-if="!showModel.showAddImageModel" class="specifications-title">
         <label>规格</label>
         <label>{{inputDate.variant}}</label>
       </div>
       <div class="add-image">
         <div v-if="showModel.showAddImageModel">
+          <div class="add-image">
           <div class="upload-style">
             <img v-for="image in inputDate.variantImages" :src="getSpecificationImgHref(image)" track-by="$index" width="50px" height="50px" alt="款式图片" />
             <div class="ApplyFor-agent-header">
@@ -35,20 +36,25 @@
         <div class="clean"></div>
       </div>
       <div v-if="!showModel.showAddImageModel">
-        <flexbox>
+        <div class="specifications-addimage">
+            <checker :value.sync="inputDate.chooseImages" type="checkbox" default-item-class="checker-item"  selected-item-class="checker-item-selected" >
+              <checker-item v-for="image in inputDate.variantImages" track-by="$index" :value="image">
+                <img :src="getSpecificationImgHref(image)" width="50px" height="50px" alt="款式图片" />
+              </checker-item>
+            </checker>
+            <div class="clean"></div>
+          </div>
+      <div class="add-image-editor ">
           <flexbox-item>
-            <x-button type="primary" @click="removeImage">删除</x-button>
+            <x-button type="primary" @click="removeImage" class="specifications-delete">删除</x-button>
           </flexbox-item>
           <flexbox-item>
-            <x-button type="primary" @click="cancalAddImage">取消</x-button>
+            <x-button type="primary" @click="cancalAddImage" class="specifications-cancel ">取消</x-button>
           </flexbox-item>
-        </flexbox>
-        <checker :value.sync="inputDate.chooseImages" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
-          <checker-item v-for="image in inputDate.variantImages" track-by="$index" :value="image">
-            <img :src="getSpecificationImgHref(image)" width="50px" height="50px" alt="款式图片" />
-          </checker-item>
-        </checker>
-      </div>
+            <div class="clean"></div>
+    </div>
+
+    </div>
       <div class="clean"></div>
       <div class="EditProductSpecification-size">
         <p>尺寸
@@ -65,7 +71,7 @@
         </flexbox>
         <flexbox :gutter="0" wrap="wrap" v-if="!showModel.showAddImageModel">
           <flexbox-item :span="1/3" v-for="specificationItem in specificationOptions">
-            <div v-bind:class="addChoosedClass(specificationItem.name)">
+            <div v-bind:class="addChoosedClass(specificationItem.name) " class="Codenumber">
               {{specificationItem.name}}
             </div>
           </flexbox-item>
@@ -264,7 +270,7 @@ export default {
         this.inputDate.chooseSpecificationItems.map((o) =>{
           if(specificationName == o){
             //TODO: 添加尺寸Div class
-            className = "lili"
+            className = "Codenumber-choose"
           }
         })
       }
@@ -487,6 +493,7 @@ export default {
     this.showModel.showEditSpecificationModel = true
   }
 }
+
 </script>
 
 <style lang="less">
@@ -510,6 +517,7 @@ export default {
 }
 #EditProductSpecification .EditProductSpecification {
     background: #fff;
+    border-bottom: 1px solid #d3d1d1;
 }
 #EditProductSpecification .specifications {
     border-bottom: 1px solid #d3d1d1;
@@ -522,6 +530,8 @@ export default {
 #EditProductSpecification .specifications .weui_input {
     font-size: 4.5vw;
     font-family: "微软雅黑",Arial!important;
+    height: auto;
+line-height: 1.8em;
 }
 #EditProductSpecification .add-image {
     min-height: 86px;
@@ -562,9 +572,14 @@ export default {
     flex: inherit!important;
 
 }
-#EditProductSpecification .add-image .vux-flexbox-item {
-    margin-top: 3%;
+#EditProductSpecification .add-image .EditProductSpecification-size .vux-flexbox-item {
+    margin-top: 0!important;
+    text-align: center;
 
+}
+
+#EditProductSpecification .add-image .add-image-editor  .vux-flexbox-item{
+  margin-top: 3%
 }
 #EditProductSpecification .add-image .vux-flexbox-item button.weui_btn.weui_btn_primary {
     width: 82%;
@@ -583,15 +598,14 @@ export default {
 #EditProductSpecification .weui_btn:after {
     border: 0;
 }
-#EditProductSpecification .checker-item-selected {
-    background: #ffffff url("/static/TestIMG/checker-active.png") no-repeat right bottom;
-    border-color: #20c36c;
+.EditProductSpecification-size {
+    margin-bottom: 1%;
 }
 #EditProductSpecification .EditProductSpecification-size .vux-flexbox.vux-flex-row {
     width: 98%;
     margin: 0 0 0 2%;
 }
-#EditProductSpecification .checker-item {
+#EditProductSpecification .EditProductSpecification-size .checker-item {
     width: 95%;
     height: 26px;
     line-height: 26px;
@@ -601,8 +615,9 @@ export default {
     background-color: #fff;
     margin-right: 0;
     margin-bottom: 4%;
+    color: #393a3f
 }
-#EditProductSpecification p {
+#EditProductSpecification .EditProductSpecification-size p {
     border-top: 1px solid #d3d1d1;
     font-size: 4.5vw;
     font-family: "微软雅黑";
@@ -610,7 +625,7 @@ export default {
     line-height: 2.5em;
 
 }
-#EditProductSpecification p span {
+#EditProductSpecification  .EditProductSpecification-size p span {
     font-size: 3.9vw;
     font-family: "微软雅黑";
 }
@@ -638,5 +653,69 @@ export default {
 #EditProductSpecification .EditProductSpecification-shelves .weui_btn:after {
     border: 0;
     border-radius: 0;
+}
+/*添加商品规格*/
+#EditProductSpecification .specifications-title{
+    border-bottom: 1px solid #d3d1d1;
+        padding: 10px 15px;
+}
+#EditProductSpecification .specifications-title label{
+  font-size: 4.5vw;
+    font-family: "微软雅黑",Arial;
+    color:  #cecdcd;
+}
+#EditProductSpecification .specifications-addimage {
+  width: 69%;
+float: left;
+}
+#EditProductSpecification .specifications-addimage .checker-item{
+  float: left;
+  width: 28%;
+  height: auto;
+  margin: 3% 1% 2% 3%;
+  min-height: 62px;
+  min-width: 62px;
+  border-radius:0;
+
+}
+#EditProductSpecification .add-image .specifications-addimage img{
+width: 100%;
+margin: 0;
+    padding: 0;
+
+}
+#EditProductSpecification .add-image .specifications-addimage .checker-item-selected {
+    background: #ffffff url("/static/TestIMG/choose-active.png") no-repeat right bottom;
+    border-color: #ea4c4c;
+
+}
+
+#EditProductSpecification .EditProductSpecification-size .checker-item-selected {
+    background: #ffffff url("/static/TestIMG/checker-active.png") no-repeat right bottom;
+    border-color: #20c36c;
+    color: #20c36c
+}
+#EditProductSpecification .Codenumber{
+  width: 95%;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  border-radius: 1px;
+  border: 1px solid #cecdcd;
+  background-color: #fff;
+  margin-right: 0;
+  margin-bottom: 4%;
+  color: #cecdcd;
+}
+#EditProductSpecification  .Codenumber-choose{
+  background: #ffffff url(/static/TestIMG/choose_active_no.png) no-repeat right bottom;
+  border-color: #cecdcd;
+  color: #cecdcd
+}
+#EditProductSpecification  button.weui_btn.specifications-delete.weui_btn_primary{
+background: #ea4c4c!important
+}
+#EditProductSpecification button.weui_btn.specifications-cancel.weui_btn_primary {
+  background: #9b9b9b!important
 }
 </style>

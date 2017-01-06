@@ -2,30 +2,38 @@
 <div class="vux-demo-header-box wapmain-header" slot="header">
   <x-header :left-options="leftOptions">货品关联</x-header>
   <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
+
+  <div @click="openSearchPage"  class="linkProductToQRCode-Search">
+    <img alt="搜索按钮"  src="/static/TestIMG/productSetting_search.png"/>
+  </div>
 </div>
-<div @click="openSearchPage">
-  <img alt="搜索按钮" />
-</div>
+
 <div v-show="showModel.showProductContainer">
+  <div id="linkProductToQRCode">
   <div v-if="showModel.showNoProduct">
     <p>暂时没有任何货品哦~</p>
   </div>
-  <div v-else>
+  <div v-else >
     <group v-for="productItem in productsData.getProducts.list">
-      <cell :title="productItem.pmp_variant.pmp_product.name">
-        <div>
-          <label>{{$index + 1}} .</label>
+      <div class="linkProductToQRCode-list">
+
+          <div class="linkProductToQRCode-number">{{$index + 1}} .</div>
+
+      <div class="linkProductToQRCode-img">  <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variant.pmp_variant_images[0].attachment_id)" alt="产品图片" /></div>
+
+<div class="linkProductToQRCode-main">
+      <cell :title="productItem.pmp_variant.pmp_product.name"></cell>
+
+          <label>{{productItem.pmp_variant.name}}<span>{{productItem.name}}</span></label>
         </div>
-        <div>
-          <label>{{productItem.pmp_variant.name}}</label>
-          <label>{{productItem.name}}</label>
-        </div>
-        <x-button @click="goToProductRelatePage(productItem.id)">扫码</x-button>
-        <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variant.pmp_variant_images[0].attachment_id)" alt="产品图片" />
-      </cell>
+      <div class="linkProductToQRCode-button">  <x-button @click="goToProductRelatePage(productItem.id)">扫码</x-button></div>
+<div class="clean"></div>
+    </div>
+
     </group>
     <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct">加载更多</x-button>
   </div>
+</div>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 <div>
@@ -157,5 +165,91 @@ export default {
 <style lang="less">
 .xs-plugin-pullup-container {
     text-align: center;
+}
+.linkProductToQRCode-Search{
+  position: absolute;
+  top: 10px;
+  right: -8px;
+}
+.linkProductToQRCode-Search img {
+    width: 53%;
+}
+
+#linkProductToQRCode .weui_cells.vux-no-group-title{
+
+  background-color: #fff;
+  border-top: 1px solid #d3d1d1;
+  border-bottom: 1px solid #d3d1d1;
+  margin-bottom: 1%;
+}
+#linkProductToQRCode .weui_cell_hd{
+  width: auto;
+}
+#linkProductToQRCode .linkProductToQRCode-list{
+  padding: 2% 0
+}
+#linkProductToQRCode .linkProductToQRCode-list>div{
+  float: left;
+
+
+}
+#linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-number{
+width: 10%;
+text-align: center;
+padding:8% 0;
+font-size: 4.5vw
+}
+#linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-img {
+      width: 21%;
+
+}
+#linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-img img{
+  min-height: 62px;
+width: 100%;
+border: 1px solid #d3d1d1;
+}
+
+#linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-main{
+  padding: 0% 2%;
+  font-size: 4.5vw;
+  width: 40%;
+  font-family: "微软雅黑";
+
+
+}
+#linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-main p{
+  min-height: 31px;
+  color: #393a3f;
+  font-size: 4.1vw
+}
+#linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-main label{
+  font-size: 4.5vw;
+  color: #878787;
+
+}
+#linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-main label span{
+  margin-left: 10px
+}
+#linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-main .weui_cell{
+   padding: 0
+}
+#linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-button{
+  float: right;
+  float: right;
+padding: 5% 0;
+border-left: 1px solid #d3d1d1;
+}
+#linkProductToQRCode
+ .linkProductToQRCode-list
+ .linkProductToQRCode-button
+button.weui_btn.weui_btn_default {
+    background: #fff;
+    border: 0;
+    font-size: 4.7vw;
+    color: #21c36d;
+    font-family: "微软雅黑";
+}
+#linkProductToQRCode .weui_btn:after{
+  border: 0
 }
 </style>
