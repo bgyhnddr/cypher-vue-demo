@@ -6,7 +6,7 @@
 <div id="editProductsearch">
   <div class="editProductsearch-search">
 <group>
-  <x-input class="weui_cell_primary" title='' placeholder="输入搜索商品名称" :value.sync="keyword" :show-clear=false :required="false"></x-input>
+  <x-input class="weui_cell_primary" title='' placeholder="搜索商品名称" :value.sync="keyword" :show-clear=false :required="false"></x-input>
   <button @click="search"></button>
 </group>
 </div>
