@@ -5,98 +5,96 @@
 </div>
 <div id="EditProductSpecification">
   <div class="EditProductSpecification">
-<div v-if="showModel.showEditSpecificationModel">
-  <div class="specifications">
-  <div v-if="showModel.showAddImageModel">
-    <x-input title='规格' placeholder="如颜色、款式" :value.sync="inputDate.variant" :show-clear=false :required="false"></x-input>
-  </div>
-</div>
-  <div v-if="!showModel.showAddImageModel">
-    <label>规格</label>
-    <label>{{inputDate.variant}}</label>
-  </div>
-<div class="add-image">
-  <div v-if="showModel.showAddImageModel">
-    <div class="upload-style">
-    <img v-for="image in inputDate.variantImages" :src="getSpecificationImgHref(image)" track-by="$index" width="50px" height="50px" alt="款式图片" />
-    <div class="ApplyFor-agent-header">
-      <employment-headimg-upload :file-id.sync="inputDate.addImageFileId"></employment-headimg-upload>
-    </div>
-  </div>
-    <div class="add-image-editor ">
-
-      <flexbox-item>
-        <x-button type="primary" @click="addImage">添加</x-button>
-      </flexbox-item>
-      <flexbox-item>
-        <x-button type="primary" @click="editImage">编辑</x-button>
-      </flexbox-item>
-
-  </div>
-  </div>
-  <div class="clean"></div>
-</div>
-  <div v-if="!showModel.showAddImageModel">
-    <flexbox>
-      <flexbox-item>
-        <x-button type="primary" @click="removeImage">删除</x-button>
-      </flexbox-item>
-      <flexbox-item>
-        <x-button type="primary" @click="cancalAddImage">取消</x-button>
-      </flexbox-item>
-    </flexbox>
-
-    <checker :value.sync="inputDate.chooseImages" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
-      <checker-item v-for="image in inputDate.variantImages" track-by="$index" :value="image">
-        <img :src="getSpecificationImgHref(image)" width="50px" height="50px" alt="款式图片" />
-      </checker-item>
-    </checker>
-
-  </div>
-    <div class="clean"></div>
-  <div class="EditProductSpecification-size">
-    <p>尺寸<span>（可多选）</span></p>
-    <flexbox :gutter="0" wrap="wrap" v-if="showModel.showAddImageModel">
-      <flexbox-item :span="1/3" v-for="specificationItem in specificationOptions">
-        <checker :value.sync="inputDate.chooseSpecificationItems" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
-          <div class="flex-demo">
-            <checker-item :value="specificationItem.name">{{specificationItem.name}}</checker-item>
-          </div>
-        </checker>
-      </flexbox-item>
-    </flexbox>
-    <flexbox :gutter="0" wrap="wrap" v-if="!showModel.showAddImageModel">
-      <flexbox-item :span="1/3" v-for="specificationItem in specificationOptions">
-        <div>
-          {{specificationItem.name}}
+    <div v-if="showModel.showEditSpecificationModel">
+      <div class="specifications">
+        <div v-if="showModel.showAddImageModel">
+          <x-input title='规格' placeholder="如颜色、款式" :value.sync="inputDate.variant" :show-clear=false :required="false"></x-input>
         </div>
-      </flexbox-item>
-    </flexbox>
-  </div>
-</div>
-  <div v-if="showModel.showAddButtonModel">
-    <div v-if="showModel.showAddImageModel">
-      <x-button @click="confirm('add')">确定添加</x-button>
+      </div>
+      <div v-if="!showModel.showAddImageModel">
+        <label>规格</label>
+        <label>{{inputDate.variant}}</label>
+      </div>
+      <div class="add-image">
+        <div v-if="showModel.showAddImageModel">
+          <div class="upload-style">
+            <img v-for="image in inputDate.variantImages" :src="getSpecificationImgHref(image)" track-by="$index" width="50px" height="50px" alt="款式图片" />
+            <div class="ApplyFor-agent-header">
+              <employment-headimg-upload :file-id.sync="inputDate.addImageFileId"></employment-headimg-upload>
+            </div>
+          </div>
+          <div class="add-image-editor ">
+            <flexbox-item>
+              <x-button type="primary" @click="addImage">添加</x-button>
+            </flexbox-item>
+            <flexbox-item>
+              <x-button type="primary" @click="editImage">编辑</x-button>
+            </flexbox-item>
+          </div>
+        </div>
+        <div class="clean"></div>
+      </div>
+      <div v-if="!showModel.showAddImageModel">
+        <flexbox>
+          <flexbox-item>
+            <x-button type="primary" @click="removeImage">删除</x-button>
+          </flexbox-item>
+          <flexbox-item>
+            <x-button type="primary" @click="cancalAddImage">取消</x-button>
+          </flexbox-item>
+        </flexbox>
+        <checker :value.sync="inputDate.chooseImages" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
+          <checker-item v-for="image in inputDate.variantImages" track-by="$index" :value="image">
+            <img :src="getSpecificationImgHref(image)" width="50px" height="50px" alt="款式图片" />
+          </checker-item>
+        </checker>
+      </div>
+      <div class="clean"></div>
+      <div class="EditProductSpecification-size">
+        <p>尺寸
+          <span>（可多选）</span>
+        </p>
+        <flexbox :gutter="0" wrap="wrap" v-if="showModel.showAddImageModel">
+          <flexbox-item :span="1/3" v-for="specificationItem in specificationOptions">
+            <checker :value.sync="inputDate.chooseSpecificationItems" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
+              <div class="flex-demo">
+                <checker-item :value="specificationItem.name">{{specificationItem.name}}</checker-item>
+              </div>
+            </checker>
+          </flexbox-item>
+        </flexbox>
+        <flexbox :gutter="0" wrap="wrap" v-if="!showModel.showAddImageModel">
+          <flexbox-item :span="1/3" v-for="specificationItem in specificationOptions">
+            <div v-bind:class="addChoosedClass(specificationItem.name)">
+              {{specificationItem.name}}
+            </div>
+          </flexbox-item>
+        </flexbox>
+      </div>
+    </div>
+    <div v-if="showModel.showAddButtonModel">
+      <div v-if="showModel.showAddImageModel">
+        <x-button @click="confirm('add')">确定添加</x-button>
+      </div>
+    </div>
+    <div v-else class="EditProductSpecification-shelves">
+      <flexbox v-if="showModel.showAddImageModel">
+        <flexbox-item>
+          <x-button type="warn" @click="showCheckConfirm('onSell')">{{onSellText}}</x-button>
+        </flexbox-item>
+        <flexbox-item>
+          <x-button type="primary" @click="showCheckConfirm('edit')">修改</x-button>
+        </flexbox-item>
+      </flexbox>
     </div>
   </div>
-  <div v-else class="EditProductSpecification-shelves">
-    <flexbox v-if="showModel.showAddImageModel">
-      <flexbox-item>
-        <x-button type="warn" @click="showCheckConfirm('onSell')">{{onSellText}}</x-button>
-      </flexbox-item>
-      <flexbox-item>
-        <x-button type="primary" @click="showCheckConfirm('edit')">修改</x-button>
-      </flexbox-item>
-    </flexbox>
+  <div>
+    <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
+    <alert :show.sync="alert.showErrorNoHandled" button-text="好的">{{alert.errorMsgNoHandled}}</alert>
+    <confirm :show.sync="alert.showCheckConfirm" title="" confirm-text="取消" cancel-text="确认" @on-cancel="closeComfirm">
+      <p style="text-align:center;">{{alert.confirmModelText}}</p>
+    </confirm>
   </div>
-</div>
-<div>
-  <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
-  <alert :show.sync="alert.showErrorNoHandled" button-text="好的">{{alert.errorMsgNoHandled}}</alert>
-  <confirm :show.sync="alert.showCheckConfirm" title="" confirm-text="取消" cancel-text="确认" @on-cancel="closeComfirm">
-    <p style="text-align:center;">{{alert.confirmModelText}}</p>
-  </confirm>
-</div>
 </div>
 </template>
 
@@ -259,6 +257,19 @@ export default {
         this.inputDate.variantImages.push(addImageFileId)
       }
     },
+    addChoosedClass(specificationName){
+      var className = null
+
+      if(this.inputDate.chooseSpecificationItems.length > 0){
+        this.inputDate.chooseSpecificationItems.map((o) =>{
+          if(specificationName == o){
+            //TODO: 添加尺寸Div class
+            className = "lili"
+          }
+        })
+      }
+      return className
+    },
     editImage() {
       this.inputDate.chooseImages = []
       if (this.inputDate.variantImages.length == 0) {
@@ -266,6 +277,7 @@ export default {
         this.alert.errorMsgNoHandled = "暂无可编辑商品图片"
       } else {
         this.showModel.showAddImageModel = false
+        this.inputDate.addImageFileId = null
       }
     },
     removeImage() {
@@ -492,26 +504,27 @@ export default {
     background: #ffffff url("/static/TestIMG/checker-active.png") no-repeat right bottom;
     border-color: #ff4a00;
 }
-#EditProductSpecification .upload-style{
-   width: 69%;
-   float: left;
+#EditProductSpecification .upload-style {
+    width: 69%;
+    float: left;
 }
 #EditProductSpecification .EditProductSpecification {
-  background: #fff
+    background: #fff;
 }
-#EditProductSpecification .specifications{
-   border-bottom: 1px solid #d3d1d1}
-#EditProductSpecification .specifications .weui_label{
-color: #000;
-font-size: 4.5vw;
- font-family: "微软雅黑",Arial!important;
+#EditProductSpecification .specifications {
+    border-bottom: 1px solid #d3d1d1;
 }
-#EditProductSpecification .specifications .weui_input{
-  font-size: 4.5vw;
-   font-family: "微软雅黑",Arial!important;
+#EditProductSpecification .specifications .weui_label {
+    color: #000;
+    font-size: 4.5vw;
+    font-family: "微软雅黑",Arial!important;
 }
-#EditProductSpecification .add-image{
-min-height: 86px
+#EditProductSpecification .specifications .weui_input {
+    font-size: 4.5vw;
+    font-family: "微软雅黑",Arial!important;
+}
+#EditProductSpecification .add-image {
+    min-height: 86px;
 }
 #EditProductSpecification button.weui_btn.weui_btn_default {
     position: fixed;
@@ -524,106 +537,106 @@ min-height: 86px
     border: 0;
 }
 #EditProductSpecification .add-image img {
-  float: left;
-  width: 29%;
-  height: auto;
-  margin: 3% 1% 2% 3%;
-  min-height: 62px;
-  min-width: 62px;
+    float: left;
+    width: 29%;
+    height: auto;
+    margin: 3% 1% 2% 3%;
+    min-height: 62px;
+    min-width: 62px;
 }
-#EditProductSpecification .add-image .ApplyFor-agent-header{
-  text-align: center;
-width:30%;
-float: left;
-height: auto;
-  margin: 1%;
+#EditProductSpecification .add-image .ApplyFor-agent-header {
+    text-align: center;
+    width: 30%;
+    float: left;
+    height: auto;
+    margin: 1%;
 }
-#EditProductSpecification .ApplyFor-agent-header img{
-  width: 100%;
+#EditProductSpecification .ApplyFor-agent-header img {
+    width: 100%;
 
 }
 
-#EditProductSpecification .add-image .add-image-editor .vux-flexbox .vux-flexbox-item{
-  /* -webkit-box-flex: 1; */
--ms-flex: inherit!important;
-flex: inherit!important;
+#EditProductSpecification .add-image .add-image-editor .vux-flexbox .vux-flexbox-item {
+    /* -webkit-box-flex: 1; */
+    -ms-flex: inherit!important;
+    flex: inherit!important;
 
 }
-#EditProductSpecification .add-image  .vux-flexbox-item{
+#EditProductSpecification .add-image .vux-flexbox-item {
     margin-top: 3%;
 
 }
-#EditProductSpecification .add-image  .vux-flexbox-item button.weui_btn.weui_btn_primary{
-  width: 82%;
-  line-height: 2.2em;
-  font-size: 4.5vw;
-  background: #5091d5
+#EditProductSpecification .add-image .vux-flexbox-item button.weui_btn.weui_btn_primary {
+    width: 82%;
+    line-height: 2.2em;
+    font-size: 4.5vw;
+    background: #5091d5;
 }
-#EditProductSpecification .add-image  .vux-flexbox-item:first-child  button.weui_btn.weui_btn_primary{
-  background: #20c36c
+#EditProductSpecification .add-image .vux-flexbox-item:first-child button.weui_btn.weui_btn_primary {
+    background: #20c36c;
 }
 #EditProductSpecification .add-image .add-image-editor {
     width: 31%;
     float: right;
-      margin-top: 1%;
-    }
-  #EditProductSpecification  .weui_btn:after{
-    border: 0
-  }
-    #EditProductSpecification .checker-item-selected{
-      background: #ffffff url("/static/TestIMG/checker-active.png") no-repeat right bottom;
-border-color: #20c36c;
-    }
-    #EditProductSpecification  .EditProductSpecification-size .vux-flexbox.vux-flex-row{
-      width: 98%;
-      margin: 0 0 0 2%;
-    }
-    #EditProductSpecification  .checker-item{
-      width: 95%;
-  height: 26px;
-  line-height: 26px;
-  text-align: center;
-  border-radius: 1px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-    margin-right: 0;
-  margin-bottom: 4%;
+    margin-top: 1%;
 }
-#EditProductSpecification p{
-      border-top: 1px solid #d3d1d1;
-      font-size: 4.5vw;
-          font-family: "微软雅黑";
-          padding-left: 2%;
-          line-height: 2.5em;
+#EditProductSpecification .weui_btn:after {
+    border: 0;
+}
+#EditProductSpecification .checker-item-selected {
+    background: #ffffff url("/static/TestIMG/checker-active.png") no-repeat right bottom;
+    border-color: #20c36c;
+}
+#EditProductSpecification .EditProductSpecification-size .vux-flexbox.vux-flex-row {
+    width: 98%;
+    margin: 0 0 0 2%;
+}
+#EditProductSpecification .checker-item {
+    width: 95%;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    border-radius: 1px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    margin-right: 0;
+    margin-bottom: 4%;
+}
+#EditProductSpecification p {
+    border-top: 1px solid #d3d1d1;
+    font-size: 4.5vw;
+    font-family: "微软雅黑";
+    padding-left: 2%;
+    line-height: 2.5em;
 
 }
-#EditProductSpecification p span{
+#EditProductSpecification p span {
     font-size: 3.9vw;
-        font-family: "微软雅黑";
+    font-family: "微软雅黑";
 }
-#EditProductSpecification  .EditProductSpecification-shelves{
-  position: fixed;
-  bottom: 0;
-  width: 100%
+#EditProductSpecification .EditProductSpecification-shelves {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
-#EditProductSpecification .EditProductSpecification-shelves .vux-flexbox.vux-flex-row .weui_btn{
-  margin: 0;
-  padding: 0;
-  border-radius: 0;
-  line-height: 2.2em;
-  font-size: 5.2vw;
-  font-family: "微软雅黑";
-  background: #393a3f
+#EditProductSpecification .EditProductSpecification-shelves .vux-flexbox.vux-flex-row .weui_btn {
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    line-height: 2.2em;
+    font-size: 5.2vw;
+    font-family: "微软雅黑";
+    background: #393a3f;
 }
-#EditProductSpecification .EditProductSpecification-shelves .vux-flexbox.vux-flex-row  button.weui_btn.weui_btn_primary{
-  width: 100%;
-  background:#fd5e5e
+#EditProductSpecification .EditProductSpecification-shelves .vux-flexbox.vux-flex-row button.weui_btn.weui_btn_primary {
+    width: 100%;
+    background: #fd5e5e;
 }
-#EditProductSpecification .EditProductSpecification-shelves .vux-flexbox.vux-flex-row .vux-flexbox-item{
-  margin: 0!important
+#EditProductSpecification .EditProductSpecification-shelves .vux-flexbox.vux-flex-row .vux-flexbox-item {
+    margin: 0 !important;
 }
-#EditProductSpecification .EditProductSpecification-shelves .weui_btn:after{
-  border: 0;
-  border-radius: 0
+#EditProductSpecification .EditProductSpecification-shelves .weui_btn:after {
+    border: 0;
+    border-radius: 0;
 }
 </style>

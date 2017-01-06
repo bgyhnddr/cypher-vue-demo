@@ -147,9 +147,17 @@ export default {
 
       return labels
     },
-    getHistoryLabels() {
+    getHistoryLabels(hasLabelItems) {
       var that = this
       pmpProductAPI.getLabels().then(function(result) {
+        hasLabelItems.map((o) => {
+          result.map((historyLabel) => {
+            if (historyLabel.name == o) {
+              result.$remove(historyLabel)
+            }
+          })
+        })
+
         that.historyLabels = result
       }).catch(function(err) {
         that.alert.showErrorNoHandled = true
@@ -192,6 +200,7 @@ export default {
       }
     },
     edit() {
+      this.inputData.inputLabel = null
       if (this.inputData.inputLabelItems.length == 0) {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "暂无可编辑品类标签，请添加标签"
@@ -263,7 +272,7 @@ export default {
   },
   ready() {
     this.inputData.inputLabelItems = this.getLabels()
-    this.getHistoryLabels()
+    this.getHistoryLabels(this.inputData.inputLabelItems)
   }
 }
 </script>
