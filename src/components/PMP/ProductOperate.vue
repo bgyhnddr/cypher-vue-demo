@@ -72,7 +72,7 @@ export default {
   data() {
     return {
       show: false,
-      ImgList: []
+      ImgList: [{img:'/static/TestIMG/defaultImg.png'}]
     }
   },
   methods: {
@@ -104,6 +104,7 @@ export default {
     'ProductInfo.pmp_variants': function(val, oldvalue) {
       var that = this
       if (that.ProductInfo) {
+        that.ImgList = []
         that.ImgList = that.ProductInfo.pmp_variants.map((e) => {
           if (e.pmp_variant_images && e.pmp_variant_images.length > 0) {
             return {
