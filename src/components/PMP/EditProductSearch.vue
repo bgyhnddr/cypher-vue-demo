@@ -15,7 +15,7 @@
   <div class="editProductsearch-list-li">
   <group v-for="productItem in productsData.getProducts.list">
     <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
-      <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" width="50px" height="50px" alt="产品图片" />
+      <img slot="icon" width="50" :src="getProductImgHref(productItem)" width="50px" height="50px" alt="产品图片" />
     </cell>
   </group>
 </div>
@@ -145,8 +145,16 @@ export default {
     goToEditProduct(productId) {
       this.$route.router.go("/productManagement/editProduct/" + productId)
     },
-    getProductImgHref(fileId) {
-      return '/service/public/upload/getAttachment?id=' + fileId
+    getProductImgHref(productItem) {
+      var fileUrl = null
+
+      if (productItem.pmp_variants.length > 0 && productItem.pmp_variants[0].pmp_variant_images.length > 0) {
+        fileUrl = '/service/public/upload/getAttachment?id=' + productItem.pmp_variants[0].pmp_variant_images[0].attachment_id
+      } else {
+        fileUrl = '/static/TestIMG/defaultImg.png'
+      }
+
+      return fileUrl
     },
     errorHandled() {
       this.$route.router.go("/productManagement/productSetting")
