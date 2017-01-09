@@ -122,7 +122,7 @@ export default {
     },
     loadProduct() {
       var that = this
-      pmpProductAPI.getProducts({
+      pmpProductAPI.getSpecifications({
         page: this.productsData.page
       }).then(function(result) {
         result.list.map((o) => {
