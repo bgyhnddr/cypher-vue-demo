@@ -123,7 +123,8 @@ export default {
     loadProduct() {
       var that = this
       pmpProductAPI.getProducts({
-        page: this.productsData.page
+        page: this.productsData.page,
+        filterKey: this.keyword.trim()
       }).then(function(result) {
         result.list.map((o) => {
           that.productsData.getProducts.list.push(o)
