@@ -50,7 +50,7 @@ export default {
 			if (this.fileId > 0) {
 				return "/service/public/upload/getAttachment?id=" + this.fileId
 			} else {
-				return "/static/TestIMG/upload.png"
+				return "/static/TestIMG/upload-style.png"
 			}
 		},
 		isWechat() {
