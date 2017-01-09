@@ -324,6 +324,9 @@ var exec = {
           }
         }, pmp_variant_image]
       },
+      where: {
+        on_sell: true
+      },
       order: orderstring
     }).then((list) => {
       if (filterKey) {
