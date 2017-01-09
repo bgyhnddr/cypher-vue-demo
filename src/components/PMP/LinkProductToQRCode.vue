@@ -10,8 +10,9 @@
 
 <div v-show="showModel.showProductContainer">
   <div id="linkProductToQRCode">
-  <div v-if="showModel.showNoProduct">
+  <div v-if="showModel.showNoProduct" class="linkProductToQRCode-none">
     <p>暂时没有任何货品哦~</p>
+
   </div>
   <div v-else >
     <group v-for="productItem in productsData.getProducts.list">
@@ -31,7 +32,7 @@
     </div>
 
     </group>
-    <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct">加载更多</x-button>
+    <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct" class="more">点击可加载更多内容</x-button>
   </div>
 </div>
 </div>
@@ -282,5 +283,12 @@ button.weui_btn.weui_btn_default {
 }
 #linkProductToQRCode .weui_btn:after{
   border: 0
+}
+#linkProductToQRCode .linkProductToQRCode-none{
+  text-align: center;
+  color: #a1a1a1;
+  font-size: 5.3vw;
+  margin-top: 52%;
+      font-family: "微软雅黑";
 }
 </style>

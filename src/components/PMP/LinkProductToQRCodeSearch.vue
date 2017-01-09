@@ -31,12 +31,13 @@
   </group>
   <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct">加载更多</x-button>
 </div>
-<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+
 <div>
   <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{catchErrorMsg}}</alert>
   <alert :show.sync="alert.showErrorNoHandled" button-text="确认">{{alert.errorMsgNoHandled}}</alert>
 </div>
 </div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
 <script>
@@ -167,7 +168,7 @@ export default {
 </script>
 <style>
 #linkProductToQRCodeSearch{
-    min-height: 478px;
+    min-height: 473px;
 }
  #linkProductToQRCodeSearch .weui_cell{
   padding: 0
