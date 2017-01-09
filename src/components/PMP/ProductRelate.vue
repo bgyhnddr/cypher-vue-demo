@@ -1,41 +1,45 @@
 <template>
-<div>
+<div id="productRelate">
   <div>
     <div class="vux-demo-header-box wapmain-header" slot="header">
       <x-header :left-options="{showBack: false}"></x-header>
       <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
     </div>
-    <div>
-      <div>{{ProductInfo.name}}</div>
+    <div class="productRelate-title">
+      <p>{{ProductInfo.name}}</p>
       <div>
-        <span>{{ProductInfo.variant}}</span>
+      {{ProductInfo.variant}}
         <span>{{ProductInfo.specification}}</span>
       </div>
     </div>
+    <div class="productRelate-Carton">
     <group>
       <cell v-for="item in BoxList">
-        <div @click="ToggleShowBoxes($index)">
-          <span>箱号：{{item.code}}</span>
+        <div @click="ToggleShowBoxes($index)" class="productRelate-Carton-title">
+    箱号：      <span>{{item.code}}</span>
         </div>
-        <div v-if="item.show">
-          <div v-if="item.box.length>0">盒号：</div>
-          <div v-for="box in item.box">
+        <ul v-if="item.show">
+          <li v-if="item.box.length>0">盒号：</li>
+          <li v-for="box in item.box">
             <div slot="icon">{{box}}</div>
-          </div>
-        </div>
+          </li>
+        </ul>
       </cell>
     </group>
+  </div>
+  <div class="productRelate-button">
     <flexbox>
       <flexbox-item>
-        <x-button type="default" @click="SubmitResult">完成</x-button>
+        <x-button type="default" @click="SubmitResult" class="productRelate-complete ">完成</x-button>
       </flexbox-item>
       <flexbox-item>
         <x-button type="default" @click="ScanQRCode">扫码</x-button>
       </flexbox-item>
     </flexbox>
+  </div>
     <alert :show.sync="showAlert" button-Text="好的">{{alertMsg}}</alert>
-    <confirm :show.sync="showConfirm" title="" confirm-text="是" cancel-text="否" @on-confirm="SubmitRelate(ScanResult)" @on-cancel = "onClickBack">
-      <p style="text-align:center;">是否将箱{{ScanResult}}关联到{{ProductInfo.name}}{{ProductInfo.variant}}{{ProductInfo.specification}}里？</p>
+    <confirm :show.sync="showConfirm" title="" cancel-text="否"  confirm-text="是" @on-confirm="SubmitRelate(ScanResult)" @on-cancel = "onClickBack">
+      <p style="text-align:center;">是否将箱<font color="#f90303" >{{ScanResult}}</font>关联到{{ProductInfo.name}}{{ProductInfo.variant}}{{ProductInfo.specification}}里？</p>
     </confirm>
   </div>
 </div>
@@ -128,8 +132,8 @@ export default {
     ScanQRCode() {
       //测试箱号
       var that = this
-      // that.ScanResult = "B-55C-88-4716-0004"
-      // that.showConfirm = true
+      that.ScanResult = "B-55C-88-4716-0004"
+       that.showConfirm = true
       window.wx.scanQRCode({
         needResult: 1,
         scanType: ["qrCode", "barCode"],
@@ -159,3 +163,161 @@ export default {
   }
 }
 </script>
+<style>
+#productRelate .weui_dialog{
+      width: 92%;
+}
+#productRelate .weui_dialog_confirm .weui_dialog .weui_dialog_hd{
+    padding: 1.2em 0 .5em;
+}
+#productRelate .weui_dialog_bd{
+  color: #000000;
+font-size: 4.5vw;
+    font-family: "微软雅黑";
+margin-top: 5%;
+}
+#productRelate  .weui_dialog_ft {
+    width: 89%;
+    margin:7% auto;
+    line-height: 32px;
+    border-radius: 2px;
+}
+#productRelate .weui_btn_dialog.primary{
+  font-size: 4.5vw;
+color: #fff;
+background: #21c36d;
+    margin: 1%;
+}
+#productRelate a.weui_btn_dialog.default{
+  background: #9b9b9b;
+  color: #fff;
+      margin: 1%;
+      font-size: 4.5vw;
+}
+#productRelate .weui_dialog_ft:after{
+  border-top:0
+}
+#productRelate .productRelate-title{
+  padding: 2%;
+  font-family: "微软雅黑";
+}
+#productRelate .productRelate-title p{
+  color: #393a3f;
+  font-size: 4.1vw;
+  display: box;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+#productRelate .productRelate-title>div{
+  color: #878787;
+  font-size: 4.5vw;
+
+}
+#productRelate .productRelate-title>div span{
+  margin-left: 2%
+}
+#productRelate  .productRelate-Carton{
+  text-align: left;
+}
+#productRelate .weui_cell{
+padding: 0
+}
+#productRelate .weui_cell_hd{
+ width: auto;
+}
+#productRelate .weui_cell_primary{
+  -webkit-box-flex:initial;
+    -ms-flex: initial;
+    flex: initial;
+}
+#productRelate ul{
+  list-style: none;
+  background: #fff;
+  position: relative;
+  overflow-y: scroll;
+  max-height: 230px;
+  border-bottom: 1px solid #d3d1d1;
+
+}
+#productRelate ul li:nth-child(1){
+  position: absolute;
+  padding: 0;
+  top: 5%;
+  left: 2%;
+  color: #000;
+  border: 0
+}
+#productRelate ul li:last-child{
+  border-bottom:0
+}
+#productRelate ul li{
+  padding: 2% 17%;
+    color: #aeaeae;
+    font-size: 4.5vw;
+    border-bottom: 1px solid #d3d1d1;
+}
+#productRelate .weui_cell_ft{
+  text-align: left;
+color: #888;
+width: 100%;
+}
+#productRelate .productRelate-Carton{
+      margin-bottom: 2%;
+}
+ #productRelate .productRelate-Carton-title{
+   padding: 4% 2%;
+ background: #fff;
+ font-family: "微软雅黑";
+ font-size: 4.5vw;
+ border-top: 1px solid #d3d1d1;
+border-bottom: 1px solid #d3d1d1;
+color: #000;
+position: relative;
+}
+ #productRelate .productRelate-Carton-title span{
+   color: #aeaeae
+ }
+ #productRelate .productRelate-Carton-title:after {
+    border-width: 2px 2px 0 0;
+    border-color: #9a9fa4;
+    top: 35%;
+    right: 6%;
+    height: 8px;
+    width: 8px;
+        margin-left: .3em;
+        border-style: solid;
+position:absolute;
+content: " ";
+display: inline-block;
+-webkit-transform: rotate(45deg);
+transform: rotate(45deg);
+}
+ #productRelate .productRelate-button{
+  position: fixed;
+  bottom: 0;
+  width: 100%
+}
+ #productRelate .productRelate-button .vux-flexbox-item{
+      margin-left: 0!important;
+}
+ #productRelate button.weui_btn.weui_btn_default{
+   margin: 0;
+   padding: 0;
+   border-radius: 0;
+   line-height: 2.2em;
+   font-size: 5.2vw;
+   font-family: "微软雅黑";
+   background: #00cc66;
+color: #fff;
+}
+ #productRelate .weui_btn:after{
+  border: 0;
+  border-radius: 0
+}
+  #productRelate  button.weui_btn.productRelate-complete.weui_btn_default{
+background: #fd5e5e;
+}
+</style>
