@@ -12,7 +12,7 @@
     <div class="EditProductLabel-label ">
     <flexbox :gutter="0">
       <flexbox-item :span="1/2">
-        <x-input class="weui_cell_primary" title="" :value.sync="inputData.inputLabel" placeholder="请输入标签" :show-clear=false :required="false"></x-input>
+        <x-input class="weui_cell_primary" title="" :value.sync="inputData.inputLabel" placeholder="请输入品类" :show-clear=false :required="false"></x-input>
       </flexbox-item>
       <flexbox-item :span="1/4">
         <div>
@@ -44,13 +44,13 @@
     </flexbox>
   </div>
   <div v-if="showModel.showStaticCheckerModel"class="EditProductLabel-new ">
-    <p>新增标签</p>
+    <p>新增品类</p>
     <div v-for="productLabelItem in inputData.inputLabelItems">{{productLabelItem}}</div>
 
   </div>
     <div class="clean"></div>
   <div v-if="!showModel.showStaticCheckerModel" class="EditProductLabel-new-editor">
-      <p>新增标签</p>
+      <p>新增品类</p>
     <checker :value.sync="inputData.chooseLabelItems" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
       <checker-item v-for="productLabelItem in inputData.inputLabelItems" :value="productLabelItem">{{productLabelItem}}</checker-item>
     </checker>
@@ -161,7 +161,7 @@ export default {
         that.historyLabels = result
       }).catch(function(err) {
         that.alert.showErrorNoHandled = true
-        that.alert.errorMsgNoHandled = "读取我的所有品类标签异常"
+        that.alert.errorMsgNoHandled = "读取我的所有品类异常"
       })
     },
     add() {
@@ -170,14 +170,14 @@ export default {
 
       if (this.inputData.inputLabel == null || this.inputData.inputLabel.trim() == "") {
         this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "请输入品类标签名"
+        this.alert.errorMsgNoHandled = "请输入品类名"
       } else if (this.inputData.inputLabel.trim().length > 15) {
         this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "您所输入的品类标签超过15个字符"
+        this.alert.errorMsgNoHandled = "您所输入的品类超过15个字符"
       } else {
         if (this.checkLabelItemLength()) {
           that.alert.showErrorNoHandled = true
-          that.alert.errorMsgNoHandled = "标签最多可以设置5个"
+          that.alert.errorMsgNoHandled = "品类最多可以设置5个"
         } else {
           var inputLabel = this.inputData.inputLabel.trim()
 
@@ -186,7 +186,7 @@ export default {
               that.inputData.inputLabel = null
 
               that.alert.showErrorNoHandled = true
-              that.alert.errorMsgNoHandled = "已添加此品类标签"
+              that.alert.errorMsgNoHandled = "已添加此品类"
 
               addOperationFlag = true
             }
@@ -203,7 +203,7 @@ export default {
       this.inputData.inputLabel = null
       if (this.inputData.inputLabelItems.length == 0) {
         this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "暂无可编辑品类标签，请添加标签"
+        this.alert.errorMsgNoHandled = "暂无可编辑品类，请添加品类"
       } else {
         this.showModel.showStaticCheckerModel = false
         this.showModel.showInputModel = false
@@ -249,14 +249,14 @@ export default {
 
       if (this.checkLabelItemLength()) {
         this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "标签最多可以设置5个"
+        this.alert.errorMsgNoHandled = "品类最多可以设置5个"
       } else {
         this.inputData.inputLabelItems.map((item) => {
           if (item == chooseHistoryLabel.name) {
             that.historyLabels.$remove(historyLabelItem)
 
             that.alert.showErrorNoHandled = true
-            that.alert.errorMsgNoHandled = "已添加此品类标签"
+            that.alert.errorMsgNoHandled = "已添加此品类"
 
             addOperationFlag = true
           }
