@@ -22,7 +22,7 @@
         <group v-for="productItem in productsData.getProducts.list">
           <div class="productsetting-list">
             <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
-              <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" alt="产品图片" />
+              <img slot="icon" width="50" :src="getProductImgHref(productItem)" alt="产品图片" />
             </cell>
           </div>
         </group>
@@ -171,8 +171,16 @@ export default {
     openSearchComponent() {
       this.$route.router.go("/productManagement/editProductSearch")
     },
-    getProductImgHref(fileId) {
-      return '/service/public/upload/getAttachment?id=' + fileId
+    getProductImgHref(productItem) {
+      var fileUrl = null
+
+      if (productItem.pmp_variants.length > 0 && productItem.pmp_variants[0].pmp_variant_images.length > 0) { 
+        fileUrl = '/service/public/upload/getAttachment?id=' + productItem.pmp_variants[0].pmp_variant_images[0].attachment_id
+      } else {
+        fileUrl = '/static/TestIMG/defaultImg.png'
+      }
+
+      return fileUrl
     },
     errorHandled() {
       this.$route.router.go("/productManagement")
