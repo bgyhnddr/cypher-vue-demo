@@ -131,9 +131,9 @@ export default {
     },
     ScanQRCode() {
       //测试箱号
-      var that = this
-      that.ScanResult = "B-55C-88-4716-0004"
-       that.showConfirm = true
+     var that = this
+    //  that.ScanResult = "B-55C-88-4716-0004"
+       //that.showConfirm = true
       window.wx.scanQRCode({
         needResult: 1,
         scanType: ["qrCode", "barCode"],
