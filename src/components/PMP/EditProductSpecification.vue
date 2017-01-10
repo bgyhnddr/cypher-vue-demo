@@ -774,7 +774,7 @@ display: none
 }
 #EditProductSpecification .checker-item-selected .specifications-checker{
   display: block;
-  width: 20%!important;
+  width: 16%!important;
 height: auto;
 position: absolute;
 min-height: initial!important;
