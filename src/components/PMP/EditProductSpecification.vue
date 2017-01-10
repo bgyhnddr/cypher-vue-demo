@@ -19,7 +19,8 @@
         <div v-if="showModel.showAddImageModel">
           <div class="add-image">
           <div class="upload-style">
-          <div v-for="image in inputDate.variantImages" class="specifications-img">  <img  :src="getSpecificationImgHref(image)" track-by="$index" width="50px" height="50px" alt="款式图片" /></div>
+          <div v-for="image in inputDate.variantImages" class="specifications-img">
+              <img  :src="getSpecificationImgHref(image)" track-by="$index" width="50px" height="50px" alt="款式图片" /></div>
             <div class="ApplyFor-agent-header">
               <employment-headimg-upload :file-id.sync="inputDate.addImageFileId"></employment-headimg-upload>
             </div>
@@ -40,7 +41,8 @@
         <div class="specifications-addimage">
             <checker :value.sync="inputDate.chooseImages" type="checkbox" default-item-class="checker-item"  selected-item-class="checker-item-selected" >
               <checker-item v-for="image in inputDate.variantImages" track-by="$index" :value="image">
-               <img :src="getSpecificationImgHref(image)" width="50px" height="50px" alt="款式图片" />
+                <img :src="getSpecificationImgHref(image)" width="50px" height="50px" alt="款式图片" />
+              <img class="specifications-checker" src="/static/TestIMG/choose-active.png">
               </checker-item>
             </checker>
             <div class="clean"></div>
@@ -707,7 +709,7 @@ font-family: "微软雅黑", Arial !important;
   min-height: 77px;
 }
 #EditProductSpecification .add-image .specifications-addimage .checker-item-selected {
-    background: #ffffff url("/static/TestIMG/choose-active.png") no-repeat right bottom;
+
     border-color: #ea4c4c;
 
 }
@@ -767,5 +769,18 @@ background: #ea4c4c!important
 #EditProductSpecification  .specifications .weui_cell{
       padding: 2%;
 }
-
+#EditProductSpecification .specifications-checker{
+display: none
+}
+#EditProductSpecification .checker-item-selected .specifications-checker{
+  display: block;
+  width: 20%!important;
+height: auto;
+position: absolute;
+min-height: initial!important;
+bottom: 0;
+right: 0;
+top: initial!important;
+left: initial!important;
+}
 </style>
