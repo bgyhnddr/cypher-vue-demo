@@ -98,7 +98,8 @@ Promise.all([
             result.map((o) => {
               return {
                 pmp_variant_id: o.id,
-                name: "测试" + o.id
+                name: "测试" + o.id,
+                on_sell: true
               }
             }))
         ])
@@ -354,7 +355,8 @@ Promise.all([
         pmp_variants: [{
           id: result.pmp_variants[0].id,
           pmp_specifications: [{
-            name: "测试型号"
+            name: "测试型号",
+            on_sell: true
           }]
         }]
       }).then(() => {
