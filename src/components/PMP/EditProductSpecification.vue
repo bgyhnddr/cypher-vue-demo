@@ -269,7 +269,6 @@ export default {
       if(this.inputDate.chooseSpecificationItems.length > 0){
         this.inputDate.chooseSpecificationItems.map((o) =>{
           if(specificationName == o){
-            //TODO: 添加尺寸Div class
             className = "Codenumber-choose"
           }
         })
