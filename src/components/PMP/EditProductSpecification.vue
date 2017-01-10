@@ -564,7 +564,7 @@ line-height: 1.8em;
       width: 100%;
       position: absolute;
       vertical-align: middle;
-      min-height: 77px;
+      min-height: 66px;
 
 }
 #EditProductSpecification .ApplyFor-agent-header .ApplyFor-agent-header button{
@@ -576,7 +576,7 @@ position: relative;
 display: block;
 overflow: hidden;
 margin: 8% 0;
-min-height: 74px;
+min-height: 82px;
 border-radius: 0;
 }
 
