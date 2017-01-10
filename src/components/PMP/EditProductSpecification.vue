@@ -557,26 +557,17 @@ line-height: 1.8em;
     margin: 1%;
 }
 #EditProductSpecification .ApplyFor-agent-header img {
-  margin-top: 0;
-      left: 0;
-      top: 0;
+    margin-top: 9%;
+
       width: 100%;
-      position: absolute;
-      vertical-align: middle;
-      min-height: 66px;
+
 
 }
 #EditProductSpecification .ApplyFor-agent-header .ApplyFor-agent-header button{
   width: 100%;
 background: none;
 border: 0;
-padding-top: 0;
-position: relative;
-display: block;
-overflow: hidden;
-margin: 8% 0;
-min-height: 82px;
-border-radius: 0;
+
 }
 
 #EditProductSpecification .add-image .add-image-editor .vux-flexbox .vux-flexbox-item {
