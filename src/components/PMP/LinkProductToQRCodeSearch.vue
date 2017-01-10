@@ -29,7 +29,7 @@
 
   </div>
   </group>
-  <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct">加载更多</x-button>
+  <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct"  class="more">点击可加载更多内容</x-button>
 </div>
 
 <div>
