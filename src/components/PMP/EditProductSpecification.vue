@@ -711,6 +711,7 @@ font-family: "微软雅黑", Arial !important;
 #EditProductSpecification .add-image .specifications-addimage .checker-item-selected {
 
     border-color: #ea4c4c;
+    background:transparent
 
 }
 
