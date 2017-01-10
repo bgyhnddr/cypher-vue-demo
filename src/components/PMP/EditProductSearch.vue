@@ -165,7 +165,7 @@ export default {
 </script>
 <style>
 #editProductsearch{
-    min-height: 478px;
+    min-height: 473px;
 }
 #editProductsearch .editProductsearch-search{
   width: 95%;

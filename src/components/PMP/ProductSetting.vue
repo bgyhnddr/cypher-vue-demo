@@ -2,18 +2,19 @@
 <div class="vux-demo-header-box wapmain-header" slot="header">
   <x-header :left-options="leftOptions">货品管理</x-header>
   <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
-</div>
-<div id="productsetting">
-  <div @click="openSearchComponent">
-    <div class="search">
+  <div @click="openSearchComponent" class="productsetting-search">
+
       <img alt="搜索按钮" src="/static/TestIMG/productSetting_search.png" />
-    </div>
-  </div>
+
+</div></div>
+
+<div id="productsetting">
+
   <tab>
     <tab-item :selected="tabItems.default === item.key" v-for="item in tabItems.list" @click="chooseTabItem(item.value)">{{item.key}}</tab-item>
   </tab>
   <div v-show="showModel.showProductContainer">
-    <div v-if="showModel.showNoProduct">
+    <div v-if="showModel.showNoProduct" class="productsetting-none">
       <p>没有任何商品哦~</p>
       <p>赶快去添加吧</p>
     </div>
@@ -26,7 +27,7 @@
             </cell>
           </div>
         </group>
-        <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct">加载更多</x-button>
+        <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct" class="more">点击可加载更多内容</x-button>
       </div>
     </div>
     <div>
@@ -174,7 +175,7 @@ export default {
     getProductImgHref(productItem) {
       var fileUrl = null
 
-      if (productItem.pmp_variants.length > 0 && productItem.pmp_variants[0].pmp_variant_images.length > 0) { 
+      if (productItem.pmp_variants.length > 0 && productItem.pmp_variants[0].pmp_variant_images.length > 0) {
         fileUrl = '/service/public/upload/getAttachment?id=' + productItem.pmp_variants[0].pmp_variant_images[0].attachment_id
       } else {
         fileUrl = '/static/TestIMG/defaultImg.png'
@@ -193,15 +194,17 @@ export default {
 </script>
 
 <style lang="less">
+body{
+overflow-x: hidden;}
 .xs-plugin-pullup-container {
     text-align: center;
 }
-#productsetting .search {
+ .productsetting-search {
     position: absolute;
     top: 10px;
     right: -8px;
 }
-#productsetting .search img {
+.productsetting-search  img {
     width: 53%;
 
 }
@@ -231,12 +234,21 @@ export default {
     background-color: #35495e!important;
 }
 #productsetting .productsetting-list img {
-    min-height: 62px;
-    width: 100%;
-    border: 1px solid #d3d1d1;
+  left: 0;
+top: 0;
+width: 100%;
+position: absolute;
+vertical-align: middle;
+min-height: 77px;
 }
 #productsetting .productsetting-list .weui_cell_hd {
-    width: 21%;
+  float: left;
+width: 21%;
+padding-top: 21%;
+position: relative;
+display: block;
+overflow: hidden;
+border: 1px solid #d3d1d1;
 }
 #productsetting .productsetting-list p {
     width: 91%;
@@ -245,6 +257,7 @@ export default {
 }
 #productsetting .productsetting-li {
     margin-top: 2%;
+        margin-bottom: 15%;
 }
 #productsetting .productsetting-list {
     background-color: #fff;
@@ -271,5 +284,24 @@ export default {
     border: 0;
     line-height: 2.2;
 
+}
+
+button.weui_btn.more.weui_btn_default {
+    font-family: "微软雅黑";
+    font-size: 4.5vw;
+    background: none;
+      margin-bottom: 37px;
+       color: #979797
+}
+ .weui_btn:after{
+   border: 0;
+
+ }
+ .productsetting-none {
+    text-align: center;
+    color: #a1a1a1;
+    font-size: 5.3vw;
+    margin-top: 52%;
+    font-family: "微软雅黑";
 }
 </style>
