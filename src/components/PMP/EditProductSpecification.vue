@@ -53,7 +53,7 @@
             <x-button type="primary" @click="removeImage" class="specifications-delete">删除</x-button>
           </flexbox-item>
           <flexbox-item>
-            <x-button type="primary" @click="cancalAddImage" class="specifications-cancel ">取消</x-button>
+            <x-button type="primary" @click="cancelAddImage" class="specifications-cancel ">取消</x-button>
           </flexbox-item>
 
     </div>   <div class="clean"></div> </div>
@@ -75,7 +75,7 @@
         </flexbox>
         <flexbox :gutter="0" wrap="wrap" v-if="!showModel.showAddImageModel">
           <flexbox-item :span="1/3" v-for="specificationItem in specificationOptions">
-            <div v-bind:class="addChoosedClass(specificationItem.name) " class="Codenumber">
+            <div v-bind:class="addClassOnChooseSpecificationOptions(specificationItem.name) " class="Codenumber">
               {{specificationItem.name}}
             </div>
           </flexbox-item>
@@ -186,6 +186,15 @@ export default {
       this.showModel.showAddImageModel = true
       this.inputDate.chooseImages = []
     },
+    loadAllSpecificationOptions() {
+      var that = this
+      pmpProductAPI.getSpecificationOptions().then(function(result) {
+        that.specificationOptions = result[0].pmp_option_items
+      }).catch(function(err) {
+        that.alert.showCatchError = true
+        that.alert.catchErrorMsg = "读取商品尺寸异常"
+      })
+    },
     getProductSpecifications() {
       var specifications = []
       this.ProductInfo.pmp_variants.map((o) => {
@@ -217,24 +226,6 @@ export default {
       })
       return variantName
     },
-    isOnSell() {
-      var isOnSellFlag = null
-      this.ProductInfo.pmp_variants.map((o) => {
-        if (o.name == this.chooseSpecification) {
-          isOnSellFlag = o.on_sell
-        }
-      })
-      return isOnSellFlag
-    },
-    getSpecificationOptions() {
-      var that = this
-      pmpProductAPI.getSpecificationOptions().then(function(result) {
-        that.specificationOptions = result[0].pmp_option_items
-      }).catch(function(err) {
-        that.alert.showCatchError = true
-        that.alert.catchErrorMsg = "读取商品尺寸异常"
-      })
-    },
     getProductImages() {
       var images = []
       this.ProductInfo.pmp_variants.map((o) => {
@@ -249,6 +240,15 @@ export default {
         }
       })
       return images
+    },
+    isOnSell() {
+      var isOnSellFlag = null
+      this.ProductInfo.pmp_variants.map((o) => {
+        if (o.name == this.chooseSpecification) {
+          isOnSellFlag = o.on_sell
+        }
+      })
+      return isOnSellFlag
     },
     addImage() {
       if (this.inputDate.addImageFileId == null) {
@@ -267,7 +267,7 @@ export default {
         this.inputDate.variantImages.push(addImageFileId)
       }
     },
-    addChoosedClass(specificationName){
+    addClassOnChooseSpecificationOptions(specificationName){
       var className = null
 
       if(this.inputDate.chooseSpecificationItems.length > 0){
@@ -307,7 +307,7 @@ export default {
 
       this.showModel.showAddImageModel = true
     },
-    cancalAddImage() {
+    cancelAddImage() {
       this.inputDate.chooseImages = []
       this.showModel.showAddImageModel = true
     },
@@ -477,11 +477,11 @@ export default {
     if (this.getProductVariantIndex() == null) {
       this.showModel.showAddButtonModel = true
 
-      this.getSpecificationOptions()
+      this.loadAllSpecificationOptions()
     } else {
       this.showModel.showAddButtonModel = false
 
-      this.getSpecificationOptions()
+      this.loadAllSpecificationOptions()
       this.inputDate.editPmpVariantsIndex = this.getProductVariantIndex()
       this.inputDate.variant = this.getProductVariantName()
       this.inputDate.variantImages = this.getProductImages()
