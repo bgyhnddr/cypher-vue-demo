@@ -194,6 +194,9 @@ export default {
 </script>
 
 <style lang="less">
+.vux-header .vux-header-title, .vux-header h1{
+        font-size: 4.5vw;
+}
 body{
 overflow-x: hidden;}
 .xs-plugin-pullup-container {

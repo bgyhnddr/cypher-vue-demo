@@ -228,7 +228,7 @@ border: 1px solid #d3d1d1;
 }
 
 #linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-main{
-  padding: 0% 2%;
+  padding: 0% 3%;
   font-size: 4.5vw;
   width: 40%;
   font-family: "微软雅黑";
@@ -252,7 +252,8 @@ border: 1px solid #d3d1d1;
   color: #878787;
   position: absolute;
     bottom: 12%;
-    width: 45%
+    width: 45%;
+        font-family: "微软雅黑";
 
 }
 #linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-main .text-wrapper span{
