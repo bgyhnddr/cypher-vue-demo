@@ -6,6 +6,7 @@ setup:
   stage: setup
   script:
     - npm install
+    - npm run init
     
 test:
   stage: test

@@ -15,11 +15,11 @@
   <div class="editProductsearch-list-li">
   <group v-for="productItem in productsData.getProducts.list">
     <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
-      <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variants[0].pmp_variant_images[0].attachment_id)" width="50px" height="50px" alt="产品图片" />
+      <img slot="icon" width="50" :src="getProductImgHref(productItem)" width="50px" height="50px" alt="产品图片" />
     </cell>
   </group>
 </div>
-  <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct">加载更多</x-button>
+  <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct" class="more">点击可加载更多内容</x-button>
 </div>
 </div>
 </div>
@@ -123,7 +123,8 @@ export default {
     loadProduct() {
       var that = this
       pmpProductAPI.getProducts({
-        page: this.productsData.page
+        page: this.productsData.page,
+        filterKey: this.keyword.trim()
       }).then(function(result) {
         result.list.map((o) => {
           that.productsData.getProducts.list.push(o)
@@ -145,8 +146,16 @@ export default {
     goToEditProduct(productId) {
       this.$route.router.go("/productManagement/editProduct/" + productId)
     },
-    getProductImgHref(fileId) {
-      return '/service/public/upload/getAttachment?id=' + fileId
+    getProductImgHref(productItem) {
+      var fileUrl = null
+
+      if (productItem.pmp_variants.length > 0 && productItem.pmp_variants[0].pmp_variant_images.length > 0) {
+        fileUrl = '/service/public/upload/getAttachment?id=' + productItem.pmp_variants[0].pmp_variant_images[0].attachment_id
+      } else {
+        fileUrl = '/static/TestIMG/defaultImg.png'
+      }
+
+      return fileUrl
     },
     errorHandled() {
       this.$route.router.go("/productManagement/productSetting")
@@ -156,7 +165,7 @@ export default {
 </script>
 <style>
 #editProductsearch{
-    min-height: 478px;
+    min-height: 473px;
 }
 #editProductsearch .editProductsearch-search{
   width: 95%;

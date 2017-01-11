@@ -12,14 +12,15 @@
         </div>
       </div>
       <div v-if="!showModel.showAddImageModel" class="specifications-title">
-        <label>规格</label>
+        <span>规格</span>
         <label>{{inputDate.variant}}</label>
       </div>
       <div class="add-image">
         <div v-if="showModel.showAddImageModel">
           <div class="add-image">
           <div class="upload-style">
-            <img v-for="image in inputDate.variantImages" :src="getSpecificationImgHref(image)" track-by="$index" width="50px" height="50px" alt="款式图片" />
+          <div v-for="image in inputDate.variantImages" class="specifications-img">
+              <img  :src="getSpecificationImgHref(image)" track-by="$index" width="50px" height="50px" alt="款式图片" /></div>
             <div class="ApplyFor-agent-header">
               <employment-headimg-upload :file-id.sync="inputDate.addImageFileId"></employment-headimg-upload>
             </div>
@@ -36,23 +37,26 @@
         <div class="clean"></div>
       </div>
       <div v-if="!showModel.showAddImageModel">
+        <div class="specifications-addimage-m">
         <div class="specifications-addimage">
             <checker :value.sync="inputDate.chooseImages" type="checkbox" default-item-class="checker-item"  selected-item-class="checker-item-selected" >
               <checker-item v-for="image in inputDate.variantImages" track-by="$index" :value="image">
                 <img :src="getSpecificationImgHref(image)" width="50px" height="50px" alt="款式图片" />
+              <img class="specifications-checker" src="/static/TestIMG/choose-active.png">
               </checker-item>
             </checker>
             <div class="clean"></div>
           </div>
+
       <div class="add-image-editor ">
           <flexbox-item>
             <x-button type="primary" @click="removeImage" class="specifications-delete">删除</x-button>
           </flexbox-item>
           <flexbox-item>
-            <x-button type="primary" @click="cancalAddImage" class="specifications-cancel ">取消</x-button>
+            <x-button type="primary" @click="cancelAddImage" class="specifications-cancel ">取消</x-button>
           </flexbox-item>
-            <div class="clean"></div>
-    </div>
+
+    </div>   <div class="clean"></div> </div>
 
     </div>
       <div class="clean"></div>
@@ -71,7 +75,7 @@
         </flexbox>
         <flexbox :gutter="0" wrap="wrap" v-if="!showModel.showAddImageModel">
           <flexbox-item :span="1/3" v-for="specificationItem in specificationOptions">
-            <div v-bind:class="addChoosedClass(specificationItem.name) " class="Codenumber">
+            <div v-bind:class="addClassOnChooseSpecificationOptions(specificationItem.name) " class="Codenumber">
               {{specificationItem.name}}
             </div>
           </flexbox-item>
@@ -182,6 +186,15 @@ export default {
       this.showModel.showAddImageModel = true
       this.inputDate.chooseImages = []
     },
+    loadAllSpecificationOptions() {
+      var that = this
+      pmpProductAPI.getSpecificationOptions().then(function(result) {
+        that.specificationOptions = result[0].pmp_option_items
+      }).catch(function(err) {
+        that.alert.showCatchError = true
+        that.alert.catchErrorMsg = "读取商品尺寸异常"
+      })
+    },
     getProductSpecifications() {
       var specifications = []
       this.ProductInfo.pmp_variants.map((o) => {
@@ -213,24 +226,6 @@ export default {
       })
       return variantName
     },
-    isOnSell() {
-      var isOnSellFlag = null
-      this.ProductInfo.pmp_variants.map((o) => {
-        if (o.name == this.chooseSpecification) {
-          isOnSellFlag = o.on_sell
-        }
-      })
-      return isOnSellFlag
-    },
-    getSpecificationOptions() {
-      var that = this
-      pmpProductAPI.getSpecificationOptions().then(function(result) {
-        that.specificationOptions = result[0].pmp_option_items
-      }).catch(function(err) {
-        that.alert.showCatchError = true
-        that.alert.catchErrorMsg = "读取商品尺寸异常"
-      })
-    },
     getProductImages() {
       var images = []
       this.ProductInfo.pmp_variants.map((o) => {
@@ -245,6 +240,15 @@ export default {
         }
       })
       return images
+    },
+    isOnSell() {
+      var isOnSellFlag = null
+      this.ProductInfo.pmp_variants.map((o) => {
+        if (o.name == this.chooseSpecification) {
+          isOnSellFlag = o.on_sell
+        }
+      })
+      return isOnSellFlag
     },
     addImage() {
       if (this.inputDate.addImageFileId == null) {
@@ -263,13 +267,12 @@ export default {
         this.inputDate.variantImages.push(addImageFileId)
       }
     },
-    addChoosedClass(specificationName){
+    addClassOnChooseSpecificationOptions(specificationName){
       var className = null
 
       if(this.inputDate.chooseSpecificationItems.length > 0){
         this.inputDate.chooseSpecificationItems.map((o) =>{
           if(specificationName == o){
-            //TODO: 添加尺寸Div class
             className = "Codenumber-choose"
           }
         })
@@ -304,7 +307,7 @@ export default {
 
       this.showModel.showAddImageModel = true
     },
-    cancalAddImage() {
+    cancelAddImage() {
       this.inputDate.chooseImages = []
       this.showModel.showAddImageModel = true
     },
@@ -474,11 +477,11 @@ export default {
     if (this.getProductVariantIndex() == null) {
       this.showModel.showAddButtonModel = true
 
-      this.getSpecificationOptions()
+      this.loadAllSpecificationOptions()
     } else {
       this.showModel.showAddButtonModel = false
 
-      this.getSpecificationOptions()
+      this.loadAllSpecificationOptions()
       this.inputDate.editPmpVariantsIndex = this.getProductVariantIndex()
       this.inputDate.variant = this.getProductVariantName()
       this.inputDate.variantImages = this.getProductImages()
@@ -512,8 +515,9 @@ export default {
     border-color: #ff4a00;
 }
 #EditProductSpecification .upload-style {
-    width: 69%;
-    float: left;
+  width: 67%;
+  float: left;
+  margin-left: 2%;
 }
 #EditProductSpecification .EditProductSpecification {
     background: #fff;
@@ -546,14 +550,7 @@ line-height: 1.8em;
     border-radius: 0;
     border: 0;
 }
-#EditProductSpecification .add-image img {
-    float: left;
-    width: 29%;
-    height: auto;
-    margin: 3% 1% 2% 3%;
-    min-height: 62px;
-    min-width: 62px;
-}
+
 #EditProductSpecification .add-image .ApplyFor-agent-header {
     text-align: center;
     width: 30%;
@@ -562,7 +559,16 @@ line-height: 1.8em;
     margin: 1%;
 }
 #EditProductSpecification .ApplyFor-agent-header img {
-    width: 100%;
+    margin-top: 9%;
+
+      width: 100%;
+
+
+}
+#EditProductSpecification .ApplyFor-agent-header .ApplyFor-agent-header button{
+  width: 100%;
+background: none;
+border: 0;
 
 }
 
@@ -586,6 +592,7 @@ line-height: 1.8em;
     line-height: 2.2em;
     font-size: 4.5vw;
     background: #5091d5;
+        margin-bottom: 4%;
 }
 #EditProductSpecification .add-image .vux-flexbox-item:first-child button.weui_btn.weui_btn_primary {
     background: #20c36c;
@@ -657,36 +664,54 @@ line-height: 1.8em;
 /*添加商品规格*/
 #EditProductSpecification .specifications-title{
     border-bottom: 1px solid #d3d1d1;
-        padding: 10px 15px;
+    padding: 8px 7px;
 }
 #EditProductSpecification .specifications-title label{
   font-size: 4.5vw;
     font-family: "微软雅黑",Arial;
     color:  #cecdcd;
 }
+#EditProductSpecification .specifications-title span{
+  color: #000;
+  font-size: 4.5vw;
+font-family: "微软雅黑", Arial !important;
+    margin-right: 5%;
+}
+
 #EditProductSpecification .specifications-addimage {
-  width: 69%;
-float: left;
+  width: 67%;
+  float: left;
+  margin-left: 2%;
+
+}
+#EditProductSpecification .specifications-addimage-m{
+    min-height: 78px;
 }
 #EditProductSpecification .specifications-addimage .checker-item{
   float: left;
-  width: 28%;
-  height: auto;
-  margin: 3% 1% 2% 3%;
-  min-height: 62px;
-  min-width: 62px;
-  border-radius:0;
+    width: 29%;
+      padding-top: 17%;
+      position: relative;
+      display: block;
+      overflow: hidden;
+      border: 1px solid #d3d1d1;
+      margin:4% 1%;
+          border-radius: 0;
 
 }
-#EditProductSpecification .add-image .specifications-addimage img{
-width: 100%;
-margin: 0;
-    padding: 0;
 
+#EditProductSpecification .specifications-addimage .checker-item img{
+  left: 0;
+  top: 0;
+  width: 100%;
+  position: absolute;
+  vertical-align: middle;
+  min-height: 77px;
 }
 #EditProductSpecification .add-image .specifications-addimage .checker-item-selected {
-    background: #ffffff url("/static/TestIMG/choose-active.png") no-repeat right bottom;
+
     border-color: #ea4c4c;
+    background:transparent
 
 }
 
@@ -716,6 +741,47 @@ margin: 0;
 background: #ea4c4c!important
 }
 #EditProductSpecification button.weui_btn.specifications-cancel.weui_btn_primary {
-  background: #9b9b9b!important
+  background: #9b9b9b!important;
+    line-height: 2em!important
+}
+#EditProductSpecification button.weui_btn.specifications-cancel.weui_btn_primary  .weui_btn:after{
+  border-radius: 0;
+
+}
+/*图片限制*/
+#EditProductSpecification .specifications-img{
+  float: left;
+      width: 29%;
+      padding-top: 28%;
+      position: relative;
+      display: block;
+      overflow: hidden;
+      border: 1px solid #d3d1d1;
+        margin: 4% 1%;
+}
+#EditProductSpecification .specifications-img img{
+  left: 0;
+  top: 0;
+  width: 100%;
+  position: absolute;
+  vertical-align: middle;
+  min-height: 77px;
+}
+#EditProductSpecification  .specifications .weui_cell{
+      padding: 2%;
+}
+#EditProductSpecification .specifications-checker{
+display: none
+}
+#EditProductSpecification .checker-item-selected .specifications-checker{
+  display: block;
+  width: 16%!important;
+height: auto;
+position: absolute;
+min-height: initial!important;
+bottom: 0;
+right: 0;
+top: initial!important;
+left: initial!important;
 }
 </style>

@@ -10,8 +10,9 @@
 
 <div v-show="showModel.showProductContainer">
   <div id="linkProductToQRCode">
-  <div v-if="showModel.showNoProduct">
+  <div v-if="showModel.showNoProduct" class="linkProductToQRCode-none">
     <p>暂时没有任何货品哦~</p>
+
   </div>
   <div v-else >
     <group v-for="productItem in productsData.getProducts.list">
@@ -19,19 +20,19 @@
 
           <div class="linkProductToQRCode-number">{{$index + 1}} .</div>
 
-      <div class="linkProductToQRCode-img">  <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variant.pmp_variant_images[0].attachment_id)" alt="产品图片" /></div>
+      <div class="linkProductToQRCode-img" >  <img slot="icon" width="50" :src="getProductImgHref(productItem.pmp_variant.pmp_variant_images[0].attachment_id)" alt="产品图片"  /></div>
 
 <div class="linkProductToQRCode-main">
       <cell :title="productItem.pmp_variant.pmp_product.name"></cell>
 
-          <label>{{productItem.pmp_variant.name}}<span>{{productItem.name}}</span></label>
+          <div class="text-wrapper">{{productItem.pmp_variant.name}}<span>{{productItem.name}}</span></div>
         </div>
       <div class="linkProductToQRCode-button">  <x-button @click="goToProductRelatePage(productItem.id)">扫码</x-button></div>
-<div class="clean"></div>
+<p class="clean"></p>
     </div>
 
     </group>
-    <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct">加载更多</x-button>
+    <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct" class="more">点击可加载更多内容</x-button>
   </div>
 </div>
 </div>
@@ -160,6 +161,7 @@ export default {
     this.getProducts()
   }
 }
+
 </script>
 
 <style lang="less">
@@ -174,19 +176,23 @@ export default {
 .linkProductToQRCode-Search img {
     width: 53%;
 }
-
+#linkProductToQRCode{
+    min-height: 478px;
+}
 #linkProductToQRCode .weui_cells.vux-no-group-title{
 
   background-color: #fff;
   border-top: 1px solid #d3d1d1;
   border-bottom: 1px solid #d3d1d1;
   margin-bottom: 1%;
+
 }
 #linkProductToQRCode .weui_cell_hd{
   width: auto;
 }
 #linkProductToQRCode .linkProductToQRCode-list{
-  padding: 2% 0
+  padding: 2% 0;
+    position: relative;
 }
 #linkProductToQRCode .linkProductToQRCode-list>div{
   float: left;
@@ -194,19 +200,31 @@ export default {
 
 }
 #linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-number{
-width: 10%;
-text-align: center;
-padding:8% 0;
-font-size: 4.5vw
+  width: 10%;
+  text-align: center;
+  padding: 8% 0;
+  font-size: 4.5vw;
+  border-right: 1px solid #d3d1d1;
+margin-right: 2%;
+
 }
 #linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-img {
-      width: 21%;
+  float: left;
+width: 21%;
+padding-top: 21%;
+position: relative;
+display: block;
+overflow: hidden;
+border: 1px solid #d3d1d1;
 
 }
 #linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-img img{
-  min-height: 62px;
-width: 100%;
-border: 1px solid #d3d1d1;
+  left: 0;
+      top: 0;
+      width: 100%;
+      position: absolute;
+      vertical-align: middle;
+      min-height: 77px;
 }
 
 #linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-main{
@@ -216,22 +234,36 @@ border: 1px solid #d3d1d1;
   font-family: "微软雅黑";
 
 
+
 }
 #linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-main p{
   min-height: 31px;
   color: #393a3f;
-  font-size: 4.1vw
+  font-size: 4.1vw;
+  display: box;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
-#linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-main label{
+#linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-main .text-wrapper{
   font-size: 4.5vw;
   color: #878787;
+  position: absolute;
+    bottom: 12%;
+    width: 45%
 
 }
-#linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-main label span{
+#linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-main .text-wrapper span{
   margin-left: 10px
 }
 #linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-main .weui_cell{
-   padding: 0
+
+      position: absolute;
+      top: 8%;
+      padding: 0;
+      width: 45%
 }
 #linkProductToQRCode .linkProductToQRCode-list .linkProductToQRCode-button{
   float: right;
@@ -251,5 +283,12 @@ button.weui_btn.weui_btn_default {
 }
 #linkProductToQRCode .weui_btn:after{
   border: 0
+}
+#linkProductToQRCode .linkProductToQRCode-none{
+  text-align: center;
+  color: #a1a1a1;
+  font-size: 5.3vw;
+  margin-top: 52%;
+      font-family: "微软雅黑";
 }
 </style>
