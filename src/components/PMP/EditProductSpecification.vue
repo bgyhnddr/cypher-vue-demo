@@ -18,94 +18,97 @@
       <div class="add-image">
         <div v-if="showModel.showAddImageModel">
           <div class="add-image">
-          <div class="upload-style">
-          <div v-for="image in inputDate.variantImages" class="specifications-img">
-              <img  :src="getSpecificationImgHref(image)" track-by="$index" width="50px" height="50px" alt="款式图片" /></div>
-            <div class="ApplyFor-agent-header">
-              <employment-headimg-upload :file-id.sync="inputDate.addImageFileId"></employment-headimg-upload>
+            <div class="upload-style">
+              <div v-for="image in inputDate.variantImages" class="specifications-img">
+                <img :src="getSpecificationImgHref(image)" track-by="$index" width="50px" height="50px" alt="款式图片" />
+              </div>
+              <div class="ApplyFor-agent-header">
+                <employment-headimg-upload :file-id.sync="inputDate.addImageFileId"></employment-headimg-upload>
+              </div>
+            </div>
+            <div class="add-image-editor ">
+              <flexbox-item>
+                <x-button type="primary" @click="addImage">添加</x-button>
+              </flexbox-item>
+              <flexbox-item>
+                <x-button type="primary" @click="editImage">编辑</x-button>
+              </flexbox-item>
             </div>
           </div>
-          <div class="add-image-editor ">
-            <flexbox-item>
-              <x-button type="primary" @click="addImage">添加</x-button>
-            </flexbox-item>
-            <flexbox-item>
-              <x-button type="primary" @click="editImage">编辑</x-button>
-            </flexbox-item>
-          </div>
+          <div class="clean"></div>
         </div>
-        <div class="clean"></div>
-      </div>
-      <div v-if="!showModel.showAddImageModel">
-        <div class="specifications-addimage-m">
-        <div class="specifications-addimage">
-            <checker :value.sync="inputDate.chooseImages" type="checkbox" default-item-class="checker-item"  selected-item-class="checker-item-selected" >
-              <checker-item v-for="image in inputDate.variantImages" track-by="$index" :value="image">
-                <img :src="getSpecificationImgHref(image)" width="50px" height="50px" alt="款式图片" />
-              <img class="specifications-checker" src="/static/TestIMG/choose-active.png">
-              </checker-item>
-            </checker>
+        <div v-if="!showModel.showAddImageModel">
+          <div class="specifications-addimage-m">
+            <div class="specifications-addimage">
+              <checker :value.sync="inputDate.chooseImages" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
+                <checker-item v-for="image in inputDate.variantImages" track-by="$index" :value="image">
+                  <img :src="getSpecificationImgHref(image)" width="50px" height="50px" alt="款式图片" />
+                  <img class="specifications-checker" src="/static/TestIMG/choose-active.png">
+                </checker-item>
+              </checker>
+              <div class="clean"></div>
+            </div>
+
+            <div class="add-image-editor ">
+              <flexbox-item>
+                <x-button type="primary" @click="removeImage" class="specifications-delete">删除</x-button>
+              </flexbox-item>
+              <flexbox-item>
+                <x-button type="primary" @click="cancelAddImage" class="specifications-cancel ">取消</x-button>
+              </flexbox-item>
+
+            </div>
             <div class="clean"></div>
           </div>
 
-      <div class="add-image-editor ">
-          <flexbox-item>
-            <x-button type="primary" @click="removeImage" class="specifications-delete">删除</x-button>
-          </flexbox-item>
-          <flexbox-item>
-            <x-button type="primary" @click="cancelAddImage" class="specifications-cancel ">取消</x-button>
-          </flexbox-item>
-
-    </div>   <div class="clean"></div> </div>
-
-    </div>
-      <div class="clean"></div>
-      <div class="EditProductSpecification-size">
-        <p>尺寸
-          <span>（可多选）</span>
-        </p>
-        <flexbox :gutter="0" wrap="wrap" v-if="showModel.showAddImageModel">
-          <flexbox-item :span="1/3" v-for="specificationItem in specificationOptions">
-            <checker :value.sync="inputDate.chooseSpecificationItems" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
-              <div class="flex-demo">
-                <checker-item :value="specificationItem.name">{{specificationItem.name}}</checker-item>
+        </div>
+        <div class="clean"></div>
+        <div class="EditProductSpecification-size">
+          <p>尺寸
+            <span>（可多选）</span>
+          </p>
+          <flexbox :gutter="0" wrap="wrap" v-if="showModel.showAddImageModel">
+            <flexbox-item :span="1/3" v-for="specificationItem in specificationOptions">
+              <checker :value.sync="inputDate.chooseSpecificationItems" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
+                <div class="flex-demo">
+                  <checker-item :value="specificationItem.name">{{specificationItem.name}}</checker-item>
+                </div>
+              </checker>
+            </flexbox-item>
+          </flexbox>
+          <flexbox :gutter="0" wrap="wrap" v-if="!showModel.showAddImageModel">
+            <flexbox-item :span="1/3" v-for="specificationItem in specificationOptions">
+              <div v-bind:class="addClassOnChooseSpecificationOptions(specificationItem.name) " class="Codenumber">
+                {{specificationItem.name}}
               </div>
-            </checker>
+            </flexbox-item>
+          </flexbox>
+        </div>
+      </div>
+      <div v-if="showModel.showAddButtonModel">
+        <div v-if="showModel.showAddImageModel">
+          <x-button @click="confirm('add')">确定添加</x-button>
+        </div>
+      </div>
+      <div v-else class="EditProductSpecification-shelves">
+        <flexbox v-if="showModel.showAddImageModel">
+          <flexbox-item>
+            <x-button type="warn" @click="showCheckConfirm('onSell')">{{onSellText}}</x-button>
           </flexbox-item>
-        </flexbox>
-        <flexbox :gutter="0" wrap="wrap" v-if="!showModel.showAddImageModel">
-          <flexbox-item :span="1/3" v-for="specificationItem in specificationOptions">
-            <div v-bind:class="addClassOnChooseSpecificationOptions(specificationItem.name) " class="Codenumber">
-              {{specificationItem.name}}
-            </div>
+          <flexbox-item>
+            <x-button type="primary" @click="showCheckConfirm('edit')">修改</x-button>
           </flexbox-item>
         </flexbox>
       </div>
     </div>
-    <div v-if="showModel.showAddButtonModel">
-      <div v-if="showModel.showAddImageModel">
-        <x-button @click="confirm('add')">确定添加</x-button>
-      </div>
-    </div>
-    <div v-else class="EditProductSpecification-shelves">
-      <flexbox v-if="showModel.showAddImageModel">
-        <flexbox-item>
-          <x-button type="warn" @click="showCheckConfirm('onSell')">{{onSellText}}</x-button>
-        </flexbox-item>
-        <flexbox-item>
-          <x-button type="primary" @click="showCheckConfirm('edit')">修改</x-button>
-        </flexbox-item>
-      </flexbox>
+    <div>
+      <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
+      <alert :show.sync="alert.showErrorNoHandled" button-text="好的">{{alert.errorMsgNoHandled}}</alert>
+      <confirm :show.sync="alert.showCheckConfirm" title="" confirm-text="取消" cancel-text="确认" @on-cancel="closeComfirm">
+        <p style="text-align:center;">{{alert.confirmModelText}}</p>
+      </confirm>
     </div>
   </div>
-  <div>
-    <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
-    <alert :show.sync="alert.showErrorNoHandled" button-text="好的">{{alert.errorMsgNoHandled}}</alert>
-    <confirm :show.sync="alert.showCheckConfirm" title="" confirm-text="取消" cancel-text="确认" @on-cancel="closeComfirm">
-      <p style="text-align:center;">{{alert.confirmModelText}}</p>
-    </confirm>
-  </div>
-</div>
 </template>
 
 <script>
@@ -267,12 +270,12 @@ export default {
         this.inputDate.variantImages.push(addImageFileId)
       }
     },
-    addClassOnChooseSpecificationOptions(specificationName){
+    addClassOnChooseSpecificationOptions(specificationName) {
       var className = null
 
-      if(this.inputDate.chooseSpecificationItems.length > 0){
-        this.inputDate.chooseSpecificationItems.map((o) =>{
-          if(specificationName == o){
+      if (this.inputDate.chooseSpecificationItems.length > 0) {
+        this.inputDate.chooseSpecificationItems.map((o) => {
+          if (specificationName == o) {
             className = "Codenumber-choose"
           }
         })
@@ -311,6 +314,25 @@ export default {
       this.inputDate.chooseImages = []
       this.showModel.showAddImageModel = true
     },
+    isVariantNameExist() {
+      var existFlag = false
+
+      if (this.chooseSpecification == null) {
+        this.ProductInfo.pmp_variants.map((o) => {
+          if (this.inputDate.variant.trim() == o.name) {
+            existFlag = true
+          }
+        })
+      } else {
+        this.ProductInfo.pmp_variants.map((o) => {
+          if (this.inputDate.variant.trim() == o.name && this.inputDate.variant.trim() != this.chooseSpecification) {
+            existFlag = true
+          }
+        })
+      }
+
+      return existFlag
+    },
     confirmBeforeCheck() {
       var confirmFlag = false
       if (this.inputDate.variant == null || this.inputDate.variant.trim() == "") {
@@ -322,6 +344,9 @@ export default {
       } else if (this.inputDate.chooseSpecificationItems.length == 0) {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "请选择商品尺寸"
+      } else if (this.isVariantNameExist()) {
+        this.alert.showErrorNoHandled = true
+        this.alert.errorMsgNoHandled = "已拥有相同的规格名"
       } else {
         confirmFlag = true
       }
@@ -496,7 +521,6 @@ export default {
     this.showModel.showEditSpecificationModel = true
   }
 }
-
 </script>
 
 <style lang="less">
@@ -515,9 +539,9 @@ export default {
     border-color: #ff4a00;
 }
 #EditProductSpecification .upload-style {
-  width: 67%;
-  float: left;
-  margin-left: 2%;
+    width: 67%;
+    float: left;
+    margin-left: 2%;
 }
 #EditProductSpecification .EditProductSpecification {
     background: #fff;
@@ -535,7 +559,7 @@ export default {
     font-size: 4.5vw;
     font-family: "微软雅黑",Arial!important;
     height: auto;
-line-height: 1.8em;
+    line-height: 1.8em;
 }
 #EditProductSpecification .add-image {
     min-height: 86px;
@@ -561,14 +585,13 @@ line-height: 1.8em;
 #EditProductSpecification .ApplyFor-agent-header img {
     margin-top: 9%;
 
-      width: 100%;
-
+    width: 100%;
 
 }
-#EditProductSpecification .ApplyFor-agent-header .ApplyFor-agent-header button{
-  width: 100%;
-background: none;
-border: 0;
+#EditProductSpecification .ApplyFor-agent-header .ApplyFor-agent-header button {
+    width: 100%;
+    background: none;
+    border: 0;
 
 }
 
@@ -579,20 +602,20 @@ border: 0;
 
 }
 #EditProductSpecification .add-image .EditProductSpecification-size .vux-flexbox-item {
-    margin-top: 0!important;
+    margin-top: 0 !important;
     text-align: center;
 
 }
 
-#EditProductSpecification .add-image .add-image-editor  .vux-flexbox-item{
-  margin-top: 3%
+#EditProductSpecification .add-image .add-image-editor .vux-flexbox-item {
+    margin-top: 3%;
 }
 #EditProductSpecification .add-image .vux-flexbox-item button.weui_btn.weui_btn_primary {
     width: 82%;
     line-height: 2.2em;
     font-size: 4.5vw;
     background: #5091d5;
-        margin-bottom: 4%;
+    margin-bottom: 4%;
 }
 #EditProductSpecification .add-image .vux-flexbox-item:first-child button.weui_btn.weui_btn_primary {
     background: #20c36c;
@@ -622,7 +645,7 @@ border: 0;
     background-color: #fff;
     margin-right: 0;
     margin-bottom: 4%;
-    color: #393a3f
+    color: #393a3f;
 }
 #EditProductSpecification .EditProductSpecification-size p {
     border-top: 1px solid #d3d1d1;
@@ -632,7 +655,7 @@ border: 0;
     line-height: 2.5em;
 
 }
-#EditProductSpecification  .EditProductSpecification-size p span {
+#EditProductSpecification .EditProductSpecification-size p span {
     font-size: 3.9vw;
     font-family: "微软雅黑";
 }
@@ -662,126 +685,125 @@ border: 0;
     border-radius: 0;
 }
 /*添加商品规格*/
-#EditProductSpecification .specifications-title{
+#EditProductSpecification .specifications-title {
     border-bottom: 1px solid #d3d1d1;
     padding: 8px 7px;
 }
-#EditProductSpecification .specifications-title label{
-  font-size: 4.5vw;
+#EditProductSpecification .specifications-title label {
+    font-size: 4.5vw;
     font-family: "微软雅黑",Arial;
-    color:  #cecdcd;
+    color: #cecdcd;
 }
-#EditProductSpecification .specifications-title span{
-  color: #000;
-  font-size: 4.5vw;
-font-family: "微软雅黑", Arial !important;
+#EditProductSpecification .specifications-title span {
+    color: #000;
+    font-size: 4.5vw;
+    font-family: "微软雅黑", Arial !important;
     margin-right: 5%;
 }
 
 #EditProductSpecification .specifications-addimage {
-  width: 67%;
-  float: left;
-  margin-left: 2%;
+    width: 67%;
+    float: left;
+    margin-left: 2%;
 
 }
-#EditProductSpecification .specifications-addimage-m{
+#EditProductSpecification .specifications-addimage-m {
     min-height: 78px;
 }
-#EditProductSpecification .specifications-addimage .checker-item{
-  float: left;
+#EditProductSpecification .specifications-addimage .checker-item {
+    float: left;
     width: 29%;
-      padding-top: 17%;
-      position: relative;
-      display: block;
-      overflow: hidden;
-      border: 1px solid #d3d1d1;
-      margin:4% 1%;
-          border-radius: 0;
+    padding-top: 17%;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border: 1px solid #d3d1d1;
+    margin: 4% 1%;
+    border-radius: 0;
 
 }
 
-#EditProductSpecification .specifications-addimage .checker-item img{
-  left: 0;
-  top: 0;
-  width: 100%;
-  position: absolute;
-  vertical-align: middle;
-  min-height: 77px;
+#EditProductSpecification .specifications-addimage .checker-item img {
+    left: 0;
+    top: 0;
+    width: 100%;
+    position: absolute;
+    vertical-align: middle;
+    min-height: 77px;
 }
 #EditProductSpecification .add-image .specifications-addimage .checker-item-selected {
 
     border-color: #ea4c4c;
-    background:transparent
-
+    background: transparent;
 }
 
 #EditProductSpecification .EditProductSpecification-size .checker-item-selected {
     background: #ffffff url("/static/TestIMG/checker-active.png") no-repeat right bottom;
     border-color: #20c36c;
-    color: #20c36c
+    color: #20c36c;
 }
-#EditProductSpecification .Codenumber{
-  width: 95%;
-  height: 26px;
-  line-height: 26px;
-  text-align: center;
-  border-radius: 1px;
-  border: 1px solid #cecdcd;
-  background-color: #fff;
-  margin-right: 0;
-  margin-bottom: 4%;
-  color: #cecdcd;
+#EditProductSpecification .Codenumber {
+    width: 95%;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    border-radius: 1px;
+    border: 1px solid #cecdcd;
+    background-color: #fff;
+    margin-right: 0;
+    margin-bottom: 4%;
+    color: #cecdcd;
 }
-#EditProductSpecification  .Codenumber-choose{
-  background: #ffffff url(/static/TestIMG/choose_active_no.png) no-repeat right bottom;
-  border-color: #cecdcd;
-  color: #cecdcd
+#EditProductSpecification .Codenumber-choose {
+    background: #ffffff url("/static/TestIMG/choose_active_no.png") no-repeat right bottom;
+    border-color: #cecdcd;
+    color: #cecdcd;
 }
-#EditProductSpecification  button.weui_btn.specifications-delete.weui_btn_primary{
-background: #ea4c4c!important
+#EditProductSpecification button.weui_btn.specifications-delete.weui_btn_primary {
+    background: #ea4c4c!important;
 }
 #EditProductSpecification button.weui_btn.specifications-cancel.weui_btn_primary {
-  background: #9b9b9b!important;
-    line-height: 2em!important
+    background: #9b9b9b!important;
+    line-height: 2em!important;
 }
-#EditProductSpecification button.weui_btn.specifications-cancel.weui_btn_primary  .weui_btn:after{
-  border-radius: 0;
+#EditProductSpecification button.weui_btn.specifications-cancel.weui_btn_primary .weui_btn:after {
+    border-radius: 0;
 
 }
 /*图片限制*/
-#EditProductSpecification .specifications-img{
-  float: left;
-      width: 29%;
-      padding-top: 28%;
-      position: relative;
-      display: block;
-      overflow: hidden;
-      border: 1px solid #d3d1d1;
-        margin: 4% 1%;
+#EditProductSpecification .specifications-img {
+    float: left;
+    width: 29%;
+    padding-top: 28%;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border: 1px solid #d3d1d1;
+    margin: 4% 1%;
 }
-#EditProductSpecification .specifications-img img{
-  left: 0;
-  top: 0;
-  width: 100%;
-  position: absolute;
-  vertical-align: middle;
-  min-height: 77px;
+#EditProductSpecification .specifications-img img {
+    left: 0;
+    top: 0;
+    width: 100%;
+    position: absolute;
+    vertical-align: middle;
+    min-height: 77px;
 }
-#EditProductSpecification  .specifications .weui_cell{
-      padding: 2%;
+#EditProductSpecification .specifications .weui_cell {
+    padding: 2%;
 }
-#EditProductSpecification .specifications-checker{
-display: none
+#EditProductSpecification .specifications-checker {
+    display: none;
 }
-#EditProductSpecification .checker-item-selected .specifications-checker{
-  display: block;
-  width: 16%!important;
-height: auto;
-position: absolute;
-min-height: initial!important;
-bottom: 0;
-right: 0;
-top: initial!important;
-left: initial!important;
+#EditProductSpecification .checker-item-selected .specifications-checker {
+    display: block;
+    width: 16%!important;
+    height: auto;
+    position: absolute;
+    min-height: initial!important;
+    bottom: 0;
+    right: 0;
+    top: initial!important;
+    left: initial!important;
 }
 </style>
