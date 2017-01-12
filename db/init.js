@@ -16,6 +16,7 @@ module.exports = function(req, res, next) {
         require('./models/agent_detail'),
         require('./models/employment'),
         require('./models/employment_detail'),
+        require('./models/frozen_agent'),
         require('./models/brand_employment_meta'),
         require('./models/agent_brand_role'),
         require('./models/brand_role'),

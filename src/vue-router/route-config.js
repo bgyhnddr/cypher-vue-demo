@@ -178,6 +178,9 @@ export function configRouter(router) {
     '/productManagement': {
       component: require('../components/PMP/ProductManagement.vue')
     },
+    '/teamManagement': {
+      component: require('../components/TEAM/TeamManagement.vue')
+    },
     '/test': {
       component: require('../components/Test.vue')
     }

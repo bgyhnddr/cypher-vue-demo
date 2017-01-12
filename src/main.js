@@ -161,6 +161,8 @@ router.beforeEach((tran) => {
         }
       } else if (FirstPath == "productManagement") {
         tran.next()
+      } else if (FirstPath == "teamManagement") {
+        tran.next()
       } else if (path == '/index') {
         router.go('homePage')
       }
