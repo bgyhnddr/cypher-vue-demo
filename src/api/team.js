@@ -1,5 +1,5 @@
 var httpRequest = require('../extend/http-request')
-var path = '/service/public/team/'
+var path = '/service/team/frozen/'
 
 export default {
     
