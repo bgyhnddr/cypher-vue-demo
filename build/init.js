@@ -15,6 +15,7 @@ Promise.all([
   require('../db/models/agent_detail'),
   require('../db/models/employment'),
   require('../db/models/employment_detail'),
+  require('../db/models/frozen_agent'),
   require('../db/models/brand_employment_meta'),
   require('../db/models/agent_brand_role'),
   require('../db/models/brand_role'),
