@@ -46,6 +46,18 @@ var exec = {
    */
 
 
+   /*冻结代理
+    *
+    */
+   FrozenAgent(req, res, next) {
+     var agent = req.body.agent
+     var frozen_agent = require('../../db/models/frozen_agent')
+     return frozen_agent.create({
+       agent_guid: agent
+     })
+   }
+
+
 
 }
 
