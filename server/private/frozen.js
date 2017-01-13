@@ -1,10 +1,10 @@
 var exec = {
 
   /**
-   * 获取首页可冻结等级列表
+   * 获取可操作等级列表
    * get
    */
-  getFrozenLevels(req, res, next) {
+  getOperableLevels(req, res, next) {
     var user_account = req.session.userInfo.name
 
     var agent = require('../../db/models/agent')

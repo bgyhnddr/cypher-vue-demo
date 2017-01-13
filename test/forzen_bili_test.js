@@ -75,11 +75,10 @@ describe('forzen_bili_test', () => {
     }
   }
 
-  describe('getFrozenLevels', () => {
+  describe('getOperableLevels', () => {
     it('get all can be frozen levels', () => {
-      return testfunction("getFrozenLevels").then((result) => {
-        result.agent_brand_role.brand_role.level.should.equal("0")
-        result.agent_brand_role.brand_role.employable_rules.length.should.equal(4)
+      return testfunction("getOperableLevels").then((result) => {
+        result.length.should.equal(4)
       })
     })
   })
