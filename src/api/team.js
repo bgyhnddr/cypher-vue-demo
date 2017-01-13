@@ -8,4 +8,7 @@ export default {
   FrozenAgent(params) {
       return httpRequest.post(path + 'FrozenAgent',params)
   },
+  ThawAgent(params) {
+      return httpRequest.post(path + 'ThawAgent',params)
+  },
 }
