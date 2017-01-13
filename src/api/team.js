@@ -5,4 +5,7 @@ export default {
   getFrozenLevels() {
       return httpRequest.get(path + 'getFrozenLevels')
   },
+  FrozenAgent(params) {
+      return httpRequest.post(path + 'FrozenAgent',params)
+  },
 }
