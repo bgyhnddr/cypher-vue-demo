@@ -181,6 +181,9 @@ export function configRouter(router) {
     '/teamManagement': {
       component: require('../components/TEAM/TeamManagement.vue')
     },
+    '/teamManagement/forzenLevelList': {
+      component: require('../components/TEAM/ForzenLevelList.vue')
+    },
     '/test': {
       component: require('../components/Test.vue')
     }
