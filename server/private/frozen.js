@@ -44,7 +44,6 @@ var exec = {
         }
       }
     }).then(function(result) {
-      //TODO: 查找该等级下的链上成员
 
       if (result.agent_brand_role.brand_role.level == "0" || result.agent_brand_role.brand_role.level == "-1") {
         var frozenLevelsDate = []
@@ -70,14 +69,13 @@ var exec = {
           addEmployment(user_account, employeeList, result)
           return employeeList
         }).then((result) => {
+          var conditionList = []
 
           frozenLevelsDate.map((frozenLevelItem) => {
             var condition = {}
             condition.status = '已审核'
             condition.audit_result = '已通过'
             if (result.length > 0) {
-
-              console.log("frozenLevelItem.brand_role_code" + frozenLevelItem.brand_role_code)
 
               condition = {
                 employee_user_account: {
@@ -88,33 +86,31 @@ var exec = {
                 brand_role_code: frozenLevelItem.brand_role_code
               }
 
-              employment.findAll({
+              conditionList.push(employment.findAll({
                 where: condition,
                 include: [{
                   model: employment_detail
                 }]
-              }).then((result) => {
-                console.log(result.length)
-                frozenLevelItem.frozenLevelNum = result.length
-                console.log("frozenLevelItem =" + JSON.stringify(frozenLevelItem))
-              })
-            } else {
-              frozenLevelItem.number = 0
+              }))
             }
           })
 
-
-          console.log(JSON.stringify(frozenLevelsDate))
-          return frozenLevelsDate
-
+          return Promise.all(conditionList)
+        }).then((result) =>{
+          if(result != null){
+            frozenLevelsDate.map((frozenLevelItem,index) => {
+              frozenLevelItem.frozenLevelNum = result[index].length
+            })
+            return frozenLevelsDate
+          }else{
+            return Promise.reject("not found")
+          }
         })
 
       } else {
         return Promise.reject("not found")
       }
 
-
-      // return result
     })
 
   },
