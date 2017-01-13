@@ -77,6 +77,9 @@ describe('frozen-test', () => {
           team_agent.create({
             agent_guid: result.guid,
             team_code: "XXX"
+          }),
+          frozen_agent.create({
+            agent_guid: "321"
           })
         ])
       })
@@ -119,6 +122,22 @@ describe('frozen-test', () => {
         agent:"123"
       }).then((result) => {
         return result.should.equal('OK')
+      })
+    })
+  })
+  describe('ThawAgent', () => {
+    it('thaw agent frozen', () => {
+      return testfunction("ThawAgent", {
+        agent:"321"
+      }).then((result) => {
+        return result.should.equal('OK')
+      })
+    })
+    it('thaw agent not_frozen', () => {
+      return testfunction("ThawAgent", {
+        agent:"213"
+      }).then((result) => {
+        return result.should.equal('代理未被冻结')
       })
     })
   })

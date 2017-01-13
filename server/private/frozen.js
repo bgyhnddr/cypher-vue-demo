@@ -57,6 +57,31 @@ var exec = {
      }).then((result) => {
        return "OK"
      })
+   },
+
+   /*解冻代理
+    *post
+    */
+   ThawAgent(req, res, next) {
+     var agent = req.body.agent
+     var frozen_agent = require('../../db/models/frozen_agent')
+     return frozen_agent.findOne({
+       where: {
+         agent_guid: agent
+       }
+     }).then((result)=>{
+       if(result){
+         return frozen_agent.destroy({
+           where: {
+             agent_guid: agent
+           }
+         }).then((result) => {
+           return "OK"
+         })
+       }else{
+         return Promise.reject("代理未被冻结")
+       }
+     })
    }
 
 
