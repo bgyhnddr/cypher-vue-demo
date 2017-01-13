@@ -6,7 +6,6 @@ var exec = {
    */
   getFrozenLevels(req, res, next) {
     var user_account = req.session.userInfo.name
-    console.log(JSON.stringify(user_account))
 
     var agent = require('../../db/models/agent')
     var agent_brand_role = require('../../db/models/agent_brand_role')
@@ -17,6 +16,10 @@ var exec = {
       agent_brand_role.belongsTo(brand_role)
       brand_role.hasMany(employable_rule, {
         foreignKey: 'employer_brand_role_code',
+        constraints: false
+      })
+      employable_rule.belongsTo(brand_role, {
+        foreignKey: 'employable_brand_role_code',
         constraints: false
       })
 
@@ -30,12 +33,13 @@ var exec = {
             model: brand_role,
             include:{
               model: employable_rule,
+              include:{
+                model: brand_role,
+              }
             }
           }
         }
       }).then(function(result) {
-        console.log("执行")
-        console.log(JSON.stringify(result))
         return result
       })
 
