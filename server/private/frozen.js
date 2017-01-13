@@ -95,15 +95,19 @@ var exec = {
             }
           })
 
-          return Promise.all(conditionList)
-        }).then((result) =>{
-          if(result != null){
-            frozenLevelsDate.map((frozenLevelItem,index) => {
+          if(conditionList.length == 0){
+            return null
+          }else{
+            return Promise.all(conditionList)
+          }
+        }).then((result) => {
+          if (result != null) {
+            frozenLevelsDate.map((frozenLevelItem, index) => {
               frozenLevelItem.frozenLevelNum = result[index].length
             })
             return frozenLevelsDate
-          }else{
-            return Promise.reject("not found")
+          } else {
+            return frozenLevelsDate
           }
         })
 

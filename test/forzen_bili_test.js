@@ -25,6 +25,7 @@ describe('forzen_bili_test', () => {
           name: "frozen"
         }
       }),
+
     ]).then((result) => {
       if (result[0] == null && result[1] == null) {
         return Promise.all([
@@ -79,6 +80,8 @@ describe('forzen_bili_test', () => {
     it('get all can be frozen levels', () => {
       return testfunction("getOperableLevels").then((result) => {
         result.length.should.equal(4)
+        result[0].brand_role_name.should.equal("总代理")
+        result[0].number.should.equal(0)
       })
     })
   })
