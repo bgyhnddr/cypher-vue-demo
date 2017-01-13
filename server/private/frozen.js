@@ -47,13 +47,15 @@ var exec = {
 
 
    /*冻结代理
-    *
+    *post
     */
    FrozenAgent(req, res, next) {
      var agent = req.body.agent
      var frozen_agent = require('../../db/models/frozen_agent')
      return frozen_agent.create({
        agent_guid: agent
+     }).then((result) => {
+       return "OK"
      })
    }
 
@@ -61,13 +63,14 @@ var exec = {
 
 }
 
+
 module.exports = (req, res, next) => {
   var action = req.params.action
-  Promise.resolve(action).then(function(result) {
+  return Promise.resolve(action).then(function(result) {
     return exec[result](req, res, next)
   }).then(function(result) {
-    res.send(result)
+    return res.send(result)
   }).catch(function(error) {
-    res.status(500).send(error.toString())
+     return res.status(500).send(error.toString())
   })
 }

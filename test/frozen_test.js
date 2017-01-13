@@ -100,12 +100,11 @@ describe('frozen-test', () => {
       return require('../server/private/frozen')({
         session: {
           userInfo: {
-            name: "testman"
+            name: "tester"
           }
         },
         params: {
-          action,
-          token: "123"
+          action
         },
         query: params,
         body: params
@@ -115,9 +114,11 @@ describe('frozen-test', () => {
     }
   }
   describe('FrozenAgent', () => {
-    it('frozen', () => {
+    it('frozen agent', () => {
       return testfunction("FrozenAgent", {
         agent:"123"
+      }).then((result) => {
+        return result.should.equal('OK')
       })
     })
   })
