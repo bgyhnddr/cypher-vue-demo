@@ -29,7 +29,7 @@ import {
   XInput,
   Alert
 } from 'vux'
-import teamAPI from '../../api/team'
+import teamSearchOptAPI from '../../api/teamSearchOpt'
 
 export default {
   components: {
@@ -62,17 +62,10 @@ export default {
     },
     loadFrozenLevels() {
       var that = this
-      teamAPI.getFrozenLevels().then(function(result) {
-        if (Number(result.agent_brand_role.brand_role.level) > 0) {
-          that.alert.showCatchError = true
-          that.alert.catchErrorMsg = "您暂无权利冻结用户"
-        }else{
-          if (result.agent_brand_role.brand_role.employable_rules.length > 0) {
-            that.forzenLevels = result.agent_brand_role.brand_role.employable_rules
-          }
-
-          that.showModel.forzenLevelListModel = true
-        }
+      teamSearchOptAPI.getOperableLevels().then(function(result) {
+        //TODO: 显示数据
+        console.log(JSON.stringify(result))
+        
       }).catch(function(err) {
         that.alert.showCatchError = true
         that.alert.catchErrorMsg = "加载可冻结代理等级列表异常，请稍后再试"
