@@ -60,7 +60,7 @@ describe('team_bili_test', () => {
           brand_role_code: "brand_role3"
         }),
         employment.create({
-          publish_employment_guid: "testguid",
+          publish_employment_guid: guid,
           employer_user_account: "admin",
           brand_role_code: "brand_role3",
           brand_guid: "brand_guid",
@@ -109,42 +109,40 @@ describe('team_bili_test', () => {
             key: 'employer',
             value: "admin"
           }, {
-            employment_guid: result.guid,
+            agent_guid: guid,
             key: 'headImg',
             value: "1"
           }, {
-            employment_guid: result.guid,
+            agent_guid: guid,
             key: 'name',
             value: "testMember"
           }, {
-            employment_guid: result.guid,
+            agent_guid: guid,
             key: 'wechat',
             value: "testWechat"
           }, {
-            employment_guid: result.guid,
+            agent_guid: guid,
             key: 'cellphone',
             value: "testphone"
           }, {
-            employment_guid: result.guid,
+            agent_guid: guid,
             key: 'IDType',
             value: "护照"
           }, {
-            employment_guid: result.guid,
+            agent_guid: guid,
             key: 'IDNumber',
             value: "312312312"
           }, {
-            employment_guid: result.guid,
+            agent_guid: guid,
             key: 'address',
             value: "北京市 北京市市辖区 东城区"
           }, {
-            employment_guid: result.guid,
+            agent_guid: guid,
             key: 'addressDetail',
             value: "312312312"
           }])
         })
       ])
-    }).then(() => {
-      console.log("create employee record")
     })
 
   })
