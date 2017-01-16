@@ -6,6 +6,6 @@ export default {
       return httpRequest.get(path + 'getOperableLevels')
   },
   getOperableStaffs(params) {
-      return httpRequest.post(path + 'getOperableStaffs',params)
+      return httpRequest.get(path + 'getOperableStaffs',params)
   },
 }
