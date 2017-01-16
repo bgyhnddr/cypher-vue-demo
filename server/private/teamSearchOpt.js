@@ -69,13 +69,13 @@ var exec = {
           addEmployment(user_account, employeeList, result)
           return employeeList
         }).then((result) => {
-          var conditionList = []
+          if (result.length > 0) {
+            var conditionList = []
 
-          frozenLevelsDate.map((frozenLevelItem) => {
-            var condition = {}
-            condition.status = '已审核'
-            condition.audit_result = '已通过'
-            if (result.length > 0) {
+            frozenLevelsDate.map((frozenLevelItem) => {
+              var condition = {}
+              condition.status = '已审核'
+              condition.audit_result = '已通过'
 
               condition = {
                 employee_user_account: {
@@ -92,14 +92,14 @@ var exec = {
                   model: employment_detail
                 }]
               }))
-            }
-          })
+            })
+          }
 
 
 
-          if(conditionList.length == 0){
+          if (conditionList.length == 0) {
             return null
-          }else{
+          } else {
             return Promise.all(conditionList)
           }
         }).then((result) => {
@@ -171,24 +171,16 @@ var exec = {
       })
     }
 
-    return agent.findOne({
-      where: {
-        user_account: user_account,
-      },
-      include: {
-        model: agent_brand_role,
-        include: {
-          model: brand_role,
-          include: {
-            model: employable_rule,
-            include: {
-              model: brand_role,
-            }
-          }
-        }
-      }
+    return employment.findAll().then((result) => {
+      var employeeList = []
+      addEmployment(user_account, employeeList, result)
+      return employeeList
     }).then(function(result) {
-        return result
+      if (result)
+        var condition = {}
+      condition.status = '已审核'
+      condition.audit_result = '已通过'
+      return result
     })
   },
 
