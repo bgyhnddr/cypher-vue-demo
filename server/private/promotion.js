@@ -23,64 +23,66 @@ var exec = {
       foreignKey: 'employable_brand_role_code'
     })
 
-    return brand_role.findOne({
+    return brand_role.findAll({
       include: [{
         model: agent_brand_role,
         include: {
           model: agent,
-          where:{
+          where: {
             user_account: user_account
           }
         }
       }, {
         model: employable_rule,
-        // include: {
-        //   model: brand_role,
-        // }
+        include: {
+          model: brand_role,
+          where: {
+            level: {
+              $gt: Sequelize.col("brand_role.level")
+            }
+          }
+        }
       }]
     }).then(function(result) {
-    console.log(JSON.stringify(result))
-    return result
-      // var promotionLevelsDate = []
-      // promotionLevelsDate = result.agent_brand_role.brand_role.employable_rules.map((employableRule) => {
-      //   return {
-      //     brand_role_code: employableRule.employable_brand_role_code,
-      //     brand_role_name: employableRule.brand_role.name,
-      //     number: 0
-      //   }
-      // })
-      //
-      // var addEmployment = (account, employeeList, list) => {
-      //   var childList = list.filter(o => o.employer_user_account == account).map(o => o)
-      //   Array.prototype.push.apply(employeeList, childList)
-      //   childList.forEach((o) => {
-      //     addEmployment(o.employee_user_account, employeeList, list)
-      //   })
-      // }
-      //
-      // return employment.findAll({
-      //   where: {
-      //     status: '已审核',
-      //     audit_result: '已通过'
-      //   }
-      // }).then((result) => {
-      //   var employeeList = []
-      //   addEmployment(user_account, employeeList, result)
-      //   return employeeList
-      // }).then((result) => {
-      //   if (result.length > 0) {
-      //     promotionLevelsDate.map((promotionLevelItem) => {
-      //       result.map((employmentItem) => {
-      //         if (employmentItem.brand_role_code == promotionLevelItem.brand_role_code) {
-      //           promotionLevelItem.number++
-      //         }
-      //       })
-      //     })
-      //   }
-      //
-      //   return promotionLevelsDate
-      // })
-      })
+        var promotionLevelsDate = []
+        promotionLevelsDate = result[0].employable_rules.map((employableRule) => {
+          return {
+            brand_role_code: employableRule.employable_brand_role_code,
+            brand_role_name: employableRule.brand_role.name,
+            number: 0
+          }
+        })
+
+        var addEmployment = (account, employeeList, list) => {
+          var childList = list.filter(o => o.employer_user_account == account).map(o => o)
+          Array.prototype.push.apply(employeeList, childList)
+          childList.forEach((o) => {
+            addEmployment(o.employee_user_account, employeeList, list)
+          })
+        }
+
+        return employment.findAll({
+          where: {
+            status: '已审核',
+            audit_result: '已通过'
+          }
+        }).then((result) => {
+          var employeeList = []
+          addEmployment(user_account, employeeList, result)
+          return employeeList
+        }).then((result) => {
+          if (result.length > 0) {
+            promotionLevelsDate.map((promotionLevelItem) => {
+              result.map((employmentItem) => {
+                if (employmentItem.brand_role_code == promotionLevelItem.brand_role_code) {
+                  promotionLevelItem.number++
+                }
+              })
+            })
+          }
+          return promotionLevelsDate
+        })
+    })
 
   },
   /**

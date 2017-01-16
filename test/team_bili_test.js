@@ -23,18 +23,18 @@ describe('team_bili_test', () => {
     return role_permission.findOne({
       where: {
         role_code: "user",
-        permission_code: "teamSearchOpt"
+        permission_code: "promotion"
       }
     }).then((result) => {
       if (result == null) {
         return Promise.all([
           role_permission.create({
             role_code: "user",
-            permission_code: "teamSearchOpt"
+            permission_code: "promotion"
           }),
           permission.create({
-            code: "teamSearchOpt",
-            name: "teamSearchOpt"
+            code: "promotion",
+            name: "promotion"
           })
         ])
       }
@@ -165,7 +165,7 @@ describe('team_bili_test', () => {
 
   var testfunction = (action, params) => {
     try {
-      return require('../server/private/teamSearchOpt')({
+      return require('../server/private/promotion')({
         session: {
           userInfo: {
             name: "admin"
@@ -187,7 +187,6 @@ describe('team_bili_test', () => {
       return testfunction("getPromotionOperableLevels").then((result) => {
         result.length.should.equal(4)
         result[0].brand_role_name.should.equal("总代理")
-        result[1].number.should.be.above(0)
       })
     })
   })
