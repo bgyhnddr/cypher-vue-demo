@@ -181,6 +181,9 @@ export function configRouter(router) {
     '/teamManagement': {
       component: require('../components/TEAM/TeamManagement.vue')
     },
+    '/teamManagement/frozenAgent/:account': {
+      component: require('../components/TEAM/FrozenAgent.vue')
+    },
     '/test': {
       component: require('../components/Test.vue')
     }
