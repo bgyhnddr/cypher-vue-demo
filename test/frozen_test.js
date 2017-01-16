@@ -12,7 +12,6 @@ describe('frozen-test', () => {
     this.timeout(10000)
       // runs before all tests in this block
     return Promise.all([
-      agent,
       frozen_agent,
     ].map((o) => o.sync({
       force: true
