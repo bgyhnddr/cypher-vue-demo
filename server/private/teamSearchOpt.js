@@ -14,79 +14,73 @@ var exec = {
     var employable_rule = require('../../db/models/employable_rule')
     var employment = require('../../db/models/employment')
 
-    agent.hasOne(agent_brand_role)
-    agent_brand_role.belongsTo(brand_role)
+    brand_role.hasOne(agent_brand_role)
+    agent_brand_role.belongsTo(agent)
     brand_role.hasMany(employable_rule, {
-      foreignKey: 'employer_brand_role_code',
-      constraints: false
+      foreignKey: 'employer_brand_role_code'
     })
     employable_rule.belongsTo(brand_role, {
-      foreignKey: 'employable_brand_role_code',
-      constraints: false
+      foreignKey: 'employable_brand_role_code'
     })
 
-    return agent.findOne({
-      where: {
-        user_account: user_account,
-      },
-      include: {
+    return brand_role.findOne({
+      include: [{
         model: agent_brand_role,
         include: {
-          model: brand_role,
-          include: {
-            model: employable_rule,
-            include: {
-              model: brand_role,
-              // where: {
-              //   level: {
-              //     $gt :Sequelize.col('agent.agent_brand_role.brand_role.level')
-              //   }
-              // }
-            }
+          model: agent,
+          where:{
+            user_account: user_account
           }
         }
-      }
+      }, {
+        model: employable_rule,
+        // include: {
+        //   model: brand_role,
+        // }
+      }]
     }).then(function(result) {
-      var promotionLevelsDate = []
-      promotionLevelsDate = result.agent_brand_role.brand_role.employable_rules.map((employableRule) => {
-        return {
-          brand_role_code: employableRule.employable_brand_role_code,
-          brand_role_name: employableRule.brand_role.name,
-          number: 0
-        }
+    console.log(JSON.stringify(result))
+    return result
+      // var promotionLevelsDate = []
+      // promotionLevelsDate = result.agent_brand_role.brand_role.employable_rules.map((employableRule) => {
+      //   return {
+      //     brand_role_code: employableRule.employable_brand_role_code,
+      //     brand_role_name: employableRule.brand_role.name,
+      //     number: 0
+      //   }
+      // })
+      //
+      // var addEmployment = (account, employeeList, list) => {
+      //   var childList = list.filter(o => o.employer_user_account == account).map(o => o)
+      //   Array.prototype.push.apply(employeeList, childList)
+      //   childList.forEach((o) => {
+      //     addEmployment(o.employee_user_account, employeeList, list)
+      //   })
+      // }
+      //
+      // return employment.findAll({
+      //   where: {
+      //     status: '已审核',
+      //     audit_result: '已通过'
+      //   }
+      // }).then((result) => {
+      //   var employeeList = []
+      //   addEmployment(user_account, employeeList, result)
+      //   return employeeList
+      // }).then((result) => {
+      //   if (result.length > 0) {
+      //     promotionLevelsDate.map((promotionLevelItem) => {
+      //       result.map((employmentItem) => {
+      //         if (employmentItem.brand_role_code == promotionLevelItem.brand_role_code) {
+      //           promotionLevelItem.number++
+      //         }
+      //       })
+      //     })
+      //   }
+      //
+      //   return promotionLevelsDate
+      // })
       })
-
-      var addEmployment = (account, employeeList, list) => {
-        var childList = list.filter(o => o.employer_user_account == account).map(o => o)
-        Array.prototype.push.apply(employeeList, childList)
-        childList.forEach((o) => {
-          addEmployment(o.employee_user_account, employeeList, list)
-        })
-      }
-
-      return employment.findAll({
-        where: {
-          status: '已审核',
-          audit_result: '已通过'
-        }
-      }).then((result) => {
-        var employeeList = []
-        addEmployment(user_account, employeeList, result)
-        return employeeList
-      }).then((result) => {
-        if (result.length > 0) {
-          promotionLevelsDate.map((promotionLevelItem) => {
-            result.map((employmentItem) => {
-              if (employmentItem.brand_role_code == promotionLevelItem.brand_role_code) {
-                promotionLevelItem.number++
-              }
-            })
-          })
-        }
-
-        return promotionLevelsDate
-      })
-    })
 
   },
   /**
