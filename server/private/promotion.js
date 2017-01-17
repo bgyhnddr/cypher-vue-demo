@@ -87,13 +87,13 @@ var exec = {
     var count = req.query.count == undefined ? 5 : parseInt(req.query.count)
     var page = req.query.page == undefined ? 0 : parseInt(req.query.page)
     var user_account = req.session.userInfo.name
-    var order = req.query.order
 
     var agent = require('../../db/models/agent')
     var agent_brand_role = require('../../db/models/agent_brand_role')
     var brand_role = require('../../db/models/brand_role')
     var employable_rule = require('../../db/models/employable_rule')
     var employment = require('../../db/models/employment')
+    var employment_detail = require('../../db/models/employment_detail')
 
     brand_role.hasOne(agent_brand_role)
     agent_brand_role.belongsTo(agent)
@@ -103,25 +103,7 @@ var exec = {
     employable_rule.belongsTo(brand_role, {
       foreignKey: 'employable_brand_role_code'
     })
-
-    if (filterKey) {
-      where.name = {
-        $like: "%" + filterKey + "%"
-      }
-    }
-
-    var orderstring = "created_at DESC"
-    if (order) {
-      orderstring = order.key + " " + (order.asc ? "" : "DESC")
-    }
-
-    var addEmployment = (account, employeeList, list) => {
-      var childList = list.filter(o => o.employer_user_account == account).map(o => o)
-      Array.prototype.push.apply(employeeList, childList)
-      childList.forEach((o) => {
-        addEmployment(o.employee_user_account, employeeList, list)
-      })
-    }
+    employment.hasMany(employment_detail)
 
     return brand_role.findAll({
       include: [{
@@ -162,24 +144,36 @@ var exec = {
           brand_role_code: employableBrandRoleCode,
           status: '已审核',
           audit_result: '已通过'
-        }
+        },
+        order:  "employment.created_at DESC",
+        include: [{
+          model: employment_detail
+        }]
       }).then((result) => {
         var employeeList = []
         addEmployment(user_account, employeeList, result)
         return employeeList
       }).then((result) => {
-        console.log(JSON.stringify(result))
+        var filterResult = result
+        
+        if (filterKey != "") {
+          filterResult = result.filter((employmentItem) => {
 
+            var hasFilterKeyDetailLists = employmentItem.employment_details.filter((detailItem) => {
+              if (detailItem.key == "name" || detailItem.key == "cellphone") {
+                return detailItem.value.match(filterKey) != null
+              }
+            }).map(o => o)
+            return hasFilterKeyDetailLists.length > 0
+          }).map(o => o)
+        }
 
-        return employableRules.map((employableRuleItem) => {
-          return {
-            brand_role_code: employableRuleItem.employable_brand_role_code,
-            brand_role_name: employableRuleItem.brand_role.name,
-            number: result.filter((employmentItem) => {
-              return employmentItem.brand_role_code == employableRuleItem.employable_brand_role_code
-            }).length
-          }
-        })
+        return {
+          end: (count + page * count) >= filterResult.length,
+          list: filterResult.filter((Item, index) => {
+            return index >= page * count && index < (count + page * count)
+          }).map(o => o)
+        }
       })
     })
   },

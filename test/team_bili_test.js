@@ -195,9 +195,10 @@ describe('team_bili_test', () => {
   describe('getPromotionOperableStaffs', () => {
     it('get all can be promotion Staffs', () => {
       return testfunction("getPromotionOperableStaffs",{
-        level: "brand_role3"
+        level: "brand_role3",
+        filterKey:"test",
       }).then((result) => {
-        result.list.length.should.equal(1)
+        result.list.length.should.be.above(0)
         result.end.should.equal(true)
       })
     })
