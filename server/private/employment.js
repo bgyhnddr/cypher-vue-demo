@@ -525,16 +525,13 @@ var exec = {
       employeeList.forEach((c) => {
         HistoryList.push(result.filter(o => o.employee_user_account == c)[0])
       })
-      if ((level && level != "all") || date_from) {
-        if (level && level != "all") {
-          return HistoryList.filter(p => p.brand_role_code == level)
-        }
-        if (date_from) {
-          return HistoryList.filter(p => p.employer_time >= date_from && p.employer_time <= date_to)
-        }
-      } else {
-        return HistoryList
+      if (level && level != "all") {
+        HistoryList = HistoryList.filter(p => p.brand_role_code == level)
       }
+      if (date_from) {
+        HistoryList = HistoryList.filter(p => p.employer_time >= date_from && p.employer_time <= date_to)
+      }
+      return HistoryList
     })
   },
   getLevel(req, res, next) {
