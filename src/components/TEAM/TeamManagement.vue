@@ -7,7 +7,7 @@
     </div>
     <group>
       <!--冻结团队成员-->
-      <a class="weui_cell a-li a-li-first" v-link="{path: ''}">
+      <a class="weui_cell a-li a-li-first" v-link="{path: '/teamManagement/forzenLevelList'}">
         <div class="weui_cell_hd">
           <img src="">
         </div>
