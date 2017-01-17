@@ -29,7 +29,7 @@ import {
   XInput,
   Alert
 } from 'vux'
-import teamSearchOptAPI from '../../api/teamSearchOpt'
+import promotionAPI from '../../api/promotion'
 
 export default {
   components: {
@@ -62,10 +62,10 @@ export default {
     },
     loadFrozenLevels() {
       var that = this
-      teamSearchOptAPI.getOperableLevels().then(function(result) {
+      promotionAPI.getPromotionOperableLevels().then(function(result) {
         //TODO: 显示数据
         console.log(JSON.stringify(result))
-        
+
       }).catch(function(err) {
         that.alert.showCatchError = true
         that.alert.catchErrorMsg = "加载可冻结代理等级列表异常，请稍后再试"

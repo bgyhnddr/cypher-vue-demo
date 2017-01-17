@@ -23,126 +23,126 @@ describe('team_bili_test', () => {
     return role_permission.findOne({
       where: {
         role_code: "user",
-        permission_code: "teamSearchOpt"
+        permission_code: "promotion"
       }
     }).then((result) => {
       if (result == null) {
         return Promise.all([
           role_permission.create({
             role_code: "user",
-            permission_code: "teamSearchOpt"
+            permission_code: "promotion"
           }),
           permission.create({
-            code: "teamSearchOpt",
-            name: "teamSearchOpt"
+            code: "promotion",
+            name: "promotion"
           })
         ])
       }
-    // }).then(() => {
-    //   var uuid = require('node-uuid')
-    //   var guid = uuid.v1()
-    //
-    //   return Promise.all([
-    //     user.create({
-    //       account: guid,
-    //       password: "123"
-    //     }),
-    //     user_role.create({
-    //       user_account: guid,
-    //       role_code: 'user'
-    //     }),
-    //     agent.create({
-    //       user_account: guid,
-    //       guid: guid
-    //     }),
-    //     agent_brand_role.create({
-    //       agent_guid: guid,
-    //       brand_role_code: "brand_role3"
-    //     }),
-    //     employment.create({
-    //       publish_employment_guid: guid,
-    //       employer_user_account: "admin",
-    //       brand_role_code: "brand_role3",
-    //       brand_guid: "brand_guid",
-    //       employee_user_account: guid,
-    //       employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
-    //       audit_user_account: "admin",
-    //       status: "已审核",
-    //       audit_time: new Date().Format('yyyy-MM-dd hh:mm'),
-    //       audit_result: "已通过"
-    //     }).then(function(result) {
-    //       employment_detail.bulkCreate([{
-    //         employment_guid: result.guid,
-    //         key: 'headImg',
-    //         value: "1"
-    //       }, {
-    //         employment_guid: result.guid,
-    //         key: 'name',
-    //         value: "testMember"
-    //       }, {
-    //         employment_guid: result.guid,
-    //         key: 'wechat',
-    //         value: "testWechat"
-    //       }, {
-    //         employment_guid: result.guid,
-    //         key: 'cellphone',
-    //         value: "testphone"
-    //       }, {
-    //         employment_guid: result.guid,
-    //         key: 'IDType',
-    //         value: "护照"
-    //       }, {
-    //         employment_guid: result.guid,
-    //         key: 'IDNumber',
-    //         value: "312312312"
-    //       }, {
-    //         employment_guid: result.guid,
-    //         key: 'address',
-    //         value: "北京市 北京市市辖区 东城区"
-    //       }, {
-    //         employment_guid: result.guid,
-    //         key: 'addressDetail',
-    //         value: "312312312"
-    //       }])
-    //       agent_detail.bulkCreate([{
-    //         agent_guid: guid,
-    //         key: 'employer',
-    //         value: "admin"
-    //       }, {
-    //         agent_guid: guid,
-    //         key: 'headImg',
-    //         value: "1"
-    //       }, {
-    //         agent_guid: guid,
-    //         key: 'name',
-    //         value: "testMember"
-    //       }, {
-    //         agent_guid: guid,
-    //         key: 'wechat',
-    //         value: "testWechat"
-    //       }, {
-    //         agent_guid: guid,
-    //         key: 'cellphone',
-    //         value: "testphone"
-    //       }, {
-    //         agent_guid: guid,
-    //         key: 'IDType',
-    //         value: "护照"
-    //       }, {
-    //         agent_guid: guid,
-    //         key: 'IDNumber',
-    //         value: "312312312"
-    //       }, {
-    //         agent_guid: guid,
-    //         key: 'address',
-    //         value: "北京市 北京市市辖区 东城区"
-    //       }, {
-    //         agent_guid: guid,
-    //         key: 'addressDetail',
-    //         value: "312312312"
-    //       }])
-    //     })
-    //   ])
+    }).then(() => {
+      var uuid = require('node-uuid')
+      var guid = uuid.v1()
+
+      return Promise.all([
+        user.create({
+          account: guid,
+          password: "123"
+        }),
+        user_role.create({
+          user_account: guid,
+          role_code: 'user'
+        }),
+        agent.create({
+          user_account: guid,
+          guid: guid
+        }),
+        agent_brand_role.create({
+          agent_guid: guid,
+          brand_role_code: "brand_role3"
+        }),
+        employment.create({
+          publish_employment_guid: guid,
+          employer_user_account: "admin",
+          brand_role_code: "brand_role3",
+          brand_guid: "brand_guid",
+          employee_user_account: guid,
+          employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
+          audit_user_account: "admin",
+          status: "已审核",
+          audit_time: new Date().Format('yyyy-MM-dd hh:mm'),
+          audit_result: "已通过"
+        }).then(function(result) {
+          employment_detail.bulkCreate([{
+            employment_guid: result.guid,
+            key: 'headImg',
+            value: "1"
+          }, {
+            employment_guid: result.guid,
+            key: 'name',
+            value: "testMember"
+          }, {
+            employment_guid: result.guid,
+            key: 'wechat',
+            value: "testWechat"
+          }, {
+            employment_guid: result.guid,
+            key: 'cellphone',
+            value: "testphone"
+          }, {
+            employment_guid: result.guid,
+            key: 'IDType',
+            value: "护照"
+          }, {
+            employment_guid: result.guid,
+            key: 'IDNumber',
+            value: "312312312"
+          }, {
+            employment_guid: result.guid,
+            key: 'address',
+            value: "北京市 北京市市辖区 东城区"
+          }, {
+            employment_guid: result.guid,
+            key: 'addressDetail',
+            value: "312312312"
+          }])
+          agent_detail.bulkCreate([{
+            agent_guid: guid,
+            key: 'employer',
+            value: "admin"
+          }, {
+            agent_guid: guid,
+            key: 'headImg',
+            value: "1"
+          }, {
+            agent_guid: guid,
+            key: 'name',
+            value: "testMember"
+          }, {
+            agent_guid: guid,
+            key: 'wechat',
+            value: "testWechat"
+          }, {
+            agent_guid: guid,
+            key: 'cellphone',
+            value: "testphone"
+          }, {
+            agent_guid: guid,
+            key: 'IDType',
+            value: "护照"
+          }, {
+            agent_guid: guid,
+            key: 'IDNumber',
+            value: "312312312"
+          }, {
+            agent_guid: guid,
+            key: 'address',
+            value: "北京市 北京市市辖区 东城区"
+          }, {
+            agent_guid: guid,
+            key: 'addressDetail',
+            value: "312312312"
+          }])
+        })
+      ])
     })
 
   })
@@ -165,7 +165,7 @@ describe('team_bili_test', () => {
 
   var testfunction = (action, params) => {
     try {
-      return require('../server/private/teamSearchOpt')({
+      return require('../server/private/promotion')({
         session: {
           userInfo: {
             name: "admin"
