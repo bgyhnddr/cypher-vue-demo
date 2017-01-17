@@ -131,6 +131,9 @@ export default {
           that.level = o.value
         }
       })
+      if(value == "查看所有"){
+        that.level = "all"
+      }
     },
     reset() {
       this.date1 = ""

@@ -508,43 +508,30 @@ var exec = {
       })
     }
 
-
-    return employment.findAll().then((result) => {
-      var employeeList = []
-      addEmployment(userinfo.name, employeeList, result)
-      return employeeList
+    return employment.findAll({
+      where: {
+        status: '已审核',
+        audit_result: '已通过'
+      },
+      include: [{
+        model: employment_detail
+      }, {
+        model: brand_role
+      }]
     }).then((result) => {
-      var condition = {}
-      condition.status = '已审核'
-      condition.audit_result = '已通过'
-      if (result.length > 0) {
-        condition = {
-          employee_user_account: {
-            $in: result
-          },
-          status: '已审核',
-          audit_result: '已通过'
-        }
-        if (level && level != "all") {
-          condition.brand_role_code = level
-        }
-        if (date_from) {
-          condition.employer_time = {
-            $gt: date_from,
-            $lte: date_to
-          }
-        }
-        return employment.findAll({
-          where: condition,
-          include: [{
-            model: employment_detail
-          }, {
-            model: brand_role
-          }]
-        })
-      } else {
-        return []
+      var employeeList = []
+      var HistoryList = []
+      addEmployment(userinfo.name, employeeList, result)
+      employeeList.forEach((c) => {
+        HistoryList.push(result.filter(o => o.employee_user_account == c)[0])
+      })
+      if (level && level != "all") {
+        HistoryList = HistoryList.filter(p => p.brand_role_code == level)
       }
+      if (date_from) {
+        HistoryList = HistoryList.filter(p => p.employer_time >= date_from && p.employer_time <= date_to)
+      }
+      return HistoryList
     })
   },
   getLevel(req, res, next) {
