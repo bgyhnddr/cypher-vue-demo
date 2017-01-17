@@ -44,7 +44,6 @@ var exec = {
         }
       }]
     }).then(function(result) {
-      var promotionLevelsData = []
       var employableRules = result[0].employable_rules
 
       var addEmployment = (account, employeeList, list) => {
@@ -137,26 +136,51 @@ var exec = {
         model: employable_rule,
         where: {
           employable_brand_role_code: level
+        },
+        include: {
+          model: brand_role,
+          where: {
+            level: {
+              $gt: Sequelize.col("brand_role.level")
+            }
+          }
         }
       }]
     }).then((result) => {
-      console.log(result)
-    })
+      var employableBrandRoleCode = result[0].employable_rules[0].employable_brand_role_code
 
-    return employment.findAll({
-      where: {
-        status: '已审核',
-        audit_result: '已通过'
+      var addEmployment = (account, employeeList, list) => {
+        var childList = list.filter(o => o.employer_user_account == account).map(o => o)
+        Array.prototype.push.apply(employeeList, childList)
+        childList.forEach((o) => {
+          addEmployment(o.employee_user_account, employeeList, list)
+        })
       }
-    }).then((result) => {
-      var employeeList = []
-      addEmployment(user_account, employeeList, result)
-      return employeeList
-    }).then(function(result) {
-      if (result > 0) {
 
-      }
-      return result
+      return employment.findAll({
+        where: {
+          brand_role_code: employableBrandRoleCode,
+          status: '已审核',
+          audit_result: '已通过'
+        }
+      }).then((result) => {
+        var employeeList = []
+        addEmployment(user_account, employeeList, result)
+        return employeeList
+      }).then((result) => {
+        console.log(JSON.stringify(result))
+
+
+        return employableRules.map((employableRuleItem) => {
+          return {
+            brand_role_code: employableRuleItem.employable_brand_role_code,
+            brand_role_name: employableRuleItem.brand_role.name,
+            number: result.filter((employmentItem) => {
+              return employmentItem.brand_role_code == employableRuleItem.employable_brand_role_code
+            }).length
+          }
+        })
+      })
     })
   },
 
