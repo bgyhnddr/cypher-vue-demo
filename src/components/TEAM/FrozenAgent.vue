@@ -2,8 +2,8 @@
 <div class="certificate-bac">
   <div>
     <div class="vux-demo-header-box wapmain-header" slot="header">
-      <x-header :left-options="{showBack: false}">{{agentInfo.account}}</x-header>
-      <div slot="left" class="onclick-back" @click="">返回</div>
+      <x-header :left-options="{showBack: false}">{{agentInfo.agent_detail.name}}</x-header>
+      <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
     </div>
   </div>
   <div class="certificate-header">
@@ -89,6 +89,7 @@ export default {
         account: "",
         brand: "",
         brand_role: "",
+        brand_role_code:"",
         employer: "",
         employer_account: "",
         agent_detail: {}
@@ -104,36 +105,22 @@ export default {
     Confirm
   },
   methods: {
+    onClickBack() {
+      this.$route.router.go("/teamManagement/frozenMember/" + this.agentInfo.brand_role_code)
+    },
     Froze(){
       this.show = true
     },
     getAgentInfo() {
       var that = this
       employAPI.getAgentDetail({
-        account: that.$route.params.account,
-        locate: that.$route.params.locate
+        account: that.$route.params.account
       }).then(function(result) {
         that.agentInfo.account = result.user.account
         that.agentInfo.agent_detail = result.agent_detail
         that.agentInfo.brand = result.user.employment.brand.name
         that.agentInfo.brand_role = result.agent_brand_role.brand_role.name
-        that.agentInfo.employer = result.user.employment.user.agent.agent_detail.name
-        that.agentInfo.employer_account = result.user.employment.employer_user_account
-      }).catch(function(err) {
-        console.log(err)
-        that.serveMsg = err
-      })
-    },
-    getBrandDetail() {
-      var that = this
-      employAPI.getBrandDetail({
-        account: that.$route.params.account
-      }).then(function(result) {
-        console.log(result)
-        that.agentInfo.account = result.user.account
-        that.agentInfo.agent_detail = result.agent_detail
-        that.agentInfo.brand = result.agent_brand_role.brand_role.brand.name
-        that.agentInfo.brand_role = result.agent_brand_role.brand_role.name
+        that.agentInfo.brand_role_code = result.agent_brand_role.brand_role_code
         that.agentInfo.employer = result.user.employment.user.agent.agent_detail.name
         that.agentInfo.employer_account = result.user.employment.employer_user_account
       }).catch(function(err) {
@@ -166,12 +153,7 @@ export default {
     },
   },
   ready() {
-    if (this.$route.params.account != 'admin') {
-      this.agentInfo.employerFlag = true
-      this.getAgentInfo()
-    } else {
-      this.getBrandDetail()
-    }
+    this.getAgentInfo()
     this.getHeadImg()
   }
 }
