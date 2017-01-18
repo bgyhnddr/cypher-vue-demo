@@ -142,7 +142,6 @@ describe('team_bili_test', () => {
             brand_role_code: "brand_role3"
           }),
           employment.create({
-            agent_promotion_guid:guidMenber2,
             brand_guid: "brand_guid",
             brand_role_code: "brand_role3",
             employer_user_account: "admin",
@@ -152,6 +151,15 @@ describe('team_bili_test', () => {
             status: "已审核",
             audit_time: new Date().Format('yyyy-MM-dd hh:mm'),
             audit_result: "已通过"
+          }),
+          employment.create({
+            agent_promotion_guid:guidMenber2,
+            brand_guid: "brand_guid",
+            brand_role_code: "brand_role2",
+            employer_user_account: "admin",
+            employee_user_account: guidMenber2,
+            employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
+            status: "未审核",
           }).then(function(result) {
             agent_detail.bulkCreate([{
               agent_guid: guidMenber2,
@@ -193,8 +201,8 @@ describe('team_bili_test', () => {
           }),
           agent_promotion.create({
             guid: guidMenber2,
-            promoter_user_account: guidMenber2,
-            promotee_user_account: "admin",
+            promoter_user_account: "admin",
+            promotee_user_account: guidMenber2,
             brand_role_code:"brand_role2",
             status: true,
             create_time: new Date().Format('yyyy-MM-dd hh:mm'),
@@ -215,12 +223,12 @@ describe('team_bili_test', () => {
           }),
           agent_brand_role.create({
             agent_guid: guidMenber3,
-            brand_role_code: "brand_role2"
+            brand_role_code: "brand_role5"
           }),
           employment.create({
             agent_promotion_guid:guidMenber3,
             brand_guid: "brand_guid",
-            brand_role_code: "brand_role2",
+            brand_role_code: "brand_role5",
             employer_user_account: "admin",
             employee_user_account: guidMenber3,
             employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
@@ -325,10 +333,10 @@ describe('team_bili_test', () => {
     it('get all can be promoted Staffs,filterKey = test1', () => {
       return testfunction("getPromotionOperableStaffs", {
         level: "brand_role3",
-        filterKey: "test1",
+        filterKey: "test",
       }).then((result) => {
         // console.log(JSON.stringify(result))
-        result.list.length.should.be.equal(1)
+        result.list.length.should.be.above(0)
         result.end.should.equal(true)
       })
     })
@@ -342,6 +350,31 @@ describe('team_bili_test', () => {
         // console.log(JSON.stringify(result))
         result.length.should.be.equal(1)
         result[0].brand_role.level.should.be.equal("1")
+      })
+    })
+  })
+
+  describe('createPromotion', () => {
+    it('guidMenber2 已有未审核提拔申请', () => {
+      return testfunction("createPromotion",{
+        promotee: guidMenber2,
+        level:"brand_role2"
+      }).then((result) => {
+        // console.log(JSON.stringify(result))
+        result.should.be.equal(guidMenber2)
+      })
+    })
+  })
+
+  describe('createPromotion', () => {
+    it('promotee is guidMenber3（销售员）提拔至 特约销售员', () => {
+      return testfunction("createPromotion",{
+        promotee: guidMenber3,
+        level:"brand_role4"
+      }).then((result) => {
+        console.log(JSON.stringify(result))
+        result.should.be.String()
+        result.should.match(/-/)
       })
     })
   })
