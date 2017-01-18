@@ -1,5 +1,6 @@
 require('../src/extend/date-format').dateformat()
 
+var uuid = require('node-uuid')
 var should = require('should')
 
 var user = require('../db/models/user')
@@ -15,6 +16,10 @@ var employable_rule = require('../db/models/employable_rule')
 var employment = require('../db/models/employment')
 var employment_detail = require('../db/models/employment_detail')
 var agent_promotion = require('../db/models/agent_promotion')
+
+var guidMenber1 = uuid.v1()
+var guidMenber2 = uuid.v1()
+var guidMenber3 = uuid.v1()
 
 describe('team_bili_test', () => {
   // 初始化数据
@@ -47,10 +52,8 @@ describe('team_bili_test', () => {
           console.log("添加promotion promission")
         }
       }).then(() => {
-        var uuid = require('node-uuid')
-        var guidMenber1 = uuid.v1()
-        var guidMenber2 = uuid.v1()
-        var guidMenber3 = uuid.v1()
+
+
 
         return Promise.all([
           //添加二级代理 testMember1，未被提升
@@ -190,8 +193,8 @@ describe('team_bili_test', () => {
           }),
           agent_promotion.create({
             guid: guidMenber2,
-            promotioner_user_account: guidMenber2,
-            promotionee_user_account: "admin",
+            promoter_user_account: guidMenber2,
+            promotee_user_account: "admin",
             brand_role_code:"brand_role2",
             status: true,
             create_time: new Date().Format('yyyy-MM-dd hh:mm'),
@@ -308,7 +311,7 @@ describe('team_bili_test', () => {
   }
 
   describe('getPromotionOperableLevels', () => {
-    it('get all can be promotion levels', () => {
+    it('get all can be operable promotion levels', () => {
       return testfunction("getPromotionOperableLevels").then((result) => {
         // console.log(JSON.stringify(result))
         result.length.should.equal(3)
@@ -319,7 +322,7 @@ describe('team_bili_test', () => {
   })
 
   describe('getPromotionOperableStaffs', () => {
-    it('get all can be promotion Staffs,filterKey = test1', () => {
+    it('get all can be promoted Staffs,filterKey = test1', () => {
       return testfunction("getPromotionOperableStaffs", {
         level: "brand_role3",
         filterKey: "test1",
@@ -327,6 +330,18 @@ describe('team_bili_test', () => {
         // console.log(JSON.stringify(result))
         result.list.length.should.be.equal(1)
         result.end.should.equal(true)
+      })
+    })
+  })
+
+  describe('getLevels', () => {
+    it('get staff can be promoted Levels，promotee is guidMenber2（二级代理）', () => {
+      return testfunction("getLevels",{
+        promotee: guidMenber2
+      }).then((result) => {
+        // console.log(JSON.stringify(result))
+        result.length.should.be.equal(1)
+        result[0].brand_role.level.should.be.equal("1")
       })
     })
   })

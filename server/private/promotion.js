@@ -44,9 +44,9 @@ var exec = {
         }
       }]
     }).then(function(result) {
-      var employableRules = result[0].employable_rules.filter((employableRule ,index) =>{
+      var employableRules = result[0].employable_rules.filter((employableRule, index) => {
         return index != 0
-      }).map(o =>o)
+      }).map(o => o)
 
       var addEmployment = (account, employeeList, list) => {
         var childList = list.filter(o => o.employer_user_account == account).map(o => o)
@@ -134,7 +134,7 @@ var exec = {
       }]
     }).then((result) => {
 
-      var employable_rules = result[0].employable_rules.filter((employmentRule,index) =>{
+      var employable_rules = result[0].employable_rules.filter((employmentRule, index) => {
         return index != 0 && employmentRule.brand_role.code == level
       })
 
@@ -192,6 +192,78 @@ var exec = {
         }
       })
     })
+  },
+  /**
+   * 获取提拔等级列表
+   * get
+   */
+  getLevels(req, res, next) {
+    var promoter_user_account = req.session.userInfo.name
+    var promotee_user_account = req.query.promotee
+
+    var agent = require('../../db/models/agent')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
+    var brand_role = require('../../db/models/brand_role')
+    var employable_rule = require('../../db/models/employable_rule')
+    var employment = require('../../db/models/employment')
+
+    brand_role.hasOne(agent_brand_role)
+    agent_brand_role.belongsTo(agent)
+    brand_role.hasMany(employable_rule, {
+      foreignKey: 'employer_brand_role_code'
+    })
+    employable_rule.belongsTo(brand_role, {
+      foreignKey: 'employable_brand_role_code'
+    })
+
+    return Promise.all([
+      //提拔者的可招募角色
+      brand_role.findAll({
+        include: [{
+          model: agent_brand_role,
+          include: {
+            model: agent,
+            where: {
+              user_account: promoter_user_account
+            }
+          }
+        }, {
+          model: employable_rule,
+          include: {
+            model: brand_role,
+            where: {
+              level: {
+                $gt: Sequelize.col("brand_role.level")
+              }
+            }
+          }
+        }]
+      }),
+      //被提拔者的角色
+      brand_role.findOne({
+        include: {
+          model: agent_brand_role,
+          include: {
+            model: agent,
+            where: {
+              user_account: promotee_user_account
+            }
+          }
+        }
+      })
+    ]).then(function(result) {
+
+      var employableRules = result[0][0].employable_rules.filter((employableRule) => {
+        return Number(employableRule.brand_role.level) < Number(result[1].level)
+      }).map(o => o)
+
+      return employableRules
+    })
+
+
+
+
+
   },
 
 }
