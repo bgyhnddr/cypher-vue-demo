@@ -60,15 +60,16 @@
       </div>
     </group>
     <div>
-      <confirm :show.sync="show" title="" confirm-text="确认" cancel-text="取消" @on-confirm="">
-        <p style="text-align:center;">您确认冻结该成员吗?</p>
+      <confirm :show.sync="show" title="" confirm-text="确认" cancel-text="取消" @on-confirm="Froze">
+        <p style="text-align:center;">您确认{{agentInfo.frozen_agent?"解除冻结":"冻结"}}该成员吗?</p>
       </confirm>
     </div>
     <div>
-      <x-button type="primary" @click="Froze">冻结账号</x-button>
+      <x-button type="primary" @click="ShowFroze">{{agentInfo.frozen_agent?"解除冻结":"冻结账号"}}</x-button>
     </div>
   </div>
 </div>
+<alert :show.sync="showAlert" button-text="确认">{{alertMsg}}</alert>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
@@ -78,9 +79,11 @@ import {
   Group,
   XButton,
   XHeader,
-  Confirm
+  Confirm,
+  Alert
 } from 'vux'
 import employAPI from '../../api/employment'
+import FrozenAPI from '../../api/frozen'
 export default {
   data() {
     return {
@@ -101,7 +104,9 @@ export default {
           brand_role: {}
         }
       },
-      show: false
+      showAlert: false,
+      show:false,
+      alertMsg:""
     }
   },
   components: {
@@ -109,14 +114,34 @@ export default {
     Cell,
     XButton,
     XHeader,
-    Confirm
+    Confirm,
+    Alert
   },
   methods: {
     onClickBack() {
       this.$route.router.go("/teamManagement/frozenMember/" + this.agentInfo.agent_brand_role.brand_role_code)
     },
-    Froze() {
+    ShowFroze() {
       this.show = true
+    },
+    Froze(){
+      var that = this
+      var agent = that.agentInfo.guid
+      if(that.agentInfo.frozen_agent){
+        FrozenAPI.ThawAgent({agent:agent}).then(()=>{
+          that.getAgentInfo()
+        }).catch(function(err) {
+          that.showAlert = true
+          that.alertMsg = err
+        })
+      }else{
+        FrozenAPI.FrozenAgent({agent:agent}).then(()=>{
+          that.getAgentInfo()
+        }).catch(function(err) {
+          that.showAlert = true
+          that.alertMsg = err
+        })
+      }
     },
     getAgentInfo() {
       var that = this
@@ -125,8 +150,8 @@ export default {
       }).then(function(result) {
         that.agentInfo = result
       }).catch(function(err) {
-        console.log(err)
-        that.serveMsg = err
+        that.showAlert = true
+        that.alertMsg = err
       })
     },
     getHeadImg() {
@@ -136,22 +161,10 @@ export default {
       }).then(function(result) {
         that.headImg = parseInt(result.value)
       }).catch(function(err) {
-        console.log(err)
-        that.serveMsg = err
+        that.showAlert = true
+        that.alertMsg = err
       })
-    },
-    changeHeadImg() {
-      var that = this
-      employAPI.changeHeadImg({
-        account: that.$route.params.account,
-        ImgID: that.agentInfo.headImg
-      }).then(function(result) {
-        that.getHeadImg()
-      }).catch(function(err) {
-        console.log(err)
-        that.serveMsg = err
-      })
-    },
+    }
   },
   ready() {
     this.getAgentInfo()
