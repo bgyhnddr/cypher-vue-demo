@@ -44,7 +44,9 @@ var exec = {
         }
       }]
     }).then(function(result) {
-      var employableRules = result[0].employable_rules
+      var employableRules = result[0].employable_rules.filter((employableRule ,index) =>{
+        return index != 0
+      }).map(o =>o)
 
       var addEmployment = (account, employeeList, list) => {
         var childList = list.filter(o => o.employer_user_account == account).map(o => o)
@@ -95,7 +97,6 @@ var exec = {
     var brand_role = require('../../db/models/brand_role')
     var employable_rule = require('../../db/models/employable_rule')
     var employment = require('../../db/models/employment')
-    var employment_detail = require('../../db/models/employment_detail')
 
     brand_role.hasOne(agent_brand_role)
     agent_brand_role.belongsTo(agent)
