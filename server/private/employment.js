@@ -307,6 +307,7 @@ var exec = {
     var agent_detail = require('../../db/models/agent_detail')
     var team = require('../../db/models/team')
     var team_agent = require('../../db/models/team_agent')
+    var frozen_agent = require('../../db/models/frozen_agent')
 
     employment.belongsTo(brand)
     employment.belongsTo(brand_role)
@@ -321,6 +322,7 @@ var exec = {
     agent.belongsTo(user)
     agent.hasOne(employment_term)
     agent.hasOne(team_agent)
+    agent.hasOne(frozen_agent)
     team_agent.belongsTo(team, {
       foreignKey: "team_code"
     })
@@ -334,7 +336,7 @@ var exec = {
       where: {
         user_account: account
       },
-      include: [agent_detail,
+      include: [agent_detail, frozen_agent,
         employment_term, {
           model: team_agent,
           include: team
