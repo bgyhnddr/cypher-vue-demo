@@ -88,7 +88,9 @@ var exec = {
     var page = req.query.page == undefined ? 0 : parseInt(req.query.page)
     var user_account = req.session.userInfo.name
 
+    var user = require('../../db/models/user')
     var agent = require('../../db/models/agent')
+    var agent_detail = require('../../db/models/agent_detail')
     var agent_brand_role = require('../../db/models/agent_brand_role')
     var brand_role = require('../../db/models/brand_role')
     var employable_rule = require('../../db/models/employable_rule')
@@ -103,7 +105,11 @@ var exec = {
     employable_rule.belongsTo(brand_role, {
       foreignKey: 'employable_brand_role_code'
     })
-    employment.hasMany(employment_detail)
+    employment.belongsTo(user, {
+      foreignKey: "employee_user_account"
+    })
+    user.hasOne(agent)
+    agent.hasMany(agent_detail)
 
     return brand_role.findAll({
       include: [{
@@ -145,21 +151,28 @@ var exec = {
           status: '已审核',
           audit_result: '已通过'
         },
-        order:  "employment.created_at DESC",
-        include: [{
-          model: employment_detail
-        }]
+        order: "employment.created_at DESC",
+        include: {
+          model: user,
+          include: {
+            model: agent,
+            include: {
+              model: agent_detail
+            }
+          }
+        }
       }).then((result) => {
         var employeeList = []
         addEmployment(user_account, employeeList, result)
         return employeeList
       }).then((result) => {
         var filterResult = result
-        
+
         if (filterKey != "") {
           filterResult = result.filter((employmentItem) => {
+            employmentItem.user.password = "******"
 
-            var hasFilterKeyDetailLists = employmentItem.employment_details.filter((detailItem) => {
+            var hasFilterKeyDetailLists = employmentItem.user.agent.agent_details.filter((detailItem) => {
               if (detailItem.key == "name" || detailItem.key == "cellphone") {
                 return detailItem.value.match(filterKey) != null
               }
