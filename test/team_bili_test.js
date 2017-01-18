@@ -330,13 +330,22 @@ describe('team_bili_test', () => {
   })
 
   describe('getPromotionOperableStaffs', () => {
-    it('get all can be promoted Staffs,filterKey = test1', () => {
+    it('get level="brand_role3" , filterKey="test1"', () => {
       return testfunction("getPromotionOperableStaffs", {
         level: "brand_role3",
-        filterKey: "test",
+        filterKey: "test1",
       }).then((result) => {
         // console.log(JSON.stringify(result))
-        result.list.length.should.be.above(0)
+        result.list.length.should.be.equal(1)
+        result.end.should.equal(true)
+      })
+    })
+    it('get get level="brand_role3",not filterKey', () => {
+      return testfunction("getPromotionOperableStaffs", {
+        level: "brand_role3"
+      }).then((result) => {
+        // console.log(JSON.stringify(result))
+        result.list.length.should.be.equal(2)
         result.end.should.equal(true)
       })
     })
@@ -364,9 +373,7 @@ describe('team_bili_test', () => {
         result.should.be.equal(guidMember2)
       })
     })
-  })
 
-  describe('createPromotion', () => {
     it('promotee is guidMember3（销售员）提拔至 特约销售员', () => {
       return testfunction("createPromotion", {
         promotee: guidMember3,
@@ -375,6 +382,17 @@ describe('team_bili_test', () => {
         // console.log(JSON.stringify(result))
         result.should.be.String()
         result.should.match(/-/)
+      })
+    })
+  })
+
+  describe('getPromotion', () => {
+    it('get promotion guid = guidMember2', () => {
+      return testfunction("getPromotion", {
+        promotionGuid: guidMember2,
+      }).then((result) => {
+        // console.log(JSON.stringify(result))
+        result.promotee_user_account.should.be.equal(guidMember2)
       })
     })
   })
