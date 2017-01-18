@@ -50,6 +50,7 @@ describe('team_bili_test', () => {
         var uuid = require('node-uuid')
         var guidMenber1 = uuid.v1()
         var guidMenber2 = uuid.v1()
+        var guidMenber3 = uuid.v1()
 
         return Promise.all([
           //添加二级代理 testMember，未被提升
@@ -194,11 +195,79 @@ describe('team_bili_test', () => {
             brand_role_code:"brand_role2",
             status: true,
             create_time: new Date().Format('yyyy-MM-dd hh:mm'),
+          }),
+
+          //添加一级代理 testMember3
+          user.create({
+            account: guidMenber3,
+            password: "123"
+          }),
+          user_role.create({
+            user_account: guidMenber3,
+            role_code: 'user'
+          }),
+          agent.create({
+            user_account: guidMenber3,
+            guid: guidMenber3
+          }),
+          agent_brand_role.create({
+            agent_guid: guidMenber3,
+            brand_role_code: "brand_role2"
+          }),
+          employment.create({
+            agent_promotion_guid:guidMenber3,
+            brand_guid: "brand_guid",
+            brand_role_code: "brand_role2",
+            employer_user_account: "admin",
+            employee_user_account: guidMenber3,
+            employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
+            audit_user_account: "admin",
+            status: "已审核",
+            audit_time: new Date().Format('yyyy-MM-dd hh:mm'),
+            audit_result: "已通过"
+          }).then(function(result) {
+            agent_detail.bulkCreate([{
+              agent_guid: guidMenber3,
+              key: 'employer',
+              value: "admin"
+            }, {
+              agent_guid: guidMenber3,
+              key: 'headImg',
+              value: "1"
+            }, {
+              agent_guid: guidMenber3,
+              key: 'name',
+              value: "test1Member3"
+            }, {
+              agent_guid: guidMenber3,
+              key: 'wechat',
+              value: "testWechat3"
+            }, {
+              agent_guid: guidMenber3,
+              key: 'cellphone',
+              value: "testphone3"
+            }, {
+              agent_guid: guidMenber3,
+              key: 'IDType',
+              value: "护照"
+            }, {
+              agent_guid: guidMenber3,
+              key: 'IDNumber',
+              value: "333333"
+            }, {
+              agent_guid: guidMenber3,
+              key: 'address',
+              value: "北京市 北京市市辖区 东城区"
+            }, {
+              agent_guid: guidMenber3,
+              key: 'addressDetail',
+              value: "312312312"
+            }])
           })
+
           //添加二级代理 testMember，已被被提升
         ])
 
-        console.log("添加普通招募者，未被提升 testMember")
       })
     })
   })
@@ -241,7 +310,6 @@ describe('team_bili_test', () => {
   describe('getPromotionOperableLevels', () => {
     it('get all can be promotion levels', () => {
       return testfunction("getPromotionOperableLevels").then((result) => {
-        console.log(JSON.stringify(result))
         result.length.should.equal(3)
         result[0].brand_role_code.should.equal("brand_role3")
         result[0].number.should.be.above(0)
