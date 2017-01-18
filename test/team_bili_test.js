@@ -53,7 +53,7 @@ describe('team_bili_test', () => {
         var guidMenber3 = uuid.v1()
 
         return Promise.all([
-          //添加二级代理 testMember，未被提升
+          //添加二级代理 testMember1，未被提升
           user.create({
             account: guidMenber1,
             password: "123"
@@ -121,7 +121,7 @@ describe('team_bili_test', () => {
             }])
           }),
 
-          //添加二级代理 testMember，正在提升，未被审核
+          //添加二级代理 test1Member2，正在提升，未被审核
           user.create({
             account: guidMenber2,
             password: "123"
@@ -197,7 +197,7 @@ describe('team_bili_test', () => {
             create_time: new Date().Format('yyyy-MM-dd hh:mm'),
           }),
 
-          //添加一级代理 testMember3
+          //添加一级代理 test1Member3
           user.create({
             account: guidMenber3,
             password: "123"
