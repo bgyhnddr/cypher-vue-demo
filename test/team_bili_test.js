@@ -310,6 +310,7 @@ describe('team_bili_test', () => {
   describe('getPromotionOperableLevels', () => {
     it('get all can be promotion levels', () => {
       return testfunction("getPromotionOperableLevels").then((result) => {
+        // console.log(JSON.stringify(result))
         result.length.should.equal(3)
         result[0].brand_role_code.should.equal("brand_role3")
         result[0].number.should.be.above(0)
@@ -318,11 +319,12 @@ describe('team_bili_test', () => {
   })
 
   describe('getPromotionOperableStaffs', () => {
-    it('get all can be promotion Staffs', () => {
+    it('get all can be promotion Staffs,filterKey = test1', () => {
       return testfunction("getPromotionOperableStaffs", {
         level: "brand_role3",
         filterKey: "test1",
       }).then((result) => {
+        // console.log(JSON.stringify(result))
         result.list.length.should.be.equal(1)
         result.end.should.equal(true)
       })
