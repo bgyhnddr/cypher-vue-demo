@@ -242,9 +242,9 @@ describe('team_bili_test', () => {
     it('get all can be promotion levels', () => {
       return testfunction("getPromotionOperableLevels").then((result) => {
         console.log(JSON.stringify(result))
-        result.length.should.equal(4)
-        result[0].brand_role_name.should.equal("总代理")
-        result[1].number.should.be.above(0)
+        result.length.should.equal(3)
+        result[0].brand_role_code.should.equal("brand_role3")
+        result[0].number.should.be.above(0)
       })
     })
   })
