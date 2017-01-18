@@ -123,9 +123,6 @@ var exec = {
         }
       }, {
         model: employable_rule,
-        where: {
-          employable_brand_role_code: level
-        },
         include: {
           model: brand_role,
           where: {
@@ -136,7 +133,12 @@ var exec = {
         }
       }]
     }).then((result) => {
-      var employableBrandRoleCode = result[0].employable_rules[0].employable_brand_role_code
+
+      var employable_rules = result[0].employable_rules.filter((employmentRule,index) =>{
+        return index != 0 && employmentRule.brand_role.code == level
+      })
+
+      var employableBrandRoleCode = employable_rules[0].brand_role.code
 
       var addEmployment = (account, employeeList, list) => {
         var childList = list.filter(o => o.employer_user_account == account).map(o => o)
