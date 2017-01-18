@@ -8,7 +8,7 @@
   </div>
   <div class="certificate-header">
     <div class="vux-center">
-      <img class="vux-x-img ximg-demo vux-center" alt="头像" :src="'/service/public/upload/getAttachment?id='+this.agentInfo.headImg" />
+      <img class="vux-x-img ximg-demo vux-center" alt="头像" :src="'/service/public/upload/getAttachment?id='+this.headImg" />
     </div>
   </div>
   <div class="certificate-messages ">
@@ -16,25 +16,26 @@
       <div>
         <cell>
           <div slot="icon">用户名：
-            <label>{{agentInfo.account}}</label>
+            <label>{{agentInfo.user_account}}</label>
           </div>
         </cell>
         <cell>
           <div slot="icon">授权品牌：
-            <label>{{agentInfo.brand}}</label>
+            <label>{{agentInfo.user.employment.brand.name}}</label>
           </div>
-          <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+this.agentInfo.account+'/froze'+'/#'+'/#'+'/'+this.agentInfo.account}">查看授权证书</x-button>
+          <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+this.agentInfo.user.account+'/froze'+'/#'+'/#'+'/'+this.agentInfo.user.account}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">授权等级：
-            <label>{{agentInfo.brand_role}}</label>
+            <label>{{agentInfo.agent_brand_role.brand_role.name}}</label>
           </div>
         </cell>
-        <cell v-if="agentInfo.employerFlag">
+        <cell>
           <div slot="icon">授权上级：
-            <label>{{agentInfo.employer}}</label>
+            <label>{{agentInfo.user.employment.user.agent.agent_detail.name }}
+            </label>
           </div>
-          <x-button type="default" class="certificate-views " v-link="{path: '/accountManagement/CertificateInfo/'+this.agentInfo.employer_account+'/froze'+'/#'+'/#'+'/'+this.agentInfo.account}">查看授权证书</x-button>
+          <x-button type="default" class="certificate-views " v-link="{path: '/accountManagement/CertificateInfo/'+this.agentInfo.user.employment.employer_user_account+'/froze'+'/#'+'/#'+'/'+this.agentInfo.user.account}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">姓名：
@@ -83,18 +84,24 @@ import employAPI from '../../api/employment'
 export default {
   data() {
     return {
+      headImg: null,
       agentInfo: {
-        employerFlag: false,
-        headImg: null,
-        account: "",
-        brand: "",
-        brand_role: "",
-        brand_role_code:"",
-        employer: "",
-        employer_account: "",
-        agent_detail: {}
+        user: {
+          employment: {
+            brand: {},
+            user: {
+              agent: {
+                agent_detail: {}
+              }
+            }
+          }
+        },
+        agent_detail: {},
+        agent_brand_role: {
+          brand_role: {}
+        }
       },
-      show:false
+      show: false
     }
   },
   components: {
@@ -106,9 +113,9 @@ export default {
   },
   methods: {
     onClickBack() {
-      this.$route.router.go("/teamManagement/frozenMember/" + this.agentInfo.brand_role_code)
+      this.$route.router.go("/teamManagement/frozenMember/" + this.agentInfo.agent_brand_role.brand_role_code)
     },
-    Froze(){
+    Froze() {
       this.show = true
     },
     getAgentInfo() {
@@ -116,13 +123,7 @@ export default {
       employAPI.getAgentDetail({
         account: that.$route.params.account
       }).then(function(result) {
-        that.agentInfo.account = result.user.account
-        that.agentInfo.agent_detail = result.agent_detail
-        that.agentInfo.brand = result.user.employment.brand.name
-        that.agentInfo.brand_role = result.agent_brand_role.brand_role.name
-        that.agentInfo.brand_role_code = result.agent_brand_role.brand_role_code
-        that.agentInfo.employer = result.user.employment.user.agent.agent_detail.name
-        that.agentInfo.employer_account = result.user.employment.employer_user_account
+        that.agentInfo = result
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err
@@ -133,7 +134,7 @@ export default {
       employAPI.getHeadImg({
         account: that.$route.params.account
       }).then(function(result) {
-        that.agentInfo.headImg = parseInt(result.value)
+        that.headImg = parseInt(result.value)
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err
@@ -163,7 +164,7 @@ export default {
   min-height: 485px;
 }
 
-.certificate-header img{
+.certificate-header img {
   border: 0;
   background-size: 100%;
   width: 25%;
