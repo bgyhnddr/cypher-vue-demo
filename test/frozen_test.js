@@ -185,7 +185,7 @@ describe('frozen-test', () => {
       return testfunction("getFrozenMembers", {
         roleCode: "brand_role4"
       }).then((result) => {
-        return result.length.should.equal(1)
+         result.length.should.equal(1)
       })
     })
   })
@@ -194,7 +194,14 @@ describe('frozen-test', () => {
       return testfunction("FrozenAgent", {
         agent: "123"
       }).then((result) => {
-        return result.should.equal('OK')
+        result.should.equal('OK')
+      })
+    })
+    it('frozen agent', () => {
+      return testfunction("FrozenAgent", {
+        agent: "123"
+      }).then((result) => {
+        result.should.equal('代理已被冻结')
       })
     })
   })
@@ -203,14 +210,14 @@ describe('frozen-test', () => {
       return testfunction("ThawAgent", {
         agent: "321"
       }).then((result) => {
-        return result.should.equal('OK')
+        result.should.equal('OK')
       })
     })
     it('thaw agent not_frozen', () => {
       return testfunction("ThawAgent", {
         agent: "321"
       }).then((result) => {
-        return result.should.equal('代理未被冻结')
+        result.should.equal('代理未被冻结')
       })
     })
   })

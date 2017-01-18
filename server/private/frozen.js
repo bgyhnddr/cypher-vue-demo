@@ -116,11 +116,22 @@ var exec = {
   FrozenAgent(req, res, next) {
     var agent = req.body.agent
     var frozen_agent = require('../../db/models/frozen_agent')
-    return frozen_agent.create({
-      agent_guid: agent
-    }).then((result) => {
-      return "OK"
+    return frozen_agent.findOne({
+      where:{
+        agent_guid:agent
+      }
+    }).then((result)=>{
+      if(result){
+        return Promise.reject("代理已被冻结")
+      }else{
+        return frozen_agent.create({
+          agent_guid: agent
+        }).then((result) => {
+          return "OK"
+        })
+      }
     })
+
   },
 
   /*解冻代理
