@@ -1,14 +1,11 @@
 <template>
 <div>
   <div class="vux-demo-header-box wapmain-header" slot="header">
-    <x-header :left-options="{showBack: false}">冻结团队成员</x-header>
+    <x-header :left-options="{showBack: false}">{{pageTitle}}</x-header>
     <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
   </div>
-  <group>
-    <x-input class="weui_cell_primary" title='' placeholder="输入手机号码/代理姓名进行搜索" :value.sync="keyword" :show-clear=false :required="false"></x-input>
-    <button @click="search">搜索</button>
-  </group>
-  <div>
+  <search-frozen :show-search.sync="showSearch" :page-title.sync="pageTitle"></search-frozen>
+  <div v-show="!showSearch">
     <group v-for="level in forzenLevels">
       <cell :title="($index + 1) + '.' + level.brand_role_name" @click="goToForzenMemberPage(level.brand_role_code)" is-link>
         <div slot="value">
@@ -31,6 +28,7 @@ import {
   Alert
 } from 'vux'
 import FrozenAPI from '../../api/frozen'
+import SearchFrozen from './SearchFrozen'
 
 export default {
   components: {
@@ -38,11 +36,14 @@ export default {
     Group,
     Cell,
     XInput,
-    Alert
+    Alert,
+    SearchFrozen
   },
   data() {
     return {
       forzenLevels: {},
+      pageTitle: "冻结团队成员",
+      showSearch: false,
       alert: {
         showCatchError: false,
         catchErrorMsg: null
@@ -67,7 +68,7 @@ export default {
     },
     goToForzenMemberPage(brandRoleCode) {
       console.log("brandRoleCode:" + brandRoleCode)
-      this.$route.router.go("/teamManagement/frozenMember/"+brandRoleCode)
+      this.$route.router.go("/teamManagement/frozenMember/" + brandRoleCode)
     },
     search() {
       console.log("搜索")
