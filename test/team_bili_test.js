@@ -56,7 +56,7 @@ describe('team_bili_test', () => {
 
 
         return Promise.all([
-          //添加二级代理 testMember1，未被提升
+          //添加二级代理 成员一，未被提升
           user.create({
             account: guidMember1,
             password: "123"
@@ -96,7 +96,7 @@ describe('team_bili_test', () => {
             }, {
               agent_guid: guidMember1,
               key: 'name',
-              value: "testMember1"
+              value: "成员一"
             }, {
               agent_guid: guidMember1,
               key: 'wechat',
@@ -104,7 +104,7 @@ describe('team_bili_test', () => {
             }, {
               agent_guid: guidMember1,
               key: 'cellphone',
-              value: "testphone1"
+              value: "13111111111"
             }, {
               agent_guid: guidMember1,
               key: 'IDType',
@@ -133,7 +133,7 @@ describe('team_bili_test', () => {
             create_time: new Date().Format('yyyy-MM-dd hh:mm'),
           }),
 
-          //添加二级代理 test1Member2，正在提升，未被审核
+          //添加二级代理 成员二，正在提升，未被审核
           user.create({
             account: guidMember2,
             password: "123"
@@ -181,7 +181,7 @@ describe('team_bili_test', () => {
             }, {
               agent_guid: guidMember2,
               key: 'name',
-              value: "test1Member2"
+              value: "成员二"
             }, {
               agent_guid: guidMember2,
               key: 'wechat',
@@ -189,7 +189,7 @@ describe('team_bili_test', () => {
             }, {
               agent_guid: guidMember2,
               key: 'cellphone',
-              value: "testphone2"
+              value: "13222222222"
             }, {
               agent_guid: guidMember2,
               key: 'IDType',
@@ -218,7 +218,7 @@ describe('team_bili_test', () => {
             create_time: new Date().Format('yyyy-MM-dd hh:mm'),
           }),
 
-          //添加销售员 test1Member3
+          //添加销售员 成员三
           user.create({
             account: guidMember3,
             password: "123"
@@ -258,7 +258,7 @@ describe('team_bili_test', () => {
             }, {
               agent_guid: guidMember3,
               key: 'name',
-              value: "test1Member3"
+              value: "成员三"
             }, {
               agent_guid: guidMember3,
               key: 'wechat',
@@ -266,7 +266,7 @@ describe('team_bili_test', () => {
             }, {
               agent_guid: guidMember3,
               key: 'cellphone',
-              value: "testphone3"
+              value: "13333333333"
             }, {
               agent_guid: guidMember3,
               key: 'IDType',
@@ -340,12 +340,12 @@ describe('team_bili_test', () => {
   })
 
   describe('getPromotionOperableStaffs', () => {
-    it('get not level , filterKey="test1"', () => {
+    it('get not level , filterKey="成员"', () => {
       return testfunction("getPromotionOperableStaffs", {
-        filterKey: "test1",
+        filterKey: "成员",
       }).then((result) => {
         // console.log(JSON.stringify(result))
-        result.list.length.should.be.equal(2)
+        result.list.length.should.be.equal(3)
         result.end.should.equal(true)
       })
     })
