@@ -8,11 +8,11 @@
     <x-input class="weui_cell_primary" title='' placeholder="输入手机号码/代理姓名进行搜索" :value.sync="keyword" :show-clear=false :required="false"></x-input>
     <button @click="search">搜索</button>
   </group>
-  <div v-if="showMembersModel">
-    <group v-for="member in getMembers.list">
-      <cell :title="getMemberName(member)" @click="goToPromoteAgentPage(member)" is-link>
-      </cell>
+  <div v-if="showModel.membersModel">
+    <group v-for="member in memberData.getMembers.list">
+      <cell :title="getMemberName(member)" @click="goToPromoteAgentPage(member)" is-link></cell>
     </group>
+    <x-button v-show="showModel.loadMoreBtn" @click="loadMember" class="more">点击可加载更多内容</x-button>
   </div>
 </div>
 <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
@@ -25,6 +25,7 @@ import {
   Group,
   Cell,
   XInput,
+  XButton,
   Alert
 } from 'vux'
 import promoteAPI from '../../api/promote'
@@ -35,11 +36,12 @@ export default {
     Group,
     Cell,
     XInput,
+    XButton,
     Alert
   },
   watch: {
     'keyword' () {
-      this.showMembersModel = false
+      this.showModel.membersModel = false
     },
   },
   props: {
@@ -53,12 +55,20 @@ export default {
   data() {
     return {
       headerTitle: null,
-      getMembers: {
-        end: null,
-        list: []
+      memberData: {
+        page: 0,
+        getMembers: {
+          end: null,
+          list: []
+        }
+      },
+      showModel:{
+        membersModel: false,
+        LoadMoreBtn : false
       },
       chooseLevel: null,
-      showMembersModel: false,
+
+      firstSearchFlag: false,
       alert: {
         showCatchError: false,
         catchErrorMsg: null,
@@ -72,6 +82,15 @@ export default {
       this.keyword = null
 
       this.showPromoteLevelListPage = true
+    },
+    getMemberName(member) {
+      var name = null
+      member.user.agent.agent_details.forEach((detailItem) => {
+        if (detailItem.key == "name") {
+          name = detailItem.value
+        }
+      })
+      return name
     },
     search() {
       var that = this
@@ -93,10 +112,10 @@ export default {
     },
     loadPromoteMembers() {
       var that = this
-      var searchArgs = {}
+      var searchArgs = {
+        page:0
+      }
 
-      console.log(JSON.stringify(this.chooseLevel))
-      console.log(this.keyword)
       if (this.chooseLevel) {
         searchArgs.level = this.chooseLevel.brand_role_code
       }
@@ -104,33 +123,69 @@ export default {
       if (this.keyword) {
         searchArgs.filterKey = this.keyword.trim()
       }
-      console.log(JSON.stringify(searchArgs))
 
       promoteAPI.getPromotionOperableStaffs(searchArgs).then((result) => {
-        console.log(JSON.stringify(result))
-        that.getMembers.end = result.end
-        that.getMembers.list = result.list
 
-        that.showMembersModel = true
-        that.showPromoteLevelListPage = false
+        if (that.firstSearchFlag && result.list.length == 0) {
+          that.alert.showCatchError = true
+          that.alert.catchErrorMsg = "无此提拔团队成员"
+        } else if (result.list.length == 0) {
+          that.alert.showErrorNoHandled = true
+          that.alert.errorMsgNoHandled = "无此提拔团队成员"
+        } else {
+          that.firstSearchFlag = false
+          that.memberData.getMembers.end = result.end
+          that.memberData.getMembers.list = result.list
+          that.memberData.page = 1
+
+          if (result.end) {
+            that.showModel.loadMoreBtn = false
+          } else {
+            that.showModel.loadMoreBtn = true
+          }
+
+          that.showModel.membersModel = true
+          that.showPromoteLevelListPage = false
+        }
       }).catch((err) => {
         that.showCatchError = true
-        that.catchErrorMsg = err
+        that.catchErrorMsg = "加载可提拔团队成员异常，请稍后再试"
       })
     },
-    getMemberName(member) {
-      var name = null
-      member.user.agent.agent_details.forEach((detailItem) => {
-        if (detailItem.key == "name") {
-          name = detailItem.value
+    loadMember(){
+      var that = this
+      var searchArgs = {
+        page:this.memberData.page
+      }
+
+      if (this.chooseLevel) {
+        searchArgs.level = this.chooseLevel.brand_role_code
+      }
+
+      if (this.keyword) {
+        searchArgs.filterKey = this.keyword.trim()
+      }
+
+      promoteAPI.getPromotionOperableStaffs(searchArgs).then(function(result) {
+        result.list.map((o) => {
+          that.memberData.getMembers.list.push(o)
+        })
+        that.memberData.getMembers.end = result.end
+
+        if (result.end) {
+          that.showModel.loadMoreBtn = false
+        } else {
+          that.memberData.page += 1
+          that.showModel.loadMoreBtn = true
         }
+
+      }).catch(function(err) {
+        that.alert.showCatchError = true
+        that.alert.catchErrorMsg = "加载可提拔团队成员异常，请稍后再试"
       })
-      return name
     },
     goToPromoteAgentPage(member) {
-      console.log(JSON.stringify(member))
-      console.log(member.user.account)
-        // this.$route.router.go("/teamManagement/promoteAgent/" + member.user.account)
+      this.$route.router.go("/teamManagement/promoteAgent/" + member.user.account)
     },
     errorHandled() {
       this.onClickBack()
@@ -140,8 +195,9 @@ export default {
     promoteMemberSearch(chooseLevel) {
       if (chooseLevel == null) {
         this.chooseLevel = chooseLevel
-        this.headerTitle = "提拔团队成员"
+        this.headerTitle = "搜索提拔团队成员"
         this.search()
+        this.firstSearchFlag = true
       } else {
         this.headerTitle = chooseLevel.brand_role_name
         this.chooseLevel = chooseLevel
