@@ -47,11 +47,23 @@ var exec = {
       var frozenLevelsData = []
       var employableRules = result[0].employable_rules
 
+      var addEmployment = (account, employeeList, list) => {
+        var childList = list.filter(o => o.employer_user_account == account).map(o => o)
+        Array.prototype.push.apply(employeeList, childList)
+        childList.forEach((o) => {
+          addEmployment(o.employee_user_account, employeeList, list)
+        })
+      }
+
       return employment.findAll({
         where: {
           status: '已审核',
           audit_result: '已通过'
         }
+      }).then((result) => {
+        var employeeList = []
+        addEmployment(user_account, employeeList, result)
+        return employeeList
       }).then((result) => {
         return employableRules.map((employableRuleItem) => {
           return {
@@ -91,7 +103,7 @@ var exec = {
       }
     }).then((result) => {
       return agent.findAll({
-        include: [frozen_agent,agent_detail, {
+        include: [frozen_agent, agent_detail, {
           model: agent_brand_role,
           include: brand_role,
           where: {
@@ -139,7 +151,7 @@ var exec = {
         model: agent,
         include: [{
           model: agent_brand_role,
-          include:brand_role
+          include: brand_role
         }, agent_detail]
       }]
     }).then((result) => {
