@@ -279,98 +279,121 @@ var exec = {
     var agent_promotion = require('../../db/models/agent_promotion')
     var brand = require('../../db/models/brand')
 
-    employment.belongsTo(user, {
-      foreignKey: "employee_user_account"
+    agent_promotion.belongsTo(user, {
+      foreignKey: "promotee_user_account"
     })
     user.hasOne(agent)
     agent.hasOne(agent_brand_role)
     agent_brand_role.belongsTo(brand_role)
     brand_role.belongsTo(brand)
 
-    return employment.findOne({
-        where: {
-          agent_promotion_guid: {
-            $ne: null
-          },
-          employee_user_account: promotee_user_account,
-          status: '未审核'
-        },
+    return agent_promotion.findOne({
+      where: {
+        promotee_user_account: promotee_user_account,
+        status: true
+      },
+      include: {
+        model: user,
         include: {
-          model: user,
+          model: agent,
           include: {
-            model: agent,
+            model: agent_brand_role,
             include: {
-              model: agent_brand_role,
-              include: {
-                model: brand_role
-              }
+              model: brand_role
             }
           }
         }
-      }).then(function(result) {
-        if (result != null) {
-          if (result.brand_role_code == level && result.employer_user_account == promoter_user_account) {
-            return result.agent_promotion_guid
-          } else {
-            return Promise.reject("该代理已提交提拔审核，请勿再次提拔")
-          }
+      }
+    }).then(function(result) {
+      if (result != null) {
+        if (result.brand_role_code == level && result.promoter_user_account == promoter_user_account) {
+          return result.guid
         } else {
-          return agent.findOne({
-            where: {
-              user_account: promoter_user_account
-            },
+          return Promise.reject("该代理已提交提拔审核，请勿再次提拔。请待审核完成后，再次提拔。")
+        }
+      } else {
+        return agent.findOne({
+          where: {
+            user_account: promoter_user_account
+          },
+          include: {
+            model: agent_brand_role,
             include: {
-              model: agent_brand_role,
+              model: brand_role,
               include: {
-                model: brand_role,
-                include: {
-                  model: brand
-                }
+                model: brand
               }
             }
-          }).then((result) => {
-            return agent_promotion.create({
-              brand_guid: result.agent_brand_role.brand_role.brand.guid,
-              promoter_user_account: promoter_user_account,
-              promotee_user_account: promotee_user_account,
-              brand_role_code: level,
-              create_time: new Date().Format('yyyy-MM-dd hh:mm'),
-              status: true
-            }).then(function(result) {
-              return result.guid
-            })
+          }
+        }).then((result) => {
+          return agent_promotion.create({
+            brand_guid: result.agent_brand_role.brand_role.brand.guid,
+            promoter_user_account: promoter_user_account,
+            promotee_user_account: promotee_user_account,
+            brand_role_code: level,
+            create_time: new Date().Format('yyyy-MM-dd hh:mm'),
+            status: true
+          }).then(function(result) {
+            return result.guid
           })
-        }
-      })
+        })
+      }
+    })
   },
   /**
    * 获取提拔申请
    * get
    */
-   getPromotion(req, res, next){
-     var promotionGuid = req.query.promotionGuid
+  getPromotion(req, res, next) {
+    var promotionGuid = req.query.promotionGuid
 
-     var employment = require('../../db/models/employment')
-     var agent_promotion = require('../../db/models/agent_promotion')
+    var employment = require('../../db/models/employment')
+    var agent_promotion = require('../../db/models/agent_promotion')
 
-     agent_promotion.hasOne(employment)
+    agent_promotion.hasOne(employment)
 
-     return agent_promotion.findOne({
-         where: {
-           guid: promotionGuid
-         },
-         include: {
-           model: employment
-         }
-       }).then(function(result) {
-         if (result != null) {
-           return result
-         } else {
-           return Promise.reject("找不到记录")
-         }
-       })
+    return agent_promotion.findOne({
+      where: {
+        guid: promotionGuid
+      },
+      include: {
+        model: employment
+      }
+    }).then(function(result) {
+      if (result != null) {
+        return result
+      } else {
+        return Promise.reject("找不到记录")
+      }
+    })
 
-   }
+  },
+  /**
+   * 被提拔者确认提拔申请
+   * post
+   */
+  confirmPromotion(req, res, next) {
+    var promotee_user_account = req.session.userInfo.name
+    var promotionGuid = req.query.promotionGuid
+
+    var employment = require('../../db/models/employment')
+    var agent_promotion = require('../../db/models/agent_promotion')
+
+    return agent_promotion.findOne({
+      where: {
+        guid: promotionGuid
+      }
+    }).then(function(result) {
+      if (result != null) {
+        return result
+      } else {
+        return Promise.reject("找不到记录")
+      }
+    })
+
+  }
+
+
 }
 
 module.exports = (req, res, next) => {
