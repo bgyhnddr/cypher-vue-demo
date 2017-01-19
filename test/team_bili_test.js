@@ -35,21 +35,21 @@ describe('team_bili_test', () => {
       return role_permission.findOne({
         where: {
           role_code: "user",
-          permission_code: "promotion"
+          permission_code: "promote"
         }
       }).then((result) => {
         if (result == null) {
           return Promise.all([
             role_permission.create({
               role_code: "user",
-              permission_code: "promotion"
+              permission_code: "promote"
             }),
             permission.create({
-              code: "promotion",
-              name: "promotion"
+              code: "promote",
+              name: "promote"
             })
           ])
-          console.log("添加promotion promission")
+          console.log("添加promote promission")
         }
       }).then(() => {
 
@@ -122,6 +122,15 @@ describe('team_bili_test', () => {
               key: 'addressDetail',
               value: "312312312"
             }])
+          }),
+          agent_promotion.create({
+            guid: guidMember1,
+            promoter_user_account: "admin",
+            promotee_user_account: guidMember1,
+            brand_role_code: "brand_role2",
+            brand_guid: "brand1",
+            status: true,
+            create_time: new Date().Format('yyyy-MM-dd hh:mm'),
           }),
 
           //添加二级代理 test1Member2，正在提升，未被审核
@@ -204,6 +213,7 @@ describe('team_bili_test', () => {
             promoter_user_account: "admin",
             promotee_user_account: guidMember2,
             brand_role_code: "brand_role2",
+            brand_guid: "brand1",
             status: true,
             create_time: new Date().Format('yyyy-MM-dd hh:mm'),
           }),
@@ -301,7 +311,7 @@ describe('team_bili_test', () => {
 
   var testfunction = (action, params) => {
     try {
-      return require('../server/private/promotion')({
+      return require('../server/private/promote')({
         session: {
           userInfo: {
             name: "admin"
@@ -330,13 +340,12 @@ describe('team_bili_test', () => {
   })
 
   describe('getPromotionOperableStaffs', () => {
-    it('get level="brand_role3" , filterKey="test1"', () => {
+    it('get not level , filterKey="test1"', () => {
       return testfunction("getPromotionOperableStaffs", {
-        level: "brand_role3",
         filterKey: "test1",
       }).then((result) => {
         // console.log(JSON.stringify(result))
-        result.list.length.should.be.equal(1)
+        result.list.length.should.be.equal(2)
         result.end.should.equal(true)
       })
     })
@@ -387,12 +396,33 @@ describe('team_bili_test', () => {
   })
 
   describe('getPromotion', () => {
-    it('get promotion guid = guidMember2', () => {
+    it('get promotion guid = guidMember2, 有未审核记录', () => {
       return testfunction("getPromotion", {
         promotionGuid: guidMember2,
       }).then((result) => {
         // console.log(JSON.stringify(result))
         result.promotee_user_account.should.be.equal(guidMember2)
+      })
+    })
+
+    it('get promotion guid = guidMember1, 未确认提拔申请', () => {
+      return testfunction("getPromotion", {
+        promotionGuid: guidMember1,
+      }).then((result) => {
+        // console.log(JSON.stringify(result))
+        result.promotee_user_account.should.be.equal(guidMember1)
+      })
+    })
+  })
+
+  describe('confirmPromotion', () => {
+    it('test1Member2 confirm Promotion', () => {
+      return testfunction("confirmPromotion", {
+        promotionGuid: guidMember2,
+      }).then((result) => {
+        // console.log(JSON.stringify(result))
+        result.agent_promotion_guid.should.be.equal(guidMember2)
+        result.status.should.be.equal("未审核")
       })
     })
   })
