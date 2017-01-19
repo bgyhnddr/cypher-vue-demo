@@ -342,8 +342,35 @@ var exec = {
           })
         }
       })
-  }
+  },
+  /**
+   * 获取提拔申请
+   * get
+   */
+   getPromotion(req, res, next){
+     var promotionGuid = req.query.promotionGuid
 
+     var employment = require('../../db/models/employment')
+     var agent_promotion = require('../../db/models/agent_promotion')
+
+     agent_promotion.hasOne(employment)
+
+     return agent_promotion.findOne({
+         where: {
+           guid: promotionGuid
+         },
+         include: {
+           model: employment
+         }
+       }).then(function(result) {
+         if (result != null) {
+           return result
+         } else {
+           return Promise.reject("找不到记录")
+         }
+       })
+
+   }
 }
 
 module.exports = (req, res, next) => {
