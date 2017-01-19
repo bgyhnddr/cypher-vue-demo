@@ -85,43 +85,64 @@ describe('team_bili_test', () => {
             audit_time: new Date().Format('yyyy-MM-dd hh:mm'),
             audit_result: "已通过"
           }).then(function(result) {
-            agent_detail.bulkCreate([{
-              agent_guid: guidMember1,
-              key: 'employer',
-              value: "admin"
-            }, {
-              agent_guid: guidMember1,
-              key: 'headImg',
-              value: "1"
-            }, {
-              agent_guid: guidMember1,
-              key: 'name',
-              value: "成员一"
-            }, {
-              agent_guid: guidMember1,
-              key: 'wechat',
-              value: "testWechat1"
-            }, {
-              agent_guid: guidMember1,
-              key: 'cellphone',
-              value: "13111111111"
-            }, {
-              agent_guid: guidMember1,
-              key: 'IDType',
-              value: "护照"
-            }, {
-              agent_guid: guidMember1,
-              key: 'IDNumber',
-              value: "111111"
-            }, {
-              agent_guid: guidMember1,
-              key: 'address',
-              value: "北京市 北京市市辖区 东城区"
-            }, {
-              agent_guid: guidMember1,
-              key: 'addressDetail',
-              value: "312312312"
-            }])
+            agent_detail.findOne({
+              where: {
+                value: "成员一"
+              }
+            }).then((result) => {
+              if (result == null) {
+                agent_detail.bulkCreate([{
+                  agent_guid: guidMember1,
+                  key: 'employer',
+                  value: "admin"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'headImg',
+                  value: "1"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'name',
+                  value: "成员一"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'wechat',
+                  value: "testWechat1"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'cellphone',
+                  value: "13111111111"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'IDType',
+                  value: "护照"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'IDNumber',
+                  value: "111111"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'address',
+                  value: "北京市 北京市市辖区 东城区"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'addressDetail',
+                  value: "312312312"
+                }])
+              } else {
+                agent_detail.findAll({
+                  where: {
+                    agent_guid: result.agent_guid
+                  }
+                }).then((result) => {
+                  result.forEach((item) => {
+                    item.agent_guid = guidMember1
+                    item.save()
+                  })
+                })
+
+              }
+            })
+
           }),
           agent_promotion.create({
             guid: guidMember1,
@@ -170,43 +191,62 @@ describe('team_bili_test', () => {
             employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
             status: "未审核",
           }).then(function(result) {
-            agent_detail.bulkCreate([{
-              agent_guid: guidMember2,
-              key: 'employer',
-              value: "admin"
-            }, {
-              agent_guid: guidMember2,
-              key: 'headImg',
-              value: "1"
-            }, {
-              agent_guid: guidMember2,
-              key: 'name',
-              value: "成员二"
-            }, {
-              agent_guid: guidMember2,
-              key: 'wechat',
-              value: "testWechat2"
-            }, {
-              agent_guid: guidMember2,
-              key: 'cellphone',
-              value: "13222222222"
-            }, {
-              agent_guid: guidMember2,
-              key: 'IDType',
-              value: "护照"
-            }, {
-              agent_guid: guidMember2,
-              key: 'IDNumber',
-              value: "222222"
-            }, {
-              agent_guid: guidMember2,
-              key: 'address',
-              value: "北京市 北京市市辖区 东城区"
-            }, {
-              agent_guid: guidMember2,
-              key: 'addressDetail',
-              value: "312312312"
-            }])
+            agent_detail.findOne({
+              where: {
+                value: "成员二"
+              }
+            }).then((result) => {
+              if (result == null) {
+                agent_detail.bulkCreate([{
+                  agent_guid: guidMember2,
+                  key: 'employer',
+                  value: "admin"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'headImg',
+                  value: "1"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'name',
+                  value: "成员二"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'wechat',
+                  value: "testWechat2"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'cellphone',
+                  value: "13222222222"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'IDType',
+                  value: "护照"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'IDNumber',
+                  value: "222222"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'address',
+                  value: "北京市 北京市市辖区 东城区"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'addressDetail',
+                  value: "312312312"
+                }])
+              }else{
+                agent_detail.findAll({
+                  where: {
+                    agent_guid: result.agent_guid
+                  }
+                }).then((result) => {
+                  result.forEach((item) => {
+                    item.agent_guid = guidMember2
+                    item.save()
+                  })
+                })
+              }
+            })
           }),
           agent_promotion.create({
             guid: guidMember2,
@@ -247,43 +287,62 @@ describe('team_bili_test', () => {
             audit_time: new Date().Format('yyyy-MM-dd hh:mm'),
             audit_result: "已通过"
           }).then(function(result) {
-            agent_detail.bulkCreate([{
-              agent_guid: guidMember3,
-              key: 'employer',
-              value: "admin"
-            }, {
-              agent_guid: guidMember3,
-              key: 'headImg',
-              value: "1"
-            }, {
-              agent_guid: guidMember3,
-              key: 'name',
-              value: "成员三"
-            }, {
-              agent_guid: guidMember3,
-              key: 'wechat',
-              value: "testWechat3"
-            }, {
-              agent_guid: guidMember3,
-              key: 'cellphone',
-              value: "13333333333"
-            }, {
-              agent_guid: guidMember3,
-              key: 'IDType',
-              value: "护照"
-            }, {
-              agent_guid: guidMember3,
-              key: 'IDNumber',
-              value: "333333"
-            }, {
-              agent_guid: guidMember3,
-              key: 'address',
-              value: "北京市 北京市市辖区 东城区"
-            }, {
-              agent_guid: guidMember3,
-              key: 'addressDetail',
-              value: "312312312"
-            }])
+            agent_detail.findOne({
+              where: {
+                value: "成员三"
+              }
+            }).then((result) => {
+              if (result == null) {
+                agent_detail.bulkCreate([{
+                  agent_guid: guidMember3,
+                  key: 'employer',
+                  value: "admin"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'headImg',
+                  value: "1"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'name',
+                  value: "成员三"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'wechat',
+                  value: "testWechat3"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'cellphone',
+                  value: "13333333333"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'IDType',
+                  value: "护照"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'IDNumber',
+                  value: "333333"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'address',
+                  value: "北京市 北京市市辖区 东城区"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'addressDetail',
+                  value: "312312312"
+                }])
+              } else{
+                agent_detail.findAll({
+                  where: {
+                    agent_guid: result.agent_guid
+                  }
+                }).then((result) => {
+                  result.forEach((item) => {
+                    item.agent_guid = guidMember3
+                    item.save()
+                  })
+                })
+              }
+            })
           })
 
           //添加二级代理 testMember，已被被提升
