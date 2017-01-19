@@ -16,5 +16,8 @@ export default {
   },
   getPromotion(params) {
       return httpRequest.get(path + 'getPromotion',params)
-  }
+  },
+  confirmPromotion(params) {
+      return httpRequest.post(path + 'confirmPromotion',params)
+  },
 }
