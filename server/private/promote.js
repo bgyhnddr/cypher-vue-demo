@@ -137,11 +137,17 @@ var exec = {
       }]
     }).then((result) => {
 
-      var employable_rules = result[0].employable_rules.filter((employmentRule, index) => {
-        return index != 0 && employmentRule.brand_role.code == level
-      })
+      var employableRules = result[0].employable_rules.filter((employmentRule, index) => {
+        return index != 0
+      }).map(o => o)
 
-      var employableBrandRoleCode = employable_rules[0].brand_role.code
+      var where = {
+        status: '已审核',
+        audit_result: '已通过'
+      }
+      if (level) {
+        where.brand_role_code = level
+      }
 
       var addEmployment = (account, employeeList, list) => {
         var childList = list.filter(o => o.employer_user_account == account).map(o => o)
@@ -152,11 +158,7 @@ var exec = {
       }
 
       return employment.findAll({
-        where: {
-          brand_role_code: employableBrandRoleCode,
-          status: '已审核',
-          audit_result: '已通过'
-        },
+        where: where,
         order: "employment.created_at DESC",
         include: {
           model: user,
@@ -183,6 +185,7 @@ var exec = {
                 return detailItem.value.match(filterKey) != null
               }
             }).map(o => o)
+
             return hasFilterKeyDetailLists.length > 0
           }).map(o => o)
         }
@@ -386,7 +389,7 @@ var exec = {
     }).then(function(result) {
       if (result != null) {
         result.agree_time = new Date().Format('yyyy-MM-dd hh:mm')
-        return result.save().then((result) =>{
+        return result.save().then((result) => {
           return employment.create({
             agent_promotion_guid: result.guid,
             brand_guid: result.brand_guid,

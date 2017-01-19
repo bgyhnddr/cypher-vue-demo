@@ -340,13 +340,12 @@ describe('team_bili_test', () => {
   })
 
   describe('getPromotionOperableStaffs', () => {
-    it('get level="brand_role3" , filterKey="test1"', () => {
+    it('get not level , filterKey="test1"', () => {
       return testfunction("getPromotionOperableStaffs", {
-        level: "brand_role3",
         filterKey: "test1",
       }).then((result) => {
         // console.log(JSON.stringify(result))
-        result.list.length.should.be.equal(1)
+        result.list.length.should.be.equal(2)
         result.end.should.equal(true)
       })
     })
