@@ -77,10 +77,12 @@ var exec = {
     var agent_detail = require('../../db/models/agent_detail')
     var agent_brand_role = require('../../db/models/agent_brand_role')
     var brand_role = require('../../db/models/brand_role')
+    var frozen_agent = require('../../db/models/frozen_agent')
 
     agent_brand_role.belongsTo(brand_role)
     agent.hasOne(agent_brand_role)
     agent.hasMany(agent_detail)
+    agent.hasOne(frozen_agent)
 
     return employment.findAll({
       where: {
@@ -89,7 +91,7 @@ var exec = {
       }
     }).then((result) => {
       return agent.findAll({
-        include: [agent_detail, {
+        include: [frozen_agent,agent_detail, {
           model: agent_brand_role,
           include: brand_role,
           where: {

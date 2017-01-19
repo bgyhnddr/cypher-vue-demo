@@ -7,9 +7,10 @@
   <search-frozen :show-search.sync="showSearch" :page-title.sync="pageTitle"></search-frozen>
   <div v-show="!showSearch">
     <group v-for="level in forzenLevels">
-      <cell :title="($index + 1) + '.' + level.brand_role_name" @click="goToForzenMemberPage(level.brand_role_code)" is-link>
-        <div slot="value">
-          <span>{{level.number}}人</span>
+      <cell @click="goToForzenMemberPage(level.brand_role_code)" is-link>
+        <span>{{level.number}}人</span>
+        <div slot="icon">
+          <span>{{($index + 1) + '.' + level.brand_role_name}}</span>
         </div>
       </cell>
     </group>

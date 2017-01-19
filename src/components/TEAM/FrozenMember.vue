@@ -6,7 +6,11 @@
 <search-frozen :show-search.sync="showSearch" :page-title.sync="pageTitle"></search-frozen>
 <div v-show = "!showSearch">
   <group v-for="member in MemberList">
-    <cell :title="member.agent_detail.name" @click="goToForzenAgent(member.user_account)" is-link>
+    <cell @click="goToForzenAgent(member.user_account)" is-link>
+      <span v-if="member.frozen_agent">已冻结</span>
+      <div slot="icon">
+        <span>{{member.agent_detail.name}}</span>
+      </div>
     </cell>
   </group>
 </div>
@@ -54,6 +58,7 @@ export default {
       FrozenAPI.getFrozenMembers({
         roleCode: BrandRoleCode
       }).then(function(result) {
+        console.log(result)
         if(result.length>0){
           that.MemberList = result
           that.pageTitle = result[0].agent_brand_role.brand_role.name
