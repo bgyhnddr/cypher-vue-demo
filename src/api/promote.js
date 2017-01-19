@@ -1,5 +1,5 @@
 var httpRequest = require('../extend/http-request')
-var path = '/service/private/promotion/'
+var path = '/service/private/promote/'
 
 export default {
   getPromotionOperableLevels() {

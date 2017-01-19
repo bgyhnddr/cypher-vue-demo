@@ -35,21 +35,21 @@ describe('team_bili_test', () => {
       return role_permission.findOne({
         where: {
           role_code: "user",
-          permission_code: "promotion"
+          permission_code: "promote"
         }
       }).then((result) => {
         if (result == null) {
           return Promise.all([
             role_permission.create({
               role_code: "user",
-              permission_code: "promotion"
+              permission_code: "promote"
             }),
             permission.create({
-              code: "promotion",
-              name: "promotion"
+              code: "promote",
+              name: "promote"
             })
           ])
-          console.log("添加promotion promission")
+          console.log("添加promote promission")
         }
       }).then(() => {
 
@@ -311,7 +311,7 @@ describe('team_bili_test', () => {
 
   var testfunction = (action, params) => {
     try {
-      return require('../server/private/promotion')({
+      return require('../server/private/promote')({
         session: {
           userInfo: {
             name: "admin"
