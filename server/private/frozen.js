@@ -77,10 +77,12 @@ var exec = {
     var agent_detail = require('../../db/models/agent_detail')
     var agent_brand_role = require('../../db/models/agent_brand_role')
     var brand_role = require('../../db/models/brand_role')
+    var frozen_agent = require('../../db/models/frozen_agent')
 
     agent_brand_role.belongsTo(brand_role)
     agent.hasOne(agent_brand_role)
     agent.hasMany(agent_detail)
+    agent.hasOne(frozen_agent)
 
     return employment.findAll({
       where: {
@@ -89,7 +91,7 @@ var exec = {
       }
     }).then((result) => {
       return agent.findAll({
-        include: [agent_detail, {
+        include: [frozen_agent,agent_detail, {
           model: agent_brand_role,
           include: brand_role,
           where: {
@@ -109,6 +111,49 @@ var exec = {
       })
     })
   },
+  /*获取冻结成员
+   *post
+   */
+  getFrozenMember(req, res, next) {
+    var account = req.query.account
+    var agent = require('../../db/models/agent')
+    var agent_detail = require('../../db/models/agent_detail')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
+    var brand_role = require('../../db/models/brand_role')
+
+    agent_brand_role.belongsTo(brand_role)
+    agent_detail.belongsTo(agent)
+    agent.hasOne(agent_brand_role)
+
+    return agent_detail.findAll({
+      where: {
+        $or: [{
+          key: 'cellphone',
+          value: account
+        }, {
+          key: 'name',
+          value: account
+        }]
+      },
+      include: [{
+        model: agent,
+        include: [{
+          model: agent_brand_role,
+          include:brand_role
+        }, agent_detail]
+      }]
+    }).then((result) => {
+      return result.map((a) => {
+        obj = a.toJSON()
+        obj.agent.agent_detail = {}
+        obj.agent.agent_details.forEach((d) => {
+          obj.agent.agent_detail[d.key] = d.value
+        })
+        delete obj.agent.agent_details
+        return obj
+      })
+    })
+  },
 
   /*冻结代理
    *post
@@ -116,11 +161,22 @@ var exec = {
   FrozenAgent(req, res, next) {
     var agent = req.body.agent
     var frozen_agent = require('../../db/models/frozen_agent')
-    return frozen_agent.create({
-      agent_guid: agent
+    return frozen_agent.findOne({
+      where: {
+        agent_guid: agent
+      }
     }).then((result) => {
-      return "OK"
+      if (result) {
+        return Promise.reject("代理已被冻结")
+      } else {
+        return frozen_agent.create({
+          agent_guid: agent
+        }).then((result) => {
+          return "OK"
+        })
+      }
     })
+
   },
 
   /*解冻代理

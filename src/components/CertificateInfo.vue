@@ -7,7 +7,9 @@
     <div class="certificateinfo">
 
       <div>
-
+  <div v-if="agentInfo.frozenFlag">
+      <img src="" alt="冻结水印标识"/>
+  </div>
   <div class="certificateinfo-title">
     <img src="/static/TestIMG/certificateinfo_title.png" />
   </div>
@@ -77,6 +79,7 @@ export default {
         AuthorizationID: "",
         term_from: "",
         term_to: "",
+        frozenFlag:false,
         agent_detail: {}
       }
     }
@@ -88,6 +91,9 @@ export default {
         account: that.$route.params.account,
         role: that.$route.params.from
       }).then(function(result) {
+        if(result.frozen_agent){
+          that.agentInfo.frozenFlag = true
+        }
         that.agentInfo.term_from = result.employment_term.term_from
         that.agentInfo.term_to = result.employment_term.term_to
         that.agentInfo.AuthorizationID = result.team_agent.team.brand+result.agent_brand_role.brand_role.level+result.team_agent.team_code+result.team_agent.num

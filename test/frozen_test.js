@@ -185,32 +185,34 @@ describe('frozen-test', () => {
       return testfunction("getFrozenMembers", {
         roleCode: "brand_role4"
       }).then((result) => {
-        return result.length.should.equal(1)
+         result.length.should.equal(1)
+      })
+    })
+  })
+  describe('getFrozenMember', () => {
+    it('get exist', () => {
+      return testfunction("getFrozenMember", {
+        account: "frozenphone"
+      }).then((result) => {
+        result.length.should.equal(1)
       })
     })
   })
   describe('FrozenAgent', () => {
-    it('frozen agent', () => {
+    it('froze frozen', () => {
       return testfunction("FrozenAgent", {
         agent: "123"
       }).then((result) => {
-        return result.should.equal('OK')
+        result.should.equal('OK')
       })
     })
   })
   describe('ThawAgent', () => {
-    it('thaw agent frozen', () => {
+    it('thaw frozen', () => {
       return testfunction("ThawAgent", {
         agent: "321"
       }).then((result) => {
-        return result.should.equal('OK')
-      })
-    })
-    it('thaw agent not_frozen', () => {
-      return testfunction("ThawAgent", {
-        agent: "321"
-      }).then((result) => {
-        return result.should.equal('代理未被冻结')
+        result.should.equal('OK')
       })
     })
   })
