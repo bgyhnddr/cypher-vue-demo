@@ -385,7 +385,18 @@ var exec = {
       }
     }).then(function(result) {
       if (result != null) {
-        return result
+        result.agree_time = new Date().Format('yyyy-MM-dd hh:mm')
+        return result.save().then((result) =>{
+          return employment.create({
+            agent_promotion_guid: result.guid,
+            brand_guid: result.brand_guid,
+            brand_role_code: result.brand_role_code,
+            employer_user_account: result.promoter_user_account,
+            employee_user_account: result.promotee_user_account,
+            employer_time: result.agree_time,
+            status: "未审核",
+          })
+        })
       } else {
         return Promise.reject("找不到记录")
       }
