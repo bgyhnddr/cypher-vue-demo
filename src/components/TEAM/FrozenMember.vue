@@ -3,8 +3,11 @@
   <x-header :left-options="{showBack: false}">{{pageTitle}}</x-header>
   <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
 </div>
-<search-frozen :show-search.sync="showSearch" :page-title.sync="pageTitle"></search-frozen>
-<div v-show = "!showSearch">
+<group>
+  <x-input class="weui_cell_primary" title='' placeholder="输入手机号码/代理姓名进行搜索" :value.sync="keyword" :show-clear=false :required="false"></x-input>
+  <button @click="search">搜索</button>
+</group>
+<div>
   <group v-for="member in MemberList">
     <cell @click="goToForzenAgent(member.user_account)" is-link>
       <span v-if="member.frozen_agent">已冻结</span>
@@ -26,7 +29,6 @@ import {
   Alert
 } from 'vux'
 import FrozenAPI from '../../api/frozen'
-import SearchFrozen from './SearchFrozen'
 
 export default {
   components: {
@@ -34,14 +36,13 @@ export default {
     Group,
     Cell,
     XInput,
-    Alert,
-    SearchFrozen
+    Alert
   },
   data() {
     return {
       pageTitle: "",
+      keyword: "",
       MemberList: [],
-      showSearch:false,
       alert: {
         showCatchError: false,
         catchErrorMsg: null
@@ -52,28 +53,25 @@ export default {
     onClickBack() {
       this.$route.router.go("/teamManagement/forzenLevelList")
     },
-    loadFrozenMembers() {
+    search() {
+      this.loadFrozenMembers(this.keyword)
+    },
+    loadFrozenMembers(filterKey) {
       var that = this
       var BrandRoleCode = that.$route.params.code
       FrozenAPI.getFrozenMembers({
-        roleCode: BrandRoleCode
+        roleCode: BrandRoleCode,
+        filterKey: that.keyword
       }).then(function(result) {
-        console.log(result)
-        if(result.length>0){
-          that.MemberList = result
-          that.pageTitle = result[0].agent_brand_role.brand_role.name
-        }else{
-          that.alert.showCatchError = true
-          that.alert.catchErrorMsg = "暂无可冻结成员"
-        }
+        that.MemberList = result
+        that.pageTitle = result[0].agent_brand_role.brand_role.name
       }).catch(function(err) {
-        console.log(err)
         that.alert.showCatchError = true
-        that.alert.catchErrorMsg = "加载可冻结代理成员列表异常，请稍后再试"
+        that.alert.catchErrorMsg = err
       })
     },
     goToForzenAgent(account) {
-      this.$route.router.go("/teamManagement/frozenAgent/"+account)
+      this.$route.router.go("/teamManagement/frozenAgent/" + account)
     },
     errorHandled() {
       this.onClickBack()

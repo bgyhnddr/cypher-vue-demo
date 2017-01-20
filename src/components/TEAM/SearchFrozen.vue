@@ -55,13 +55,12 @@ export default {
       var keyword = that.keyword
       FrozenAPI.getFrozenMember({account:keyword}).then((result)=>{
         if(result.length>0){
-          console.log(result)
           that.searchResult = result
           that.pageTitle = result[0].agent.agent_brand_role.brand_role.name
           that.showSearch = true
         }else{
           that.alert.showCatchError = true
-          that.alert.catchErrorMsg = "代理不存在"
+          that.alert.catchErrorMsg = "查无此成员"
         }
       })
     },

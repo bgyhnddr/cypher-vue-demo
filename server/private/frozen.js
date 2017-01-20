@@ -83,7 +83,8 @@ var exec = {
    */
   getFrozenMembers(req, res, next) {
     var roleCode = req.query.roleCode
-    var userinfo = req.session.userInfo
+    var filterKey = req.query.filterKey
+    var user = req.session.userInfo.name
     var employment = require('../../db/models/employment')
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
@@ -96,13 +97,28 @@ var exec = {
     agent.hasMany(agent_detail)
     agent.hasOne(frozen_agent)
 
+    var addEmployment = (account, employeeList, list) => {
+      var childList = list.filter(o => o.employer_user_account == account).map(o => o.employee_user_account)
+      Array.prototype.push.apply(employeeList, childList)
+      childList.forEach((o) => {
+        addEmployment(o, employeeList, list)
+      })
+    }
+
     return employment.findAll({
       where: {
         status: '已审核',
         audit_result: '已通过'
       }
     }).then((result) => {
+      var employeeList = []
+      addEmployment(user, employeeList, result)
       return agent.findAll({
+        where: {
+          user_account: {
+            $in: employeeList
+          }
+        },
         include: [frozen_agent, agent_detail, {
           model: agent_brand_role,
           include: brand_role,
@@ -121,6 +137,21 @@ var exec = {
         delete obj.agent_details
         return obj
       })
+    }).then((result) => {
+      if (result.length>0) {
+        if (filterKey == "") {
+          return result
+        } {
+          var filterResult = result.filter((o) => o.agent_detail.name == filterKey || o.agent_detail.cellphone == filterKey)
+          if(filterResult.length>0){
+            return filterResult
+          }else{
+            return Promise.reject("查无此成员")
+          }
+        }
+      }else{
+        return Promise.reject("无可冻结成员")
+      }
     })
   },
   /*获取冻结成员
@@ -128,6 +159,8 @@ var exec = {
    */
   getFrozenMember(req, res, next) {
     var account = req.query.account
+    var user = req.session.userInfo.name
+    var employment = require('../../db/models/employment')
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
     var agent_brand_role = require('../../db/models/agent_brand_role')
@@ -137,23 +170,45 @@ var exec = {
     agent_detail.belongsTo(agent)
     agent.hasOne(agent_brand_role)
 
-    return agent_detail.findAll({
+    var addEmployment = (account, employeeList, list) => {
+      var childList = list.filter(o => o.employer_user_account == account).map(o => o.employee_user_account)
+      Array.prototype.push.apply(employeeList, childList)
+      childList.forEach((o) => {
+        addEmployment(o, employeeList, list)
+      })
+    }
+
+    return employment.findAll({
       where: {
-        $or: [{
-          key: 'cellphone',
-          value: account
-        }, {
-          key: 'name',
-          value: account
-        }]
-      },
-      include: [{
-        model: agent,
+        status: '已审核',
+        audit_result: '已通过'
+      }
+    }).then((result) => {
+      var employeeList = []
+      addEmployment(user, employeeList, result)
+      return agent_detail.findAll({
+        where: {
+          $or: [{
+            key: 'cellphone',
+            value: account
+          }, {
+            key: 'name',
+            value: account
+          }]
+        },
         include: [{
-          model: agent_brand_role,
-          include: brand_role
-        }, agent_detail]
-      }]
+          model: agent,
+          where: {
+            user_account: {
+              $in: employeeList
+            }
+          },
+          include: [{
+            model: agent_brand_role,
+            include: brand_role
+          }, agent_detail]
+        }]
+      })
     }).then((result) => {
       return result.map((a) => {
         obj = a.toJSON()
