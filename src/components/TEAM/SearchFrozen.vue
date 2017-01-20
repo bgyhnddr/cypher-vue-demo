@@ -65,7 +65,7 @@ export default {
       })
     },
     goToForzenAgent(account) {
-      this.$route.router.go("/teamManagement/frozenAgent/"+account+"/list")
+      this.$route.router.go("/teamManagement/frozenAgent/"+account+"/Frozenlist")
     }
   },
   ready() {

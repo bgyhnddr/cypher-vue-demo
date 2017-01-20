@@ -23,7 +23,7 @@
           <div slot="icon">授权品牌：
             <label>{{agentInfo.user.employment.brand.name}}</label>
           </div>
-          <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+this.agentInfo.user.account+'/froze'+'/#'+'/#'+'/'+this.agentInfo.user.account}">查看授权证书</x-button>
+          <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+agentInfo.user.account+'/'+Pagefrom+'/#'+'/#'+'/'+agentInfo.user.account}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">授权等级：
@@ -35,7 +35,7 @@
             <label>{{agentInfo.user.employment.user.agent.agent_detail.name }}
             </label>
           </div>
-          <x-button type="default" class="certificate-views " v-link="{path: '/accountManagement/CertificateInfo/'+this.agentInfo.user.employment.employer_user_account+'/froze'+'/#'+'/#'+'/'+this.agentInfo.user.account}">查看授权证书</x-button>
+          <x-button type="default" class="certificate-views " v-link="{path: '/accountManagement/CertificateInfo/'+agentInfo.user.employment.employer_user_account+'/'+Pagefrom+'/#'+'/#'+'/'+agentInfo.user.account}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">姓名：
@@ -106,7 +106,8 @@ export default {
       },
       showAlert: false,
       show:false,
-      alertMsg:""
+      alertMsg:"",
+      Pagefrom:""
     }
   },
   components: {
@@ -119,10 +120,10 @@ export default {
   },
   methods: {
     onClickBack() {
-      var Pagefrom = this.$route.params.from
-      if(Pagefrom == 'list'){
+      var that = this
+      if(that.Pagefrom == 'Frozenlist'){
         this.$route.router.go("/teamManagement/forzenLevelList")
-      }else if(Pagefrom == 'member'){
+      }else if(that.Pagefrom == 'Frozenmembers'){
         this.$route.router.go("/teamManagement/frozenMember/" + this.agentInfo.agent_brand_role.brand_role_code)
       }
     },
@@ -172,6 +173,7 @@ export default {
     }
   },
   ready() {
+    this.Pagefrom = this.$route.params.from
     this.getAgentInfo()
     this.getHeadImg()
   }
