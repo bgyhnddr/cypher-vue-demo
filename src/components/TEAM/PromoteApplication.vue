@@ -4,7 +4,7 @@
   <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
 </div>
 <!-- 确认提拔 -->
-<div v-if="showModel.confirmPromotion">
+<div v-if="showModelName == 'confirmPromotion'">
   <img width="250px" height="50px" src="/static/TestIMG/logo.png" alt="品牌logo" />
   <p>您已经被 {{promoterDate.name}} ( {{promoterDate.brandRoleName}} )</p>
   <p>提拔成为 {{promotionData.brand_role.name}}</p>
@@ -12,14 +12,14 @@
   <x-button type="primary" @click="confirm">确认信息</x-button>
 </div>
 <!-- 等待提拔 -->
-<div v-if="showModel.waitForAudit">
+<div v-if="showModelName == 'waitForAudit'">
   <p>正在进行审核，</p>
   <p>请耐心等待......</p>
 
   <x-button type="primary" @click="onClickBack">返回</x-button>
 </div>
 <!-- 提拔完成结果 -->
-<div v-if="showModel.promotionResult">
+<div v-if="showModelName == 'promotionResult'">
   <img src="/static/TestIMG/successful.png" />
   <p>恭喜您，已成为 {{promotionData.brand_role.name}}</p>
   <p>您的级别将在下次登录中显示。</p>
@@ -50,11 +50,7 @@ export default {
   },
   data() {
     return {
-      showModel: {
-        confirmPromotion: false,
-        waitForAudit: false,
-        promotionResult: false
-      },
+      showModelName: "", // MdeolName : confirmPromotion, waitForAudit, promotionResult
       loginUser: null,
       promotionData: {
         brand_role: {
@@ -82,12 +78,10 @@ export default {
       authAPI.getUser().then(function(result) {
         //检查是否登录
         if (result.name != undefined) {
-          console.log("登录者" + result.name)
           that.loginUser = result.name
           promoteAPI.getPromotion({
             promotionGuid: that.$route.params.agentPromotionGuid
           }).then(function(result) {
-            console.log(JSON.stringify(result))
             that.promotionData = result
 
             if (result.status == false) {
@@ -105,7 +99,6 @@ export default {
               }
             }
           }).catch(function(err) {
-            console.log(err)
             that.alert.showErrorNoHandled = true
             that.alert.errorMsgNoHandled = "加载提拔信息异常，请稍后重试"
           })
@@ -117,6 +110,8 @@ export default {
       })
     },
     checkPromotionStatus(promotionData) {
+      var that = this
+
       if (promotionData.employment == null) {
         promotionData.user.agent.agent_details.forEach((detailItem) => {
           if (detailItem.key == "name") {
@@ -125,13 +120,31 @@ export default {
         })
         this.promoterDate.brandRoleName = promotionData.user.agent.agent_brand_role.brand_role.name
 
-        this.showModel.confirmPromotion = true
+        this.showModelName = "confirmPromotion"
       } else {
+
         if (promotionData.status) {
-          this.showModel.promotionResult = true
+          this.showModelName = "waitForAudit"
+
+          var checkStatus = setInterval(function() {
+            console.log("检查一次")
+            promoteAPI.getPromotion({
+              promotionGuid: that.$route.params.agentPromotionGuid
+            }).then(function(result) {
+              if (!result.status) {
+                that.showModelName = "promotionResult"
+                clearInterval(checkStatus)
+              }
+            }).catch(function(err) {
+              clearInterval(checkStatus)
+              that.alert.showErrorNoHandled = true
+              that.alert.errorMsgNoHandled = "加载提拔信息异常，请稍后重试"
+            })
+          }, 5000)
         } else {
-          this.showModel.waitForAudit = true
+          this.showModelName = "promotionResult"
         }
+
       }
     },
     confirm() {
@@ -141,7 +154,6 @@ export default {
       }).then(function(result) {
         that.loadPromotion()
       }).catch(function(err) {
-        console.log(err)
         that.alert.showErrorNoHandled = true
         that.alert.errorMsgNoHandled = "确认提拔异常，请稍后重试"
       })
