@@ -420,7 +420,7 @@ var exec = {
       if (result != null) {
         result.agree_time = new Date().Format('yyyy-MM-dd hh:mm')
         return result.save().then((result) => {
-          var agentPromotionGuid = result.guid
+          var agentPromotion = result
           return employment.findOne({
             where: {
               agent_promotion_guid: result.guid
@@ -428,13 +428,13 @@ var exec = {
           }).then((result) => {
             if (result == null) {
               return employment.create({
-                agent_promotion_guid: agentPromotionGuid,
-                brand_guid: result.brand_guid,
-                brand_role_code: result.brand_role_code,
-                employer_user_account: result.promoter_user_account,
-                employee_user_account: result.promotee_user_account,
-                employer_time: result.agree_time,
-                status: "未审核",
+                agent_promotion_guid: agentPromotion.guid,
+                brand_guid: agentPromotion.brand_guid,
+                brand_role_code: agentPromotion.brand_role_code,
+                employer_user_account: agentPromotion.promoter_user_account,
+                employee_user_account: agentPromotion.promotee_user_account,
+                employer_time: agentPromotion.agree_time,
+                status: true,
               })
             } else {
               return Promise.reject("该提拔已确认")

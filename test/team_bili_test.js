@@ -149,7 +149,7 @@ describe('team_bili_test', () => {
             }
           }).then((result) => {
             employment.create({
-              publish_employment_guid:guidMember2,
+              publish_employment_guid: guidMember2,
               brand_guid: "brand1",
               brand_role_code: "brand_role3",
               employer_user_account: "admin",
@@ -244,7 +244,7 @@ describe('team_bili_test', () => {
             }
           }).then((result) => {
             employment.create({
-              agent_promotion_guid: guidMember3,
+              publish_employment_guid: guidMember3,
               brand_guid: "brand1",
               brand_role_code: "brand_role5",
               employer_user_account: "admin",
@@ -410,6 +410,16 @@ describe('team_bili_test', () => {
       })
     })
 
+    it('guidMember2 已有未审核提拔申请', () => {
+      return testfunction("createPromotion", {
+        promotee: guidMember2,
+        level: "brand_role2"
+      }).then((result) => {
+        // console.log(JSON.stringify(result))
+        result.should.be.equal(guidMember2)
+      })
+    })
+
     it('promotee is guidMember3（销售员）提拔至 特约销售员', () => {
       return testfunction("createPromotion", {
         promotee: guidMember3,
@@ -438,6 +448,18 @@ describe('team_bili_test', () => {
       }).then((result) => {
         // console.log(JSON.stringify(result))
         result.promotee_user_account.should.be.equal(guidMember1)
+      })
+    })
+  })
+
+  describe('confirmPromotion', () => {
+    it('testMember1 confirm Promotion', () => {
+      return testfunction("confirmPromotion", {
+        promotionGuid: guidMember1,
+      }).then((result) => {
+        // console.log(JSON.stringify(result))
+        result.agent_promotion_guid.should.be.equal(guidMember1)
+        result.status.should.be.equal(true)
       })
     })
   })
