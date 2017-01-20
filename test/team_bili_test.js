@@ -16,10 +16,11 @@ var employable_rule = require('../db/models/employable_rule')
 var employment = require('../db/models/employment')
 var employment_detail = require('../db/models/employment_detail')
 var agent_promotion = require('../db/models/agent_promotion')
+var frozen_agent = require('../db/models/frozen_agent')
 
-var guidMember1 = uuid.v1()
-var guidMember2 = uuid.v1()
-var guidMember3 = uuid.v1()
+var guidMember1 = "guidMember1"
+var guidMember2 = "guidMember2"
+var guidMember3 = "guidMember3"
 
 describe('team_bili_test', () => {
   // 初始化数据
@@ -28,7 +29,8 @@ describe('team_bili_test', () => {
 
     return Promise.all([
       employment,
-      agent_promotion
+      agent_promotion,
+      frozen_agent
     ].map((o) => o.sync({
       force: true
     }))).then((result) => {
@@ -53,240 +55,265 @@ describe('team_bili_test', () => {
         }
       }).then(() => {
 
-
-
         return Promise.all([
-          //添加二级代理 testMember1，未被提升
-          user.create({
-            account: guidMember1,
-            password: "123"
+          //添加二级代理 成员一，未被提升
+          user.findOne({
+            where: {
+              account: guidMember1
+            }
+          }).then((result) => {
+            employment.create({
+              publish_employment_guid: guidMember1,
+              employer_user_account: "admin",
+              brand_role_code: "brand_role3",
+              brand_guid: "brand1",
+              employee_user_account: guidMember1,
+              employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
+              audit_user_account: "admin",
+              status: "已审核",
+              audit_time: new Date().Format('yyyy-MM-dd hh:mm'),
+              audit_result: "已通过"
+            })
+            agent_promotion.create({
+              guid: guidMember1,
+              promoter_user_account: "admin",
+              promotee_user_account: guidMember1,
+              brand_role_code: "brand_role2",
+              brand_guid: "brand1",
+              status: true,
+              create_time: new Date().Format('yyyy-MM-dd hh:mm'),
+            })
+            if (result == null) {
+              Promise.all([
+                user.create({
+                  account: guidMember1,
+                  password: "123"
+                }),
+                user_role.create({
+                  user_account: guidMember1,
+                  role_code: 'user'
+                }),
+                agent.create({
+                  user_account: guidMember1,
+                  guid: guidMember1
+                }),
+                agent_brand_role.create({
+                  agent_guid: guidMember1,
+                  brand_role_code: "brand_role3"
+                }),
+                agent_detail.bulkCreate([{
+                  agent_guid: guidMember1,
+                  key: 'employer',
+                  value: "admin"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'headImg',
+                  value: "1"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'name',
+                  value: "成员一"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'wechat',
+                  value: "testWechat1"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'cellphone',
+                  value: "13111111111"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'IDType',
+                  value: "护照"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'IDNumber',
+                  value: "111111"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'address',
+                  value: "北京市 北京市市辖区 东城区"
+                }, {
+                  agent_guid: guidMember1,
+                  key: 'addressDetail',
+                  value: "312312312"
+                }]),
+
+              ])
+            }
           }),
-          user_role.create({
-            user_account: guidMember1,
-            role_code: 'user'
+          //添加二级代理 成员二，正在提升，未被审核
+          user.findOne({
+            where: {
+              account: guidMember2
+            }
+          }).then((result) => {
+            employment.create({
+              publish_employment_guid:guidMember2,
+              brand_guid: "brand1",
+              brand_role_code: "brand_role3",
+              employer_user_account: "admin",
+              employee_user_account: guidMember2,
+              employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
+              audit_user_account: "admin",
+              status: "已审核",
+              audit_time: new Date().Format('yyyy-MM-dd hh:mm'),
+              audit_result: "已通过"
+            })
+            employment.create({
+              agent_promotion_guid: guidMember2,
+              brand_guid: "brand1",
+              brand_role_code: "brand_role2",
+              employer_user_account: "admin",
+              employee_user_account: guidMember2,
+              employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
+              status: "未审核",
+            })
+            agent_promotion.create({
+              guid: guidMember2,
+              promoter_user_account: "admin",
+              promotee_user_account: guidMember2,
+              brand_role_code: "brand_role2",
+              brand_guid: "brand1",
+              status: true,
+              create_time: new Date().Format('yyyy-MM-dd hh:mm'),
+            })
+            if (result == null) {
+              Promise.all([
+                user.create({
+                  account: guidMember2,
+                  password: "123"
+                }),
+                user_role.create({
+                  user_account: guidMember2,
+                  role_code: 'user'
+                }),
+                agent.create({
+                  user_account: guidMember2,
+                  guid: guidMember2
+                }),
+                agent_brand_role.create({
+                  agent_guid: guidMember2,
+                  brand_role_code: "brand_role3"
+                }),
+                agent_detail.bulkCreate([{
+                  agent_guid: guidMember2,
+                  key: 'employer',
+                  value: "admin"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'headImg',
+                  value: "1"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'name',
+                  value: "成员二"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'wechat',
+                  value: "testWechat2"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'cellphone',
+                  value: "13222222222"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'IDType',
+                  value: "护照"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'IDNumber',
+                  value: "222222"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'address',
+                  value: "北京市 北京市市辖区 东城区"
+                }, {
+                  agent_guid: guidMember2,
+                  key: 'addressDetail',
+                  value: "312312312"
+                }])
+
+              ])
+            }
           }),
-          agent.create({
-            user_account: guidMember1,
-            guid: guidMember1
-          }),
-          agent_brand_role.create({
-            agent_guid: guidMember1,
-            brand_role_code: "brand_role3"
-          }),
-          employment.create({
-            publish_employment_guid: guidMember1,
-            employer_user_account: "admin",
-            brand_role_code: "brand_role3",
-            brand_guid: "brand_guid",
-            employee_user_account: guidMember1,
-            employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
-            audit_user_account: "admin",
-            status: "已审核",
-            audit_time: new Date().Format('yyyy-MM-dd hh:mm'),
-            audit_result: "已通过"
-          }).then(function(result) {
-            agent_detail.bulkCreate([{
-              agent_guid: guidMember1,
-              key: 'employer',
-              value: "admin"
-            }, {
-              agent_guid: guidMember1,
-              key: 'headImg',
-              value: "1"
-            }, {
-              agent_guid: guidMember1,
-              key: 'name',
-              value: "testMember1"
-            }, {
-              agent_guid: guidMember1,
-              key: 'wechat',
-              value: "testWechat1"
-            }, {
-              agent_guid: guidMember1,
-              key: 'cellphone',
-              value: "testphone1"
-            }, {
-              agent_guid: guidMember1,
-              key: 'IDType',
-              value: "护照"
-            }, {
-              agent_guid: guidMember1,
-              key: 'IDNumber',
-              value: "111111"
-            }, {
-              agent_guid: guidMember1,
-              key: 'address',
-              value: "北京市 北京市市辖区 东城区"
-            }, {
-              agent_guid: guidMember1,
-              key: 'addressDetail',
-              value: "312312312"
-            }])
-          }),
-          agent_promotion.create({
-            guid: guidMember1,
-            promoter_user_account: "admin",
-            promotee_user_account: guidMember1,
-            brand_role_code: "brand_role2",
-            brand_guid: "brand1",
-            status: true,
-            create_time: new Date().Format('yyyy-MM-dd hh:mm'),
+          //添加销售员 成员三,未被提拔
+          user.findOne({
+            where: {
+              account: guidMember3
+            }
+          }).then((result) => {
+            employment.create({
+              agent_promotion_guid: guidMember3,
+              brand_guid: "brand1",
+              brand_role_code: "brand_role5",
+              employer_user_account: "admin",
+              employee_user_account: guidMember3,
+              employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
+              audit_user_account: "admin",
+              status: "已审核",
+              audit_time: new Date().Format('yyyy-MM-dd hh:mm'),
+              audit_result: "已通过"
+            })
+            if (result == null) {
+              Promise.all([
+                user.create({
+                  account: guidMember3,
+                  password: "123"
+                }),
+                user_role.create({
+                  user_account: guidMember3,
+                  role_code: 'user'
+                }),
+                agent.create({
+                  user_account: guidMember3,
+                  guid: guidMember3
+                }),
+                agent_brand_role.create({
+                  agent_guid: guidMember3,
+                  brand_role_code: "brand_role5"
+                }),
+                agent_detail.bulkCreate([{
+                  agent_guid: guidMember3,
+                  key: 'employer',
+                  value: "admin"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'headImg',
+                  value: "1"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'name',
+                  value: "成员三"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'wechat',
+                  value: "testWechat3"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'cellphone',
+                  value: "13333333333"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'IDType',
+                  value: "护照"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'IDNumber',
+                  value: "333333"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'address',
+                  value: "北京市 北京市市辖区 东城区"
+                }, {
+                  agent_guid: guidMember3,
+                  key: 'addressDetail',
+                  value: "312312312"
+                }])
+              ])
+            }
           }),
 
-          //添加二级代理 test1Member2，正在提升，未被审核
-          user.create({
-            account: guidMember2,
-            password: "123"
-          }),
-          user_role.create({
-            user_account: guidMember2,
-            role_code: 'user'
-          }),
-          agent.create({
-            user_account: guidMember2,
-            guid: guidMember2
-          }),
-          agent_brand_role.create({
-            agent_guid: guidMember2,
-            brand_role_code: "brand_role3"
-          }),
-          employment.create({
-            brand_guid: "brand_guid",
-            brand_role_code: "brand_role3",
-            employer_user_account: "admin",
-            employee_user_account: guidMember2,
-            employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
-            audit_user_account: "admin",
-            status: "已审核",
-            audit_time: new Date().Format('yyyy-MM-dd hh:mm'),
-            audit_result: "已通过"
-          }),
-          employment.create({
-            agent_promotion_guid: guidMember2,
-            brand_guid: "brand_guid",
-            brand_role_code: "brand_role2",
-            employer_user_account: "admin",
-            employee_user_account: guidMember2,
-            employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
-            status: "未审核",
-          }).then(function(result) {
-            agent_detail.bulkCreate([{
-              agent_guid: guidMember2,
-              key: 'employer',
-              value: "admin"
-            }, {
-              agent_guid: guidMember2,
-              key: 'headImg',
-              value: "1"
-            }, {
-              agent_guid: guidMember2,
-              key: 'name',
-              value: "test1Member2"
-            }, {
-              agent_guid: guidMember2,
-              key: 'wechat',
-              value: "testWechat2"
-            }, {
-              agent_guid: guidMember2,
-              key: 'cellphone',
-              value: "testphone2"
-            }, {
-              agent_guid: guidMember2,
-              key: 'IDType',
-              value: "护照"
-            }, {
-              agent_guid: guidMember2,
-              key: 'IDNumber',
-              value: "222222"
-            }, {
-              agent_guid: guidMember2,
-              key: 'address',
-              value: "北京市 北京市市辖区 东城区"
-            }, {
-              agent_guid: guidMember2,
-              key: 'addressDetail',
-              value: "312312312"
-            }])
-          }),
-          agent_promotion.create({
-            guid: guidMember2,
-            promoter_user_account: "admin",
-            promotee_user_account: guidMember2,
-            brand_role_code: "brand_role2",
-            brand_guid: "brand1",
-            status: true,
-            create_time: new Date().Format('yyyy-MM-dd hh:mm'),
-          }),
-
-          //添加销售员 test1Member3
-          user.create({
-            account: guidMember3,
-            password: "123"
-          }),
-          user_role.create({
-            user_account: guidMember3,
-            role_code: 'user'
-          }),
-          agent.create({
-            user_account: guidMember3,
-            guid: guidMember3
-          }),
-          agent_brand_role.create({
-            agent_guid: guidMember3,
-            brand_role_code: "brand_role5"
-          }),
-          employment.create({
-            agent_promotion_guid: guidMember3,
-            brand_guid: "brand_guid",
-            brand_role_code: "brand_role5",
-            employer_user_account: "admin",
-            employee_user_account: guidMember3,
-            employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
-            audit_user_account: "admin",
-            status: "已审核",
-            audit_time: new Date().Format('yyyy-MM-dd hh:mm'),
-            audit_result: "已通过"
-          }).then(function(result) {
-            agent_detail.bulkCreate([{
-              agent_guid: guidMember3,
-              key: 'employer',
-              value: "admin"
-            }, {
-              agent_guid: guidMember3,
-              key: 'headImg',
-              value: "1"
-            }, {
-              agent_guid: guidMember3,
-              key: 'name',
-              value: "test1Member3"
-            }, {
-              agent_guid: guidMember3,
-              key: 'wechat',
-              value: "testWechat3"
-            }, {
-              agent_guid: guidMember3,
-              key: 'cellphone',
-              value: "testphone3"
-            }, {
-              agent_guid: guidMember3,
-              key: 'IDType',
-              value: "护照"
-            }, {
-              agent_guid: guidMember3,
-              key: 'IDNumber',
-              value: "333333"
-            }, {
-              agent_guid: guidMember3,
-              key: 'address',
-              value: "北京市 北京市市辖区 东城区"
-            }, {
-              agent_guid: guidMember3,
-              key: 'addressDetail',
-              value: "312312312"
-            }])
-          })
-
-          //添加二级代理 testMember，已被被提升
         ])
 
       })
@@ -340,12 +367,12 @@ describe('team_bili_test', () => {
   })
 
   describe('getPromotionOperableStaffs', () => {
-    it('get not level , filterKey="test1"', () => {
+    it('get not level , filterKey="成员"', () => {
       return testfunction("getPromotionOperableStaffs", {
-        filterKey: "test1",
+        filterKey: "成员",
       }).then((result) => {
         // console.log(JSON.stringify(result))
-        result.list.length.should.be.equal(2)
+        result.list.length.should.be.equal(3)
         result.end.should.equal(true)
       })
     })

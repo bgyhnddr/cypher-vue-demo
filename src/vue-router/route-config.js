@@ -193,8 +193,14 @@ export function configRouter(router) {
     '/teamManagement/promoteLevelList': {
       component: require('../components/TEAM/PromoteLevelList.vue')
     },
-    '/teamManagement/promoteMemberList/:brandRoleCode': {
-      component: require('../components/TEAM/PromoteMemberList.vue')
+    '/teamManagement/promoteAgent/:account': {
+      component: require('../components/TEAM/PromoteAgent.vue')
+    },
+    '/teamManagement/choosePromoteRole/:account': {
+      component: require('../components/TEAM/ChoosePromoteRole.vue')
+    },
+    '/teamManagement/promoteApplication/:agentPromotionGuid': {
+      component: require('../components/TEAM/PromoteApplication.vue')
     },
     '/test': {
       component: require('../components/Test.vue')

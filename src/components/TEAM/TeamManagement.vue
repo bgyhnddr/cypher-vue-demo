@@ -20,7 +20,7 @@
         </div>
       </a>
       <!--提拔团队成员-->
-      <a class="weui_cell a-li-last"  v-link="{path: ''}">
+      <a class="weui_cell a-li-last"  v-link="{path: '/teamManagement/promoteLevelList'}">
         <div class="weui_cell_hd">
             <img src="">
         </div>
