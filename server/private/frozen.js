@@ -1,4 +1,19 @@
 var Sequelize = require('../../db/sequelize')
+
+var CheckRole = function(user) {
+  var agent = require('../../db/models/agent')
+  var agent_brand_role = require('../../db/models/agent_brand_role')
+  agent.hasOne(agent_brand_role)
+  return agent.findOne({
+    where: {
+      user_account: user
+    },
+    include: agent_brand_role
+  }).then((result) => {
+    return result.agent_brand_role.brand_role_code
+  })
+}
+
 var exec = {
 
   /**
@@ -7,7 +22,6 @@ var exec = {
    */
   getFrozenLevels(req, res, next) {
     var user_account = req.session.userInfo.name
-
     var agent = require('../../db/models/agent')
     var agent_brand_role = require('../../db/models/agent_brand_role')
     var brand_role = require('../../db/models/brand_role')
@@ -47,11 +61,23 @@ var exec = {
       var frozenLevelsData = []
       var employableRules = result[0].employable_rules
 
+      var addEmployment = (account, employeeList, list) => {
+        var childList = list.filter(o => o.employer_user_account == account).map(o => o)
+        Array.prototype.push.apply(employeeList, childList)
+        childList.forEach((o) => {
+          addEmployment(o.employee_user_account, employeeList, list)
+        })
+      }
+
       return employment.findAll({
         where: {
           status: '已审核',
           audit_result: '已通过'
         }
+      }).then((result) => {
+        var employeeList = []
+        addEmployment(user_account, employeeList, result)
+        return employeeList
       }).then((result) => {
         return employableRules.map((employableRuleItem) => {
           return {
@@ -71,7 +97,10 @@ var exec = {
    */
   getFrozenMembers(req, res, next) {
     var roleCode = req.query.roleCode
-    var userinfo = req.session.userInfo
+    var filterKey = req.query.filterKey
+    var user = req.session.userInfo.name
+    var filterAccount = undefined
+    var filterRole = undefined
     var employment = require('../../db/models/employment')
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
@@ -84,19 +113,52 @@ var exec = {
     agent.hasMany(agent_detail)
     agent.hasOne(frozen_agent)
 
+    var addEmployment = (account, employeeList, list) => {
+      var childList = list.filter(o => o.employer_user_account == account).map(o => o.employee_user_account)
+      Array.prototype.push.apply(employeeList, childList)
+      childList.forEach((o) => {
+        addEmployment(o, employeeList, list)
+      })
+    }
+
+    if (filterKey != "") {
+      filterAccount = {
+        $or: [{
+          key: 'cellphone',
+          value: filterKey
+        }, {
+          key: 'name',
+          value: filterKey
+        }]
+      }
+    }
+    if (roleCode) {
+      filterRole = {
+        brand_role_code: roleCode
+      }
+    }
+
     return employment.findAll({
       where: {
         status: '已审核',
         audit_result: '已通过'
       }
     }).then((result) => {
+      var employeeList = []
+      addEmployment(user, employeeList, result)
       return agent.findAll({
-        include: [frozen_agent,agent_detail, {
+        where: {
+          user_account: {
+            $in: employeeList
+          }
+        },
+        include: [frozen_agent, {
+          model: agent_detail,
+          where: filterAccount,
+        }, {
           model: agent_brand_role,
           include: brand_role,
-          where: {
-            brand_role_code: roleCode
-          }
+          where: filterRole
         }]
       })
     }).then((result) => {
@@ -109,49 +171,16 @@ var exec = {
         delete obj.agent_details
         return obj
       })
-    })
-  },
-  /*获取冻结成员
-   *post
-   */
-  getFrozenMember(req, res, next) {
-    var account = req.query.account
-    var agent = require('../../db/models/agent')
-    var agent_detail = require('../../db/models/agent_detail')
-    var agent_brand_role = require('../../db/models/agent_brand_role')
-    var brand_role = require('../../db/models/brand_role')
-
-    agent_brand_role.belongsTo(brand_role)
-    agent_detail.belongsTo(agent)
-    agent.hasOne(agent_brand_role)
-
-    return agent_detail.findAll({
-      where: {
-        $or: [{
-          key: 'cellphone',
-          value: account
-        }, {
-          key: 'name',
-          value: account
-        }]
-      },
-      include: [{
-        model: agent,
-        include: [{
-          model: agent_brand_role,
-          include:brand_role
-        }, agent_detail]
-      }]
     }).then((result) => {
-      return result.map((a) => {
-        obj = a.toJSON()
-        obj.agent.agent_detail = {}
-        obj.agent.agent_details.forEach((d) => {
-          obj.agent.agent_detail[d.key] = d.value
-        })
-        delete obj.agent.agent_details
-        return obj
-      })
+      if (result.length > 0) {
+        return result
+      } else {
+        if (filterKey != "") {
+          return Promise.reject("查无此成员")
+        } else {
+          return Promise.reject("无可冻结成员")
+        }
+      }
     })
   },
 
@@ -160,23 +189,32 @@ var exec = {
    */
   FrozenAgent(req, res, next) {
     var agent = req.body.agent
+    var user_account = req.session.userInfo.name
     var frozen_agent = require('../../db/models/frozen_agent')
-    return frozen_agent.findOne({
-      where: {
-        agent_guid: agent
-      }
-    }).then((result) => {
-      if (result) {
-        return Promise.reject("代理已被冻结")
-      } else {
-        return frozen_agent.create({
-          agent_guid: agent
-        }).then((result) => {
-          return "OK"
-        })
-      }
-    })
 
+    return new Promise((resolve, reject) => {
+      CheckRole(user_account).then((result) => {
+        if (result == "brand_role0" || result == "brand_role1") {
+          return frozen_agent.findOne({
+            where: {
+              agent_guid: agent
+            }
+          }).then((result) => {
+            if (result) {
+              reject("代理已被冻结")
+            } else {
+              return frozen_agent.create({
+                agent_guid: agent
+              }).then((result) => {
+                resolve("OK")
+              })
+            }
+          })
+        } else {
+          reject("权限不足")
+        }
+      })
+    })
   },
 
   /*解冻代理
@@ -184,28 +222,43 @@ var exec = {
    */
   ThawAgent(req, res, next) {
     var agent = req.body.agent
+    var user_account = req.session.userInfo.name
     var frozen_agent = require('../../db/models/frozen_agent')
-    return frozen_agent.findOne({
-      where: {
-        agent_guid: agent
-      }
-    }).then((result) => {
-      if (result) {
-        return frozen_agent.destroy({
-          where: {
-            agent_guid: agent
-          }
-        }).then((result) => {
-          return "OK"
-        })
-      } else {
-        return Promise.reject("代理未被冻结")
-      }
+
+    return new Promise((resolve, reject) => {
+      CheckRole(user_account).then((result) => {
+        if (result == "brand_role0" || result == "brand_role1") {
+          return frozen_agent.findOne({
+            where: {
+              agent_guid: agent
+            }
+          }).then((result) => {
+            if (result) {
+              return frozen_agent.destroy({
+                where: {
+                  agent_guid: agent
+                }
+              }).then((result) => {
+                resolve("OK")
+              })
+            } else {
+              reject("代理未被冻结")
+            }
+          })
+        } else {
+          reject("权限不足")
+        }
+      })
     })
+  },
+
+  /*检查代理身份
+   *GET
+   */
+  CheckUserRole(req, res, next) {
+    var user_account = req.session.userInfo.name
+    return CheckRole(user_account)
   }
-
-
-
 }
 
 

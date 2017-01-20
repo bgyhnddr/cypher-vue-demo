@@ -267,8 +267,11 @@ export default {
           }else if (this.$route.params.locate == "sale"){
             this.$route.router.go('/saleManagement/sale/' + this.$route.params.from)
             return
-          }else if(this.$route.params.locate == "froze"){
-            this.$route.router.go('/teamManagement/frozenAgent/' + this.$route.params.from)
+          }else if(this.$route.params.locate == "Frozenlist"){
+            this.$route.router.go('/teamManagement/frozenAgent/' + this.$route.params.from +'/Frozenlist')
+            return
+          }else if(this.$route.params.locate == "Frozenmembers"){
+            this.$route.router.go('/teamManagement/frozenAgent/' + this.$route.params.from +'/Frozenmembers')
             return
           }else if(this.$route.params.locate == "promote"){
             this.$route.router.go('/teamManagement/promoteAgent/' + this.$route.params.from)

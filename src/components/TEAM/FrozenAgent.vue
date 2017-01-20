@@ -1,5 +1,5 @@
 <template>
-<div class="certificate-bac">
+<div class="certificate-bac" id="frozenAgent">
   <div>
     <div class="vux-demo-header-box wapmain-header" slot="header">
       <x-header :left-options="{showBack: false}">{{agentInfo.agent_detail.name}}</x-header>
@@ -23,7 +23,7 @@
           <div slot="icon">授权品牌：
             <label>{{agentInfo.user.employment.brand.name}}</label>
           </div>
-          <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+this.agentInfo.user.account+'/froze'+'/#'+'/#'+'/'+this.agentInfo.user.account}">查看授权证书</x-button>
+          <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+agentInfo.user.account+'/'+Pagefrom+'/#'+'/#'+'/'+agentInfo.user.account}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">授权等级：
@@ -35,7 +35,7 @@
             <label>{{agentInfo.user.employment.user.agent.agent_detail.name }}
             </label>
           </div>
-          <x-button type="default" class="certificate-views " v-link="{path: '/accountManagement/CertificateInfo/'+this.agentInfo.user.employment.employer_user_account+'/froze'+'/#'+'/#'+'/'+this.agentInfo.user.account}">查看授权证书</x-button>
+          <x-button type="default" class="certificate-views " v-link="{path: '/accountManagement/CertificateInfo/'+agentInfo.user.employment.employer_user_account+'/'+Pagefrom+'/#'+'/#'+'/'+agentInfo.user.account}">查看授权证书</x-button>
         </cell>
         <cell>
           <div slot="icon">姓名：
@@ -64,10 +64,11 @@
         <p style="text-align:center;">您确认{{agentInfo.frozen_agent?"解除冻结":"冻结"}}该成员吗?</p>
       </confirm>
     </div>
-    <div>
-      <x-button type="primary" @click="ShowFroze">{{agentInfo.frozen_agent?"解除冻结":"冻结账号"}}</x-button>
-    </div>
+
   </div>
+</div>
+<div class="frozenAgent-button">
+  <x-button type="primary" @click="ShowFroze">{{agentInfo.frozen_agent?"解除冻结":"冻结账号"}}</x-button>
 </div>
 <alert :show.sync="showAlert" button-text="确认">{{alertMsg}}</alert>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
@@ -106,7 +107,8 @@ export default {
       },
       showAlert: false,
       show:false,
-      alertMsg:""
+      alertMsg:"",
+      Pagefrom:""
     }
   },
   components: {
@@ -119,7 +121,12 @@ export default {
   },
   methods: {
     onClickBack() {
-      this.$route.router.go("/teamManagement/frozenMember/" + this.agentInfo.agent_brand_role.brand_role_code)
+      var that = this
+      if(that.Pagefrom == 'Frozenlist'){
+        this.$route.router.go("/teamManagement/forzenLevelList")
+      }else if(that.Pagefrom == 'Frozenmembers'){
+        this.$route.router.go("/teamManagement/frozenMember/" + this.agentInfo.agent_brand_role.brand_role_code)
+      }
     },
     ShowFroze() {
       this.show = true
@@ -167,72 +174,73 @@ export default {
     }
   },
   ready() {
+    this.Pagefrom = this.$route.params.from
     this.getAgentInfo()
     this.getHeadImg()
   }
 }
 </script>
 <style>
-.certificate-bac {
+#frozenAgent {
   min-height: 485px;
 }
 
-.certificate-header img {
+#frozenAgent  .certificate-header img {
   border: 0;
   background-size: 100%;
   width: 25%;
 }
 
-.certificate-header {
+#frozenAgent  .certificate-header {
   text-align: center;
   padding-top: 2%;
 }
 
-.certificate-header button {
+#frozenAgent  .certificate-header button {
   border: 0;
   background-size: 100%;
   width: 28%;
 }
 
-.certificate-header button img {
+#frozenAgent  .certificate-header button img {
   width: 100%;
   height: auto;
 }
 
-.certificate-header p {
+#frozenAgent .certificate-header p {
   color: #595959;
   font-size: 4.5vw;
   /*14px*/
 }
 
-.certificate-header .vux-center {
+#frozenAgent .certificate-header .vux-center {
   width: 86%;
   display: block;
   margin: auto;
 }
 
-.certificate-messages {
+#frozenAgent .certificate-messages {
   position: relative;
   width: 89%;
   margin: 7% auto 0;
 }
 
-.certificate-messages .weui_cell:before {
+#frozenAgent .certificate-messages .weui_cell:before {
   border-top: 0
 }
 
-.certificate-messages .weui_cell {
+#frozenAgent .certificate-messages .weui_cell {
   border-bottom: 1px solid #d3d1d1;
   padding: 9px 0;
 }
 
-.certificate-messages .weui_btn {
+#frozenAgent .certificate-messages .weui_btn {
   padding-left: 0;
   padding-right: 0;
 }
 
-.certificate-messages .certificate-view,
-.certificate-messages .certificate-views {
+#frozenAgent .certificate-messages .certificate-view,
+#frozenAgent .certificate-messages .certificate-views {
   position: absolute;
   right: 0;
   border: 0;
@@ -245,15 +253,15 @@ export default {
   font-family: "微软雅黑";
 }
 
-.certificate-messages .certificate-view {
-  top: -93%;
+#frozenAgent .certificate-messages .certificate-view {
+top: 11%;
 }
 
-.certificate-messages .certificate-views {
-  top: 4px;
+#frozenAgent .certificate-messages .certificate-views {
+    top: -35px;
 }
 
-.certificate-messages .weui_cell_hd {
+#frozenAgent .certificate-messages .weui_cell_hd {
   width: 100%;
   font-size: 4.5vw;
   /*14px*/
@@ -261,7 +269,7 @@ export default {
   font-family: "微软雅黑";
 }
 
-.certificate-messages .weui_cell_hd label {
+#frozenAgent .certificate-messages .weui_cell_hd label {
   color: #595959;
 }
 
@@ -269,4 +277,17 @@ export default {
 /*.certificate-messages .weui_cell:nth-child(7) {
   border-bottom: 0;
 }*/
+ .frozenAgent-button{
+  position: fixed;
+bottom: 0;
+color: #fff;
+background: #fd5e5e;
+    font-family: "微软雅黑";
+font-size: 5.2vw;
+border-radius: 0;
+border: 0;
+width: 100%}
+.frozenAgent-button button.weui_btn.weui_btn_primary{
+background: #fd5e5e;
+}
 </style>
