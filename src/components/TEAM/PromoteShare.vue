@@ -78,14 +78,14 @@ export default {
           }).then(function(result) {
             console.log(JSON.stringify(result))
             that.promotionData = result
-
-            if (result.status == false) {
-              that.alert.showCatchError = true
-              that.alert.catchErrorMsg = "提拔已关闭，确认后返回到主页"
-            } else {
               //检查登录者是否提拔者或者被提拔者
               if (that.loginUser == result.promoter_user_account) {
                 that.isPromoterFlag = true
+
+                if (result.status == false) {
+                  that.alert.showCatchError = true
+                  that.alert.catchErrorMsg = "提拔已关闭，确认后返回到主页"
+                }
 
                 that.showModel.promoteShare = true
               } else if (that.loginUser == result.promotee_user_account) {
@@ -94,7 +94,6 @@ export default {
                 that.alert.showCatchError = true
                 that.alert.catchErrorMsg = "你无权查看此提拔信息，确认后返回到主页"
               }
-            }
           }).catch(function(err) {
             that.alert.showErrorNoHandled = true
             that.alert.errorMsgNoHandled = "加载提拔信息异常，请稍后重试"

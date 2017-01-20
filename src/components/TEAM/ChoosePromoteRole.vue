@@ -47,8 +47,8 @@ export default {
         promotee: that.$route.params.account
       }).then(function(result) {
         if (result.length == 0) {
-          that.showMsg = true
-          that.errorMsg = "此成员目前暂无可提拔等级"
+          that.alert.showCatchError = true
+          that.alert.catchErrorMsg = "此成员目前暂无可提拔等级"
         } else {
           that.promoteRoles = result
         }
