@@ -56,7 +56,7 @@ describe('team_bili_test', () => {
       }).then(() => {
 
         return Promise.all([
-          //添加二级代理 成员一，未被提升
+          //添加二级代理 成员一，已发提拔申请，未确认
           user.findOne({
             where: {
               account: guidMember1
@@ -438,18 +438,6 @@ describe('team_bili_test', () => {
       }).then((result) => {
         // console.log(JSON.stringify(result))
         result.promotee_user_account.should.be.equal(guidMember1)
-      })
-    })
-  })
-
-  describe('confirmPromotion', () => {
-    it('test1Member2 confirm Promotion', () => {
-      return testfunction("confirmPromotion", {
-        promotionGuid: guidMember2,
-      }).then((result) => {
-        // console.log(JSON.stringify(result))
-        result.agent_promotion_guid.should.be.equal(guidMember2)
-        result.status.should.be.equal("未审核")
       })
     })
   })

@@ -407,7 +407,7 @@ var exec = {
    */
   confirmPromotion(req, res, next) {
     var promotee_user_account = req.session.userInfo.name
-    var promotionGuid = req.query.promotionGuid
+    var promotionGuid = req.body.promotionGuid
 
     var employment = require('../../db/models/employment')
     var agent_promotion = require('../../db/models/agent_promotion')
@@ -420,14 +420,25 @@ var exec = {
       if (result != null) {
         result.agree_time = new Date().Format('yyyy-MM-dd hh:mm')
         return result.save().then((result) => {
-          return employment.create({
-            agent_promotion_guid: result.guid,
-            brand_guid: result.brand_guid,
-            brand_role_code: result.brand_role_code,
-            employer_user_account: result.promoter_user_account,
-            employee_user_account: result.promotee_user_account,
-            employer_time: result.agree_time,
-            status: "未审核",
+          var agentPromotionGuid = result.guid
+          return employment.findOne({
+            where: {
+              agent_promotion_guid: result.guid
+            }
+          }).then((result) => {
+            if (result == null) {
+              return employment.create({
+                agent_promotion_guid: agentPromotionGuid,
+                brand_guid: result.brand_guid,
+                brand_role_code: result.brand_role_code,
+                employer_user_account: result.promoter_user_account,
+                employee_user_account: result.promotee_user_account,
+                employer_time: result.agree_time,
+                status: "未审核",
+              })
+            } else {
+              return Promise.reject("该提拔已确认")
+            }
           })
         })
       } else {

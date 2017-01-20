@@ -1,122 +1,158 @@
 <template>
-<!-- <div class="brandauthorization-list">
-  <div class="brandauthorization-bac" v-show="showBrandAuthorizationModel">
-    <div class="brandauthorizations">
-      <div class="brandauthorization-img">
-        <p class="brand-logo">
-          <img class="vux-x-img ximg-demo" src="/static/TestIMG/logo.png" alt="品牌logo" />
-        </p>
-        <p>开始招募
-          <label> {{employment_role_name}}</label>
-        </p>
-        <p>点击右上角分享此页面
-          <img src="/static/TestIMG/arrow .png" />
-        </p>
-        <p>或</p>
-        <p>直接微信扫描二维码进行申请</p>
-        <div v-el:qr class="qr-code "></div>
-      </div>
-    </div>
-  </div>
-  <alert :show.sync="showRemindMsg" button-text="确认" @on-hide="onHide">{{remindMsg}}</alert>
-</div> -->
-<!-- <div class="all-footer" v-show="showBrandAuthorizationModel">© 2016 ShareWin.me 粤ICP备14056388号</div> -->
+<div class="vux-demo-header-box wapmain-header" slot="header">
+  <x-header :left-options="{showBack: false}">确认提拔</x-header>
+  <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
+</div>
+<!-- 确认提拔 -->
+<div v-if="showModel.confirmPromotion">
+  <img width="250px" height="50px" src="/static/TestIMG/logo.png" alt="品牌logo" />
+  <p>您已经被 {{promoterDate.name}} ( {{promoterDate.brandRoleName}} )</p>
+  <p>提拔成为 {{promotionData.brand_role.name}}</p>
+
+  <x-button type="primary" @click="confirm">确认信息</x-button>
+</div>
+<!-- 等待提拔 -->
+<div v-if="showModel.waitForAudit">
+  <p>正在进行审核，</p>
+  <p>请耐心等待......</p>
+
+  <x-button type="primary" @click="onClickBack">返回</x-button>
+</div>
+<!-- 提拔完成结果 -->
+<div v-if="showModel.promotionResult">
+  <img src="/static/TestIMG/successful.png" />
+  <p>恭喜您，已成为 {{promotionData.brand_role.name}}</p>
+  <p>您的级别将在下次登录中显示。</p>
+</div>
+
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+
+<alert :show.sync="alert.showErrorNoHandled" button-text="确认">{{alert.errorMsgNoHandled}}</alert>
+<alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
 </template>
 <script>
 import {
+  XHeader,
+  XButton,
   Alert
 } from 'vux'
+import authAPI from '../../api/auth'
+import promoteAPI from '../../api/promote'
+
 var request = require('../../extend/http-request')
 var qrcanvas = require('qrcanvas')
 
-
 export default {
   components: {
+    XHeader,
+    XButton,
     Alert
   },
   data() {
     return {
-      // publishEmploymentData: {},
-      // employment_role_name: "",
-      // loginUser: null,
-      // showMsg: false,
-      // errorMsg: null,
-      // showRemindMsg: false,
-      // remindMsg: null,
-      // showBrandAuthorizationModel: false,
+      showModel: {
+        confirmPromotion: false,
+        waitForAudit: false,
+        promotionResult: false
+      },
+      loginUser: null,
+      promotionData: {
+        brand_role: {
+          name: null
+        }
+      },
+      promoterDate: {
+        name: null,
+        brandRoleName: null
+      },
+      alert: {
+        showCatchError: false,
+        catchErrorMsg: null,
+        showErrorNoHandled: false,
+        errorMsgNoHandled: null
+      }
     }
   },
   methods: {
-    // initData() {
-    //   var that = this
-    //   var account = null
-    //   var publishEmploymentID = this.$route.params.publishEmploymentID
-    //
-    //
-    //   authAPI.getUser().then(function(result) {
-    //     if (result.name != undefined) {
-    //       account = result.name
-    //       that.loginUser = result.name
-    //
-    //       applyEmploymentAPI.getPublishEmploymentInfo({
-    //         employmentGuid: publishEmploymentID
-    //       }).then(function(result) {
-    //         that.publishEmploymentData = result
-    //
-    //         if (account == that.publishEmploymentData.employer_user_account) {
-    //
-    //           if (result.status == false) {
-    //             that.showRemindMsg = true
-    //             that.remindMsg = "招募已关闭"
-    //           } else {
-    //             that.getEmploymentRoleName()
-    //             that.showBrandAuthorizationModel = true
-    //           }
-    //         } else {
-    //           that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID)
-    //         }
-    //       }).catch(function(err) {
-    //         that.showRemindMsg = true
-    //         that.remindMsg = err
-    //       })
-    //     } else {
-    //       that.$route.router.go('/employManagement/fillInEmployment/' + publishEmploymentID)
-    //     }
-    //   })
-    // },
-    // getEmploymentRoleName() {
-    //   var that = this
-    //   employmentAPI.getRoleName({
-    //     brand_role_code: that.publishEmploymentData.brand_role_code
-    //   }).then(function(result) {
-    //     that.employment_role_name = result.name
-    //   }).catch(function(err) {
-    //     that.showRemindMsg = true
-    //     that.remindMsg = "获取招募角色资料出错"
-    //   })
-    // },
-    // onHide() {
-    //   if (this.loginUser == null) {
-    //     location.href = location.origin + "/#!/auth/login"
-    //   } else {
-    //     location.href = location.origin + "/#!/employManagement"
-    //   }
-    // },
-    // listenShare() {
-    //   wx.onMenuShareAppMessage({
-    //     link: window.location.href
-    //   })
-    //   wx.onMenuShareTimeline({
-    //     link: window.location.href, // 分享链接
-    //   })
-    // }
+    onClickBack() {
+      this.$route.router.go('/')
+    },
+    loadPromotion() {
+      var that = this
+      authAPI.getUser().then(function(result) {
+        //检查是否登录
+        if (result.name != undefined) {
+          console.log("登录者" + result.name)
+          that.loginUser = result.name
+          promoteAPI.getPromotion({
+            promotionGuid: that.$route.params.agentPromotionGuid
+          }).then(function(result) {
+            console.log(JSON.stringify(result))
+            that.promotionData = result
+
+            if (result.status == false) {
+              that.alert.showCatchError = true
+              that.alert.catchErrorMsg = "提拔已关闭，确认后返回到主页"
+            } else {
+              //检查登录者是否提拔者或者被提拔者
+              if (that.loginUser == result.promoter_user_account) {
+                that.$route.router.go('/teamManagement/promoteShare/' + that.$route.params.agentPromotionGuid)
+              } else if (that.loginUser == result.promotee_user_account) {
+                that.checkPromotionStatus(that.promotionData)
+              } else {
+                that.alert.showCatchError = true
+                that.alert.catchErrorMsg = "你无权查看此提拔信息，确认后返回到主页"
+              }
+            }
+          }).catch(function(err) {
+            console.log(err)
+            that.alert.showErrorNoHandled = true
+            that.alert.errorMsgNoHandled = "加载提拔信息异常，请稍后重试"
+          })
+
+        } else {
+          that.alert.showCatchError = true
+          that.alert.catchErrorMsg = "请先登录，再扫一扫"
+        }
+      })
+    },
+    checkPromotionStatus(promotionData) {
+      if (promotionData.employment == null) {
+        promotionData.user.agent.agent_details.forEach((detailItem) => {
+          if (detailItem.key == "name") {
+            this.promoterDate.name = detailItem.value
+          }
+        })
+        this.promoterDate.brandRoleName = promotionData.user.agent.agent_brand_role.brand_role.name
+
+        this.showModel.confirmPromotion = true
+      } else {
+        if (promotionData.status) {
+          this.showModel.promotionResult = true
+        } else {
+          this.showModel.waitForAudit = true
+        }
+      }
+    },
+    confirm() {
+      var that = this
+      promoteAPI.confirmPromotion({
+        promotionGuid: that.$route.params.agentPromotionGuid
+      }).then(function(result) {
+        that.loadPromotion()
+      }).catch(function(err) {
+        console.log(err)
+        that.alert.showErrorNoHandled = true
+        that.alert.errorMsgNoHandled = "确认提拔异常，请稍后重试"
+      })
+    },
+    errorHandled() {
+      location.href = location.origin + "/"
+    },
+
   },
   ready() {
-    // this.initData()
-    // this.$els.qr.appendChild(qrcanvas({
-    //   data: window.location.href,
-    //   size: 300
-    // }))
+    this.loadPromotion()
   }
 }
 </script>
