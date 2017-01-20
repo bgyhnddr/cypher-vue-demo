@@ -352,12 +352,20 @@ var exec = {
 
     var employment = require('../../db/models/employment')
     var agent_promotion = require('../../db/models/agent_promotion')
+    var user = require('../../db/models/user')
+    var agent = require('../../db/models/agent')
+    var agent_detail = require('../../db/models/agent_detail')
     var brand_role = require('../../db/models/brand_role')
 
     agent_promotion.hasOne(employment)
     agent_promotion.belongsTo(brand_role, {
       foreignKey: 'brand_role_code'
     })
+    agent_promotion.belongsTo(user, {
+      foreignKey: 'promoter_user_account'
+    })
+    user.hasOne(agent)
+    agent.hasMany(agent_detail)
 
     return agent_promotion.findOne({
       where: {
@@ -367,6 +375,14 @@ var exec = {
         model: employment
       }, {
         model: brand_role
+      }, {
+        model: user,
+        include: {
+          model: agent,
+          include: {
+            model:agent_detail
+          }
+        }
       }]
     }).then(function(result) {
       if (result != null) {
