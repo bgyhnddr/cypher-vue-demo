@@ -1,15 +1,16 @@
 <template>
-<div id="teamManagement">
+<div id="teamManagement"  >
   <div>
     <div class="vux-demo-header-box wapmain-header" slot="header">
       <x-header :left-options="{showBack: false}">我的团队</x-header>
       <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
     </div>
+    <div style="min-height:471px">
     <group>
       <!--冻结团队成员-->
       <a class="weui_cell a-li a-li-first" v-link="{path: '/teamManagement/forzenLevelList'}">
         <div class="weui_cell_hd">
-          <img src="">
+          <img src="/static/TestIMG/freeze.png">
         </div>
         <div class="weui_cell_bd weui_cell_primary">
           <p>冻结团队成员</p>
@@ -22,7 +23,7 @@
       <!--提拔团队成员-->
       <a class="weui_cell a-li-last"  v-link="{path: '/teamManagement/promoteLevelList'}">
         <div class="weui_cell_hd">
-            <img src="">
+            <img src="/static/TestIMG/To_promote.png">
         </div>
         <div class="weui_cell_bd weui_cell_primary">
           <p>提拔团队成员</p>
@@ -33,6 +34,7 @@
         </div>
       </a>
     </group>
+  </div>
   </div>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>

@@ -352,7 +352,7 @@ table.platform-message p:nth-child(1) {
 
 }
 
-.homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo h4,
+
 .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo h4,
 .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo h4 {
     color: gray;

@@ -1,7 +1,7 @@
 <template>
 <group>
   <x-input class="weui_cell_primary" title='' placeholder="输入手机号码/代理姓名进行搜索" :value.sync="keyword" :show-clear=false :required="false"></x-input>
-  <button @click="search">搜索</button>
+  <button @click="search"></button>
 </group>
 <div v-show="showSearch">
   <group v-for="members in searchResult">
