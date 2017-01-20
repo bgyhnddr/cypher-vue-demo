@@ -71,7 +71,7 @@ export default {
       })
     },
     goToForzenAgent(account) {
-      this.$route.router.go("/teamManagement/frozenAgent/" + account)
+      this.$route.router.go("/teamManagement/frozenAgent/" + account +"/member")
     },
     errorHandled() {
       this.onClickBack()

@@ -184,7 +184,7 @@ export function configRouter(router) {
     '/teamManagement/frozenMember/:code': {
       component: require('../components/TEAM/FrozenMember.vue')
     },
-    '/teamManagement/frozenAgent/:account': {
+    '/teamManagement/frozenAgent/:account/:from': {
       component: require('../components/TEAM/FrozenAgent.vue')
     },
     '/teamManagement/forzenLevelList': {

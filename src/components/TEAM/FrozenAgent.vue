@@ -119,7 +119,12 @@ export default {
   },
   methods: {
     onClickBack() {
-      this.$route.router.go("/teamManagement/frozenMember/" + this.agentInfo.agent_brand_role.brand_role_code)
+      var Pagefrom = this.$route.params.from
+      if(Pagefrom == 'list'){
+        this.$route.router.go("/teamManagement/forzenLevelList")
+      }else if(Pagefrom == 'member'){
+        this.$route.router.go("/teamManagement/frozenMember/" + this.agentInfo.agent_brand_role.brand_role_code)
+      }
     },
     ShowFroze() {
       this.show = true
