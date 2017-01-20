@@ -190,6 +190,12 @@ export function configRouter(router) {
     '/teamManagement/forzenLevelList': {
       component: require('../components/TEAM/ForzenLevelList.vue')
     },
+    '/teamManagement/promoteLevelList': {
+      component: require('../components/TEAM/PromoteLevelList.vue')
+    },
+    '/teamManagement/promoteMemberList/:brandRoleCode': {
+      component: require('../components/TEAM/PromoteMemberList.vue')
+    },
     '/test': {
       component: require('../components/Test.vue')
     }
