@@ -127,7 +127,6 @@ export default {
           this.showModelName = "waitForAudit"
 
           var checkStatus = setInterval(function() {
-            console.log("检查一次")
             promoteAPI.getPromotion({
               promotionGuid: that.$route.params.agentPromotionGuid
             }).then(function(result) {

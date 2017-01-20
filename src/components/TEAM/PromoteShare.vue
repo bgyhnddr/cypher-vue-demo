@@ -76,7 +76,6 @@ export default {
           promoteAPI.getPromotion({
             promotionGuid: that.$route.params.agentPromotionGuid
           }).then(function(result) {
-            console.log(JSON.stringify(result))
             that.promotionData = result
               //检查登录者是否提拔者或者被提拔者
               if (that.loginUser == result.promoter_user_account) {
