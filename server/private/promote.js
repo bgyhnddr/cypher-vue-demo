@@ -352,16 +352,22 @@ var exec = {
 
     var employment = require('../../db/models/employment')
     var agent_promotion = require('../../db/models/agent_promotion')
+    var brand_role = require('../../db/models/brand_role')
 
     agent_promotion.hasOne(employment)
+    agent_promotion.belongsTo(brand_role, {
+      foreignKey: 'brand_role_code'
+    })
 
     return agent_promotion.findOne({
       where: {
         guid: promotionGuid
       },
-      include: {
+      include: [{
         model: employment
-      }
+      }, {
+        model: brand_role
+      }]
     }).then(function(result) {
       if (result != null) {
         return result

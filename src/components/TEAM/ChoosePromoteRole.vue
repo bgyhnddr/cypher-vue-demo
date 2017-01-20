@@ -53,21 +53,21 @@ export default {
           that.promoteRoles = result
         }
       }).catch(function(err) {
-        that.showCatchError = true
-        that.catchErrorMsg = "加载可提拔等级列表异常，请稍后重试"
+        that.alert.showCatchError = true
+        that.alert.catchErrorMsg = "加载可提拔等级列表异常，请稍后重试"
       })
     },
     chooseRole(brandRoleCode){
       var that = this
 
       promoteAPI.createPromotion({
-          promotee: brandRoleCode,
-          level: this.$route.params.account
+          promotee: this.$route.params.account,
+          level: brandRoleCode
       }).then(function(result) {
-          that.$route.router.go('/teamManagement/promoteApplication/' + result)
+          that.$route.router.go('/teamManagement/promoteShare/' + result)
       }).catch(function(err) {
-          that.showErrorNoHandled = true
-          that.errorMsgNoHandled = "创建提拔异常，请稍后重试"
+          that.alert.showErrorNoHandled = true
+          that.alert.errorMsgNoHandled = "创建提拔异常，请稍后重试"
       })
     },
     errorHandled() {

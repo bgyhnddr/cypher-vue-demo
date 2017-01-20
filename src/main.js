@@ -88,6 +88,13 @@ router.beforeEach((tran) => {
         tran.next()
         return
     }
+  } else if (FirstPath == "teamManagement") {
+    switch (SecPath) {
+      case "promoteShare":
+      case "promoteApplication":
+        tran.next()
+        return
+    }
   } else if (FirstPath == "test") {
     tran.next()
     return
