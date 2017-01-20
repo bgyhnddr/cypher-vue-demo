@@ -16,6 +16,7 @@ var employable_rule = require('../db/models/employable_rule')
 var employment = require('../db/models/employment')
 var employment_detail = require('../db/models/employment_detail')
 var agent_promotion = require('../db/models/agent_promotion')
+var frozen_agent = require('../db/models/frozen_agent')
 
 var guidMember1 = "guidMember1"
 var guidMember2 = "guidMember2"
@@ -28,7 +29,8 @@ describe('team_bili_test', () => {
 
     return Promise.all([
       employment,
-      agent_promotion
+      agent_promotion,
+      frozen_agent
     ].map((o) => o.sync({
       force: true
     }))).then((result) => {
