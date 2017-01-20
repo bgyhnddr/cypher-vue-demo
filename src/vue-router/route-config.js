@@ -196,6 +196,12 @@ export function configRouter(router) {
     '/teamManagement/promoteAgent/:account': {
       component: require('../components/TEAM/PromoteAgent.vue')
     },
+    '/teamManagement/promotionAuditList': {
+      component: require('../components/TEAM/PromotionAuditList.vue')
+    },
+    '/teamManagement/promotionAgentInfo/:account': {
+      component: require('../components/TEAM/PromotionAgentInfo.vue')
+    },
     '/teamManagement/choosePromoteRole/:account': {
       component: require('../components/TEAM/ChoosePromoteRole.vue')
     },
