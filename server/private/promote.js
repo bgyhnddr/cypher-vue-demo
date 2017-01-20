@@ -355,6 +355,7 @@ var exec = {
     var user = require('../../db/models/user')
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
     var brand_role = require('../../db/models/brand_role')
 
     agent_promotion.hasOne(employment)
@@ -366,6 +367,8 @@ var exec = {
     })
     user.hasOne(agent)
     agent.hasMany(agent_detail)
+    agent.hasOne(agent_brand_role)
+    agent_brand_role.belongsTo(brand_role)
 
     return agent_promotion.findOne({
       where: {
@@ -379,9 +382,14 @@ var exec = {
         model: user,
         include: {
           model: agent,
-          include: {
-            model:agent_detail
-          }
+          include: [{
+            model: agent_detail
+          }, {
+            model: agent_brand_role,
+            include: {
+              model: brand_role
+            }
+          }]
         }
       }]
     }).then(function(result) {
