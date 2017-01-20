@@ -4,8 +4,8 @@
   <button @click="search"></button>
 </group>
 <div v-show="showSearch">
-  <group v-for="members in searchResult">
-    <cell :title="members.agent.agent_detail.name" @click="goToForzenAgent(members.agent.user_account)" is-link>
+  <group v-for="member in searchResult">
+    <cell :title="member.agent_detail.name" @click="goToForzenAgent(member.user_account)" is-link>
     </cell>
   </group>
 </div>
@@ -34,9 +34,6 @@ export default {
   props: {
     showSearch: {
       type: Boolean
-    },
-    pageTitle: {
-      type: String
     }
   },
   data() {
@@ -53,15 +50,12 @@ export default {
     search() {
       var that = this
       var keyword = that.keyword
-      FrozenAPI.getFrozenMember({account:keyword}).then((result)=>{
-        if(result.length>0){
-          that.searchResult = result
-          that.pageTitle = result[0].agent.agent_brand_role.brand_role.name
-          that.showSearch = true
-        }else{
-          that.alert.showCatchError = true
-          that.alert.catchErrorMsg = "查无此成员"
-        }
+      FrozenAPI.getFrozenMembers({filterKey:keyword}).then((result)=>{
+        that.searchResult = result
+        that.showSearch = true
+      }).catch(function(err) {
+        that.alert.showCatchError = true
+        that.alert.catchErrorMsg = err
       })
     },
     goToForzenAgent(account) {

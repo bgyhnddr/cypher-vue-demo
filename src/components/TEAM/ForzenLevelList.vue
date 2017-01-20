@@ -1,10 +1,10 @@
 <template>
 <div id="forzenLevelList">
   <div class="vux-demo-header-box wapmain-header" slot="header">
-    <x-header :left-options="{showBack: false}">{{pageTitle}}</x-header>
+    <x-header :left-options="{showBack: false}">冻结团队成员</x-header>
     <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
   </div>
-  <div class="forzenLevelList-search"><search-frozen :show-search.sync="showSearch" :page-title.sync="pageTitle"></search-frozen></div>
+  <div class="forzenLevelList-search"><search-frozen :show-search.sync="showSearch"></search-frozen></div>
   <div v-show="!showSearch" class="forzenLevelList">
     <group v-for="level in forzenLevels">
       <div class="forzenLevelList-li">
@@ -45,7 +45,6 @@ export default {
   data() {
     return {
       forzenLevels: {},
-      pageTitle: "冻结团队成员",
       showSearch: false,
       alert: {
         showCatchError: false,

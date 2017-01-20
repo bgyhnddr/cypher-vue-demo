@@ -8,8 +8,8 @@ export default {
   getFrozenMembers(params){
       return httpRequest.get(path + 'getFrozenMembers',params)
   },
-  getFrozenMember(params){
-      return httpRequest.get(path + 'getFrozenMember',params)
+  CheckUserRole(){
+      return httpRequest.get(path + 'CheckUserRole')
   },
   FrozenAgent(params) {
       return httpRequest.post(path + 'FrozenAgent',params)

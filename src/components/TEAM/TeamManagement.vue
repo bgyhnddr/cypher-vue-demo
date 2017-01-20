@@ -8,7 +8,7 @@
     <div style="min-height:471px">
     <group>
       <!--冻结团队成员-->
-      <a class="weui_cell a-li a-li-first" v-link="{path: '/teamManagement/forzenLevelList'}">
+      <a class="weui_cell a-li a-li-first" v-if="UserPermission" v-link="{path: '/teamManagement/forzenLevelList'}">
         <div class="weui_cell_hd">
           <img src="/static/TestIMG/freeze.png">
         </div>
@@ -46,7 +46,8 @@ import {
   Alert,
   XHeader
 } from 'vux'
-import authAPI from '../../api/auth'
+
+import FrozenAPI from '../../api/frozen'
 
 export default {
   components: {
@@ -56,24 +57,24 @@ export default {
   },
   data() {
     return {
-      user: {
-        user_info: {}
-      }
+      UserPermission:false
     }
   },
   methods: {
     onClickBack() {
       this.$route.router.go('/homePage')
     },
-    getPersonalInfo() {
+    CheckUserRole() {
       var that = this
-      authAPI.getUser().then(function(result) {
-        that.user.user_info = result
+      FrozenAPI.CheckUserRole().then((result)=>{
+        if(result == "brand_role0" || result == "brand_role1"){
+          that.UserPermission = true
+        }
       })
     }
   },
   ready() {
-    this.getPersonalInfo()
+    this.CheckUserRole()
   }
 }
 </script>

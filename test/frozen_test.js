@@ -190,15 +190,6 @@ describe('frozen-test', () => {
     })
   })
 
-  describe('getFrozenMember', () => {
-    it('get single member', () => {
-      return testfunction("getFrozenMember", {
-        account: "frozenphone"
-      }).then((result) => {
-        result.length.should.equal(1)
-      })
-    })
-  })
   describe('FrozenAgent', () => {
     it('froze frozen', () => {
       return frozen_agent.findAll({
