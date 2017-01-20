@@ -97,8 +97,8 @@ export default {
         }
       },
       showAlert: false,
-      show:false,
-      alertMsg:""
+      show: false,
+      alertMsg: ""
     }
   },
   components: {
@@ -113,12 +113,12 @@ export default {
       this.$route.router.go("/teamManagement/promoteLevelList")
     },
     ShowPromote() {
-      console.log("打开提拔")
+      this.$route.router.go("/teamManagement/choosePromoteRole/" + this.$route.params.account)
     },
     getAgentInfo() {
       var that = this
       employAPI.getAgentDetail({
-        account: that.$route.params.account
+        account: this.$route.params.account
       }).then(function(result) {
         console.log(JSON.stringify(result))
         that.agentInfo = result
@@ -237,5 +237,4 @@ export default {
 .certificate-messages .weui_cell_hd label {
   color: #595959;
 }
-
 </style>
