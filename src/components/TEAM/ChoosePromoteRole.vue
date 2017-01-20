@@ -47,27 +47,28 @@ export default {
         promotee: that.$route.params.account
       }).then(function(result) {
         if (result.length == 0) {
-          that.showMsg = true
-          that.errorMsg = "此成员目前暂无可提拔等级"
+          that.alert.showCatchError = true
+          that.alert.catchErrorMsg = "此成员目前暂无可提拔等级"
         } else {
           that.promoteRoles = result
         }
       }).catch(function(err) {
-        that.showCatchError = true
-        that.catchErrorMsg = "加载可提拔等级列表异常，请稍后重试"
+        that.alert.showCatchError = true
+        that.alert.catchErrorMsg = "加载可提拔等级列表异常，请稍后重试"
       })
     },
     chooseRole(brandRoleCode){
       var that = this
 
       promoteAPI.createPromotion({
-          promotee: brandRoleCode,
-          level: this.$route.params.account
+          promotee: this.$route.params.account,
+          level: brandRoleCode
       }).then(function(result) {
-          that.$route.router.go('/teamManagement/promoteApplication/' + result)
+          that.$route.router.go('/teamManagement/promoteShare/' + result)
       }).catch(function(err) {
-          that.showErrorNoHandled = true
-          that.errorMsgNoHandled = "创建提拔异常，请稍后重试"
+        console.log(err)
+          that.alert.showErrorNoHandled = true
+          that.alert.errorMsgNoHandled = "该代理已提交提拔审核，请勿再次提拔"
       })
     },
     errorHandled() {

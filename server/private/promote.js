@@ -352,16 +352,46 @@ var exec = {
 
     var employment = require('../../db/models/employment')
     var agent_promotion = require('../../db/models/agent_promotion')
+    var user = require('../../db/models/user')
+    var agent = require('../../db/models/agent')
+    var agent_detail = require('../../db/models/agent_detail')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
+    var brand_role = require('../../db/models/brand_role')
 
     agent_promotion.hasOne(employment)
+    agent_promotion.belongsTo(brand_role, {
+      foreignKey: 'brand_role_code'
+    })
+    agent_promotion.belongsTo(user, {
+      foreignKey: 'promoter_user_account'
+    })
+    user.hasOne(agent)
+    agent.hasMany(agent_detail)
+    agent.hasOne(agent_brand_role)
+    agent_brand_role.belongsTo(brand_role)
 
     return agent_promotion.findOne({
       where: {
         guid: promotionGuid
       },
-      include: {
+      include: [{
         model: employment
-      }
+      }, {
+        model: brand_role
+      }, {
+        model: user,
+        include: {
+          model: agent,
+          include: [{
+            model: agent_detail
+          }, {
+            model: agent_brand_role,
+            include: {
+              model: brand_role
+            }
+          }]
+        }
+      }]
     }).then(function(result) {
       if (result != null) {
         return result
@@ -377,7 +407,7 @@ var exec = {
    */
   confirmPromotion(req, res, next) {
     var promotee_user_account = req.session.userInfo.name
-    var promotionGuid = req.query.promotionGuid
+    var promotionGuid = req.body.promotionGuid
 
     var employment = require('../../db/models/employment')
     var agent_promotion = require('../../db/models/agent_promotion')
@@ -390,14 +420,25 @@ var exec = {
       if (result != null) {
         result.agree_time = new Date().Format('yyyy-MM-dd hh:mm')
         return result.save().then((result) => {
-          return employment.create({
-            agent_promotion_guid: result.guid,
-            brand_guid: result.brand_guid,
-            brand_role_code: result.brand_role_code,
-            employer_user_account: result.promoter_user_account,
-            employee_user_account: result.promotee_user_account,
-            employer_time: result.agree_time,
-            status: "未审核",
+          var agentPromotion = result
+          return employment.findOne({
+            where: {
+              agent_promotion_guid: result.guid
+            }
+          }).then((result) => {
+            if (result == null) {
+              return employment.create({
+                agent_promotion_guid: agentPromotion.guid,
+                brand_guid: agentPromotion.brand_guid,
+                brand_role_code: agentPromotion.brand_role_code,
+                employer_user_account: agentPromotion.promoter_user_account,
+                employee_user_account: agentPromotion.promotee_user_account,
+                employer_time: agentPromotion.agree_time,
+                status: true,
+              })
+            } else {
+              return Promise.reject("该提拔已确认")
+            }
           })
         })
       } else {
