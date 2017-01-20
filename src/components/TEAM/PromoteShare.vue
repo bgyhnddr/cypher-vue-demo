@@ -1,6 +1,6 @@
 <template>
 <div class="vux-demo-header-box wapmain-header" slot="header">
-  <x-header :left-options="{showBack: false}">分享提拔页</x-header>
+  <x-header :left-options="{showBack: false}">分享提拔</x-header>
   <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
 </div>
 <div v-show="showModel.promoteShare">
@@ -69,39 +69,37 @@ export default {
     },
     loadPromotion() {
       var that = this
-      promoteAPI.getPromotion({
-        promotionGuid: this.$route.params.agentPromotionGuid
-      }).then(function(result) {
-        console.log(JSON.stringify(result))
-        that.promotionData = result
-        that.checkLoginUser()
-      }).catch(function(err) {
-        that.alert.showErrorNoHandled = true
-        that.alert.errorMsgNoHandled = "加载提拔信息异常，请稍后重试"
-      })
-    },
-    checkLoginUser() {
-      var that = this
-
       authAPI.getUser().then(function(result) {
-        console.log("登录者=" + result.name)
+        //检查是否登录
         if (result.name != undefined) {
+          that.loginUser = result.name
+          promoteAPI.getPromotion({
+            promotionGuid: that.$route.params.agentPromotionGuid
+          }).then(function(result) {
+            console.log(JSON.stringify(result))
+            that.promotionData = result
 
-          if (result.name == that.promotionData.promoter_user_account) {
-            that.isPromoterFlag = true
-
-            if (that.promotionData.status == false) {
+            if (result.status == false) {
               that.alert.showCatchError = true
               that.alert.catchErrorMsg = "提拔已关闭，确认后返回到主页"
             } else {
-              that.showModel.promoteShare = true
+              //检查登录者是否提拔者或者被提拔者
+              if (that.loginUser == result.promoter_user_account) {
+                that.isPromoterFlag = true
+
+                that.showModel.promoteShare = true
+              } else if (that.loginUser == result.promotee_user_account) {
+                that.$route.router.go('/teamManagement/promoteApplication/' + that.$route.params.agentPromotionGuid)
+              } else {
+                that.alert.showCatchError = true
+                that.alert.catchErrorMsg = "你无权查看此提拔信息，确认后返回到主页"
+              }
             }
-          } else if (result.name == that.promotionData.promotee_user_account) {
-            that.$route.router.go('/teamManagement/promoteApplication/' + that.$route.params.agentPromotionGuid)
-          } else {
-            that.alert.showCatchError = true
-            that.alert.catchErrorMsg = "你无权查看此提拔信息，确认后返回到主页"
-          }
+          }).catch(function(err) {
+            that.alert.showErrorNoHandled = true
+            that.alert.errorMsgNoHandled = "加载提拔信息异常，请稍后重试"
+          })
+
         } else {
           that.alert.showCatchError = true
           that.alert.catchErrorMsg = "请先登录，再扫一扫"
