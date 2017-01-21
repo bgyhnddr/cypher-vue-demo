@@ -62,9 +62,9 @@ export default {
   methods: {
     onClickBack() {
       if (this.isPromoterFlag) {
-        this.$route.router.go('/')
+        this.$route.router.go('/teamManagement')
       } else {
-        this.$route.router.go('/teamManagement/choosePromoteRole/' + this.$route.params.agentPromotionGuid)
+        this.$route.router.go('/')
       }
     },
     loadPromotion() {
@@ -78,21 +78,21 @@ export default {
           }).then(function(result) {
             that.promotionData = result
               //检查登录者是否提拔者或者被提拔者
-              if (that.loginUser == result.promoter_user_account) {
-                that.isPromoterFlag = true
+            if (that.loginUser == result.promoter_user_account) {
+              that.isPromoterFlag = true
 
-                if (result.status == false) {
-                  that.alert.showCatchError = true
-                  that.alert.catchErrorMsg = "提拔已关闭，确认后返回到主页"
-                }
-
-                that.showModel.promoteShare = true
-              } else if (that.loginUser == result.promotee_user_account) {
-                that.$route.router.go('/teamManagement/promoteApplication/' + that.$route.params.agentPromotionGuid)
-              } else {
+              if (result.status == false) {
                 that.alert.showCatchError = true
-                that.alert.catchErrorMsg = "你无权查看此提拔信息，确认后返回到主页"
+                that.alert.catchErrorMsg = "提拔已关闭，确认后返回到主页"
               }
+
+              that.showModel.promoteShare = true
+            } else if (that.loginUser == result.promotee_user_account) {
+              that.$route.router.go('/teamManagement/promoteApplication/' + that.$route.params.agentPromotionGuid)
+            } else {
+              that.alert.showCatchError = true
+              that.alert.catchErrorMsg = "你无权查看此提拔信息，确认后返回到主页"
+            }
           }).catch(function(err) {
             that.alert.showErrorNoHandled = true
             that.alert.errorMsgNoHandled = "加载提拔信息异常，请稍后重试"
