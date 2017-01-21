@@ -8,13 +8,31 @@
     <div style="min-height:471px">
       <group v-if="showModel.funcModel">
         <!--冻结团队成员-->
-        <cell v-if="showModel.forzen" title="冻结团队成员" link="/teamManagement/forzenLevelList">
-          <img slot="icon" src="/static/TestIMG/freeze.png">
-        </cell>
+        <a class="weui_cell a-li a-li-first" v-if="showModel.forzen" v-link="{path: '/teamManagement/forzenLevelList'}">
+          <div class="weui_cell_hd">
+            <img src="/static/TestIMG/freeze.png">
+          </div>
+          <div class="weui_cell_bd weui_cell_primary">
+            <p>冻结团队成员</p>
+          </div>
+          <div class="weui_cell_ft" :class="{'with_arrow': true}">
+            <slot name="value"></slot>
+            <slot></slot>
+          </div>
+        </a>
         <!--提拔团队成员-->
-        <cell v-if="showModel.promote" title="提拔团队成员" link="/teamManagement/promoteLevelList">
-          <img slot="icon" src="/static/TestIMG/To_promote.png">
-        </cell>
+        <a class="weui_cell a-li-last" v-if="showModel.promote" v-link="{path: '/teamManagement/promoteLevelList'}">
+          <div class="weui_cell_hd">
+            <img src="/static/TestIMG/To_promote.png">
+          </div>
+          <div class="weui_cell_bd weui_cell_primary">
+            <p>提拔团队成员</p>
+          </div>
+          <div class="weui_cell_ft" :class="{'with_arrow': true}">
+            <slot name="value"></slot>
+            <slot></slot>
+          </div>
+        </a>
       </group>
     </div>
   </div>
