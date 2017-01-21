@@ -580,7 +580,7 @@ describe('team_bili_test', () => {
         auditID: guidMember4
       }).then((result) => {
         // console.log(JSON.stringify(result))
-        result.brand_role_meta.initialFee.should.be.equal(150.2)
+        result.brand_role_meta.totleInitialFee.should.be.equal(150.2)
       })
     })
   })
