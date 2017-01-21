@@ -49,10 +49,10 @@ var exec = {
     }).then(function(result) {
       var employableRules = result[0].employable_rules.filter((employableRule, index) => {
         return index != 0
-      }).map(o => o)
+      })
 
       var addEmployment = (account, employeeList, list) => {
-        var childList = list.filter(o => o.employer_user_account == account).map(o => o)
+        var childList = list.filter(o => o.employer_user_account == account)
         Array.prototype.push.apply(employeeList, childList)
         childList.forEach((o) => {
           addEmployment(o.employee_user_account, employeeList, list)
@@ -136,13 +136,12 @@ var exec = {
         }
       }]
     }).then((result) => {
-
       var employableRules = result[0].employable_rules.filter((employmentRule, index) => {
         return index != 0
-      }).map(o => o)
+      })
 
       var addEmployment = (account, employeeList, list) => {
-        var childList = list.filter(o => o.employer_user_account == account).map(o => o)
+        var childList = list.filter(o => o.employer_user_account == account)
         Array.prototype.push.apply(employeeList, childList)
         childList.forEach((o) => {
           addEmployment(o.employee_user_account, employeeList, list)
@@ -185,17 +184,17 @@ var exec = {
               if (detailItem.key == "name" || detailItem.key == "cellphone") {
                 return detailItem.value.match(filterKey) != null
               }
-            }).map(o => o)
+            })
 
             return hasFilterKeyDetailLists.length > 0
-          }).map(o => o)
+          })
         }
 
         return {
           end: (count + page * count) >= filterResult.length,
           list: filterResult.filter((Item, index) => {
             return index >= page * count && index < (count + page * count)
-          }).map(o => o)
+          })
         }
       })
     })
@@ -261,7 +260,7 @@ var exec = {
     ]).then(function(result) {
       var employableRules = result[0][0].employable_rules.filter((employableRule) => {
         return Number(employableRule.brand_role.level) < Number(result[1].level)
-      }).map(o => o)
+      })
 
       return employableRules
     })
