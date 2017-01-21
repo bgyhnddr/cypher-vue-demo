@@ -216,14 +216,20 @@ var exec = {
     var user = require('../../db/models/user')
     var employment_detail = require('../../db/models/employment_detail')
     var brand = require('../../db/models/brand')
+    var brand_role = require('../../db/models/brand_role')
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
+    var brand_role_meta = require('../../db/models/brand_role_meta')
 
     employment.belongsTo(brand)
     employment.hasMany(employment_detail)
     employment.belongsTo(user, {
       foreignKey: "employer_user_account"
     })
+    employment.belongsTo(brand_role, {
+      foreignKey: "brand_role_code"
+    })
+    brand_role.hasMany(brand_role_meta)
     user.hasOne(agent)
     agent.hasMany(agent_detail)
 
@@ -241,19 +247,46 @@ var exec = {
         }
       ]
     }).then((result) => {
-      var obj = result.toJSON()
-      obj.employment_detail = {}
-      obj.employment_details.forEach((d) => {
-        obj.employment_detail[d.key] = d.value
-      })
+      var currentEmployment = result
+      return employment.findAll({
+        where: {
+          employer_user_account: currentEmployment.employer_user_account,
+          status: '已审核',
+          audit_result: '已通过'
+        },
+        include: {
+          model: brand_role,
+          include: {
+            model: brand_role_meta
+          }
+        }
+      }).then((result) => {
+        var obj = currentEmployment.toJSON()
+        obj.employment_detail = {}
+        obj.employment_details.forEach((d) => {
+          obj.employment_detail[d.key] = d.value
+        })
 
-      obj.user.agent.agent_detail = {}
-      obj.user.agent.agent_details.forEach((d) => {
-        obj.user.agent.agent_detail[d.key] = d.value
+        obj.user.agent.agent_detail = {}
+        obj.user.agent.agent_details.forEach((d) => {
+          obj.user.agent.agent_detail[d.key] = d.value
+        })
+        delete obj.employment_details
+        delete obj.user.agent.agent_details
+
+        obj.brand_role_meta = {
+          totleInitialFee : 0
+        }
+        result.forEach((employeeEmploymentItem) => {
+          employeeEmploymentItem.brand_role.brand_role_meta.forEach((brandRoleMeta) =>{
+            if (brandRoleMeta.key == "initialFee") {
+              obj.brand_role_meta.totleInitialFee +=  parseFloat(brandRoleMeta.value)
+            }
+          })
+        })
+
+        return obj
       })
-      delete obj.employment_details
-      delete obj.user.agent.agent_details
-      return obj
     })
   },
   getBrandDetail(req, res, next) {
@@ -789,12 +822,11 @@ var exec = {
 
 module.exports = (req, res, next) => {
   var action = req.params.action
-  Promise.resolve(action).then(function(result) {
+  return Promise.resolve(action).then(function(result) {
     return exec[result](req, res, next)
   }).then(function(result) {
-    res.send(result)
+    return res.send(result)
   }).catch(function(error) {
-    console.log(error)
-    res.status(500).send(error.toString())
+    return res.status(500).send(error.toString())
   })
 }
