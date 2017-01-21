@@ -201,6 +201,7 @@ export default {
       } else {
         this.headerTitle = chooseLevel.brand_role_name
         this.chooseLevel = chooseLevel
+        this.keyword = null
         this.loadPromoteMembers()
       }
     }
