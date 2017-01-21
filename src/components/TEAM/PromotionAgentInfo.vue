@@ -15,21 +15,21 @@
       </cell>
       <cell>
         <div slot="icon">提拔人：
-          <span>{{agentInfo.user.agent.agent_detail.name}}</span>
+          <span>{{agentInfo.employer_user.agent.agent_detail.name}}</span>
         </div>
       </cell>
       <cell>
         <div slot="icon">招募人已用金额：
           <span>￥10000</span>
         </div>
-        <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+agentInfo.user.account+'/promotion'+'/#'+'/#'+'/'+agentInfo.agent.user_account}">查看授权证书</x-button>
+        <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+agentInfo.employer_user.account+'/promotion'+'/#'+'/#'+'/'+agentInfo.employee_user.agent.user_account}">查看授权证书</x-button>
       </cell>
     </group>
   </div>
   <div class="certificate-messages">
     <div class="certificate-header">
       <div class="vux-center">
-        <img class="vux-x-img ximg-demo vux-center" alt="头像" :src="'/service/public/upload/getAttachment?id='+agentInfo.agent.agent_detail.headImg" />
+        <img class="vux-x-img ximg-demo vux-center" alt="头像" :src="'/service/public/upload/getAttachment?id='+agentInfo.employee_user.agent.agent_detail.headImg" />
       </div>
     </div>
     <group>
@@ -45,22 +45,22 @@
         </cell>
         <cell>
           <div slot="icon">姓名：
-            <label>{{agentInfo.agent.agent_detail.name}}</label>
+            <label>{{agentInfo.employee_user.agent.agent_detail.name}}</label>
           </div>
         </cell>
         <cell>
           <div slot="icon">微信号：
-            <label>{{agentInfo.agent.agent_detail.wechat}}</label>
+            <label>{{agentInfo.employee_user.agent.agent_detail.wechat}}</label>
           </div>
         </cell>
         <cell>
           <div slot="icon">手机号：
-            <label>{{agentInfo.agent.agent_detail.cellphone}}</label>
+            <label>{{agentInfo.employee_user.agent.agent_detail.cellphone}}</label>
           </div>
         </cell>
         <cell>
           <div slot="icon">地址：
-            <label>{{agentInfo.agent.agent_detail.address}}{{agentInfo.agent.agent_detail.address_detail}}</label>
+            <label>{{agentInfo.employee_user.agent.agent_detail.address}}{{agentInfo.employee_user.agent.agent_detail.address_detail}}</label>
           </div>
         </cell>
       </div>
@@ -130,7 +130,12 @@ export default {
         agent: {
           agent_detail: {}
         },
-        user: {
+        employer_user: {
+          agent: {
+            agent_detail: {}
+          }
+        },
+        employee_user: {
           agent: {
             agent_detail: {}
           }
