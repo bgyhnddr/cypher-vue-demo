@@ -141,14 +141,6 @@ var exec = {
         return index != 0
       }).map(o => o)
 
-      var where = {
-        status: '已审核',
-        audit_result: '已通过'
-      }
-      if (level) {
-        where.brand_role_code = level
-      }
-
       var addEmployment = (account, employeeList, list) => {
         var childList = list.filter(o => o.employer_user_account == account).map(o => o)
         Array.prototype.push.apply(employeeList, childList)
@@ -158,7 +150,10 @@ var exec = {
       }
 
       return employment.findAll({
-        where: where,
+        where: {
+          status: '已审核',
+          audit_result: '已通过'
+        },
         order: "employment.created_at DESC",
         include: {
           model: user,
@@ -175,6 +170,12 @@ var exec = {
         return employeeList
       }).then((result) => {
         var filterResult = result
+
+        if(level){
+          filterResult = result.filter((employmentItem) => {
+            return employmentItem.brand_role_code == level
+          })
+        }
 
         if (filterKey != "") {
           filterResult = result.filter((employmentItem) => {
