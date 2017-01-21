@@ -70,7 +70,6 @@ export default {
     CheckUserRole() {
       var that = this
       agentInfoAPI.getBrandRoleInfo().then((result)=>{
-        console.log(JSON.stringify(result))
         if (result.brand_role.level == "0" || result.brand_role.level == "-1" ) {
           that.showModel.forzen = true
         }
