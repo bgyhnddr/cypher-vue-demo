@@ -1,8 +1,8 @@
 var Sequelize = require('sequelize')
 var sequelize = require('../sequelize')
 
-var brand_role_detail = sequelize.define(
-    'brand_role_detail', {
+var brand_role_meta = sequelize.define(
+    'brand_role_meta', {
         id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
         brand_role_code: Sequelize.STRING,
         key: Sequelize.STRING,
@@ -13,4 +13,4 @@ var brand_role_detail = sequelize.define(
     })
 
 
-module.exports = brand_role_detail
+module.exports = brand_role_meta
