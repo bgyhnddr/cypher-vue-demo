@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     onClickBack(){
-
+      this.$route.router.go("/employManagement")
     },
     getdata(e) {
       var that = this

@@ -17,12 +17,12 @@
         <div slot="icon">提拔人：
           <span>{{agentInfo.user.agent.agent_detail.name}}</span>
         </div>
-        <x-button type="default" class="certificate-views " v-link="{path:'' }">查看授权证书</x-button>
       </cell>
       <cell>
         <div slot="icon">招募人已用金额：
           <span>￥10000</span>
         </div>
+        <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+agentInfo.user.account+'/promotion'+'/#'+'/#'+'/'+agentInfo.agent.user_account}">查看授权证书</x-button>
       </cell>
     </group>
   </div>
@@ -72,13 +72,12 @@
         <x-button type="primary" @click="PassAudit">通过审核</x-button>
       </flexbox-item>
       <flexbox-item>
-        <x-button type="warn" @click="show=true">打回</x-button>
+        <x-button type="warn" @click="showReason=true">打回</x-button>
       </flexbox-item>
     </flexbox>
   </div>
   <div class="auditinfo-backto ">
-    <dialog :show.sync="show" class="dialog-demo">
-      <!-- <button @click="show=false" class="close-button"></button> -->
+    <dialog :show.sync="showReason" class="dialog-demo">
       <group title="打回理由">
         <x-textarea :value.sync="reason" placeholder="填写打回理由" :show-counter="false"></x-textarea>
       </group>
@@ -87,14 +86,14 @@
           <x-button type="default" @click="rejectAudit" class="auditinfo-determine ">确定</x-button>
         </flexbox-item>
         <flexbox-item>
-          <x-button type="default" @click="show=false">取消</x-button>
+          <x-button type="default" @click="showReason=false">取消</x-button>
         </flexbox-item>
       </flexbox>
     </dialog>
   </div>
   <div>
     <div class="completely">
-      <alert :show.sync="showAlert" @on-hide="onHide" button-Text="继续审核">{{alertMsg}}</alert>
+      <alert :show.sync="showTips" @on-hide="onHide" button-Text="继续审核">{{alertMsg}}</alert>
     </div>
   </div>
 </div>
@@ -110,13 +109,20 @@ import {
   Alert,
   Flexbox,
   FlexboxItem,
-  XTextarea
+  XTextarea,
+  Dialog
 } from 'vux'
 import promoteAPI from '../../api/promote'
 export default {
   data() {
     return {
       headImg: null,
+      showReason: false,
+      showTips: false,
+      showAlert: false,
+      show: false,
+      reason: "",
+      alertMsg: "",
       agentInfo: {
         brand_role: {
           brand: {}
@@ -129,10 +135,7 @@ export default {
             agent_detail: {}
           }
         }
-      },
-      showAlert: false,
-      show: false,
-      alertMsg: ""
+      }
     }
   },
   components: {
@@ -143,7 +146,8 @@ export default {
     Alert,
     Flexbox,
     FlexboxItem,
-    XTextarea
+    XTextarea,
+    Dialog
   },
   methods: {
     onClickBack() {
@@ -161,11 +165,17 @@ export default {
         that.alertMsg = err
       })
     },
-    PassAudit(){
+    PassAudit() {
+      promoteAPI.PassPromote().then((result) => {
 
+      })
     },
     rejectAudit() {
+      promoteAPI.RejectPromote({
+        reason: ""
+      }).then((result) => {
 
+      })
     },
     onHide() {
 
