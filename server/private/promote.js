@@ -446,7 +446,148 @@ var exec = {
       }
     })
 
-  }
+  },
+
+  /**
+   * 获取提拔审核列表
+   * GET
+   */
+  getPromotelist(req, res, next) {
+    var brand_role = require('../../db/models/brand_role')
+    var user = require('../../db/models/user')
+    var agent = require('../../db/models/agent')
+    var agent_detail = require('../../db/models/agent_detail')
+    var agent_promotion = require('../../db/models/agent_promotion')
+
+    agent_promotion.belongsTo(brand_role, {
+      foreignKey: 'brand_role_code'
+    })
+    agent_promotion.belongsTo(user, {
+      foreignKey: 'promotee_user_account'
+    })
+    user.hasOne(agent)
+    agent.hasMany(agent_detail)
+
+
+    var selectMsg = req.query.key
+    var select = "create_time desc"
+
+    if (selectMsg != null) {
+      switch (selectMsg) {
+        case "timeasc":
+          select = "create_time asc"
+          break
+        case "timedesc":
+          select = "create_time desc"
+          break
+        case "leveldesc":
+          select = "brand_role_code asc"
+          break
+        case "levelasc":
+          select = "brand_role_code desc"
+      }
+    }
+
+    return agent_promotion.findAll({
+      where: {
+        status: 1
+      },
+      include: [brand_role, {
+        model: user,
+        include: {
+          model: agent,
+          include: agent_detail
+        }
+      }],
+      order: select
+    }).then((result) => {
+      return result.map((a) => {
+        obj = a.toJSON()
+        obj.user.agent.agent_detail = {}
+        obj.user.agent.agent_details.forEach((d) => {
+          obj.user.agent.agent_detail[d.key] = d.value
+        })
+        delete obj.user.agent.agent_details
+        return obj
+      })
+    })
+  },
+  /**
+   * 获取提拔审核代理信息
+   * GET
+   */
+  getPromoteAuditInfo(req, res, next) {
+    var account = req.query.account
+    var user = require('../../db/models/user')
+    var brand = require('../../db/models/brand')
+    var brand_role = require('../../db/models/brand_role')
+    var agent = require('../../db/models/agent')
+    var agent_detail = require('../../db/models/agent_detail')
+    var agent_promotion = require('../../db/models/agent_promotion')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
+
+    agent_promotion.belongsTo(user, {
+      foreignKey: 'promoter_user_account'
+    })
+    agent_promotion.belongsTo(agent, {
+      foreignKey: 'guid'
+    })
+    brand_role.belongsTo(brand)
+    agent_promotion.belongsTo(brand_role)
+    user.hasOne(agent)
+    agent.hasMany(agent_detail)
+    agent.hasOne(agent_brand_role)
+
+
+    return agent_promotion.findOne({
+      where: {
+        status: 1,
+        promotee_user_account: account
+      },
+      include: [{
+        model: brand_role,
+        include:brand
+      }, {
+        model: agent,
+        include: agent_detail
+      }, {
+        model: user,
+        include: [{
+          model: agent,
+          include: [{
+            model: agent_detail
+          }]
+        }]
+      }]
+    }).then((result) => {
+      obj = result.toJSON()
+      obj.agent.agent_detail = {}
+      obj.agent.agent_details.forEach((d) => {
+        obj.agent.agent_detail[d.key] = d.value
+      })
+      obj.user.agent.agent_detail = {}
+      obj.user.agent.agent_details.forEach((d) => {
+        obj.user.agent.agent_detail[d.key] = d.value
+      })
+      delete obj.agent.agent_details
+      delete obj.user.agent.agent_details
+      return obj
+    })
+  },
+  /**
+   * 通过提拔审核
+   * GET
+   */
+  PassPromote(req, res, next) {
+
+  },
+  /**
+   * 拒绝提拔审核
+   * GET
+   */
+  RejectPromote(req, res, next) {
+
+  },
 
 
 }

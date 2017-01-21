@@ -14,11 +14,11 @@
   <div class="audit-list">
     <group>
       <cell v-for="item in items">
-        <div slot="icon">申请人：{{item.detail.name}}</div>
+        <div slot="icon">提拔人：{{item.user.agent.agent_detail.name}}</div>
         <!--{{$index}}-->
-        <div slot="icon">申请级别：{{item.brand_role.name}}</div>
-        <div slot="icon">申请时间：{{item.employer_time}}</div>
-        <x-button mini v-link="{path: '/employManagement/auditInfo/'+item.employee_user_account+'/'+item.guid+'/'+item.brand_guid+'/audit'}">审核</x-button>
+        <div slot="icon">提拔级别：{{item.brand_role.name}}</div>
+        <div slot="icon">提拔时间：{{item.create_time}}</div>
+        <x-button mini v-link="{path: '/teamManagement/promotionAgentInfo/'+item.user.account}">审核</x-button>
       </cell>
     </group>
     <alert :show.sync="show" button-text="确认">无记录</alert>
@@ -36,6 +36,8 @@ import {
   Alert,
   XHeader
 } from 'vux'
+
+import promoteAPI from '../../api/promote'
 
 export default {
   data() {
@@ -72,27 +74,14 @@ export default {
     },
     getdata(e) {
       var that = this
-      employAPI.getAuditList({
+      promoteAPI.getPromotelist({
         key: e
       }).then(function(result) {
+        console.log(result)
         if (!result[0]) {
           that.show = true
         }
-
-        result.forEach((o) => {
-          var list = o.employment_details
-          var obj = {}
-          o.employment_details.forEach((d) => {
-            console.log(d)
-            obj[d.key] = d.value
-          })
-          o.detail = obj
-        })
-
         that.items = result
-      }).catch(function(err) {
-        console.log(err)
-        that.serveMsg = err
       })
     },
     onChange(val) {
