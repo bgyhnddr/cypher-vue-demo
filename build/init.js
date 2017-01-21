@@ -19,6 +19,7 @@ Promise.all([
   require('../db/models/brand_employment_meta'),
   require('../db/models/agent_brand_role'),
   require('../db/models/brand_role'),
+  require('../db/models/brand_role_detail'),
   require('../db/models/employable_rule'),
   require('../db/models/employment_term'),
   require('../db/models/publish_employment')
