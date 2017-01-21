@@ -17,10 +17,13 @@ var employment = require('../db/models/employment')
 var employment_detail = require('../db/models/employment_detail')
 var agent_promotion = require('../db/models/agent_promotion')
 var frozen_agent = require('../db/models/frozen_agent')
+var brand_role_meta = require('../db/models/brand_role_meta')
 
 var guidMember1 = "guidMember1"
 var guidMember2 = "guidMember2"
 var guidMember3 = "guidMember3"
+var guidMember4 = "guidMember4"
+
 
 describe('team_bili_test', () => {
   // 初始化数据
@@ -30,10 +33,33 @@ describe('team_bili_test', () => {
     return Promise.all([
       employment,
       agent_promotion,
-      frozen_agent
+      frozen_agent,
+      brand_role_meta
     ].map((o) => o.sync({
       force: true
     }))).then((result) => {
+      brand_role_meta.bulkCreate([{
+        brand_role_code: "brand_role2",
+        key: "initialFee",
+        value: "50",
+        type: "float"
+      }, {
+        brand_role_code: "brand_role3",
+        key: "initialFee",
+        value: "50.1",
+        type: "float"
+      }, {
+        brand_role_code: "brand_role4",
+        key: "initialFee",
+        value: "50.1",
+        type: "float"
+      }, {
+        brand_role_code: "brand_role5",
+        key: "initialFee",
+        value: "50",
+        type: "float"
+      }])
+
       return role_permission.findOne({
         where: {
           role_code: "user",
@@ -51,7 +77,6 @@ describe('team_bili_test', () => {
               name: "promote"
             })
           ])
-          console.log("添加promote promission")
         }
       }).then(() => {
 
@@ -314,6 +339,71 @@ describe('team_bili_test', () => {
             }
           }),
 
+          //添加待通过募审核 成员四
+          user.findOne({
+            where: {
+              account: guidMember4
+            }
+          }).then((result) => {
+            employment.create({
+              guid: guidMember4,
+              publish_employment_guid: guidMember4,
+              brand_guid: "brand1",
+              brand_role_code: "brand_role5",
+              employer_user_account: "admin",
+              employee_user_account: guidMember4,
+              employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
+              audit_user_account: "admin",
+              status: "未审核"
+            })
+            if (result == null) {
+              Promise.all([
+                user.create({
+                  account: guidMember4,
+                  password: "123"
+                }),
+                user_role.create({
+                  user_account: guidMember4,
+                  role_code: 'user'
+                }),
+                employment_detail.bulkCreate([{
+                  employment_guid: guidMember4,
+                  key: 'headImg',
+                  value: "1"
+                }, {
+                  employment_guid: guidMember4,
+                  key: 'name',
+                  value: "成员四"
+                }, {
+                  employment_guid: guidMember4,
+                  key: 'wechat',
+                  value: "testWechat4"
+                }, {
+                  employment_guid: guidMember4,
+                  key: 'cellphone',
+                  value: "13444444444"
+                }, {
+                  employment_guid: guidMember4,
+                  key: 'IDType',
+                  value: "护照"
+                }, {
+                  employment_guid: guidMember4,
+                  key: 'IDNumber',
+                  value: "444444"
+                }, {
+                  employment_guid: guidMember4,
+                  key: 'address',
+                  value: "北京市 北京市市辖区 东城区"
+                }, {
+                  employment_guid: guidMember4,
+                  key: 'addressDetail',
+                  value: "312312312"
+                }])
+              ])
+            }
+          }),
+
+
         ])
 
       })
@@ -336,7 +426,7 @@ describe('team_bili_test', () => {
     }
   }
 
-  var testfunction = (action, params) => {
+  var promoteTestFunc = (action, params) => {
     try {
       return require('../server/private/promote')({
         session: {
@@ -355,9 +445,28 @@ describe('team_bili_test', () => {
     }
   }
 
+  var employTestFunc = (action, params) => {
+    try {
+      return require('../server/private/employment')({
+        session: {
+          userInfo: {
+            name: "admin"
+          }
+        },
+        params: {
+          action
+        },
+        query: params,
+        body: params
+      }, cres)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   describe('getPromotionOperableLevels', () => {
     it('get all can be operable promotion levels', () => {
-      return testfunction("getPromotionOperableLevels").then((result) => {
+      return promoteTestFunc("getPromotionOperableLevels").then((result) => {
         // console.log(JSON.stringify(result))
         result.length.should.equal(3)
         result[0].brand_role_code.should.equal("brand_role3")
@@ -368,7 +477,7 @@ describe('team_bili_test', () => {
 
   describe('getPromotionOperableStaffs', () => {
     it('get not level , filterKey="成员"', () => {
-      return testfunction("getPromotionOperableStaffs", {
+      return promoteTestFunc("getPromotionOperableStaffs", {
         filterKey: "成员",
       }).then((result) => {
         // console.log(JSON.stringify(result))
@@ -377,7 +486,7 @@ describe('team_bili_test', () => {
       })
     })
     it('get get level="brand_role3",not filterKey', () => {
-      return testfunction("getPromotionOperableStaffs", {
+      return promoteTestFunc("getPromotionOperableStaffs", {
         level: "brand_role3"
       }).then((result) => {
         // console.log(JSON.stringify(result))
@@ -389,7 +498,7 @@ describe('team_bili_test', () => {
 
   describe('getLevels', () => {
     it('get staff can be promoted Levels，promotee is guidMember2（二级代理）', () => {
-      return testfunction("getLevels", {
+      return promoteTestFunc("getLevels", {
         promotee: guidMember2
       }).then((result) => {
         // console.log(JSON.stringify(result))
@@ -401,7 +510,7 @@ describe('team_bili_test', () => {
 
   describe('createPromotion', () => {
     it('guidMember2 已有未审核提拔申请', () => {
-      return testfunction("createPromotion", {
+      return promoteTestFunc("createPromotion", {
         promotee: guidMember2,
         level: "brand_role2"
       }).then((result) => {
@@ -411,7 +520,7 @@ describe('team_bili_test', () => {
     })
 
     it('guidMember2 已有未审核提拔申请', () => {
-      return testfunction("createPromotion", {
+      return promoteTestFunc("createPromotion", {
         promotee: guidMember2,
         level: "brand_role2"
       }).then((result) => {
@@ -421,7 +530,7 @@ describe('team_bili_test', () => {
     })
 
     it('promotee is guidMember3（销售员）提拔至 特约销售员', () => {
-      return testfunction("createPromotion", {
+      return promoteTestFunc("createPromotion", {
         promotee: guidMember3,
         level: "brand_role4"
       }).then((result) => {
@@ -434,7 +543,7 @@ describe('team_bili_test', () => {
 
   describe('getPromotion', () => {
     it('get promotion guid = guidMember2, 有未审核记录', () => {
-      return testfunction("getPromotion", {
+      return promoteTestFunc("getPromotion", {
         promotionGuid: guidMember2,
       }).then((result) => {
         // console.log(JSON.stringify(result))
@@ -443,7 +552,7 @@ describe('team_bili_test', () => {
     })
 
     it('get promotion guid = guidMember1, 未确认提拔申请', () => {
-      return testfunction("getPromotion", {
+      return promoteTestFunc("getPromotion", {
         promotionGuid: guidMember1,
       }).then((result) => {
         // console.log(JSON.stringify(result))
@@ -454,12 +563,24 @@ describe('team_bili_test', () => {
 
   describe('confirmPromotion', () => {
     it('testMember1 confirm Promotion', () => {
-      return testfunction("confirmPromotion", {
+      return promoteTestFunc("confirmPromotion", {
         promotionGuid: guidMember1,
       }).then((result) => {
         // console.log(JSON.stringify(result))
         result.agent_promotion_guid.should.be.equal(guidMember1)
         result.status.should.be.equal(true)
+      })
+    })
+  })
+
+
+  describe('getAuditInfo', () => {
+    it('testMember3 get audit info', () => {
+      return employTestFunc("getAuditInfo", {
+        auditID: guidMember4
+      }).then((result) => {
+        // console.log(JSON.stringify(result))
+        result.brand_role_meta.initialFee.should.be.equal(150.2)
       })
     })
   })

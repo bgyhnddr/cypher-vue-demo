@@ -136,16 +136,15 @@ var exec = {
         }
       }]
     }).then((result) => {
-
       var employableRules = result[0].employable_rules.filter((employmentRule, index) => {
         return index != 0
       })
 
       var addEmployment = (account, employeeList, list) => {
-        var childList = list.filter(o => o.employer_user_account == account).map(o => o.employee_user_account)
+        var childList = list.filter(o => o.employer_user_account == account)
         Array.prototype.push.apply(employeeList, childList)
         childList.forEach((o) => {
-          addEmployment(o, employeeList, list)
+          addEmployment(o.employee_user_account, employeeList, list)
         })
       }
 
