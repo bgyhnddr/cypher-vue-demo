@@ -8,7 +8,7 @@
     <div style="min-height:471px">
     <group>
       <!--冻结团队成员-->
-      <a class="weui_cell a-li a-li-first" v-if="UserPermission" v-link="{path: '/teamManagement/forzenLevelList'}">
+      <a class="weui_cell a-li a-li-first" v-if="showModel.forzen" v-link="{path: '/teamManagement/forzenLevelList'}">
         <div class="weui_cell_hd">
           <img src="/static/TestIMG/freeze.png">
         </div>
@@ -21,7 +21,7 @@
         </div>
       </a>
       <!--提拔团队成员-->
-      <a class="weui_cell a-li-last"  v-link="{path: '/teamManagement/promoteLevelList'}">
+      <a class="weui_cell a-li-last" v-if="showModel.promote"  v-link="{path: '/teamManagement/promoteLevelList'}">
         <div class="weui_cell_hd">
             <img src="/static/TestIMG/To_promote.png">
         </div>
@@ -47,7 +47,7 @@ import {
   XHeader
 } from 'vux'
 
-import FrozenAPI from '../../api/frozen'
+import agentInfoAPI from '../../api/agentInfo'
 
 export default {
   components: {
@@ -57,7 +57,10 @@ export default {
   },
   data() {
     return {
-      UserPermission:false
+      showModel:{
+        forzen:false,
+        promote: false,
+      }
     }
   },
   methods: {
@@ -66,9 +69,14 @@ export default {
     },
     CheckUserRole() {
       var that = this
-      FrozenAPI.CheckUserRole().then((result)=>{
-        if(result == "brand_role0" || result == "brand_role1"){
-          that.UserPermission = true
+      agentInfoAPI.getBrandRoleInfo().then((result)=>{
+        console.log(JSON.stringify(result))
+        if (result.brand_role.level == "0" || result.brand_role.level == "-1" ) {
+          that.showModel.forzen = true
+        }
+
+        if (result.brand_role.level != "4" ) {
+          that.showModel.promote = true
         }
       })
     }
