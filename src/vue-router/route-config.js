@@ -199,6 +199,9 @@ export function configRouter(router) {
     '/teamManagement/choosePromoteRole/:account': {
       component: require('../components/TEAM/ChoosePromoteRole.vue')
     },
+    '/teamManagement/promoteShare/:agentPromotionGuid': {
+      component: require('../components/TEAM/PromoteShare.vue')
+    },
     '/teamManagement/promoteApplication/:agentPromotionGuid': {
       component: require('../components/TEAM/PromoteApplication.vue')
     },

@@ -120,7 +120,6 @@ export default {
       employAPI.getAgentDetail({
         account: this.$route.params.account
       }).then(function(result) {
-        console.log(JSON.stringify(result))
         that.agentInfo = result
       }).catch(function(err) {
         that.showAlert = true
