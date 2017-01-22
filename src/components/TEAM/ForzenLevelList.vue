@@ -134,4 +134,18 @@ export default {
   font-size: 4.9vw!important;
   color: #9d9ea5
 }
+#forzenLevelList  .weui_dialog{
+    width: 92%;
+}
+#forzenLevelList  .weui_dialog  .weui_dialog_ft{
+  width: 89%;
+margin: 8% auto;
+background: #0bb20c;
+line-height: 35px;
+border-radius: 2px;
+}
+#forzenLevelList  .weui_dialog .weui_btn_dialog.primary{
+  font-size: 4.9vw;
+  color: #fff;
+}
 </style>

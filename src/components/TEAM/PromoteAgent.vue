@@ -1,5 +1,5 @@
 <template>
-<div class="certificate-bac">
+<div  id="promoteAgent">
   <div>
     <div class="vux-demo-header-box wapmain-header" slot="header">
       <x-header :left-options="{showBack: false}">{{agentInfo.agent_detail.name}}</x-header>
@@ -59,10 +59,11 @@
         </cell>
       </div>
     </group>
-    <div>
-      <x-button type="primary" @click="ShowPromote">提拔</x-button>
-    </div>
+
   </div>
+</div>
+<div class="promoteAgent-button">
+  <x-button type="primary" @click="ShowPromote">提拔</x-button>
 </div>
 <alert :show.sync="showAlert" button-text="确认">{{alertMsg}}</alert>
 </template>
@@ -145,66 +146,77 @@ export default {
 }
 </script>
 <style>
-.certificate-bac {
-  min-height: 485px;
+#promoteAgent {
+height: 100%
 }
 
-.certificate-header img {
+ #promoteAgent .certificate-header img {
   border: 0;
   background-size: 100%;
   width: 25%;
 }
 
-.certificate-header {
+#promoteAgent .certificate-header {
   text-align: center;
   padding-top: 2%;
 }
 
-.certificate-header button {
+ #promoteAgent .certificate-header button {
   border: 0;
   background-size: 100%;
   width: 28%;
 }
 
-.certificate-header button img {
+ #promoteAgent .certificate-header button img {
   width: 100%;
   height: auto;
 }
 
-.certificate-header p {
+ #promoteAgent .certificate-header p {
   color: #595959;
   font-size: 4.5vw;
   /*14px*/
 }
 
-.certificate-header .vux-center {
-  width: 86%;
-  display: block;
-  margin: auto;
-}
+#promoteAgent .certificate-header .vux-center{
 
-.certificate-messages {
+  width: 23%;
+      padding-top: 31%;
+      position: relative;
+      display: block;
+      overflow: hidden;
+
+}
+#promoteAgent .certificate-header .vux-center img{
+  left: -2%;
+  top: 0%;
+  width: 100%;
+  position: absolute;
+  vertical-align: middle;
+  min-height: 95px;
+}
+#promoteAgent .certificate-messages {
   position: relative;
   width: 89%;
   margin: 7% auto 0;
 }
 
-.certificate-messages .weui_cell:before {
+#promoteAgent .certificate-messages .weui_cell:before {
   border-top: 0
 }
 
-.certificate-messages .weui_cell {
+#promoteAgent .certificate-messages .weui_cell {
   border-bottom: 1px solid #d3d1d1;
   padding: 9px 0;
 }
 
-.certificate-messages .weui_btn {
+#promoteAgent .certificate-messages .weui_btn {
   padding-left: 0;
   padding-right: 0;
 }
 
-.certificate-messages .certificate-view,
-.certificate-messages .certificate-views {
+#promoteAgent .certificate-messages .certificate-view,
+#promoteAgent .certificate-messages .certificate-views {
   position: absolute;
   right: 0;
   border: 0;
@@ -217,15 +229,15 @@ export default {
   font-family: "微软雅黑";
 }
 
-.certificate-messages .certificate-view {
-  top: -93%;
+#promoteAgent .certificate-messages .certificate-view {
+  top: 14%;
 }
 
-.certificate-messages .certificate-views {
+#promoteAgent .certificate-messages .certificate-views {
   top: 4px;
 }
 
-.certificate-messages .weui_cell_hd {
+#promoteAgent .certificate-messages .weui_cell_hd {
   width: 100%;
   font-size: 4.5vw;
   /*14px*/
@@ -233,7 +245,17 @@ export default {
   font-family: "微软雅黑";
 }
 
-.certificate-messages .weui_cell_hd label {
+ #promoteAgent .certificate-messages .weui_cell_hd label {
   color: #595959;
+}
+ .promoteAgent-button{
+  position: fixed;
+      bottom: 0;
+      color: #fff;
+      background: #21c36d;
+      font-family: "微软雅黑";
+      border-radius: 0;
+      border: 0;
+      width: 100%;
 }
 </style>

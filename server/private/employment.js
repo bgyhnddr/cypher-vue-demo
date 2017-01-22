@@ -280,7 +280,7 @@ var exec = {
         result.forEach((employeeEmploymentItem) => {
           employeeEmploymentItem.brand_role.brand_role_meta.forEach((brandRoleMeta) =>{
             if (brandRoleMeta.key == "initialFee") {
-              obj.brand_role_meta.totleInitialFee +=  parseFloat(brandRoleMeta.value)
+              obj.brand_role_meta.totleInitialFee +=  Number(brandRoleMeta.value)
             }
           })
         })

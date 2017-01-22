@@ -214,9 +214,19 @@ export default {
 }
 
 #frozenAgent .certificate-header .vux-center {
-  width: 86%;
-  display: block;
-  margin: auto;
+  width: 23%;
+      padding-top: 31%;
+      position: relative;
+      display: block;
+      overflow: hidden;
+}
+#frozenAgent .certificate-header .vux-center img{
+  left: -2%;
+  top: 0;
+  width: 100%;
+  position: absolute;
+  vertical-align: middle;
+  min-height: 77px;
 }
 
 #frozenAgent .certificate-messages {
@@ -289,5 +299,35 @@ border: 0;
 width: 100%}
 .frozenAgent-button button.weui_btn.weui_btn_primary{
 background: #fd5e5e;
+}
+#frozenAgent .weui_dialog {
+    width: 92%;
+}
+#frozenAgent  .weui_dialog_bd {
+    color: #000000;
+    font-size: 5.2vw;
+    font-family: "\5FAE\8F6F\96C5\9ED1";
+    margin-top: 5%;
+}
+#frozenAgent  .weui_dialog_ft {
+    width: 89%;
+    margin: 8% auto;
+
+    line-height: 32px;
+    border-radius: 2px;
+}
+#frozenAgent  .weui_dialog_confirm .weui_dialog_ft a {
+  border: 0;
+  background: #9b9b9b;
+    color: #fff;
+    font-size: 4.5vw
+}
+#frozenAgent  .weui_dialog_confirm .weui_dialog_ft a:first-child{
+
+  background: #0bb20c;
+      margin-right: 2%;
+}
+#frozenAgent .weui_dialog_ft:after{
+  border-top: 0
 }
 </style>

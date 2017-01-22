@@ -3,11 +3,15 @@
   <x-header :left-options="{showBack: false}">{{pageTitle}}</x-header>
   <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
 </div>
+<div id="frozenMember">
+  <div class="frozenMember-search ">
 <group>
+
   <x-input class="weui_cell_primary" title='' placeholder="输入手机号码/代理姓名进行搜索" :value.sync="keyword" :show-clear=false :required="false"></x-input>
-  <button @click="search">搜索</button>
+  <button @click="search"></button>
 </group>
-<div>
+</div>
+<div class="frozenMember-list">
   <group v-for="member in MemberList">
     <div class="frozenMember-li">
       <cell @click="goToForzenAgent(member.user_account)" is-link>
@@ -19,7 +23,9 @@
     </div>
   </group>
 </div>
-<div>
+
+</div>
+<div class="frozenMember-dialog">
   <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
   <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
@@ -145,7 +151,22 @@ export default {
   font-family: "微软雅黑";
 }
 
-#frozenMember .frozenMember-list .weui_cell {
+.weui_tab.frozenMember-list .weui_cell {
   padding: 11px 15px;
 }
+.frozenMember-dialog  .weui_dialog{
+    width: 92%;
+}
+.frozenMember-dialog  .weui_dialog  .weui_dialog_ft{
+  width: 89%;
+margin: 8% auto;
+background: #0bb20c;
+line-height: 35px;
+border-radius: 2px;
+}
+.frozenMember-dialog  .weui_dialog .weui_btn_dialog.primary{
+  font-size: 4.9vw;
+  color: #fff;
+}
+
 </style>

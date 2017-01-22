@@ -760,7 +760,7 @@ describe('team_bili_test', () => {
       }).then((result) => {
         // console.log(JSON.stringify(result))
         result.agent_promotion_guid.should.be.equal(guidMember1)
-        result.status.should.be.equal(true)
+        result.status.should.be.equal("未审核")
       })
     })
   })

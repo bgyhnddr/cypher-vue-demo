@@ -78,9 +78,7 @@ export default {
 }
 </script>
 <style>
-body{
-  background-color:#f2f2f2!important
-}
+
 #productManagement{
 min-height: 528px;
 font-family: "微软雅黑";
