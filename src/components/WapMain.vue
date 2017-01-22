@@ -1,5 +1,5 @@
 ﻿<template>
-<div style="    overflow: hidden;
+<div style="    overflow-x: hidden;
     height: 100%;">
   <loading :show="isLoading" position="absolute"></loading>
   <view-box v-ref:view-box>
