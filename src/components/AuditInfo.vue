@@ -270,23 +270,15 @@ export default {
 
 }
 
-.auditinfo-header {
-  text-align: center;
-  margin-top: 2%;
-}
 
-.auditinfo-header img {
-  border: 0;
-  background-size: 100%;
-  width: 25%;
-}
+
 
 .auditinfo-message .weui_cell_hd {
   width: 100%;
 }
 
 .auditinfo-message {
-
+    min-height: 452px;
   width: 89%;
   margin: 1% auto;
 }
@@ -573,5 +565,25 @@ padding: 3% 1%!important;
   line-height: 37px;
   border-radius: 3px;
   margin-bottom: 3%;
+}
+.auditinfo-header{
+  width: 28%;
+    padding-top: 31%;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    margin: auto;
+    border: 0;
+    background: none;
+    text-align: center;
+    margin-top: 2%;
+}
+.auditinfo-header img{
+  left: -2%;
+    top: 0;
+    width: 100%;
+    position: absolute;
+    vertical-align: middle;
+    min-height: 95px;
 }
 </style>
