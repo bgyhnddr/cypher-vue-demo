@@ -434,7 +434,7 @@ var exec = {
                 employer_user_account: agentPromotion.promoter_user_account,
                 employee_user_account: agentPromotion.promotee_user_account,
                 employer_time: agentPromotion.agree_time,
-                status: true,
+                status: "未审核",
               })
             } else {
               return Promise.reject("该提拔已确认")
@@ -466,6 +466,7 @@ var exec = {
     employment.belongsTo(user, {
       foreignKey: 'employee_user_account'
     })
+    employment.belongsTo(agent_promotion)
     user.hasOne(agent)
     agent.hasMany(agent_detail)
 
@@ -501,6 +502,13 @@ var exec = {
         include: {
           model: agent,
           include: agent_detail
+        }
+      }, {
+        model: agent_promotion,
+        where: {
+          agree_time: {
+            $not: null
+          }
         }
       }],
       order: select
@@ -589,43 +597,43 @@ var exec = {
     }).then((result) => {
       var currentEmployment = result
       return employment.findAll({
-          where: {
-            employer_user_account: currentEmployment.employer_user_account,
-            status: '已审核',
-            audit_result: '已通过'
-          },
+        where: {
+          employer_user_account: currentEmployment.employer_user_account,
+          status: '已审核',
+          audit_result: '已通过'
+        },
+        include: {
+          model: brand_role,
           include: {
-            model: brand_role,
-            include: {
-              model: brand_role_meta
-            }
+            model: brand_role_meta
           }
-        }).then((result) => {
-          var obj = currentEmployment.toJSON()
-          obj.employer_user.agent.agent_detail = {}
-          obj.employer_user.agent.agent_details.forEach((d) => {
-            obj.employer_user.agent.agent_detail[d.key] = d.value
-          })
-          obj.employee_user.agent.agent_detail = {}
-          obj.employee_user.agent.agent_details.forEach((d) => {
-            obj.employee_user.agent.agent_detail[d.key] = d.value
-          })
-          delete obj.employer_user.agent.agent_details
-          delete obj.employee_user.agent.agent_details
-
-          obj.brand_role_meta = {
-            totleInitialFee: 0
-          }
-          result.forEach((employeeEmploymentItem) => {
-            employeeEmploymentItem.brand_role.brand_role_meta.forEach((brandRoleMeta) => {
-              if (brandRoleMeta.key == "initialFee") {
-                obj.brand_role_meta.totleInitialFee += parseFloat(brandRoleMeta.value)
-              }
-            })
-          })
-
-          return obj
+        }
+      }).then((result) => {
+        var obj = currentEmployment.toJSON()
+        obj.employer_user.agent.agent_detail = {}
+        obj.employer_user.agent.agent_details.forEach((d) => {
+          obj.employer_user.agent.agent_detail[d.key] = d.value
         })
+        obj.employee_user.agent.agent_detail = {}
+        obj.employee_user.agent.agent_details.forEach((d) => {
+          obj.employee_user.agent.agent_detail[d.key] = d.value
+        })
+        delete obj.employer_user.agent.agent_details
+        delete obj.employee_user.agent.agent_details
+
+        obj.brand_role_meta = {
+          totleInitialFee: 0
+        }
+        result.forEach((employeeEmploymentItem) => {
+          employeeEmploymentItem.brand_role.brand_role_meta.forEach((brandRoleMeta) => {
+            if (brandRoleMeta.key == "initialFee") {
+              obj.brand_role_meta.totleInitialFee += parseFloat(brandRoleMeta.value)
+            }
+          })
+        })
+
+        return obj
+      })
     })
   },
   /**
@@ -633,7 +641,83 @@ var exec = {
    * GET
    */
   PassPromote(req, res, next) {
+    var account = req.query.account
+    var employment = require('../../db/models/employment')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
+    var agent = require('../../db/models/agent')
+    var agent_detail = require('../../db/models/agent_detail')
+    var agent_promotion = require('../../db/models/agent_promotion')
 
+    return employment.findOne({
+      where: {
+        status: "未审核",
+        employee_user_account: account,
+        agent_promotion_guid: {
+          $not: null
+        },
+      }
+    }).then((result) => {
+      if (result) {
+        result.status = "已审核"
+        result.audit_user_account = 'admin'
+        result.audit_time = new Date().Format('yyyy-MM-dd hh:mm')
+        result.audit_result = "已通过"
+        return Promise.all([
+          employment.findOne({
+            where: {
+              status: "已审核",
+              employee_user_account: account,
+              publish_employment_guid: {
+                $not: null
+              },
+            }
+          }).then((o) => {
+            o.status = "已作废"
+            o.save()
+          }),
+          agent.findOne({
+            where: {
+              user_account: account,
+            }
+          }).then((o) => {
+            agent_detail.findOne({
+                where: {
+                  agent_guid: o.guid,
+                  key: "employer"
+                }
+              }).then((e) => {
+                e.value = result.employer_user_account
+                o.save()
+              }),
+              agent_brand_role.findOne({
+                where: {
+                  agent_guid: o.guid
+                }
+              }).then((c) => {
+                c.brand_role_code = result.brand_role_code
+                c.save()
+              })
+          }),
+          agent_promotion.findOne({
+            where: {
+              status: 1,
+              promotee_user_account: account,
+              agree_time: {
+                $not: null
+              }
+            }
+          }).then((o) => {
+            o.status = 0
+            o.save()
+          }),
+          result.save()
+        ]).then(() => {
+          return "success"
+        })
+      } else {
+        return Promise.reject("账号不存在")
+      }
+    })
   },
   /**
    * 拒绝提拔审核
@@ -641,6 +725,42 @@ var exec = {
    */
   RejectPromote(req, res, next) {
     var reason = req.query.reason
+    var account = req.query.account
+    var employment = require('../../db/models/employment')
+    var agent_promotion = require('../../db/models/agent_promotion')
+    return employment.findOne({
+      where: {
+        status: "未审核",
+        employee_user_account: account,
+        agent_promotion_guid: {
+          $not: null
+        },
+      }
+    }).then((result) => {
+      if (result) {
+        result.status = "已审核"
+        result.audit_user_account = 'admin'
+        result.audit_time = new Date().Format('yyyy-MM-dd hh:mm')
+        result.audit_result = "已拒绝"
+        result.reject_reason = reason
+        result.save()
+
+        return agent_promotion.findOne({
+          where: {
+            status: 1,
+            promotee_user_account: account,
+            agree_time: {
+              $not: null
+            }
+          }
+        }).then((o) => {
+          o.status = 0
+          o.save()
+        })
+      } else {
+        return Promise.reject("账号不存在")
+      }
+    })
   },
 
 
