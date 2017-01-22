@@ -1,34 +1,42 @@
 <template>
+  <div id="promoteApplication">
 <div class="vux-demo-header-box wapmain-header" slot="header">
   <x-header :left-options="{showBack: false}">确认提拔</x-header>
   <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
 </div>
 <!-- 确认提拔 -->
 <div v-if="showModelName == 'confirmPromotion'">
+  <div class="promoteApplication-determine ">
   <img width="250px" height="50px" src="/static/TestIMG/logo.png" alt="品牌logo" />
+  <div class="promoteApplication-name">
   <p>您已经被 {{promoterDate.name}} ( {{promoterDate.brandRoleName}} )</p>
   <p>提拔成为 {{promotionData.brand_role.name}}</p>
-
+</div>
+</div>
   <x-button type="primary" @click="confirm">确认信息</x-button>
 </div>
 <!-- 等待提拔 -->
 <div v-if="showModelName == 'waitForAudit'">
+<div  class="promoteApplication-wait">
   <p>正在进行审核，</p>
   <p>请耐心等待......</p>
-
+</div>
   <x-button type="primary" @click="onClickBack">返回</x-button>
 </div>
 <!-- 提拔完成结果 -->
 <div v-if="showModelName == 'promotionResult'">
+  <div class="promoteApplication-complete ">
   <img src="/static/TestIMG/successful.png" />
-  <p>恭喜您，已成为 {{promotionData.brand_role.name}}</p>
-  <p>您的级别将在下次登录中显示。</p>
+  <p>恭喜您，已成为 {{promotionData.brand_role.name}}&nbsp;!</p>
+  <span>*您的级别将在下次登录中显示。</span>
 </div>
-
+</div>
+</div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 
 <alert :show.sync="alert.showErrorNoHandled" button-text="确认">{{alert.errorMsgNoHandled}}</alert>
 <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
+
 </template>
 <script>
 import {
@@ -106,8 +114,10 @@ export default {
     },
     checkPromotionStatus(promotionData) {
       var that = this
-
-      if (promotionData.employment == null) {
+      if (promotionData.status) {
+             that.showModelName = "promotionResult"
+           }
+    /*  if (promotionData.employment == null) {
         promotionData.user.agent.agent_details.forEach((detailItem) => {
           if (detailItem.key == "name") {
             this.promoterDate.name = detailItem.value
@@ -139,7 +149,7 @@ export default {
           this.showModelName = "promotionResult"
         }
 
-      }
+      }*/
     },
     confirm() {
       var that = this
@@ -162,3 +172,49 @@ export default {
   }
 }
 </script>
+<style>
+#promoteApplication{
+min-height: 528px;
+}
+#promoteApplication .promoteApplication-wait{
+  text-align: center;
+    margin: 34% auto 18% auto;
+}
+#promoteApplication .promoteApplication-wait p {
+    color: #393a3f;
+    font-size: 5.3vw;
+    font-family: "微软雅黑";
+}
+#promoteApplication .promoteApplication-determine{
+text-align: center;
+    margin: 21% auto 11% auto;
+}
+#promoteApplication .promoteApplication-determine img{
+  border: 1px solid #d3d1d1;
+width: 62%;
+height: auto;
+}
+#promoteApplication .promoteApplication-determine .promoteApplication-name{
+    margin-top: 6%;
+        line-height: 1.8em;
+}
+ #promoteApplication .promoteApplication-complete{
+  text-align: center;
+  margin: 21% auto 1% auto;
+}
+ #promoteApplication .promoteApplication-complete img{
+   width: 19%;
+   height: auto;
+ }
+  #promoteApplication .promoteApplication-complete p{
+    color: #852d25;
+    font-size: 5.3vw;
+    font-weight: bold;
+    font-family: "微软雅黑";
+  }
+  #promoteApplication .promoteApplication-complete span{
+    font-size:3.9vw;
+    color: #000000;
+    font-family: "微软雅黑";
+  }
+</style>

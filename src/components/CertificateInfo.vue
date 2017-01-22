@@ -273,7 +273,7 @@ color: #fff;}
   margin-bottom: 42%
 }
 
- #certificateinfo.agents-height {
+ #certificateinfo .agents-height {
   color: #fff;
   font-family: "微软雅黑";
   font-size: 3vw;
