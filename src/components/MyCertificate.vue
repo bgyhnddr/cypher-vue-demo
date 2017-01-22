@@ -169,14 +169,23 @@ export default {
 }
 
 .certificate-header button {
+  width:28%;
+  padding-top: 31%;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  margin: auto;
   border: 0;
-  background-size: 100%;
-  width: 28%;
+background: none;
 }
 
 .certificate-header button img {
-  width: 100%;
-  height: auto;
+  left: -2%;
+      top: 0;
+      width: 100%;
+      position: absolute;
+      vertical-align: middle;
+      min-height: 95px;
 }
 
 .certificate-header p {

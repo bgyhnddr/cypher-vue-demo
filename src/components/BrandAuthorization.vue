@@ -58,7 +58,7 @@ export default {
 
 
       authAPI.getUser().then(function(result) {
-        if (result.name != undefined) { 
+        if (result.name != undefined) {
           account = result.name
           that.loginUser = result.name
 

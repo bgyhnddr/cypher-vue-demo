@@ -7,7 +7,7 @@
                 <img v-show="isShowImg" :src.sync="headImg"  />
                 <img v-show="!isShowImg" :src.sync="href"  />
             </button>
-            <p>点击头像可修改头像</p> 
+            <p>点击头像可修改头像</p>
 			<!--<button v-if="file" @click="upload" class="btn btn-default btn-xs">确认修改</button>-->
 		</div>
 	</div>

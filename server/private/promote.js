@@ -170,7 +170,7 @@ var exec = {
       }).then((result) => {
         var filterResult = result
 
-        if(level){
+        if (level) {
           filterResult = result.filter((employmentItem) => {
             return employmentItem.brand_role_code == level
           })
@@ -446,7 +446,202 @@ var exec = {
       }
     })
 
-  }
+  },
+
+  /**
+   * 获取提拔审核列表
+   * GET
+   */
+  getPromotelist(req, res, next) {
+    var brand_role = require('../../db/models/brand_role')
+    var user = require('../../db/models/user')
+    var agent = require('../../db/models/agent')
+    var agent_detail = require('../../db/models/agent_detail')
+    var agent_promotion = require('../../db/models/agent_promotion')
+    var employment = require('../../db/models/employment')
+
+    employment.belongsTo(brand_role, {
+      foreignKey: 'brand_role_code'
+    })
+    employment.belongsTo(user, {
+      foreignKey: 'employee_user_account'
+    })
+    user.hasOne(agent)
+    agent.hasMany(agent_detail)
+
+
+    var selectMsg = req.query.key
+    var select = "employer_time desc"
+
+    if (selectMsg != null) {
+      switch (selectMsg) {
+        case "timeasc":
+          select = "employer_time asc"
+          break
+        case "timedesc":
+          select = "employer_time desc"
+          break
+        case "leveldesc":
+          select = "brand_role_code asc"
+          break
+        case "levelasc":
+          select = "brand_role_code desc"
+      }
+    }
+
+    return employment.findAll({
+      where: {
+        status: "未审核",
+        agent_promotion_guid: {
+          $not: null
+        }
+      },
+      include: [brand_role, {
+        model: user,
+        include: {
+          model: agent,
+          include: agent_detail
+        }
+      }],
+      order: select
+    }).then((result) => {
+      return result.map((a) => {
+        obj = a.toJSON()
+        obj.user.agent.agent_detail = {}
+        obj.user.agent.agent_details.forEach((d) => {
+          obj.user.agent.agent_detail[d.key] = d.value
+        })
+        delete obj.user.agent.agent_details
+        return obj
+      })
+    })
+  },
+  /**
+   * 获取提拔审核代理信息
+   * GET
+   */
+  getPromoteAuditInfo(req, res, next) {
+    var account = req.query.account
+    var user = require('../../db/models/user')
+    var brand = require('../../db/models/brand')
+    var brand_role = require('../../db/models/brand_role')
+    var agent = require('../../db/models/agent')
+    var agent_detail = require('../../db/models/agent_detail')
+    var agent_brand_role = require('../../db/models/agent_brand_role')
+    var employment = require('../../db/models/employment')
+    var brand_role_meta = require('../../db/models/brand_role_meta')
+
+    employment.belongsTo(user, {
+      as: 'employer_user',
+      constraints: false
+    }, {
+      foreignKey: 'employer_user_account'
+    })
+
+    employment.belongsTo(user, {
+      as: 'employee_user',
+      constraints: false
+    }, {
+      foreignKey: 'employee_user_account'
+    })
+
+    employment.belongsTo(brand_role, {
+      foreignKey: 'brand_role_code'
+    })
+
+    brand_role.hasMany(brand_role_meta)
+    brand_role.belongsTo(brand)
+    user.hasOne(agent)
+    agent.hasMany(agent_detail)
+    agent.hasOne(agent_brand_role)
+
+
+    return employment.findOne({
+      where: {
+        status: "未审核",
+        agent_promotion_guid: {
+          $not: null
+        },
+        employee_user_account: account
+      },
+      include: [{
+        model: brand_role,
+        include: brand
+      }, {
+        model: user,
+        as: "employer_user",
+        include: [{
+          model: agent,
+          include: [{
+            model: agent_detail
+          }]
+        }]
+      }, {
+        model: user,
+        as: "employee_user",
+        include: [{
+          model: agent,
+          include: [{
+            model: agent_detail
+          }]
+        }]
+      }]
+    }).then((result) => {
+      var currentEmployment = result
+      return employment.findAll({
+          where: {
+            employer_user_account: currentEmployment.employer_user_account,
+            status: '已审核',
+            audit_result: '已通过'
+          },
+          include: {
+            model: brand_role,
+            include: {
+              model: brand_role_meta
+            }
+          }
+        }).then((result) => {
+          var obj = currentEmployment.toJSON()
+          obj.employer_user.agent.agent_detail = {}
+          obj.employer_user.agent.agent_details.forEach((d) => {
+            obj.employer_user.agent.agent_detail[d.key] = d.value
+          })
+          obj.employee_user.agent.agent_detail = {}
+          obj.employee_user.agent.agent_details.forEach((d) => {
+            obj.employee_user.agent.agent_detail[d.key] = d.value
+          })
+          delete obj.employer_user.agent.agent_details
+          delete obj.employee_user.agent.agent_details
+
+          obj.brand_role_meta = {
+            totleInitialFee: 0
+          }
+          result.forEach((employeeEmploymentItem) => {
+            employeeEmploymentItem.brand_role.brand_role_meta.forEach((brandRoleMeta) => {
+              if (brandRoleMeta.key == "initialFee") {
+                obj.brand_role_meta.totleInitialFee += parseFloat(brandRoleMeta.value)
+              }
+            })
+          })
+
+          return obj
+        })
+    })
+  },
+  /**
+   * 通过提拔审核
+   * GET
+   */
+  PassPromote(req, res, next) {
+
+  },
+  /**
+   * 拒绝提拔审核
+   * GET
+   */
+  RejectPromote(req, res, next) {
+    var reason = req.query.reason
+  },
 
 
 }

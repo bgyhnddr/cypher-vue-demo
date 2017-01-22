@@ -17,6 +17,12 @@ export default {
   getPromotion(params) {
       return httpRequest.get(path + 'getPromotion',params)
   },
+  getPromotelist(params) {
+      return httpRequest.get(path + 'getPromotelist',params)
+  },
+  getPromoteAuditInfo(params) {
+      return httpRequest.get(path + 'getPromoteAuditInfo',params)
+  },
   confirmPromotion(params) {
       return httpRequest.post(path + 'confirmPromotion',params)
   },
