@@ -144,7 +144,7 @@ describe('team_bili_test', () => {
                 }, {
                   agent_guid: guidMember1,
                   key: 'wechat',
-                  value: "testWechat1"
+                  value: "test1"
                 }, {
                   agent_guid: guidMember1,
                   key: 'cellphone',
@@ -239,7 +239,7 @@ describe('team_bili_test', () => {
                 }, {
                   agent_guid: guidMember2,
                   key: 'wechat',
-                  value: "testWechat2"
+                  value: "test2"
                 }, {
                   agent_guid: guidMember2,
                   key: 'cellphone',
@@ -316,7 +316,7 @@ describe('team_bili_test', () => {
                 }, {
                   agent_guid: guidMember3,
                   key: 'wechat',
-                  value: "testWechat3"
+                  value: "test3"
                 }, {
                   agent_guid: guidMember3,
                   key: 'cellphone',
@@ -380,7 +380,7 @@ describe('team_bili_test', () => {
                 }, {
                   employment_guid: guidMember4,
                   key: 'wechat',
-                  value: "testWechat4"
+                  value: "test4"
                 }, {
                   employment_guid: guidMember4,
                   key: 'cellphone',
@@ -466,7 +466,7 @@ describe('team_bili_test', () => {
                 }, {
                   agent_guid: guidMember5,
                   key: 'wechat',
-                  value: "testWechat5"
+                  value: "test5"
                 }, {
                   agent_guid: guidMember5,
                   key: 'cellphone',
@@ -553,7 +553,7 @@ describe('team_bili_test', () => {
                 }, {
                   agent_guid: guidMember6,
                   key: 'wechat',
-                  value: "testWechat6"
+                  value: "test6"
                 }, {
                   agent_guid: guidMember6,
                   key: 'cellphone',
@@ -631,7 +631,7 @@ describe('team_bili_test', () => {
                 }, {
                   agent_guid: guidMember7,
                   key: 'wechat',
-                  value: "testWechat7"
+                  value: "test7"
                 }, {
                   agent_guid: guidMember7,
                   key: 'cellphone',
