@@ -24,7 +24,7 @@
       </cell>
       <cell>
         <div slot="icon">提拔人等级：
-          <label>{{agentInfo.brand_role.name}}</label>
+          <label>{{agentInfo.employer_user.agent.agent_brand_role.brand_role.name}}</label>
         </div>
         <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+agentInfo.employer_user.account+'/promotion'+'/#'+'/#'+'/'+agentInfo.employee_user.agent.user_account}">查看授权证书</x-button>
       </cell>
@@ -58,7 +58,7 @@
         </cell>
         <cell>
           <div slot="icon">提拔等级：
-            <label>{{agentInfo.employee_user.agent.agent_brand_role.brand_role.name}}</label>
+            <label>{{agentInfo.brand_role.name}}</label>
           </div>
         </cell>
         <cell>
@@ -152,15 +152,15 @@ export default {
         },
         employer_user: {
           agent: {
-            agent_detail: {}
-          }
-        },
-        employee_user: {
-          agent: {
             agent_detail: {},
             agent_brand_role:{
               brand_role:{}
             }
+          }
+        },
+        employee_user: {
+          agent: {
+            agent_detail: {}
           }
         }
       }
