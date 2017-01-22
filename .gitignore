@@ -1,4 +1,4 @@
-.DS_Store
+﻿.DS_Store
 node_modules/
 dist/
 npm-debug.log
@@ -9,3 +9,4 @@ upload/
 db/data/
 *副本*
 src/components/gobacks/*
+log*.txt
