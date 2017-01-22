@@ -1,5 +1,5 @@
 ﻿<template>
-<div>
+<div id="changepcellphone">
   <div class="changepcellphone-input">
     <group>
       <p class="checkPwd-title">输入新手机号</p>
@@ -10,8 +10,9 @@
       <alert :show.sync="showCheckPwdErrorMsg" @on-hide="goBackCheckPwd()" button-text="确认">{{checkPwdErrorMsg}}</alert>
     </group>
   </div>
-</div>
+
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+</div>
 </template>
 
 <script>
@@ -88,6 +89,10 @@ export default {
 }
 </script>
 <style>
+#changepcellphone{
+  background:#fff;
+  height: 100%
+}
 .changepcellphone-input button.weui_btn.weui_btn_primary {
   margin-top: 9%
 }
@@ -105,7 +110,7 @@ export default {
 }
 
 .changepcellphone-input .weui_label {
-  font-size: 15px;
+  font-size: 4.7vw;
   color: #000;
   font-family: "微软雅黑";
 }

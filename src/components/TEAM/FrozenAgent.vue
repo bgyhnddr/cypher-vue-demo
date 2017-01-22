@@ -70,8 +70,10 @@
   </div>
 </div>
 <div class="frozenAgent-button">
+
   <x-button v-if="!agentInfo.frozen_agent" type="primary" @click="ShowFroze">冻结账号</x-button>
   <x-button v-if="agentInfo.frozen_agent" type="primary" @click="ShowThaw">解除冻结</x-button>
+
 </div>
 <alert :show.sync="showAlert" button-text="确认">{{alertMsg}}</alert>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
@@ -189,8 +191,10 @@ export default {
     this.Pagefrom = this.$route.params.from
     this.getAgentInfo()
     this.getHeadImg()
+
   }
 }
+
 </script>
 <style>
 #frozenAgent {

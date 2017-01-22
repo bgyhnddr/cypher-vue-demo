@@ -36,7 +36,7 @@
       <!--提拔成员审核-->
       <a class="weui_cell a-li" v-if="showAuditClick" v-link="{path: '/teamManagement/promotionAuditList'}">
         <div class="weui_cell_hd">
-          <img src="/static/TestIMG/audit.png" />
+          <img src="/static/TestIMG/promote .png" />
         </div>
         <div class="weui_cell_bd weui_cell_primary">
           <p>提拔成员审核</p>
