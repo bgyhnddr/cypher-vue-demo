@@ -114,10 +114,8 @@ export default {
     },
     checkPromotionStatus(promotionData) {
       var that = this
-      if (promotionData.status) {
-             that.showModelName = "promotionResult"
-           }
-    /*  if (promotionData.employment == null) {
+
+      if (promotionData.employment == null) {
         promotionData.user.agent.agent_details.forEach((detailItem) => {
           if (detailItem.key == "name") {
             this.promoterDate.name = detailItem.value
@@ -149,7 +147,7 @@ export default {
           this.showModelName = "promotionResult"
         }
 
-      }*/
+      }
     },
     confirm() {
       var that = this

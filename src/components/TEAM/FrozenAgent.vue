@@ -68,7 +68,7 @@
   </div>
 </div>
 <div class="frozenAgent-button">
-  <x-button type="primary" @click="ShowFroze">{{agentInfo.frozen_agent?"解除冻结":"冻结账号"}}</x-button>
+  <x-button type="primary" @click="ShowFroze" id="freezethaw ">{{agentInfo.frozen_agent?"解除冻结":"冻结账号"}}</x-button>
 </div>
 <alert :show.sync="showAlert" button-text="确认">{{alertMsg}}</alert>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
@@ -140,6 +140,8 @@ export default {
         }).catch(function(err) {
           that.showAlert = true
           that.alertMsg = err
+
+
         })
       }else{
         FrozenAPI.FrozenAgent({agent:agent}).then(()=>{
@@ -179,6 +181,7 @@ export default {
     this.getHeadImg()
   }
 }
+
 </script>
 <style>
 #frozenAgent {
@@ -233,6 +236,7 @@ export default {
   position: relative;
   width: 89%;
   margin: 7% auto 0;
+      min-height: 396px;
 }
 
 #frozenAgent .certificate-messages .weui_cell:before {
@@ -264,7 +268,8 @@ export default {
 }
 
 #frozenAgent .certificate-messages .certificate-view {
-top: 11%;
+    top: 107%;
+    z-index: 1
 }
 
 #frozenAgent .certificate-messages .certificate-views {
@@ -318,13 +323,13 @@ background: #fd5e5e;
 }
 #frozenAgent  .weui_dialog_confirm .weui_dialog_ft a {
   border: 0;
-  background: #9b9b9b;
+  background: #0bb20c;
     color: #fff;
     font-size: 4.5vw
 }
 #frozenAgent  .weui_dialog_confirm .weui_dialog_ft a:first-child{
+  background: #9b9b9b;
 
-  background: #0bb20c;
       margin-right: 2%;
 }
 #frozenAgent .weui_dialog_ft:after{
