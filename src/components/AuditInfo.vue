@@ -31,6 +31,11 @@
             <x-button v-if="!Toggle" type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/history'+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
           </cell>
           <cell>
+            <div slot="icon">招募人已用金额：
+              <label>{{auditInfo.totleInitialFee}}</label>
+            </div>
+          </cell>
+          <cell>
             <div slot="icon">姓名：
               <label>{{auditInfo.employment_detail.name}}</label>
             </div>
@@ -141,7 +146,8 @@ export default {
         employment_detail: {},
         agent: {
           agent_detail: {}
-        }
+        },
+        totleInitialFee:""
       }
     }
   },
@@ -177,6 +183,7 @@ export default {
         that.auditInfo.account = result.employee_user_account
         that.auditInfo.employer = result.employer_user_account
         that.auditInfo.brand = result.brand.name
+        that.auditInfo.totleInitialFee = result.brand_role_meta.totleInitialFee.toFixed(1)
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err

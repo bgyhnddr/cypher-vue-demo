@@ -58,7 +58,7 @@ export default {
   },
   data() {
     return {
-      showModelName: "", // MdeolName : confirmPromotion, waitForAudit, promotionResult
+      showModelName: "", // ModelName : confirmPromotion, waitForAudit, promotionResult
       loginUser: null,
       promotionData: {
         brand_role: {
