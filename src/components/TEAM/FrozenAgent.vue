@@ -60,15 +60,18 @@
       </div>
     </group>
     <div>
-      <confirm :show.sync="show" title="" confirm-text="确认" cancel-text="取消" @on-confirm="Froze">
-        <p style="text-align:center;">您确认{{agentInfo.frozen_agent?"解除冻结":"冻结"}}该成员吗?</p>
+      <confirm :show.sync="confirmThaw" title="" confirm-text="确认" cancel-text="取消" @on-confirm="Thaw">
+        <p style="text-align:center;">您确认解除冻结该成员吗?</p>
+      </confirm>
+      <confirm :show.sync="confirmFroze" title="" confirm-text="确认" cancel-text="取消" @on-confirm="Froze">
+        <p style="text-align:center;">您确认冻结该成员吗?</p>
       </confirm>
     </div>
-
   </div>
 </div>
 <div class="frozenAgent-button">
-  <x-button type="primary" @click="ShowFroze">{{agentInfo.frozen_agent?"解除冻结":"冻结账号"}}</x-button>
+  <x-button v-if="!agentInfo.frozen_agent" type="primary" @click="ShowFroze">冻结账号</x-button>
+  <x-button v-if="agentInfo.frozen_agent" type="primary" @click="ShowThaw">解除冻结</x-button>
 </div>
 <alert :show.sync="showAlert" button-text="确认">{{alertMsg}}</alert>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
@@ -106,9 +109,10 @@ export default {
         }
       },
       showAlert: false,
-      show:false,
-      alertMsg:"",
-      Pagefrom:""
+      confirmThaw: false,
+      confirmFroze: false,
+      alertMsg: "",
+      Pagefrom: ""
     }
   },
   components: {
@@ -122,33 +126,41 @@ export default {
   methods: {
     onClickBack() {
       var that = this
-      if(that.Pagefrom == 'Frozenlist'){
+      if (that.Pagefrom == 'Frozenlist') {
         this.$route.router.go("/teamManagement/forzenLevelList")
-      }else if(that.Pagefrom == 'Frozenmembers'){
+      } else if (that.Pagefrom == 'Frozenmembers') {
         this.$route.router.go("/teamManagement/frozenMember/" + this.agentInfo.agent_brand_role.brand_role_code)
       }
     },
     ShowFroze() {
-      this.show = true
+      this.confirmFroze = true
     },
-    Froze(){
+    ShowThaw() {
+      this.confirmThaw = true
+    },
+    Froze() {
       var that = this
       var agent = that.agentInfo.guid
-      if(that.agentInfo.frozen_agent){
-        FrozenAPI.ThawAgent({agent:agent}).then(()=>{
-          that.getAgentInfo()
-        }).catch(function(err) {
-          that.showAlert = true
-          that.alertMsg = err
-        })
-      }else{
-        FrozenAPI.FrozenAgent({agent:agent}).then(()=>{
-          that.getAgentInfo()
-        }).catch(function(err) {
-          that.showAlert = true
-          that.alertMsg = err
-        })
-      }
+      FrozenAPI.FrozenAgent({
+        agent: agent
+      }).then(() => {
+        that.getAgentInfo()
+      }).catch(function(err) {
+        that.showAlert = true
+        that.alertMsg = err
+      })
+    },
+    Thaw() {
+      var that = this
+      var agent = that.agentInfo.guid
+      FrozenAPI.ThawAgent({
+        agent: agent
+      }).then(() => {
+        that.getAgentInfo()
+      }).catch(function(err) {
+        that.showAlert = true
+        that.alertMsg = err
+      })
     },
     getAgentInfo() {
       var that = this
@@ -185,24 +197,24 @@ export default {
   min-height: 485px;
 }
 
-#frozenAgent  .certificate-header img {
+#frozenAgent .certificate-header img {
   border: 0;
   background-size: 100%;
   width: 25%;
 }
 
-#frozenAgent  .certificate-header {
+#frozenAgent .certificate-header {
   text-align: center;
   padding-top: 2%;
 }
 
-#frozenAgent  .certificate-header button {
+#frozenAgent .certificate-header button {
   border: 0;
   background-size: 100%;
   width: 28%;
 }
 
-#frozenAgent  .certificate-header button img {
+#frozenAgent .certificate-header button img {
   width: 100%;
   height: auto;
 }
@@ -215,12 +227,13 @@ export default {
 
 #frozenAgent .certificate-header .vux-center {
   width: 23%;
-      padding-top: 31%;
-      position: relative;
-      display: block;
-      overflow: hidden;
+  padding-top: 31%;
+  position: relative;
+  display: block;
+  overflow: hidden;
 }
-#frozenAgent .certificate-header .vux-center img{
+
+#frozenAgent .certificate-header .vux-center img {
   left: -2%;
   top: 0;
   width: 100%;
@@ -264,11 +277,11 @@ export default {
 }
 
 #frozenAgent .certificate-messages .certificate-view {
-top: 11%;
+  top: 11%;
 }
 
 #frozenAgent .certificate-messages .certificate-views {
-    top: -35px;
+  top: -35px;
 }
 
 #frozenAgent .certificate-messages .weui_cell_hd {
@@ -287,47 +300,54 @@ top: 11%;
 /*.certificate-messages .weui_cell:nth-child(7) {
   border-bottom: 0;
 }*/
- .frozenAgent-button{
-  position: fixed;
-bottom: 0;
-color: #fff;
-background: #fd5e5e;
-    font-family: "微软雅黑";
-font-size: 5.2vw;
-border-radius: 0;
-border: 0;
-width: 100%}
-.frozenAgent-button button.weui_btn.weui_btn_primary{
-background: #fd5e5e;
-}
-#frozenAgent .weui_dialog {
-    width: 92%;
-}
-#frozenAgent  .weui_dialog_bd {
-    color: #000000;
-    font-size: 5.2vw;
-    font-family: "\5FAE\8F6F\96C5\9ED1";
-    margin-top: 5%;
-}
-#frozenAgent  .weui_dialog_ft {
-    width: 89%;
-    margin: 8% auto;
 
-    line-height: 32px;
-    border-radius: 2px;
+.frozenAgent-button {
+  position: fixed;
+  bottom: 0;
+  color: #fff;
+  background: #fd5e5e;
+  font-family: "微软雅黑";
+  font-size: 5.2vw;
+  border-radius: 0;
+  border: 0;
+  width: 100%
 }
-#frozenAgent  .weui_dialog_confirm .weui_dialog_ft a {
+
+.frozenAgent-button button.weui_btn.weui_btn_primary {
+  background: #fd5e5e;
+}
+
+#frozenAgent .weui_dialog {
+  width: 92%;
+}
+
+#frozenAgent .weui_dialog_bd {
+  color: #000000;
+  font-size: 5.2vw;
+  font-family: "\5FAE\8F6F\96C5\9ED1";
+  margin-top: 5%;
+}
+
+#frozenAgent .weui_dialog_ft {
+  width: 89%;
+  margin: 8% auto;
+  line-height: 32px;
+  border-radius: 2px;
+}
+
+#frozenAgent .weui_dialog_confirm .weui_dialog_ft a {
   border: 0;
   background: #9b9b9b;
-    color: #fff;
-    font-size: 4.5vw
+  color: #fff;
+  font-size: 4.5vw
 }
-#frozenAgent  .weui_dialog_confirm .weui_dialog_ft a:first-child{
 
+#frozenAgent .weui_dialog_confirm .weui_dialog_ft a:first-child {
   background: #0bb20c;
-      margin-right: 2%;
+  margin-right: 2%;
 }
-#frozenAgent .weui_dialog_ft:after{
+
+#frozenAgent .weui_dialog_ft:after {
   border-top: 0
 }
 </style>

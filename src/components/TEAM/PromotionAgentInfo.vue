@@ -164,6 +164,7 @@ export default {
       promoteAPI.getPromoteAuditInfo({
         account: this.$route.params.account
       }).then(function(result) {
+        result.brand_role_meta.totleInitialFee = result.brand_role_meta.totleInitialFee.toFixed(1)
         that.agentInfo = result
       }).catch(function(err) {
         that.showAlert = true
