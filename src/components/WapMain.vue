@@ -277,6 +277,9 @@ export default {
           }else if(this.$route.params.locate == "promote"){
             this.$route.router.go('/teamManagement/promoteAgent/' + this.$route.params.from)
             return
+          }else if(this.$route.params.locate == "promotion"){
+            this.$route.router.go('/teamManagement/promotionAgentInfo/' + this.$route.params.from)
+            return
           }
         } else if (SecPath == "checkPwd") {
           this.$route.router.go('/accountManagement')

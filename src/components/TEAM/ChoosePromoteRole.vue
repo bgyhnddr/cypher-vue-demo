@@ -73,9 +73,8 @@ export default {
       }).then(function(result) {
           that.$route.router.go('/teamManagement/promoteShare/' + result)
       }).catch(function(err) {
-        console.log(err)
           that.alert.showErrorNoHandled = true
-          that.alert.errorMsgNoHandled = "该代理已提交提拔审核，请勿再次提拔"
+          that.alert.errorMsgNoHandled = "该代理正在进行提拔审核，请勿再次提拔"
       })
     },
     errorHandled() {
