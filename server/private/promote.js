@@ -434,7 +434,7 @@ var exec = {
                 employer_user_account: agentPromotion.promoter_user_account,
                 employee_user_account: agentPromotion.promotee_user_account,
                 employer_time: agentPromotion.agree_time,
-                status: true,
+                status: "未审核",
               })
             } else {
               return Promise.reject("该提拔已确认")
