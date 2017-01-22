@@ -583,6 +583,9 @@ var exec = {
           model: agent,
           include: [{
             model: agent_detail
+          }, {
+            model: agent_brand_role,
+            include: brand_role
           }]
         }]
       }, {
@@ -592,9 +595,6 @@ var exec = {
           model: agent,
           include: [{
             model: agent_detail
-          },{
-            model:agent_brand_role,
-            include:brand_role
           }]
         }]
       }]
