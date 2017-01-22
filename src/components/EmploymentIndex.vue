@@ -33,13 +33,29 @@
           <slot></slot>
         </div>
       </a>
+      <!--提拔成员审核-->
+      <a class="weui_cell a-li" v-if="showAuditClick" v-link="{path: '/teamManagement/promotionAuditList'}">
+        <div class="weui_cell_hd">
+          <img src="/static/TestIMG/audit.png" />
+        </div>
+        <div class="weui_cell_bd weui_cell_primary">
+          <p>提拔成员审核</p>
+          <p>审核提拔成员</p>
+        </div>
+        <div class="weui_cell_ft" :class="{'with_arrow': true}">
+          <label>
+            <slot name="value">{{auditListLength}}</slot>
+          </label>
+          <slot></slot>
+        </div>
+      </a>
       <!--成员审核-->
       <a class="weui_cell a-li" v-if="showAuditClick" v-link="{path: '/employManagement/audit'}">
         <div class="weui_cell_hd">
           <img src="/static/TestIMG/audit.png" />
         </div>
         <div class="weui_cell_bd weui_cell_primary">
-          <p>成员审核</p>
+          <p>新成员审核</p>
           <p>审核新代理申请表</p>
         </div>
         <div class="weui_cell_ft" :class="{'with_arrow': true}">

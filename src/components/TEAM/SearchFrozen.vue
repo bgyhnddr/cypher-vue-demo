@@ -50,13 +50,18 @@ export default {
     search() {
       var that = this
       var keyword = that.keyword
-      FrozenAPI.getFrozenMembers({filterKey:keyword}).then((result)=>{
-        that.searchResult = result
-        that.showSearch = true
-      }).catch(function(err) {
+      if(keyword==""){
         that.alert.showCatchError = true
-        that.alert.catchErrorMsg = err
-      })
+        that.alert.catchErrorMsg = "请输入需要搜索的关键字"
+      }else{
+        FrozenAPI.getFrozenMembers({filterKey:keyword}).then((result)=>{
+          that.searchResult = result
+          that.showSearch = true
+        }).catch(function(err) {
+          that.alert.showCatchError = true
+          that.alert.catchErrorMsg = err
+        })
+      }
     },
     goToForzenAgent(account) {
       this.$route.router.go("/teamManagement/frozenAgent/"+account+"/Frozenlist")

@@ -58,7 +58,13 @@ export default {
       this.$route.router.go("/teamManagement/forzenLevelList")
     },
     search() {
-      this.loadFrozenMembers(this.keyword)
+      var that = this
+      if(that.keyword == ""){
+        that.alert.showCatchError = true
+        that.alert.catchErrorMsg = "请输入需要搜索的关键字"
+      }else{
+        that.loadFrozenMembers(that.keyword)
+      }
     },
     loadFrozenMembers(filterKey) {
       var that = this
@@ -78,7 +84,7 @@ export default {
       this.$route.router.go("/teamManagement/frozenAgent/" + account + "/Frozenmembers")
     },
     errorHandled() {
-      this.onClickBack()
+      
     }
   },
   ready() {
