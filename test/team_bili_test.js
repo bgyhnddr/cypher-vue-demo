@@ -771,7 +771,7 @@ describe('team_bili_test', () => {
       }).then((result) => {
         // console.log(JSON.stringify(result))
         result.agent_promotion_guid.should.be.equal(guidMember5)
-        result.status.should.be.equal(true)
+        result.status.should.be.equal("未审核")
       })
     })
   })
@@ -782,7 +782,7 @@ describe('team_bili_test', () => {
       }).then((result) => {
         // console.log(JSON.stringify(result))
         result.agent_promotion_guid.should.be.equal(guidMember6)
-        result.status.should.be.equal(true)
+        result.status.should.be.equal("未审核")
       })
     })
   })
@@ -792,7 +792,21 @@ describe('team_bili_test', () => {
       return promoteTestFunc("PassPromote", {
         account: guidMember5,
       }).then((result) => {
-
+        return new Promise((resolve, reject) => {
+          return employment.findOne({
+            where:{
+              employee_user_account: guidMember5,
+              agent_promotion_guid: {
+                $not: null
+              }
+            }
+          }).then((e)=>{
+            resolve(e)
+          })
+        }).then((o)=>{
+          o.status.should.be.equal("已审核")
+          o.audit_result.should.be.equal("已通过")
+        })
       })
     })
   })
@@ -803,7 +817,21 @@ describe('team_bili_test', () => {
         account: guidMember6,
         reason:'123'
       }).then((result) => {
-
+        return new Promise((resolve, reject) => {
+          return employment.findOne({
+            where:{
+              employee_user_account: guidMember6,
+              agent_promotion_guid: {
+                $not: null
+              }
+            }
+          }).then((e)=>{
+            resolve(e)
+          })
+        }).then((o)=>{
+          o.status.should.be.equal("已审核")
+          o.audit_result.should.be.equal("已拒绝")
+        })
       })
     })
   })
@@ -815,7 +843,7 @@ describe('team_bili_test', () => {
         auditID: guidMember4
       }).then((result) => {
         // console.log(JSON.stringify(result))
-        result.brand_role_meta.totleInitialFee.should.be.equal(250.4)
+        result.brand_role_meta.totleInitialFee.toFixed(1).should.be.equal('250.3')
       })
     })
   })

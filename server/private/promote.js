@@ -644,6 +644,7 @@ var exec = {
     var account = req.query.account
     var employment = require('../../db/models/employment')
     var agent_brand_role = require('../../db/models/agent_brand_role')
+    var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
     var agent_promotion = require('../../db/models/agent_promotion')
 
@@ -674,22 +675,28 @@ var exec = {
             o.status = "已作废"
             o.save()
           }),
-          agent_detail.findOne({
-            where:{
-              agent_guid:account,
-              key:"employer"
+          agent.findOne({
+            where: {
+              user_account: account,
             }
-          }).then((o)=>{
-            o.value = result.employer_user_account
-            o.save()
-          }),
-          agent_brand_role.findOne({
-            where:{
-              agent_guid:account
-            }
-          }).then((o)=>{
-            o.brand_role_code = result.brand_role_code
-            o.save()
+          }).then((o) => {
+            agent_detail.findOne({
+                where: {
+                  agent_guid: o.guid,
+                  key: "employer"
+                }
+              }).then((e) => {
+                e.value = result.employer_user_account
+                o.save()
+              }),
+              agent_brand_role.findOne({
+                where: {
+                  agent_guid: o.guid
+                }
+              }).then((c) => {
+                c.brand_role_code = result.brand_role_code
+                c.save()
+              })
           }),
           agent_promotion.findOne({
             where: {
@@ -704,7 +711,9 @@ var exec = {
             o.save()
           }),
           result.save()
-        ])
+        ]).then(() => {
+          return "success"
+        })
       } else {
         return Promise.reject("账号不存在")
       }
@@ -744,7 +753,7 @@ var exec = {
               $not: null
             }
           }
-        }).then((o)=>{
+        }).then((o) => {
           o.status = 0
           o.save()
         })
