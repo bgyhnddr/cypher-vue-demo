@@ -36,6 +36,11 @@
             </div>
           </cell>
           <cell>
+            <div slot="icon">授权等级：
+              <label>{{auditInfo.brand_role}}</label>
+            </div>
+          </cell>
+          <cell>
             <div slot="icon">姓名：
               <label>{{auditInfo.employment_detail.name}}</label>
             </div>
@@ -142,6 +147,7 @@ export default {
       auditInfo: {
         account: "",
         brand: "",
+        brand_role:"",
         employer: "",
         employment_detail: {},
         agent: {
@@ -183,6 +189,7 @@ export default {
         that.auditInfo.account = result.employee_user_account
         that.auditInfo.employer = result.employer_user_account
         that.auditInfo.brand = result.brand.name
+        that.auditInfo.brand_role = result.brand_role.name
         that.auditInfo.totleInitialFee = result.brand_role_meta.totleInitialFee.toFixed(1)
       }).catch(function(err) {
         console.log(err)

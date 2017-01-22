@@ -237,7 +237,7 @@ var exec = {
       where: {
         guid: auditID
       },
-      include: [brand,
+      include: [brand, brand_role,
         employment_detail, {
           model: user,
           include: {
@@ -275,12 +275,12 @@ var exec = {
         delete obj.user.agent.agent_details
 
         obj.brand_role_meta = {
-          totleInitialFee : 0
+          totleInitialFee: 0
         }
         result.forEach((employeeEmploymentItem) => {
-          employeeEmploymentItem.brand_role.brand_role_meta.forEach((brandRoleMeta) =>{
+          employeeEmploymentItem.brand_role.brand_role_meta.forEach((brandRoleMeta) => {
             if (brandRoleMeta.key == "initialFee") {
-              obj.brand_role_meta.totleInitialFee +=  Number(brandRoleMeta.value)
+              obj.brand_role_meta.totleInitialFee += Number(brandRoleMeta.value)
             }
           })
         })
@@ -569,7 +569,7 @@ var exec = {
         HistoryList = HistoryList.filter(p => p.employer_time >= date_from && p.employer_time <= date_to)
       }
       return HistoryList
-    }).then((result)=>{
+    }).then((result) => {
       return result.map((a) => {
         obj = a.toJSON()
         obj.employment_detail = {}
