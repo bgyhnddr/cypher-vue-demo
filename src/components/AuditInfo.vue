@@ -309,8 +309,8 @@ export default {
 
 }
 
-.auditinfo-message .weui_cell:nth-child(8){
-border-bottom:0}
+/*.auditinfo-message .weui_cell:nth-child(10){
+border-bottom:0}*/
 
 .auditinfo-message .weui_btn {
   padding-left: 0;
