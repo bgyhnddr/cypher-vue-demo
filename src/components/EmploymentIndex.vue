@@ -44,7 +44,7 @@
         </div>
         <div class="weui_cell_ft" :class="{'with_arrow': true}">
           <label>
-            <slot name="value">{{auditListLength}}</slot>
+            <slot name="value">{{auditPromoteListLength}}</slot>
           </label>
           <slot></slot>
         </div>
@@ -94,6 +94,7 @@ import {
 } from 'vux'
 import agentInfoAPI from '../api/agentInfo'
 import employmentAPI from '../api/employment'
+import promoteAPI from '../api/promote'
 
 export default {
   components: {
@@ -105,6 +106,7 @@ export default {
       showCreateClick: false,
       currentListLength: null,
       auditListLength: null,
+      auditPromoteListLength:null,
       showMsg: false,
       errorMsg: null,
       showClickModel: false
@@ -113,6 +115,13 @@ export default {
   methods: {
     getPersonalInfo() {
       var that = this
+      promoteAPI.getPromotelist().then(function(result){
+        if(result.length!=0){
+          that.auditPromoteListLength = result.length
+        }else{
+          that.auditPromoteListLength = null
+        }
+      })
       agentInfoAPI.getBrandRoleInfo().then(function(result) {
         employmentAPI.getAuditList().then(function(result) {
           if (result.length != 0) {

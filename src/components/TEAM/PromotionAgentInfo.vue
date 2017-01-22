@@ -20,7 +20,7 @@
       </cell>
       <cell>
         <div slot="icon">招募人已用金额：
-          <span>￥10000</span>
+          <span>￥{{agentInfo.brand_role_meta.totleInitialFee}}</span>
         </div>
         <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+agentInfo.employer_user.account+'/promotion'+'/#'+'/#'+'/'+agentInfo.employee_user.agent.user_account}">查看授权证书</x-button>
       </cell>
@@ -127,6 +127,7 @@ export default {
         brand_role: {
           brand: {}
         },
+        brand_role_meta: {},
         agent: {
           agent_detail: {}
         },
@@ -163,7 +164,6 @@ export default {
       promoteAPI.getPromoteAuditInfo({
         account: this.$route.params.account
       }).then(function(result) {
-        console.log(result)
         that.agentInfo = result
       }).catch(function(err) {
         that.showAlert = true
@@ -171,19 +171,37 @@ export default {
       })
     },
     PassAudit() {
-      promoteAPI.PassPromote().then((result) => {
-
+      var that = this
+      promoteAPI.PassPromote({
+        account: that.$route.params.account
+      }).then((result) => {
+        if (result == "success") {
+          that.showTips = true
+          that.alertMsg = "您已完成审核"
+        }
+      }).catch(function(err) {
+        that.showAlert = true
+        that.alertMsg = err
       })
     },
     rejectAudit() {
+      var that = this
       promoteAPI.RejectPromote({
-        reason: ""
+        reason: that.reason,
+        account: that.$route.params.account
       }).then((result) => {
-
+        console.log(result)
+        that.showReason = false
+        that.showTips = true
+        that.alertMsg = "您已完成审核"
+      }).catch(function(err) {
+        that.showReason = false
+        that.showAlert = true
+        that.alertMsg = err
       })
     },
     onHide() {
-
+      this.$route.router.go("/teamManagement/promotionAuditList")
     }
   },
   ready() {
