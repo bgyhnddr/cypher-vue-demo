@@ -19,10 +19,15 @@
         </div>
       </cell>
       <cell>
+        <div slot="icon">提拔人等级：
+          <label>{{agentInfo.brand_role.name}}</label>
+        </div>
+        <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+agentInfo.employer_user.account+'/promotion'+'/#'+'/#'+'/'+agentInfo.employee_user.agent.user_account}">查看授权证书</x-button>
+      </cell>
+      <cell>
         <div slot="icon">招募人已用金额：
           <span>￥{{agentInfo.brand_role_meta.totleInitialFee}}</span>
         </div>
-        <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+agentInfo.employer_user.account+'/promotion'+'/#'+'/#'+'/'+agentInfo.employee_user.agent.user_account}">查看授权证书</x-button>
       </cell>
     </group>
   </div>
@@ -42,6 +47,11 @@
             <label>{{agentInfo.brand_role.brand.name}}</label>
           </div>
           <!-- <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+this.agentInfo.user.account+'/promote'+'/#'+'/#'+'/'+this.agentInfo.user.account}">查看授权证书</x-button> -->
+        </cell>
+        <cell>
+          <div slot="icon">提拔等级：
+            <label>{{agentInfo.employee_user.agent.agent_brand_role.brand_role.name}}</label>
+          </div>
         </cell>
         <cell>
           <div slot="icon">姓名：
@@ -138,7 +148,10 @@ export default {
         },
         employee_user: {
           agent: {
-            agent_detail: {}
+            agent_detail: {},
+            agent_brand_role:{
+              brand_role:{}
+            }
           }
         }
       }
