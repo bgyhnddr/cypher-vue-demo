@@ -562,6 +562,7 @@ var exec = {
     user.hasOne(agent)
     agent.hasMany(agent_detail)
     agent.hasOne(agent_brand_role)
+    agent_brand_role.belongsTo(brand_role)
 
 
     return employment.findOne({
@@ -591,6 +592,9 @@ var exec = {
           model: agent,
           include: [{
             model: agent_detail
+          },{
+            model:agent_brand_role,
+            include:brand_role
           }]
         }]
       }]
