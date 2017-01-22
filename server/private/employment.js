@@ -545,8 +545,10 @@ var exec = {
 
     return employment.findAll({
       where: {
-        status: '已审核',
-        audit_result: '已通过'
+        audit_result: '已通过',
+        publish_employment_guid: {
+          $not: null
+        }
       },
       include: [{
         model: employment_detail
@@ -567,6 +569,16 @@ var exec = {
         HistoryList = HistoryList.filter(p => p.employer_time >= date_from && p.employer_time <= date_to)
       }
       return HistoryList
+    }).then((result)=>{
+      return result.map((a) => {
+        obj = a.toJSON()
+        obj.employment_detail = {}
+        obj.employment_details.forEach((d) => {
+          obj.employment_detail[d.key] = d.value
+        })
+        delete obj.employment_details
+        return obj
+      })
     })
   },
   getLevel(req, res, next) {
