@@ -71,7 +71,7 @@
 </div>
 <div class="frozenAgent-button">
 
-  <x-button v-if="!agentInfo.frozen_agent" type="primary" @click="ShowFroze">冻结账号</x-button>
+  <x-button v-if="!agentInfo.frozen_agent" type="primary" @click="ShowFroze" class="frozenAgent-button-first">冻结账号</x-button>
   <x-button v-if="agentInfo.frozen_agent" type="primary" @click="ShowThaw">解除冻结</x-button>
 
 </div>
@@ -318,8 +318,11 @@ export default {
   border: 0;
   width: 100%
 }
+.frozenAgent-button button.weui_btn.weui_btn_primary{
+  width: 100%;
 
-.frozenAgent-button button.weui_btn.weui_btn_primary {
+}
+.frozenAgent-button button.weui_btn.frozenAgent-button-first.weui_btn_primary {
   background: #fd5e5e;
 }
 
