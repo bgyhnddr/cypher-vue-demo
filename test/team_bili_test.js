@@ -25,6 +25,7 @@ var guidMember3 = "guidMember3"
 var guidMember4 = "guidMember4"
 var guidMember5 = "guidMember5"
 var guidMember6 = "guidMember6"
+var guidMember7 = "guidMember7"
 
 
 describe('team_bili_test', () => {
@@ -461,15 +462,15 @@ describe('team_bili_test', () => {
                 }, {
                   agent_guid: guidMember5,
                   key: 'name',
-                  value: "成员一"
+                  value: "成员五"
                 }, {
                   agent_guid: guidMember5,
                   key: 'wechat',
-                  value: "testWechat1"
+                  value: "testWechat5"
                 }, {
                   agent_guid: guidMember5,
                   key: 'cellphone',
-                  value: "13111111111"
+                  value: "13555555555"
                 }, {
                   agent_guid: guidMember5,
                   key: 'IDType',
@@ -477,7 +478,7 @@ describe('team_bili_test', () => {
                 }, {
                   agent_guid: guidMember5,
                   key: 'IDNumber',
-                  value: "111111"
+                  value: "555555"
                 }, {
                   agent_guid: guidMember5,
                   key: 'address',
@@ -548,15 +549,15 @@ describe('team_bili_test', () => {
                 }, {
                   agent_guid: guidMember6,
                   key: 'name',
-                  value: "成员一"
+                  value: "成员六"
                 }, {
                   agent_guid: guidMember6,
                   key: 'wechat',
-                  value: "testWechat1"
+                  value: "testWechat6"
                 }, {
                   agent_guid: guidMember6,
                   key: 'cellphone',
-                  value: "13111111111"
+                  value: "13666666666"
                 }, {
                   agent_guid: guidMember6,
                   key: 'IDType',
@@ -564,7 +565,7 @@ describe('team_bili_test', () => {
                 }, {
                   agent_guid: guidMember6,
                   key: 'IDNumber',
-                  value: "111111"
+                  value: "666666"
                 }, {
                   agent_guid: guidMember6,
                   key: 'address',
@@ -579,6 +580,83 @@ describe('team_bili_test', () => {
             }
           }),
 
+          //添加销售员 成员七，未提拔 属于成员一下属
+          user.findOne({
+            where: {
+              account: guidMember7
+            }
+          }).then((result) => {
+            employment.create({
+              publish_employment_guid: guidMember7,
+              employer_user_account: guidMember1,
+              brand_role_code: "brand_role5",
+              brand_guid: "brand1",
+              employee_user_account: guidMember7,
+              employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
+              audit_user_account: "admin",
+              status: "已审核",
+              audit_time: new Date().Format('yyyy-MM-dd hh:mm'),
+              audit_result: "已通过"
+            })
+            if (result == null) {
+              Promise.all([
+                user.create({
+                  account: guidMember7,
+                  password: "123"
+                }),
+                user_role.create({
+                  user_account: guidMember7,
+                  role_code: 'user'
+                }),
+                agent.create({
+                  user_account: guidMember7,
+                  guid: guidMember7
+                }),
+                agent_brand_role.create({
+                  agent_guid: guidMember7,
+                  brand_role_code: "brand_role5"
+                }),
+                agent_detail.bulkCreate([{
+                  agent_guid: guidMember7,
+                  key: 'employer',
+                  value: guidMember1
+                }, {
+                  agent_guid: guidMember7,
+                  key: 'headImg',
+                  value: "1"
+                }, {
+                  agent_guid: guidMember7,
+                  key: 'name',
+                  value: "成员七"
+                }, {
+                  agent_guid: guidMember7,
+                  key: 'wechat',
+                  value: "testWechat7"
+                }, {
+                  agent_guid: guidMember7,
+                  key: 'cellphone',
+                  value: "13111111111"
+                }, {
+                  agent_guid: guidMember7,
+                  key: 'IDType',
+                  value: "护照"
+                }, {
+                  agent_guid: guidMember7,
+                  key: 'IDNumber',
+                  value: "777777"
+                }, {
+                  agent_guid: guidMember7,
+                  key: 'address',
+                  value: "北京市 北京市市辖区 东城区"
+                }, {
+                  agent_guid: guidMember7,
+                  key: 'addressDetail',
+                  value: "77777777"
+                }]),
+
+              ])
+            }
+          }),
 
         ])
 
@@ -657,8 +735,8 @@ describe('team_bili_test', () => {
         filterKey: "成员",
       }).then((result) => {
         // console.log(JSON.stringify(result))
-        result.list.length.should.be.equal(5)
-        result.end.should.equal(true)
+        result.list.length.should.not.be.equal(0)
+        result.end.should.equal(false)
       })
     })
     it('get get level="brand_role3",not filterKey', () => {
@@ -794,16 +872,16 @@ describe('team_bili_test', () => {
       }).then((result) => {
         return new Promise((resolve, reject) => {
           return employment.findOne({
-            where:{
+            where: {
               employee_user_account: guidMember5,
               agent_promotion_guid: {
                 $not: null
               }
             }
-          }).then((e)=>{
+          }).then((e) => {
             resolve(e)
           })
-        }).then((o)=>{
+        }).then((o) => {
           o.status.should.be.equal("已审核")
           o.audit_result.should.be.equal("已通过")
         })
@@ -815,20 +893,20 @@ describe('team_bili_test', () => {
     it('reject testMember6 promote', () => {
       return promoteTestFunc("RejectPromote", {
         account: guidMember6,
-        reason:'123'
+        reason: '123'
       }).then((result) => {
         return new Promise((resolve, reject) => {
           return employment.findOne({
-            where:{
+            where: {
               employee_user_account: guidMember6,
               agent_promotion_guid: {
                 $not: null
               }
             }
-          }).then((e)=>{
+          }).then((e) => {
             resolve(e)
           })
-        }).then((o)=>{
+        }).then((o) => {
           o.status.should.be.equal("已审核")
           o.audit_result.should.be.equal("已拒绝")
         })
