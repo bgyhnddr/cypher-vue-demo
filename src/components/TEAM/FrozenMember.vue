@@ -15,7 +15,7 @@
   <group v-for="member in MemberList">
     <div class="frozenMember-li">
       <cell @click="goToForzenAgent(member.user_account)" is-link>
-        <span v-if="member.frozen_agent">已冻结</span>
+        <span v-if="member.frozen_agent" style="color:red">已冻结</span>
         <div slot="icon">
           <span>{{member.agent_detail.name}}</span>
         </div>
@@ -90,13 +90,14 @@ export default {
       this.$route.router.go("/teamManagement/frozenAgent/" + account + "/Frozenmembers")
     },
     errorHandled() {
-      
+
     }
   },
   ready() {
     this.loadFrozenMembers()
   }
 }
+
 </script>
 <style>
 #frozenMember .weui_cell_hd {
