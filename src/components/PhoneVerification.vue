@@ -1,5 +1,5 @@
 ﻿<template>
-
+<div id="fillInEmployment">
 <div style="min-height: 460px;">
 	<div @keyup.enter="CommitVerification">
 		<div>
@@ -33,10 +33,10 @@
 	</div>
 
 
-</div></div>
+</div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 
-
+</div>
 
 </template>
 
@@ -160,6 +160,10 @@ export default {
 }
 </script>
 <style>
+#fillInEmployment{
+	background: #fff;
+	height: 100%
+}
 .phone-error{
 
 	width: 100%;
@@ -179,7 +183,8 @@ export default {
 
 .change-passwords {
 	width: 89%;
-	margin: 7% auto 5% auto;
+	margin: 0 auto 5% auto;
+	padding-top: 7%;
 }
 
 .change-passwords .weui_cell_hd {

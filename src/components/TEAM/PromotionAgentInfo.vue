@@ -365,7 +365,7 @@ background: #fff
 #PromotionAgentinfo .PromotionAgentinfo-superior-main{
 
     border-top: 1px solid #d3d1d1;
-        min-height: 400px;
+        min-height: 450px;
 }
 
 #PromotionAgentinfo .PromotionAgentinfo-superior-main .weui_cell{

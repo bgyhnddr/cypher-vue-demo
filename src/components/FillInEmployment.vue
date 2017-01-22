@@ -556,7 +556,7 @@ export default {
 
 .certificate span.vux-popup-picker-value {
   width: 89%;
-  font-size: 4.5vw;
+  font-size: 14px
 }
 
 .certificate .weui_cell_ft.with_arrow:after {
@@ -593,7 +593,7 @@ export default {
 .certificate .weui_cell_ft.weui_cell_primary.with_arrow span:nth-child(2) {
   position: absolute;
   left: 5%;
-  font-size: 4.5vw;
+  font-size: 14px;
   top: 11%;
   font-family: "微软雅黑";
 }

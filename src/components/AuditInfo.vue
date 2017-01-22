@@ -1,4 +1,5 @@
 ﻿<template>
+  <div id="auditInfo">
 <div class="auditinfo-bac">
   <div>
     <div class="auditinfo-header">
@@ -114,6 +115,7 @@
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 <div style="height:20px"></div>
+</div>
 </template>
 
 <script>
@@ -292,7 +294,7 @@ export default {
 }
 
 .auditinfo-message {
-    min-height: 452px;
+    min-height: 500px;
   width: 89%;
   margin: 1% auto;
 }
@@ -330,7 +332,7 @@ border-bottom:0}
 }
 
 .auditinfo-message .auditinfo-view {
-    top:40%;
+    top:14%;
 }
 
 .auditinfo-message .auditinfo-views {

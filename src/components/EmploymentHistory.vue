@@ -1,4 +1,5 @@
 ﻿<template>
+  <div id="emplomenthistory">
 <div class="history-list">
   <div class="history-button">
     <flexbox-item>
@@ -48,6 +49,7 @@
   <toast :show.sync="showToast" :time="1000" type="text">{{errMsg}}</toast>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+</div>
 </template>
 
 <script>
@@ -164,6 +166,9 @@ export default {
 }
 </script>
 <style>
+#emplomenthistory{
+  height: 100%
+}
 .history-message {
   min-height: 485px;
 }
