@@ -17,7 +17,7 @@
         <div slot="icon">提拔人：{{item.user.agent.agent_detail.name}}</div>
         <!--{{$index}}-->
         <div slot="icon">提拔级别：{{item.brand_role.name}}</div>
-        <div slot="icon">提拔时间：{{item.create_time}}</div>
+        <div slot="icon">提拔时间：{{item.employer_time}}</div>
         <x-button mini v-link="{path: '/teamManagement/promotionAgentInfo/'+item.user.account}">审核</x-button>
       </cell>
     </group>
