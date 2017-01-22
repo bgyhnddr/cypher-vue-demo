@@ -138,7 +138,7 @@ export default {
         needResult: 1,
         scanType: ["qrCode", "barCode"],
         success: function(res) {
-          var result = res.resultStr
+          var result = (function(str){ var a = str.split('/'); return a[a.length-1] })(res.resultStr)
           that.ScanResult = result
           that.showConfirm = true
         }
