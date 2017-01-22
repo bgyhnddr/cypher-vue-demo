@@ -545,8 +545,10 @@ var exec = {
 
     return employment.findAll({
       where: {
-        status: '已审核',
-        audit_result: '已通过'
+        audit_result: '已通过',
+        publish_employment_guid: {
+          $not: null
+        }
       },
       include: [{
         model: employment_detail
