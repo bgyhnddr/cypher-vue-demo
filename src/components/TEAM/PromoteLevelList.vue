@@ -77,8 +77,8 @@ export default {
 
         that.promoteLevels = result.filter((item) =>{
           return item.brand_role_code != "brand_role3"
-        }).map(o => o)
-        
+        })
+
       }).catch(function(err) {
         that.alert.showCatchError = true
         that.alert.catchErrorMsg = "加载可提拔代理等级列表异常，请稍后再试"
