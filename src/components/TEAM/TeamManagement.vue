@@ -1,5 +1,6 @@
 <template>
 <div id="teamManagement"  >
+  <div class="teamManagement">
   <div>
     <div class="vux-demo-header-box wapmain-header" slot="header">
       <x-header :left-options="{showBack: false}">我的团队</x-header>
@@ -38,6 +39,7 @@
   </div>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+</div>
 </template>
 
 <script>
@@ -87,8 +89,10 @@ export default {
 </script>
 <style>
 body{
-  background-color:#f2f2f2!important
+  background: #f2f2f2!important
+}
+.weui_cell:before{
+border-top: 0 
 }
 
-</style>
 </style>

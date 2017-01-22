@@ -74,7 +74,7 @@
   <confirm :show.sync="showConfirm" title="" confirm-text="确认" cancel-text="取消" @on-confirm="submitProduct">
     <p style="text-align:center;">您确认{{BtnMsg}}该商品吗?</p>
   </confirm>
-  <alert :show.sync="showAlert" button-Text="好的">{{alertMsg}}</alert>
+<div class="editProduct-ok">  <alert :show.sync="showAlert" button-Text="好的">{{alertMsg}}</alert></div>
   <!-- 子组件页 -->
   <div>
     <set-product-price v-if="currentActive=='SetPricePage'" :current-active.sync="currentActive" :product-info.sync="ProductInfo"></set-product-price>
@@ -420,4 +420,46 @@ border-top: 1px solid #d3d1d1;
 
 }
 
+#editProduct  .weui_dialog_ft {
+    width: 89%;
+    margin: 8% auto;
+
+    line-height: 32px;
+    border-radius: 2px;
+}
+#editProduct  .weui_dialog_confirm .weui_dialog_ft a {
+  border: 0;
+  background: #9b9b9b;
+    color: #fff;
+    font-size: 4.5vw
+}
+#editProduct  .weui_dialog_confirm .weui_dialog_ft a:first-child{
+
+  background: #0bb20c;
+      margin-right: 2%;
+}
+#editProduct .weui_dialog_ft:after{
+  border-top: 0
+}
+#EditProductSpecification .weui_dialog_ft{
+   width: 89%;
+ margin: 8% auto;
+ background: #0bb20c;
+ line-height: 35px;
+ border-radius: 2px;
+}
+#EditProductSpecification   .weui_dialog{
+    width: 92%;
+}
+#EditProductSpecification  .weui_dialog  .weui_dialog_ft{
+  width: 89%;
+margin: 8% auto;
+background: #0bb20c;
+line-height: 35px;
+border-radius: 2px;
+}
+#EditProductSpecification  .weui_dialog .weui_btn_dialog.primary{
+  font-size: 4.9vw;
+  color: #fff;
+}
 </style>

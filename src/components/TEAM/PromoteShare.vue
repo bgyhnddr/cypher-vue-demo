@@ -1,13 +1,17 @@
 <template>
+  <div id="promoteShare">
 <div class="vux-demo-header-box wapmain-header" slot="header">
   <x-header :left-options="{showBack: false}">分享提拔</x-header>
   <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
 </div>
-<div v-show="showModel.promoteShare">
-  <div>
-    <img src="/static/TestIMG/logo.png" alt="品牌logo" />
-    </p>
-    <p>团队成员提拔至
+  <div class="brandauthorization-list">
+    <div class="brandauthorization-bac" >
+      <div class="brandauthorizations">
+<div v-show="showModel.promoteShare" class="brandauthorization-img">
+
+    <p class="brand-logo"><img src="/static/TestIMG/logo.png" alt="品牌logo" /></p>
+
+    <p>团队成员提拔至<br/>
       <label> {{promotionData.brand_role.name}}</label>
     </p>
     <p>点击右上角分享此页面
@@ -16,10 +20,12 @@
     <p>或</p>
     <p>直接微信扫描二维码进行申请</p>
     <div v-el:qr class="qr-code"></div>
-  </div>
+
+</div>
+</div></div>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
-
+</div>
 <alert :show.sync="alert.showErrorNoHandled" button-text="确认">{{alert.errorMsgNoHandled}}</alert>
 <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
 </template>
@@ -125,3 +131,11 @@ export default {
   }
 }
 </script>
+<style>
+#promoteShare{
+  background: #f2f2f2
+}
+#promoteShare .all-footer{
+  background: #f2f2f2!important
+}
+</style>
