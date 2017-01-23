@@ -106,7 +106,9 @@ export default {
         that.agentInfo.agent_detail = result.agent_detail
         that.agentInfo.brand = result.user.employment.brand.name
         that.agentInfo.brand_role = result.agent_brand_role.brand_role.name
-        that.agentInfo.agent_detail.IDNumber = '**************' + that.agentInfo.agent_detail.IDNumber.substr(a.length - 4, 4) 
+
+        var idLength = that.agentInfo.agent_detail.IDNumber.length
+        that.agentInfo.agent_detail.IDNumber = '**************' + that.agentInfo.agent_detail.IDNumber.substr(idLength - 4, 4) 
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err
@@ -121,7 +123,9 @@ export default {
         that.agentInfo.agent_detail = result.agent_detail
         that.agentInfo.brand = result.agent_brand_role.brand_role.brand.name
         that.agentInfo.brand_role = result.agent_brand_role.brand_role.name
-        that.agentInfo.agent_detail.IDNumber = '**************' + that.agentInfo.agent_detail.IDNumber.substr(14,4) 
+
+        var idLength = that.agentInfo.agent_detail.IDNumber.length
+        that.agentInfo.agent_detail.IDNumber = '**************' + that.agentInfo.agent_detail.IDNumber.substr(idLength - 4, 4) 
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err
