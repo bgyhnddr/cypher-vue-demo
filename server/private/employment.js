@@ -400,14 +400,14 @@ var exec = {
       obj.agent_details.forEach((d) => {
         obj.agent_detail[d.key] = d.value
       })
-
+      obj.user.employment = obj.user.employments[0]
       obj.user.employment.user.agent.agent_detail = {}
-      obj.user.employments.user.agent.agent_details.forEach((d) => {
+      obj.user.employments[0].user.agent.agent_details.forEach((d) => {
         obj.user.employment.user.agent.agent_detail[d.key] = d.value
       })
 
       delete obj.agent_details
-      delete obj.user.employments.user.agent.agent_details
+      delete obj.user.employments[0].user.agent.agent_details
       return obj
     })
   },
