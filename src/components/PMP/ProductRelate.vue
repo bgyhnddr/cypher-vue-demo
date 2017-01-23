@@ -118,6 +118,8 @@ export default {
               box: o,
               show: false
             })
+          } else {
+            return Promise.reject('此标签已在列表中')
           }
         }).catch((err) => {
           that.alertMsg = err
