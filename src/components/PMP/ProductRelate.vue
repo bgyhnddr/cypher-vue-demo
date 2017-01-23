@@ -104,7 +104,7 @@ export default {
     },
     SubmitRelate(e) {
       var that = this
-      if (!that.CountList.any((v)=>{ return v.goods_code === e})){
+      if (!that.CountList.some((v)=>{ return v.goods_code === e})){
         pmpProductAPI.getBoxCodes({
           code: e
         }).then((o) => {

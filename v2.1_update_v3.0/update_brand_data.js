@@ -37,7 +37,7 @@ pmp_brand.create({ access_token: '123', app_key: '123', name: 'Bleman & CaraCara
       role_permission.create({ role_code: 'user', permission_code: 'promote' })
     ])
   }).then(()=>{
-    return brand_role.create({ code: 'brand_role99', brand_guid: 'brand1', name: '零售', level: '99' })
+    return brand_role.create({ code: 'brand_role99', brand_guid: 'brand1', name: '零售', level: 99 })
   }).done(() => {
     console.log('ok')
   })
