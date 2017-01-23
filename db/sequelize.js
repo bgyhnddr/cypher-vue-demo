@@ -8,6 +8,7 @@ var sequelize = new Sequelize('bleman', 'root', '1234', {
     dialect: 'mysql',
     host: '192.168.10.102',
     port: 3306,
-    timezone: '+8:00'
+    timezone: '+8:00',
+    logging: false
 })
 module.exports = sequelize
