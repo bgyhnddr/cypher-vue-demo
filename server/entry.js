@@ -19,7 +19,8 @@ module.exports = (app) => {
   app.use(bodyParser.json())
 
   app.use(session({
-    secret: '1234567890QWERTY'
+    secret: '1234567890QWERTY',
+    cookie: { maxAge: 180000 }
   }))
   // var appid = 'wxce792c638e72b879'
   // var apps = 'ed10895b1527b7fcc886dfa7fb37be91'
