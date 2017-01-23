@@ -181,13 +181,6 @@ export default {
       var that = this
       employmentAPI.getBrandInfo().then(function(result) {
         that.user.userLevel = result.brand_role.level
-        if (result.brand_role.level == "4") {
-          for (var item in that.btn_list) {
-            if (that.btn_list[item]['title'] == "成员招募") {
-              that.btn_list.splice(item, 1)
-            }
-          }
-        }
 
         that.showFuncList = true
       }).catch(function(err) {
@@ -203,6 +196,9 @@ export default {
           this.showErrorNoHandled = true
           this.errorMsgNoHandled = "该功能正在开发中"
         }
+      } else if (item.title === "成员招募" && this.user.userLevel === "4") {
+        this.showErrorNoHandled = true
+        this.errorMsgNoHandled = "您当前等级无法使用此功能"
       } else if (Number(this.user.userLevel) > 0 && item.title == "我的货品") {
         this.showErrorNoHandled = true
         this.errorMsgNoHandled = "该功能只对品牌商用户开放"
