@@ -46,13 +46,14 @@
   </div>
 </div>
 <!--Home Page Search-->
-  <div class="homePage-list">
-<home-page-search :show-home-page-model.sync="showHomePageModel" :keyword.sync="keyword" :user-level.sync="user.userLevel"></home-page-search>
-<div>
+<div class="homePage-list">
+  <home-page-search :show-home-page-model.sync="showHomePageModel" :keyword.sync="keyword" :user-level.sync="user.userLevel"></home-page-search>
+  <div>
 
-  <alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
-  <alert :show.sync="showCatchError" button-text="确认" @on-hide="onHide">{{catchErrorMsg}}</alert>
-</div></div>
+    <alert :show.sync="showErrorNoHandled" button-text="确认">{{errorMsgNoHandled}}</alert>
+    <alert :show.sync="showCatchError" button-text="确认" @on-hide="onHide">{{catchErrorMsg}}</alert>
+  </div>
+</div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
 
@@ -129,7 +130,7 @@ export default {
         link: '/teamManagement',
         iconhref: '/static/TestIMG/team.png',
         isShow: true
-      },{
+      }, {
         title: '订货管理',
         link: '',
         iconhref: '/static/TestIMG/order.png',
@@ -139,7 +140,7 @@ export default {
         link: '',
         iconhref: '/static/TestIMG/inventory.png',
         isShow: true
-      },{
+      }, {
         title: '',
         link: '',
         iconhref: '/static/TestIMG/more.png',
@@ -187,6 +188,7 @@ export default {
             }
           }
         }
+
         that.showFuncList = true
       }).catch(function(err) {
         that.showCatchError = true
@@ -201,6 +203,9 @@ export default {
           this.showErrorNoHandled = true
           this.errorMsgNoHandled = "该功能正在开发中"
         }
+      } else if (Number(this.user.userLevel) > 0 && item.title == "我的货品") {
+        this.showErrorNoHandled = true
+        this.errorMsgNoHandled = "该功能只对品牌商用户开放"
       } else {
         this.$route.router.go(item.link)
       }
@@ -351,13 +356,10 @@ table.platform-message p:nth-child(1) {
     border-bottom: 0;
 
 }
-
-
 .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo h4,
 .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo h4 {
     color: gray;
 }
-
 .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo button img,
 .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo button img {
     -webkit-filter: grayscale(1);
@@ -375,7 +377,6 @@ table.platform-message p:nth-child(1) {
 
     width: 61%!important;
 }
-
 .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo,
 .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo {
 
@@ -416,29 +417,29 @@ table.platform-message p:nth-child(1) {
 .weui_cells {
     margin-top: 0;
 }
-.homePage-list  .weui_dialog_ft {
-  width: 89%;
-  margin: 8% auto;
+.homePage-list .weui_dialog_ft {
+    width: 89%;
+    margin: 8% auto;
     background: #0bb20c;
-  line-height: 35px;
-  border-radius: 2px;
+    line-height: 35px;
+    border-radius: 2px;
 }
 
 .homePage-list .weui_dialog_bd {
-  color: #000000;
-  font-size: 5.2vw;
-  /*17px*/
-  font-family: "微软雅黑";
-  margin-top: 5%;
+    color: #000000;
+    font-size: 5.2vw;
+    /*17px*/
+    font-family: "微软雅黑";
+    margin-top: 5%;
 }
 
 .homePage-list .weui_btn_dialog.primary {
-  font-size: 4.9vw;
-  /*16px*/
-  color: #fff;
+    font-size: 4.9vw;
+    /*16px*/
+    color: #fff;
 }
 
-.homePage-list  .weui_dialog {
-  width: 92%;
+.homePage-list .weui_dialog {
+    width: 92%;
 }
 </style>
