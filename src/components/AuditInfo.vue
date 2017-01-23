@@ -103,6 +103,7 @@
         </flexbox>
       </dialog>
     </div>
+    <loading :show="showLoading"></loading>
     <div>
       <div class="completely">
         <alert :show.sync="showAlert" @on-hide="onHide" button-Text="继续审核">{{alertMsg}}</alert>
@@ -131,7 +132,8 @@ import {
   XInput,
   Toast,
   Selector,
-  XNumber
+  XNumber,
+  Loading
 } from 'vux'
 import employAPI from '../api/employment'
 import sendSMS from '../api/sendSMS'
@@ -144,6 +146,7 @@ export default {
       Toggle: false,
       showAlert: false,
       show: false,
+      showLoading:false,
       reason: "",
       termNum: 12,
       auditInfo: {
@@ -171,7 +174,8 @@ export default {
     XInput,
     Toast,
     Selector,
-    XNumber
+    XNumber,
+    Loading
   },
   methods: {
     valid() {
@@ -203,6 +207,7 @@ export default {
       // this.showAlert = true
       var that = this
       if (that.valid()) {
+        that.showLoading = true
         employAPI.passAudit({
           auditID: that.auditID,
           termNum: that.termNum
@@ -211,15 +216,19 @@ export default {
             cellphone: that.auditInfo.employment_detail.cellphone,
             mode: "SendPassAuditMessage"
           }).then(function(result) {
+            that.showLoading = false
             that.alertMsg = "您已完成审核!"
             that.showAlert = true
           }).catch(function(err) {
-            console.log(err)
+            that.showLoading = false
+            that.alertMsg = err
+            that.showAlert = true
           })
 
         }).catch(function(err) {
-          console.log(err)
-          that.serveMsg = err
+          that.showLoading = false
+          that.alertMsg = err
+          that.showAlert = true
         })
       } else {
         that.alertMsg = "请选择授权期限"
@@ -231,7 +240,7 @@ export default {
       // this.alertMsg = "您已完成审核"
       // this.showAlert = true
       var that = this
-      console.log(that.reason)
+      that.showLoading = true
       employAPI.rejectAudit({
         auditID: that.auditID,
         reason: that.reason
@@ -241,16 +250,20 @@ export default {
           auditID:that.auditID,
           mode: "SendRejectAuditMessage"
         }).then(function(result) {
+          that.showLoading = false
           that.show = false
           that.alertMsg = "您已完成审核"
           that.showAlert = true
         }).catch(function(err) {
-          console.log(err)
+          that.showLoading = false
+          that.alertMsg = err
+          that.showAlert = true
         })
 
       }).catch(function(err) {
-        console.log(err)
-        that.serveMsg = err
+        that.showLoading = false
+        that.alertMsg = err
+        that.showAlert = true
       })
     },
     onHide() {

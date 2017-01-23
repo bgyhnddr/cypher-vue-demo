@@ -75,6 +75,7 @@
   <x-button v-if="agentInfo.frozen_agent" type="primary" @click="ShowThaw">解除冻结</x-button>
 
 </div>
+<loading :show="showLoading"></loading>
 <alert :show.sync="showAlert" button-text="确认">{{alertMsg}}</alert>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
@@ -86,7 +87,8 @@ import {
   XButton,
   XHeader,
   Confirm,
-  Alert
+  Alert,
+  Loading
 } from 'vux'
 import employAPI from '../../api/employment'
 import FrozenAPI from '../../api/frozen'
@@ -113,6 +115,7 @@ export default {
       showAlert: false,
       confirmThaw: false,
       confirmFroze: false,
+      showLoading:false,
       alertMsg: "",
       Pagefrom: ""
     }
@@ -123,7 +126,8 @@ export default {
     XButton,
     XHeader,
     Confirm,
-    Alert
+    Alert,
+    Loading
   },
   methods: {
     onClickBack() {
@@ -143,11 +147,14 @@ export default {
     Froze() {
       var that = this
       var agent = that.agentInfo.guid
+      that.showLoading = true
       FrozenAPI.FrozenAgent({
         agent: agent
       }).then(() => {
         that.getAgentInfo()
+        that.showLoading = false
       }).catch(function(err) {
+        that.showLoading = false
         that.showAlert = true
         that.alertMsg = err
       })
@@ -155,11 +162,14 @@ export default {
     Thaw() {
       var that = this
       var agent = that.agentInfo.guid
+      that.showLoading = true
       FrozenAPI.ThawAgent({
         agent: agent
       }).then(() => {
         that.getAgentInfo()
+        that.showLoading = false
       }).catch(function(err) {
+        that.showLoading = false
         that.showAlert = true
         that.alertMsg = err
       })

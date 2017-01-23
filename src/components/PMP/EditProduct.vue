@@ -71,6 +71,7 @@
       <x-button plain @click="showSubmit">{{BtnMsg}}商品</x-button>
     </div>
   </div>
+  <loading :show="showLoading"></loading>
   <confirm :show.sync="showConfirm" title="" confirm-text="确认" cancel-text="取消" @on-confirm="submitProduct">
     <p style="text-align:center;">您确认{{BtnMsg}}该商品吗?</p>
   </confirm>
@@ -97,7 +98,8 @@ import {
   XButton,
   XTextarea,
   Flexbox,
-  FlexboxItem
+  FlexboxItem,
+  Loading
 } from 'vux'
 
 import pmpProductAPI from '../../api/pmp_product'
@@ -121,7 +123,8 @@ export default {
     EditProductLabel,
     EditProductSpecification,
     Flexbox,
-    FlexboxItem
+    FlexboxItem,
+    Loading
   },
   data() {
     return {
@@ -142,7 +145,8 @@ export default {
       alertMsg: "",
       BtnMsg: "",
       showAlert: false,
-      showConfirm: false
+      showConfirm: false,
+      showLoading:false
     }
   },
   methods: {
@@ -183,7 +187,7 @@ export default {
       var that = this
       var id = that.$route.params.id
       var Info = that.ProductInfo
-      console.log(JSON.stringify(that.ProductInfo.pmp_variants))
+      that.showLoading = true
       pmpProductAPI.submitProduct({
         id: id,
         name: Info.name,
@@ -198,12 +202,15 @@ export default {
         pmp_product_prices: Info.pmp_product_prices
       }).then(() => {
         if (id) {
+          that.showLoading = false
           that.alertMsg = "商品已保存"
           that.showAlert = true
         } else {
+          that.showLoading = false
           that.$route.router.go('/productManagement/productSetting')
         }
       }).catch((err)=>{
+        that.showLoading = false
         that.alertMsg = err
         that.showAlert = true
       })
