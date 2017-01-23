@@ -429,13 +429,14 @@ border-top: 1px solid #d3d1d1;
 }
 #editProduct  .weui_dialog_confirm .weui_dialog_ft a {
   border: 0;
-  background: #9b9b9b;
+    background: #0bb20c;
+
     color: #fff;
     font-size: 4.5vw
 }
 #editProduct  .weui_dialog_confirm .weui_dialog_ft a:first-child{
+  background: #9b9b9b;
 
-  background: #0bb20c;
       margin-right: 2%;
 }
 #editProduct .weui_dialog_ft:after{
@@ -461,5 +462,11 @@ border-radius: 2px;
 #EditProductSpecification  .weui_dialog .weui_btn_dialog.primary{
   font-size: 4.9vw;
   color: #fff;
+}
+#editProduct .weui_btn_dialog.primary {
+    color: #fff;
+    background: #0bb20c;
+
+
 }
 </style>

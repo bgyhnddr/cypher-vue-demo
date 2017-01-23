@@ -14,7 +14,7 @@
         <div>
           <cell>
             <div slot="icon">用户名：
-              <label>{{auditInfo.account}}</label>
+              <label>{{auditInfo.employment_detail.cellphone}}</label>
             </div>
               <x-button v-if="!Toggle" type="default" class="auditinfo-view" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.account+'/'+this.$route.params.locate+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
           </cell>

@@ -570,7 +570,10 @@ var exec = {
         HistoryList = HistoryList.filter(p => p.brand_role_code == level)
       }
       if (date_from) {
-        HistoryList = HistoryList.filter(p => p.employer_time >= date_from && p.employer_time <= date_to)
+        var DateTransform = new Date(date_to)
+        var AddDate = DateTransform.setDate(DateTransform.getDate()+1)
+        var AddDateTransform = new Date(parseInt(AddDate)).toLocaleString().replace(/:\d{1,2}$/,' ')
+        HistoryList = HistoryList.filter(p => p.employer_time >= date_from && p.employer_time <= AddDateTransform)
       }
       return HistoryList
     }).then((result) => {
