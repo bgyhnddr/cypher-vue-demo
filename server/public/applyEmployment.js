@@ -114,12 +114,12 @@ var exec = {
       })
 
       obj.user.employment.user.agent.agent_detail = {}
-      obj.user.employment.user.agent.agent_details.forEach((d) => {
+      obj.user.employments.user.agent.agent_details.forEach((d) => {
         obj.user.employment.user.agent.agent_detail[d.key] = d.value
       })
 
       delete obj.agent_details
-      delete obj.user.employment.user.agent.agent_details
+      delete obj.user.employments.user.agent.agent_details
       return obj
     })
   },
