@@ -6,7 +6,7 @@ if (!fs.existsSync("db/data")) {
 }
 var sequelize = new Sequelize('bleman', 'root', '1234', {
     dialect: 'mysql',
-    host: '127.0.0.1',
+    host: '192.168.10.102',
     port: 3306,
     timezone: '+8:00'
 })
