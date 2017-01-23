@@ -16,7 +16,7 @@
       <div>
         <cell>
           <div slot="icon">用户名：
-            <label>{{agentInfo.user_account}}</label>
+            <label>{{agentInfo.agent_detail.cellphone}}</label>
           </div>
           <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+this.agentInfo.user.account+'/promote'+'/#'+'/#'+'/'+this.agentInfo.user.account}">查看授权证书</x-button>
         </cell>
