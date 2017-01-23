@@ -18,12 +18,14 @@
   </confirm>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+<loading :show="showloading"></loading>
 </template>
 
 <script>
 import {
   XButton,
   Alert,
+  Loading,
   Confirm
 } from 'vux'
 import employmentAPI from '../api/employment'
@@ -32,6 +34,7 @@ export default {
   components: {
     XButton,
     Alert,
+    Loading,
     Confirm
   },
   data() {
@@ -43,6 +46,7 @@ export default {
         left_time: ""
       },
       applicantNum: null,
+      showloading: false,
       showErrorNoHandled: false,
       errorMsgNoHandled: null,
       showCatchError: false,
@@ -78,11 +82,16 @@ export default {
     },
     closeEmployment() {
       var that = this
+
+      this.showloading = true
+
       employmentAPI.closeEmployment({
         guid: this.$route.params.guid
       }).then(function(result) {
+        that.showloading = false
         that.$route.router.go('/employManagement/currentList')
       }).catch(function(err) {
+        that.showloading = false
         that.showErrorNoHandled = true
         that.errorMsgNoHandled = err
       })
