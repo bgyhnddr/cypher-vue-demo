@@ -84,6 +84,7 @@
     <p>{{{noSaleErrorMsg}}}</p>
   </alert>
 </div>
+<loading :show="showloading"></loading>
 </template>
 
 <script>
@@ -92,7 +93,8 @@ import {
   Cell,
   XButton,
   Alert,
-  Confirm
+  Confirm,
+  Loading
 } from 'vux'
 import brandInfoAPI from '../api/brandInfo'
 import saleAPI from '../api/sale'
@@ -105,7 +107,8 @@ export default {
     Cell,
     XButton,
     Alert,
-    Confirm
+    Confirm,
+    Loading
   },
   data() {
     return {
@@ -131,6 +134,7 @@ export default {
         soldDate: null,
         scanNum: null
       },
+      showloading: false,
       showErrorNoHandled: false,
       errorMsgNoHandled: null,
       showCatchError: false,
@@ -256,9 +260,12 @@ export default {
     saleProduct() {
       var that = this
 
+      this.showloading = true
+
       saleAPI.packSoldBy({
         packcode: this.$route.params.packcode
       }).then(function(result) {
+        that.showloading = false
         if (result != null) {
           that.showSuccessNextStep = true
         } else {
@@ -266,6 +273,7 @@ export default {
           that.errorMsgNoHandled = "货品出售功能异常，请稍后再试"
         }
       }).catch(function(err) {
+        that.showloading = false
         if (typeof(err) != "object") {
           if (err.match("no tag") != null || err.match("not pack tag") != null) {
             that.showCatchError = true

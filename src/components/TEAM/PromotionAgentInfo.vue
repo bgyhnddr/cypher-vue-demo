@@ -115,6 +115,7 @@
     </div>
   </div>
 </div>
+<loading :show="showLoading"></loading>
 <alert :show.sync="showAlert" button-text="确认">{{alertMsg}}</alert>
 </div>
 </template>
@@ -129,7 +130,8 @@ import {
   Flexbox,
   FlexboxItem,
   XTextarea,
-  Dialog
+  Dialog,
+  Loading
 } from 'vux'
 import promoteAPI from '../../api/promote'
 export default {
@@ -140,6 +142,7 @@ export default {
       showTips: false,
       showAlert: false,
       show: false,
+      showLoading:false,
       reason: "",
       alertMsg: "",
       agentInfo: {
@@ -175,7 +178,8 @@ export default {
     Flexbox,
     FlexboxItem,
     XTextarea,
-    Dialog
+    Dialog,
+    Loading
   },
   methods: {
     onClickBack() {
@@ -195,29 +199,34 @@ export default {
     },
     PassAudit() {
       var that = this
+      that.showLoading = true
       promoteAPI.PassPromote({
         account: that.$route.params.account
       }).then((result) => {
         if (result == "success") {
+          that.showLoading = false
           that.showTips = true
           that.alertMsg = "您已完成审核"
         }
       }).catch(function(err) {
+        that.showLoading = false
         that.showAlert = true
         that.alertMsg = err
       })
     },
     rejectAudit() {
       var that = this
+      that.showLoading = true
       promoteAPI.RejectPromote({
         reason: that.reason,
         account: that.$route.params.account
       }).then((result) => {
-        console.log(result)
+        that.showLoading = false
         that.showReason = false
         that.showTips = true
         that.alertMsg = "您已完成审核"
       }).catch(function(err) {
+        that.showLoading = false
         that.showReason = false
         that.showAlert = true
         that.alertMsg = err
