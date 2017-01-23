@@ -104,22 +104,24 @@ export default {
     },
     SubmitRelate(e) {
       var that = this
-      pmpProductAPI.getBoxCodes({
-        code: e
-      }).then((o) => {
-        that.CountList.push({
-          pmp_specification_id: that.$route.params.id,
-          goods_code: e
+      if (!that.CountList.any((v)=>{ return v.goods_code === e})){
+        pmpProductAPI.getBoxCodes({
+          code: e
+        }).then((o) => {
+          that.CountList.push({
+            pmp_specification_id: that.$route.params.id,
+            goods_code: e
+          })
+          that.BoxList.push({
+            code: e,
+            box: o,
+            show: false
+          })
+        }).catch((err) => {
+          that.alertMsg = err
+          that.showAlert = true
         })
-        that.BoxList.push({
-          code: e,
-          box: o,
-          show: false
-        })
-      }).catch((err) => {
-        that.alertMsg = err
-        that.showAlert = true
-      })
+      }
     },
     SubmitResult() {
       var that = this
