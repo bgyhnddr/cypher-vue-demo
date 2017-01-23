@@ -282,7 +282,7 @@ export default {
 }
 
 #frozenAgent .certificate-messages .certificate-view {
-  top: 107%;
+  top: 11%;
   z-index: 1
 }
 
