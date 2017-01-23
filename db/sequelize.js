@@ -4,9 +4,9 @@ var fs = require('fs')
 if (!fs.existsSync("db/data")) {
     fs.mkdirSync("db/data")
 }
-var sequelize = new Sequelize('bleman', 'blemanadm', 'Build2016', {
+var sequelize = new Sequelize('bleman', 'root', '1234', {
     dialect: 'mysql',
-    host: 'rdssl1u0dsbhp7obuinml.mysql.rds.aliyuncs.com',
+    host: '127.0.0.1',
     port: 3306,
     timezone: '+8:00'
 })

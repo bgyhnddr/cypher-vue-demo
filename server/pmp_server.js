@@ -22,9 +22,10 @@ var Sequelize = require('sequelize')
 //     logging: false,
 // })
 
-var sequelize = new Sequelize('sharewindb', 'root', 'Cypher2015', {
-    host:'192.168.10.20',
+var sequelize = new Sequelize('pmp', 'root', '1234', {
     dialect: 'mysql',
+    host: '127.0.0.1',
+    port: 3306,
     timezone: '+8:00',
     pool: {
         max: 12,

@@ -17,6 +17,7 @@
   "dependencies": {
     "babel-runtime": "^6.0.0",
     "body-parser": "^1.15.2",
+    "bootstrap3": "^3.3.5",
     "cnpm": "^4.4.0",
     "express-session": "^1.14.1",
     "fastclick": "^1.0.6",
