@@ -26,7 +26,7 @@ var exec = {
             model: pmp_product,
             include: {
               model: pmp_product_price,
-              where: { brand_role_code: '4' }
+              where: { brand_role_code: '99' }
             }
           }
         }

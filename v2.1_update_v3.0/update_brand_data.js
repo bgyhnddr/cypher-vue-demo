@@ -1,6 +1,7 @@
 var pmp_brand = require('../db/models/pmp_brand')
 var permission = require('../db/models/permission')
 var role_permission = require('../db/models/role_permission')
+var brand_role = require('../db/models/brand_role')
 var pmp_option_item = require('../db/models/pmp_option_item')
 var pmp_specification_option = require('../db/models/pmp_specification_option')
 var brand_role_meta = require('../db/models/brand_role_meta')
@@ -35,6 +36,8 @@ pmp_brand.create({ access_token: '123', app_key: '123', name: 'Bleman & CaraCara
       role_permission.create({ role_code: 'user', permission_code: 'frozen' }),
       role_permission.create({ role_code: 'user', permission_code: 'promote' })
     ])
+  }).then(()=>{
+    return brand_role.create({ code: 'brand_role99', brand_guid: 'brand1', name: '零售', level: '99' })
   }).done(() => {
     console.log('ok')
   })
