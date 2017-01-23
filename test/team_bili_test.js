@@ -31,7 +31,7 @@ var guidMember7 = "guidMember7"
 describe('team_bili_test', () => {
   // 初始化数据
   before(function() {
-    this.timeout(10000)
+    this.timeout(20000)
 
     return Promise.all([
       employment,
@@ -49,12 +49,12 @@ describe('team_bili_test', () => {
       }, {
         brand_role_code: "brand_role3",
         key: "initialFee",
-        value: "50.1",
+        value: "50",
         type: "float"
       }, {
         brand_role_code: "brand_role4",
         key: "initialFee",
-        value: "50.1",
+        value: "50",
         type: "float"
       }, {
         brand_role_code: "brand_role5",
@@ -84,7 +84,7 @@ describe('team_bili_test', () => {
       }).then(() => {
 
         return Promise.all([
-          //添加二级代理 成员一，已发提拔申请，未确认
+          //添加二级代理 成员一 无提拔
           user.findOne({
             where: {
               account: guidMember1
@@ -101,15 +101,6 @@ describe('team_bili_test', () => {
               status: "已审核",
               audit_time: new Date().Format('yyyy-MM-dd hh:mm'),
               audit_result: "已通过"
-            })
-            agent_promotion.create({
-              guid: guidMember1,
-              promoter_user_account: "admin",
-              promotee_user_account: guidMember1,
-              brand_role_code: "brand_role2",
-              brand_guid: "brand1",
-              status: true,
-              create_time: new Date().Format('yyyy-MM-dd hh:mm'),
             })
             if (result == null) {
               Promise.all([
@@ -170,7 +161,7 @@ describe('team_bili_test', () => {
               ])
             }
           }),
-          //添加二级代理 成员二，正在提升，未被审核
+          //添加特约销售员代理 成员二，正在提拔至二级代理，未被审核
           user.findOne({
             where: {
               account: guidMember2
@@ -179,7 +170,7 @@ describe('team_bili_test', () => {
             employment.create({
               publish_employment_guid: guidMember2,
               brand_guid: "brand1",
-              brand_role_code: "brand_role3",
+              brand_role_code: "brand_role4",
               employer_user_account: "admin",
               employee_user_account: guidMember2,
               employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
@@ -191,7 +182,7 @@ describe('team_bili_test', () => {
             employment.create({
               agent_promotion_guid: guidMember2,
               brand_guid: "brand1",
-              brand_role_code: "brand_role2",
+              brand_role_code: "brand_role3",
               employer_user_account: "admin",
               employee_user_account: guidMember2,
               employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
@@ -201,7 +192,7 @@ describe('team_bili_test', () => {
               guid: guidMember2,
               promoter_user_account: "admin",
               promotee_user_account: guidMember2,
-              brand_role_code: "brand_role2",
+              brand_role_code: "brand_role3",
               brand_guid: "brand1",
               status: true,
               create_time: new Date().Format('yyyy-MM-dd hh:mm'),
@@ -222,7 +213,7 @@ describe('team_bili_test', () => {
                 }),
                 agent_brand_role.create({
                   agent_guid: guidMember2,
-                  brand_role_code: "brand_role3"
+                  brand_role_code: "brand_role4"
                 }),
                 agent_detail.bulkCreate([{
                   agent_guid: guidMember2,
@@ -406,7 +397,7 @@ describe('team_bili_test', () => {
             }
           }),
 
-          //添加二级代理 成员五，已发提拔申请，已确认
+          //添加特约销售员代理 成员五，已发提拔申请，已确认
           user.findOne({
             where: {
               account: guidMember1
@@ -415,7 +406,7 @@ describe('team_bili_test', () => {
             employment.create({
               publish_employment_guid: guidMember5,
               employer_user_account: "admin",
-              brand_role_code: "brand_role3",
+              brand_role_code: "brand_role4",
               brand_guid: "brand1",
               employee_user_account: guidMember5,
               employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
@@ -428,7 +419,7 @@ describe('team_bili_test', () => {
               guid: guidMember5,
               promoter_user_account: "admin",
               promotee_user_account: guidMember5,
-              brand_role_code: "brand_role2",
+              brand_role_code: "brand_role3",
               brand_guid: "brand1",
               status: true,
               create_time: new Date().Format('yyyy-MM-dd hh:mm'),
@@ -449,7 +440,7 @@ describe('team_bili_test', () => {
                 }),
                 agent_brand_role.create({
                   agent_guid: guidMember5,
-                  brand_role_code: "brand_role3"
+                  brand_role_code: "brand_role4"
                 }),
                 agent_detail.bulkCreate([{
                   agent_guid: guidMember5,
@@ -493,7 +484,7 @@ describe('team_bili_test', () => {
             }
           }),
 
-          //添加二级代理 成员六，已发提拔申请，已确认
+          //添加特约销售员代理 成员六，已发提拔申请，已确认
           user.findOne({
             where: {
               account: guidMember6
@@ -502,7 +493,7 @@ describe('team_bili_test', () => {
             employment.create({
               publish_employment_guid: guidMember6,
               employer_user_account: "admin",
-              brand_role_code: "brand_role3",
+              brand_role_code: "brand_role4",
               brand_guid: "brand1",
               employee_user_account: guidMember6,
               employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
@@ -515,7 +506,7 @@ describe('team_bili_test', () => {
               guid: guidMember6,
               promoter_user_account: "admin",
               promotee_user_account: guidMember6,
-              brand_role_code: "brand_role2",
+              brand_role_code: "brand_role3",
               brand_guid: "brand1",
               status: true,
               create_time: new Date().Format('yyyy-MM-dd hh:mm'),
@@ -536,7 +527,7 @@ describe('team_bili_test', () => {
                 }),
                 agent_brand_role.create({
                   agent_guid: guidMember6,
-                  brand_role_code: "brand_role3"
+                  brand_role_code: "brand_role4"
                 }),
                 agent_detail.bulkCreate([{
                   agent_guid: guidMember6,
@@ -722,8 +713,8 @@ describe('team_bili_test', () => {
     it('get all can be operable promotion levels', () => {
       return promoteTestFunc("getPromotionOperableLevels").then((result) => {
         // console.log(JSON.stringify(result))
-        result.length.should.equal(3)
-        result[0].brand_role_code.should.equal("brand_role3")
+        result.length.should.equal(2)
+        result[0].brand_role_code.should.equal("brand_role4")
         result[0].number.should.be.above(0)
       })
     })
@@ -736,28 +727,36 @@ describe('team_bili_test', () => {
       }).then((result) => {
         // console.log(JSON.stringify(result))
         result.list.length.should.not.be.equal(0)
-        result.end.should.equal(false)
+        result.end.should.equal(true)
       })
     })
-    it('get get level="brand_role3",not filterKey', () => {
+    it('get get level="brand_role4",not filterKey', () => {
       return promoteTestFunc("getPromotionOperableStaffs", {
-        level: "brand_role3"
+        level: "brand_role4"
       }).then((result) => {
         // console.log(JSON.stringify(result))
-        result.list.length.should.be.equal(4)
+        result.list.length.should.not.be.equal(0)
         result.end.should.equal(true)
       })
     })
   })
 
   describe('getLevels', () => {
-    it('get staff can be promoted Levels，promotee is guidMember2（二级代理）', () => {
+    it('get staff can be promoted Levels，promotee is guidMember2特约销售员代理）', () => {
       return promoteTestFunc("getLevels", {
         promotee: guidMember2
       }).then((result) => {
         // console.log(JSON.stringify(result))
         result.length.should.be.equal(1)
-        result[0].brand_role.level.should.be.equal("1")
+      })
+    })
+
+    it('get staff can be promoted Levels，promotee is guidMember3销售员代理）', () => {
+      return promoteTestFunc("getLevels", {
+        promotee: guidMember3
+      }).then((result) => {
+        // console.log(JSON.stringify(result))
+        result.length.should.be.equal(2)
       })
     })
   })
@@ -766,17 +765,7 @@ describe('team_bili_test', () => {
     it('guidMember2 已有未审核提拔申请', () => {
       return promoteTestFunc("createPromotion", {
         promotee: guidMember2,
-        level: "brand_role2"
-      }).then((result) => {
-        // console.log(JSON.stringify(result))
-        result.should.be.equal(guidMember2)
-      })
-    })
-
-    it('guidMember2 已有未审核提拔申请', () => {
-      return promoteTestFunc("createPromotion", {
-        promotee: guidMember2,
-        level: "brand_role2"
+        level: "brand_role3"
       }).then((result) => {
         // console.log(JSON.stringify(result))
         result.should.be.equal(guidMember2)
@@ -805,14 +794,6 @@ describe('team_bili_test', () => {
       })
     })
 
-    it('get promotion guid = guidMember1, 未确认提拔申请', () => {
-      return promoteTestFunc("getPromotion", {
-        promotionGuid: guidMember1,
-      }).then((result) => {
-        // console.log(JSON.stringify(result))
-        result.promotee_user_account.should.be.equal(guidMember1)
-      })
-    })
     it('get promotion guid = guidMember5, 未确认提拔申请', () => {
       return promoteTestFunc("getPromotion", {
         promotionGuid: guidMember5,
@@ -832,17 +813,6 @@ describe('team_bili_test', () => {
   })
 
   describe('confirmPromotion', () => {
-    it('testMember1 confirm Promotion', () => {
-      return promoteTestFunc("confirmPromotion", {
-        promotionGuid: guidMember1,
-      }).then((result) => {
-        // console.log(JSON.stringify(result))
-        result.agent_promotion_guid.should.be.equal(guidMember1)
-        result.status.should.be.equal("未审核")
-      })
-    })
-  })
-  describe('confirmPromotion', () => {
     it('testMember5 confirm Promotion', () => {
       return promoteTestFunc("confirmPromotion", {
         promotionGuid: guidMember5,
@@ -852,8 +822,7 @@ describe('team_bili_test', () => {
         result.status.should.be.equal("未审核")
       })
     })
-  })
-  describe('confirmPromotion', () => {
+
     it('testMember6 confirm Promotion', () => {
       return promoteTestFunc("confirmPromotion", {
         promotionGuid: guidMember6,
@@ -921,7 +890,7 @@ describe('team_bili_test', () => {
         auditID: guidMember4
       }).then((result) => {
         // console.log(JSON.stringify(result))
-        result.brand_role_meta.totleInitialFee.toFixed(1).should.be.equal('250.3')
+        result.brand_role_meta.totleInitialFee.toFixed(1).should.be.equal('250.0')
       })
     })
   })
