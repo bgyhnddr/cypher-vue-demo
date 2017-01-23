@@ -110,7 +110,7 @@ var exec = {
           include: brand_role
         }]
       }).then(function(result) {
-          args.arg4 = "【分得】尊敬的客户，您的代理资格(" + result.agent_brand_role.brand_role.name + ")已通过审核，账户："+cellphone+"，初始密码：" + result.user.password+"。请及时修改并妥善保管密码。如需帮助，请致电400-9999-633。"
+          args.arg4 = "【分得】尊敬的客户，您的贝利龙品牌代理资格(" + result.agent_brand_role.brand_role.name + ")已通过审核，账户："+cellphone+"，初始密码：" + result.user.password+"。请及时修改并妥善保管密码。如需帮助，请致电400-9999-633。"
           return new Promise((resolve, reject) => {
             // console.log(args.arg4)
             // resolve("success")
@@ -129,7 +129,7 @@ var exec = {
             guid:auditID
           }
       }).then(function(result){
-        args.arg4 = "【分得】尊敬的客户，您的代理资格尚未审核通过，原因："+result.reject_reason+"。请联系招募发起人并重新提交资料。如需帮助，请致电400-9999-633。"
+        args.arg4 = "【分得】尊敬的客户，您的贝利龙品牌代理资格尚未审核通过，原因："+result.reject_reason+"。请联系招募发起人并重新提交资料。如需帮助，请致电400-9999-633。"
         return new Promise((resolve, reject) => {
           // console.log(args.arg4)
           // resolve("success")
