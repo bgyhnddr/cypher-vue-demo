@@ -85,6 +85,9 @@ export default {
 }
 </script>
 <style>
+#forzenLevelList {
+      min-height: 528px;
+}
 #forzenLevelList  .weui_cell_hd{
   width: auto;
 }
