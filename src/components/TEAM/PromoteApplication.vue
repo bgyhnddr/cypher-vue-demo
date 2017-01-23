@@ -36,12 +36,13 @@
 
 <alert :show.sync="alert.showErrorNoHandled" button-text="确认">{{alert.errorMsgNoHandled}}</alert>
 <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
-
+<loading :show="showloading"></loading>
 </template>
 <script>
 import {
   XHeader,
   XButton,
+  Loading,
   Alert
 } from 'vux'
 import authAPI from '../../api/auth'
@@ -54,10 +55,12 @@ export default {
   components: {
     XHeader,
     XButton,
+    Loading,
     Alert
   },
   data() {
     return {
+      showloading: false,
       showModelName: "", // ModelName : confirmPromotion, waitForAudit, promotionResult
       loginUser: null,
       promotionData: {
@@ -151,11 +154,16 @@ export default {
     },
     confirm() {
       var that = this
+
+      this.showloading = true
+
       promoteAPI.confirmPromotion({
         promotionGuid: that.$route.params.agentPromotionGuid
       }).then(function(result) {
+        that.showloading = false
         that.loadPromotion()
       }).catch(function(err) {
+        that.showloading = false
         that.alert.showErrorNoHandled = true
         that.alert.errorMsgNoHandled = "确认提拔异常，请稍后重试"
       })

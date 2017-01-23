@@ -57,6 +57,7 @@
     </div>
   </div>
   <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+  <loading :show="showloading"></loading>
 </template>
 <script>
 import {
@@ -68,6 +69,7 @@ import {
   AddressChinaData,
   XTextarea,
   Cell,
+  Loading,
   Alert
 } from 'vux'
 import uuid from 'node-uuid'
@@ -86,6 +88,7 @@ export default {
     XTextarea,
     EmploymentHeadimgUpload,
     Cell,
+    Loading,
     Alert
   },
   watch: {
@@ -146,6 +149,7 @@ export default {
         // guid: "",
         // showGuid: "",
       },
+      showloading: false,
       showNextFillModel: false,
       IDTypeList: ['身份证', '回乡证', '护照'],
       addressData: AddressChinaData,
@@ -331,14 +335,18 @@ export default {
       }
       if (commitFlag) {
 
+        this.showloading = true
+
         applyEmploymentAPI.submitApplication({
           meta: this.meta,
           data: this.data,
           employmentData: this.employmentData,
           publishEmploymentGuid: this.employmentData.publishEmploymentInfo.guid
         }).then(function(result) {
+          that.showloading = false
           location.href = "/#!/employManagement/employmentSubmission"
         }).catch(function(err) {
+          that.showloading = false
           if (err == "招募已关闭，请关闭本页面") {
             that.showMsg = true
             that.errorMsg = err
