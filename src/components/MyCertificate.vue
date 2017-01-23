@@ -12,7 +12,7 @@
       <div>
         <cell>
           <div slot="icon">用户名：
-            <label>{{agentInfo.account}}</label>
+            <label>{{agentInfo.agent_detail.cellphone}}</label>
           </div>
         </cell>
         <cell>

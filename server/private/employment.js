@@ -345,7 +345,7 @@ var exec = {
     employment.belongsTo(brand)
     employment.belongsTo(brand_role)
 
-    user.hasOne(employment, {
+    user.hasMany(employment, {
       foreignKey: "employee_user_account"
     })
 
@@ -380,6 +380,10 @@ var exec = {
           model: user,
           include: {
             model: employment,
+            where: {
+              status: '已审核',
+              audit_result: '已通过'
+            },
             include: [brand, {
               model: user,
               include: {
@@ -396,14 +400,14 @@ var exec = {
       obj.agent_details.forEach((d) => {
         obj.agent_detail[d.key] = d.value
       })
-
+      obj.user.employment = obj.user.employments[0]
       obj.user.employment.user.agent.agent_detail = {}
-      obj.user.employment.user.agent.agent_details.forEach((d) => {
+      obj.user.employments[0].user.agent.agent_details.forEach((d) => {
         obj.user.employment.user.agent.agent_detail[d.key] = d.value
       })
 
       delete obj.agent_details
-      delete obj.user.employment.user.agent.agent_details
+      delete obj.user.employments[0].user.agent.agent_details
       return obj
     })
   },
@@ -566,7 +570,10 @@ var exec = {
         HistoryList = HistoryList.filter(p => p.brand_role_code == level)
       }
       if (date_from) {
-        HistoryList = HistoryList.filter(p => p.employer_time >= date_from && p.employer_time <= date_to)
+        var DateTransform = new Date(date_to)
+        var AddDate = DateTransform.setDate(DateTransform.getDate()+1)
+        var AddDateTransform = new Date(parseInt(AddDate)).toLocaleString().replace(/:\d{1,2}$/,' ')
+        HistoryList = HistoryList.filter(p => p.employer_time >= date_from && p.employer_time <= AddDateTransform)
       }
       return HistoryList
     }).then((result) => {
