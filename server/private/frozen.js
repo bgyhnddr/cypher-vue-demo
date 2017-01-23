@@ -153,8 +153,7 @@ var exec = {
           }
         },
         include: [frozen_agent, {
-          model: agent_detail,
-          where: filterAccount,
+          model: agent_detail
         }, {
           model: agent_brand_role,
           include: brand_role,
@@ -173,13 +172,18 @@ var exec = {
       })
     }).then((result) => {
       if (result.length > 0) {
-        return result
-      } else {
         if (filterKey != "") {
-          return Promise.reject("查无此成员")
+          var FilterResult = result.filter(o => o.agent_detail.name.match(filterKey) || o.agent_detail.cellphone==filterKey)
+          if (FilterResult.length > 0) {
+            return FilterResult
+          } else {
+            return Promise.reject("查无此成员")
+          }
         } else {
-          return Promise.reject("无可冻结成员")
+          return result
         }
+      } else {
+        return Promise.reject("无可冻结成员")
       }
     })
   },
