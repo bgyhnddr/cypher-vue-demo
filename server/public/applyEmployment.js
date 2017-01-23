@@ -57,7 +57,7 @@ var exec = {
     employment.belongsTo(brand)
     employment.belongsTo(brand_role)
 
-    user.hasOne(employment, {
+    user.hasMany(employment, {
       foreignKey: "employee_user_account"
     })
 
@@ -92,6 +92,10 @@ var exec = {
           model: user,
           include: {
             model: employment,
+            where: {
+              status: '已审核',
+              audit_result: '已通过'
+            },
             include: [brand, {
               model: user,
               include: {
