@@ -398,34 +398,34 @@ var exec = {
         counter_user_account: req.session.userInfo.name,
         count_time: new Date()
       }).then((result) => {
-        return getBoxCodes(o.goods_code).then((codes) => {
-          var i = 0
-          var updateInfo = function() {
-            if (i < codes.length) {
-              var code = codes[i]
-              return pmp_outcome_count.create({
+        return getBoxCodes(o.goods_code)
+      }).then((codes) => {
+        var i = 0
+        var updateInfo = function() {
+          if (i < codes.length) {
+            var code = codes[i]
+            return pmp_outcome_count.create({
+              pmp_specification_id: o.pmp_specification_id,
+              goods_code: code,
+              counter_user_account: req.session.userInfo.name,
+              count_time: new Date(),
+              pmp_outcome_count_id: result.id
+            }).then((created) => {
+              return pmp_goods.upsert({
                 pmp_specification_id: o.pmp_specification_id,
                 goods_code: code,
-                counter_user_account: req.session.userInfo.name,
-                count_time: new Date(),
-                pmp_outcome_count_id: result.id
-              }).then((created) => {
-                return pmp_goods.upsert({
-                  pmp_specification_id: o.pmp_specification_id,
-                  goods_code: code,
-                  pmp_outcome_count_id: created.id,
-                  owner_user_account: req.session.userInfo.name
-                })
-              }).then(() => {
-                i += 1
-                return updateInfo()
+                pmp_outcome_count_id: created.id,
+                owner_user_account: req.session.userInfo.name
               })
-            } else {
-              return "done"
-            }
+            }).then(() => {
+              i += 1
+              return updateInfo()
+            })
+          } else {
+            return "done"
           }
-          return updateInfo()
-        })
+        }
+        return updateInfo()
       })
     }))
   }
