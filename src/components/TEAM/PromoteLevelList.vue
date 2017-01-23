@@ -74,11 +74,7 @@ export default {
     loadPromoteLevels() {
       var that = this
       promoteAPI.getPromotionOperableLevels().then(function(result) {
-
-        that.promoteLevels = result.filter((item) =>{
-          return item.brand_role_code != "brand_role3"
-        })
-
+        that.promoteLevels = result
       }).catch(function(err) {
         that.alert.showCatchError = true
         that.alert.catchErrorMsg = "加载可提拔代理等级列表异常，请稍后再试"
