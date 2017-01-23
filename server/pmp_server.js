@@ -375,7 +375,7 @@ function pack_takeover(packcode,newowner){
 function crate_takeover(cratecode,newowner){
   var arr = cratecode.split('-')
   var tag_type = arr[0]
-  if(tag_type!=='B')return Promise.reject('not crate tag')
+  if(tag_type!=='B')return Promise.reject('此标签并非箱标签')
 
   // var brand_id = parseInt(arr[2])
   // var week_year = arr[3]
@@ -427,7 +427,7 @@ function crate_takeover(cratecode,newowner){
 function packs_under_crate(cratecode){
   var arr = cratecode.split('-')
   var tag_type = arr[0]
-  if(tag_type!=='B')return Promise.reject('not crate tag')
+  if(tag_type!=='B')return Promise.reject('此标签并非箱标签')
 
   return PackTags.findAll({
     where:{
@@ -444,7 +444,7 @@ function packs_under_crate(cratecode){
 function crate_product(cratecode,productid){
   var arr = cratecode.split('-')
   var tag_type = arr[0]
-  if(tag_type!=='B')return Promise.reject(crate+' not crate tag')
+  if(tag_type!=='B')return Promise.reject(crate+' 此标签并非箱标签')
 
   // var brand_id = parseInt(arr[2])
   // var week_year = arr[3]
