@@ -4,7 +4,7 @@
     <h3>代理申请表</h3>
     <div v-if="!showNextFillModel">
       <div class="ApplyFor-agent-message">
-        <p>上级授权号&nbsp;:&nbsp;{{employmentData.showGuid}}</p>
+        <p>上级授权号&nbsp;:&nbsp;</p>
         <p>上级代理&nbsp;:&nbsp;{{employmentData.employerName}}</p>
         <p>您当前代理级别为&nbsp;:&nbsp;
           <label>{{employmentData.brandRoleName}}</label>
@@ -52,9 +52,9 @@
       </div>
     </div>
     <div class="fillin-list">
-    <alert :show.sync="showMsg" button-text="确认" @on-hide="onHide">{{errorMsg}}</alert>
-    <alert :show.sync="showSubmitMsg" button-text="确认">{{submitMsg}}</alert>
-  </div>
+      <alert :show.sync="showMsg" button-text="确认" @on-hide="onHide">{{errorMsg}}</alert>
+      <alert :show.sync="showSubmitMsg" button-text="确认">{{submitMsg}}</alert>
+    </div>
   </div>
   <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
@@ -143,8 +143,8 @@ export default {
         brandRoleName: "",
         brandInfo: {},
         employerName: {},
-        guid: "",
-        showGuid: "",
+        // guid: "",
+        // showGuid: "",
       },
       showNextFillModel: false,
       IDTypeList: ['身份证', '回乡证', '护照'],
@@ -181,11 +181,11 @@ export default {
             that.$route.router.go('/employManagement/brandAuthorization/' + publishEmploymentID)
           } else { //非发起人或者未登录
 
-            var guid = uuid.v1()
-            that.employmentData.guid = guid
-            that.employmentData.showGuid = guid.split("-")[4]
+            // var guid = uuid.v1()
+            // that.employmentData.guid = guid
+            // that.employmentData.showGuid = guid.split("-")[4]
 
-              //招募已关闭
+            //招募已关闭
             if (result.status == false) {
               that.showMsg = true
               that.errorMsg = "招募已关闭，请关闭本页面"
@@ -233,13 +233,11 @@ export default {
       }).then(function(result) {
         that.employmentData.agentGuid = result.guid
 
-        for (var item in result.agent_details) {
-          for (var meta in result.agent_details[item]) {
-            if (meta == 'key' && result.agent_details[item][meta] == 'name') {
-              that.employmentData.employerName = result.agent_details[item]['value']
-            }
+        result.agent_details.map((o) => {
+          if (o.key == "name") {
+            that.employmentData.employerName = o.value
           }
-        }
+        })
       }).catch(function(err) {
         that.showMsg = true
         that.errorMsg = err
@@ -558,7 +556,7 @@ export default {
 
 .certificate span.vux-popup-picker-value {
   width: 89%;
-  font-size: 4.5vw;
+  font-size: 14px
 }
 
 .certificate .weui_cell_ft.with_arrow:after {
@@ -595,7 +593,7 @@ export default {
 .certificate .weui_cell_ft.weui_cell_primary.with_arrow span:nth-child(2) {
   position: absolute;
   left: 5%;
-  font-size: 4.5vw;
+  font-size: 14px;
   top: 11%;
   font-family: "微软雅黑";
 }
@@ -618,10 +616,11 @@ export default {
   color: #d22d23;
   text-align: right
 }
+
 .fillin-list .weui_dialog_ft {
   width: 89%;
   margin: 8% auto;
-    background: #0bb20c;
+  background: #0bb20c;
   line-height: 35px;
   border-radius: 2px;
 }
@@ -640,7 +639,7 @@ export default {
   color: #fff;
 }
 
-.fillin-list  .weui_dialog {
+.fillin-list .weui_dialog {
   width: 92%;
 }
 </style>

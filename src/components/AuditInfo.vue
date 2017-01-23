@@ -1,4 +1,5 @@
 ﻿<template>
+  <div id="auditInfo">
 <div class="auditinfo-bac">
   <div>
     <div class="auditinfo-header">
@@ -29,6 +30,16 @@
             </div>
             <x-button v-if="Toggle" type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/auditInfo'+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
             <x-button v-if="!Toggle" type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/history'+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
+          </cell>
+          <cell>
+            <div slot="icon">招募人已用金额：
+              <label>{{auditInfo.totleInitialFee}}</label>
+            </div>
+          </cell>
+          <cell>
+            <div slot="icon">授权等级：
+              <label>{{auditInfo.brand_role}}</label>
+            </div>
           </cell>
           <cell>
             <div slot="icon">姓名：
@@ -104,6 +115,7 @@
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 <div style="height:20px"></div>
+</div>
 </template>
 
 <script>
@@ -133,15 +145,17 @@ export default {
       showAlert: false,
       show: false,
       reason: "",
-      termNum: "12",
+      termNum: 12,
       auditInfo: {
         account: "",
         brand: "",
+        brand_role:"",
         employer: "",
         employment_detail: {},
         agent: {
           agent_detail: {}
-        }
+        },
+        totleInitialFee:""
       }
     }
   },
@@ -177,6 +191,8 @@ export default {
         that.auditInfo.account = result.employee_user_account
         that.auditInfo.employer = result.employer_user_account
         that.auditInfo.brand = result.brand.name
+        that.auditInfo.brand_role = result.brand_role.name
+        that.auditInfo.totleInitialFee = result.brand_role_meta.totleInitialFee.toFixed(1)
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err
@@ -270,23 +286,15 @@ export default {
 
 }
 
-.auditinfo-header {
-  text-align: center;
-  margin-top: 2%;
-}
 
-.auditinfo-header img {
-  border: 0;
-  background-size: 100%;
-  width: 25%;
-}
+
 
 .auditinfo-message .weui_cell_hd {
   width: 100%;
 }
 
 .auditinfo-message {
-
+    min-height: 500px;
   width: 89%;
   margin: 1% auto;
 }
@@ -301,8 +309,8 @@ export default {
 
 }
 
-.auditinfo-message .weui_cell:nth-child(8){
-border-bottom:0}
+/*.auditinfo-message .weui_cell:nth-child(10){
+border-bottom:0}*/
 
 .auditinfo-message .weui_btn {
   padding-left: 0;
@@ -324,7 +332,7 @@ border-bottom:0}
 }
 
 .auditinfo-message .auditinfo-view {
-    top:10%;
+    top:14%;
 }
 
 .auditinfo-message .auditinfo-views {
@@ -573,5 +581,25 @@ padding: 3% 1%!important;
   line-height: 37px;
   border-radius: 3px;
   margin-bottom: 3%;
+}
+.auditinfo-header{
+  width: 28%;
+    padding-top: 31%;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    margin: auto;
+    border: 0;
+    background: none;
+    text-align: center;
+    margin-top: 2%;
+}
+.auditinfo-header img{
+  left: -2%;
+    top: 0;
+    width: 100%;
+    position: absolute;
+    vertical-align: middle;
+    min-height: 95px;
 }
 </style>

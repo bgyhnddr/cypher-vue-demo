@@ -1,4 +1,5 @@
 ﻿<template>
+	<div id="ChangeUserPassword">
 	<div style="min-height: 460px;">
 <div @keyup.enter="ChangePwd">
 	<div>
@@ -34,6 +35,7 @@
 	</div>
 </div></div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+</div>
 </template>
 
 <script>
@@ -111,6 +113,10 @@ export default {
 }
 </script>
 <style>
+#ChangeUserPassword{
+	background: #fff;
+	height: 100%
+}
 .change-password .password-error{
 
 	width: 100%;
@@ -129,7 +135,8 @@ export default {
 
 .change-password {
 	width: 89%;
-	margin: 7% auto;
+	margin: auto;
+	padding: 7% 0;
 }
 .change-password .weui_cell {
 

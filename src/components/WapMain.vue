@@ -1,5 +1,6 @@
 ﻿<template>
-<div style="overflow-x: hidden;">
+<div style="    overflow-x: hidden;
+    height: 100%;">
   <loading :show="isLoading" position="absolute"></loading>
   <view-box v-ref:view-box>
     <!--header slot-->
@@ -265,6 +266,18 @@ export default {
           }else if (this.$route.params.locate == "sale"){
             this.$route.router.go('/saleManagement/sale/' + this.$route.params.from)
             return
+          }else if(this.$route.params.locate == "Frozenlist"){
+            this.$route.router.go('/teamManagement/frozenAgent/' + this.$route.params.from +'/Frozenlist')
+            return
+          }else if(this.$route.params.locate == "Frozenmembers"){
+            this.$route.router.go('/teamManagement/frozenAgent/' + this.$route.params.from +'/Frozenmembers')
+            return
+          }else if(this.$route.params.locate == "promote"){
+            this.$route.router.go('/teamManagement/promoteAgent/' + this.$route.params.from)
+            return
+          }else if(this.$route.params.locate == "promotion"){
+            this.$route.router.go('/teamManagement/promotionAgentInfo/' + this.$route.params.from)
+            return
           }
           } else if (SecPath == "checkPwd") {
             this.$route.router.go('/accountManagement')
@@ -294,9 +307,7 @@ html {
   overflow-x: hidden;
 }
 
-body {
-  background-color: #fbf9fe;
-}
+
 
 .view {
   transition: all 0.3s ease;
@@ -370,7 +381,9 @@ body {
 
 
 /*底栏信息*/
-
+body{
+  background: #f2f2f2!important
+}
 .all-footer {
   width: 100%;
   text-align: center;
@@ -378,6 +391,7 @@ body {
   font-size: 3vw;
   font-family: "微软雅黑";
 	line-height: 2.8em;
-	margin-bottom: 0;
+    padding-bottom: 2%;
+
 }
 </style>

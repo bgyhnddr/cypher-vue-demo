@@ -25,6 +25,9 @@ Vue.http.interceptors.push(authCallback)
 dateformat()
 disableHistoryBack()
 
+var attachFastClick = require('fastclick')
+attachFastClick.attach(document.body)
+
 window.state = {
   userInfo: {
     name: "",
@@ -85,21 +88,17 @@ router.beforeEach((tran) => {
         tran.next()
         return
     }
+  } else if (FirstPath == "teamManagement") {
+    switch (SecPath) {
+      case "promoteShare":
+      case "promoteApplication":
+        tran.next()
+        return
+    }
   } else if (FirstPath == "test") {
     tran.next()
     return
   }
-
-  // switch (name) {
-  //     case "FillInEmployment":
-  //     case "EmploymentSubmission":
-  //     case "PhoneVerification":
-  //     case "resetpwd":
-  //     case "BrandAuthorization":
-  //     case "SuccessPage":
-  //         tran.next()
-  //         return
-  // }
 
   function CheckInfo() {
     if (checkPermission(['agentInfo', 'employment'])) {
@@ -144,7 +143,6 @@ router.beforeEach((tran) => {
         switch (SecPath) {
           case undefined:
           case "MyCertificate":
-          // case "CertificateInfo":
           case "checkPwd":
           case "changeWechat":
           case "changeCellPhone":
@@ -168,6 +166,10 @@ router.beforeEach((tran) => {
             break
 
         }
+      } else if (FirstPath == "productManagement") {
+        tran.next()
+      } else if (FirstPath == "teamManagement") {
+        tran.next()
       } else if (path == '/index') {
         router.go('homePage')
       }

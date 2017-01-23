@@ -152,9 +152,64 @@ export function configRouter(router) {
         'changeCellPhone': {
           component: require('../components/ChangeCellPhone.vue')
         }
-
-
       }
+    },
+    '/productManagement/productSetting': {
+      component: require('../components/PMP/ProductSetting.vue')
+    },
+    '/productManagement/editProductSearch': {
+      component: require('../components/PMP/EditProductSearch.vue')
+    },
+    '/productManagement/linkProductToQRCode': {
+      component: require('../components/PMP/LinkProductToQRCode.vue')
+    },
+    '/productManagement/linkProductToQRCodeSearch': {
+      component: require('../components/PMP/LinkProductToQRCodeSearch.vue')
+    },
+    '/productManagement/productRelate/:id': {
+      component: require('../components/PMP/ProductRelate.vue')
+    },
+    '/productManagement/editProduct': {
+      component: require('../components/PMP/EditProduct.vue')
+    },
+    '/productManagement/editProduct/:id': {
+      component: require('../components/PMP/EditProduct.vue')
+    },
+    '/productManagement': {
+      component: require('../components/PMP/ProductManagement.vue')
+    },
+    '/teamManagement': {
+      component: require('../components/TEAM/TeamManagement.vue')
+    },
+    '/teamManagement/frozenMember/:code': {
+      component: require('../components/TEAM/FrozenMember.vue')
+    },
+    '/teamManagement/frozenAgent/:account/:from': {
+      component: require('../components/TEAM/FrozenAgent.vue')
+    },
+    '/teamManagement/forzenLevelList': {
+      component: require('../components/TEAM/ForzenLevelList.vue')
+    },
+    '/teamManagement/promoteLevelList': {
+      component: require('../components/TEAM/PromoteLevelList.vue')
+    },
+    '/teamManagement/promoteAgent/:account': {
+      component: require('../components/TEAM/PromoteAgent.vue')
+    },
+    '/teamManagement/promotionAuditList': {
+      component: require('../components/TEAM/PromotionAuditList.vue')
+    },
+    '/teamManagement/promotionAgentInfo/:account': {
+      component: require('../components/TEAM/PromotionAgentInfo.vue')
+    },
+    '/teamManagement/choosePromoteRole/:account': {
+      component: require('../components/TEAM/ChoosePromoteRole.vue')
+    },
+    '/teamManagement/promoteShare/:agentPromotionGuid': {
+      component: require('../components/TEAM/PromoteShare.vue')
+    },
+    '/teamManagement/promoteApplication/:agentPromotionGuid': {
+      component: require('../components/TEAM/PromoteApplication.vue')
     },
     '/test': {
       component: require('../components/Test.vue')

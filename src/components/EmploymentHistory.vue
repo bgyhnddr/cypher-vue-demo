@@ -1,4 +1,5 @@
 ﻿<template>
+  <div id="emplomenthistory">
 <div class="history-list">
   <div class="history-button">
     <flexbox-item>
@@ -8,7 +9,7 @@
   <div class="history-message">
     <group>
       <cell v-for="item in items">
-        <div slot="icon">申请人：{{item.employment_details[1].value}}</div>
+        <div slot="icon">申请人：{{item.employment_detail.name}}</div>
         <div slot="icon">申请级别：{{item.brand_role.name}}</div>
         <div slot="icon">申请时间：{{item.employer_time}}</div>
         <x-button mini v-link="{path: '/employManagement/auditInfo/'+item.employee_user_account+'/'+item.guid+'/'+item.brand_guid+'/history'}">查看</x-button>
@@ -48,6 +49,7 @@
   <toast :show.sync="showToast" :time="1000" type="text">{{errMsg}}</toast>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+</div>
 </template>
 
 <script>
@@ -131,6 +133,9 @@ export default {
           that.level = o.value
         }
       })
+      if(value == "查看所有"){
+        that.level = "all"
+      }
     },
     reset() {
       this.date1 = ""
@@ -161,6 +166,9 @@ export default {
 }
 </script>
 <style>
+#emplomenthistory{
+  height: 100%
+}
 .history-message {
   min-height: 485px;
 }

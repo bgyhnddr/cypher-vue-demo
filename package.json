@@ -7,15 +7,19 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
-    "test": "",
+    "test": "mocha",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
-    "server": "node build/run_server.js"
+    "server": "node build/run_server.js",
+    "init": "node build/init.js",
+    "pmp-init": "node build/pmp-init.js",
+    "pmp-test": "node build/pmp-test.js"
   },
   "dependencies": {
     "babel-runtime": "^6.0.0",
     "body-parser": "^1.15.2",
     "cnpm": "^4.4.0",
     "express-session": "^1.14.1",
+    "fastclick": "^1.0.6",
     "formidable": "^1.0.17",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
@@ -36,6 +40,9 @@
     "wechat-oauth": "^1.2.0"
   },
   "devDependencies": {
+    "sqlite3": "latest",
+    "mocha": "^3.2.0",
+    "should": "latest",
     "babel-core": "^6.0.0",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.0.0",

@@ -1,6 +1,8 @@
 ﻿<template>
+  <div id="certificateinfo">
 <div>
   <div class="certificateinfo-box">
+
   <div class="certificateinfo-top"></div>
   <div class="certificateinfo-bac">
 
@@ -38,6 +40,9 @@
 
 </tbody>
         </table>
+        <div v-if="agentInfo.frozenFlag" class="freeze-icon">
+            <img src="/static/TestIMG/freeze-icon .png" alt="冻结水印标识"/>
+        </div>
         <div class="attention"><img src="/static/TestIMG/attention.png"/></div>
 <table class="agents-height">
   <tbody>
@@ -46,7 +51,7 @@
   <img src="/static/TestIMG/data.png" />
   <p>{{agentInfo.term_from}}-
   {{agentInfo.term_to}}</td></p>
-<td align="right"><img src="/static/TestIMG/brand_people.png" /></td>
+<td align="right"  width="40%"><img src="/static/TestIMG/brand_people.png" /></td>
 </tr>
 
 
@@ -59,9 +64,12 @@
     </div>
 
   </div>
+
     <div class="certificateinfo-footer"></div>
 </div></div>
+
  <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+ </div>
 </template>
 <script>
 import applyEmployAPI from '../api/applyEmployment'
@@ -77,6 +85,7 @@ export default {
         AuthorizationID: "",
         term_from: "",
         term_to: "",
+        frozenFlag:false,
         agent_detail: {}
       }
     }
@@ -88,6 +97,9 @@ export default {
         account: that.$route.params.account,
         role: that.$route.params.from
       }).then(function(result) {
+        if(result.frozen_agent){
+          that.agentInfo.frozenFlag = true
+        }
         that.agentInfo.term_from = result.employment_term.term_from
         that.agentInfo.term_to = result.employment_term.term_to
         that.agentInfo.AuthorizationID = result.team_agent.team.brand+result.agent_brand_role.brand_role.level+result.team_agent.team_code+result.team_agent.num
@@ -130,43 +142,52 @@ export default {
 </script>
 <style>
 /*底部距离*/
-.certificateinfo-box{
+#certificateinfo{
+  background: url(/static/TestIMG/certificateinfo_bac.png) #fff;
+  background-size: cover;
+    background-position: 0 -51px;
+        height: 100%;
+
+      padding-top: 40%;
+}
+#certificateinfo .certificateinfo-box{
   width: 93%;
   margin: auto;
+  position: relative;
 
 }
-.certificateinfo-top{
+#certificateinfo .certificateinfo-top{
   background: url(/static/TestIMG/certificateinfo_top.png);
   background-repeat: no-repeat;
   padding-top: 6%;
   background-size: contain;
-  margin-top: 40%
+
 }
-.certificateinfo-footer{
+#certificateinfo .certificateinfo-footer{
   background: url(/static/TestIMG/certificateinfo_footer.png);
   background-repeat: no-repeat;
   padding-top:5%;
   background-size: 100%;
-  margin-bottom: 44%
+  margin-bottom: 42%
 
 }
-.weui_tab_bd {
+#certificateinfo .weui_tab_bd {
   padding-bottom: 0;
 }
 
-.certificateinfo-bac {
+#certificateinfo .certificateinfo-bac {
   background: url(/static/TestIMG/certificateinfo-middle.png) repeat-y #000;
   background-size: 100%;
     margin-top: -1%;
 }
-.certificateinfo-title {
+#certificateinfo .certificateinfo-title {
     width: 70%;
     margin: auto;
 }
-.certificateinfo-title img{
+#certificateinfo .certificateinfo-title img{
   width: 100%
 }
-.certificateinfo {
+#certificateinfo .certificateinfo {
   background: url(/static/TestIMG/certificateinfo.png ) no-repeat 50% 88%;
   background-size: 55%;
   margin:0 auto;
@@ -175,85 +196,85 @@ export default {
 
 }
 
-.certificateinfo h3 {
+#certificateinfo .certificateinfo h3 {
   font-size: 3vw;
 }
 
-.certificateinfo-img .brand-logo img {
+#certificateinfo .certificateinfo-img .brand-logo img {
     width: 100%;
   height: auto;
   margin: 4% auto 2%;
 }
 
-.certificateinfo-img h3 {
+#certificateinfo .certificateinfo-img h3 {
   font-family: " 微软雅黑";
 }
 
-.authorization {
+#certificateinfo .authorization {
   width: 57%;
   height: auto;
 }
 
-.certificateinfo-img {
+ #certificateinfo .certificateinfo-img {
   text-align: center;
 }
 
-.certificateinfo table.personal-identitys {
+ #certificateinfo .certificateinfo table.personal-identitys {
   font-family: "微软雅黑";
 width: 100%;
 margin-top: -3%;
 color: #fff;}
 
-.certificateinfo table.personal-identitys tbody tr td {
+ #certificateinfo .certificateinfo table.personal-identitys tbody tr td {
   font-family: "微软雅黑";
   text-align: left;
 }
 
-.certificateinfo table.personal-identitys tbody tr td img {
+ #certificateinfo .certificateinfo table.personal-identitys tbody tr td img {
   width:37%;
   height: auto;
   float: right;
 
 }
 
-.color-gray {
+ #certificateinfo .color-gray {
   color: #57534d;
 }
 
-.set-agent {
+ #certificateinfo .set-agent {
   font-family: "微软雅黑";
   text-align: center;
 }
 
-.set-agent label {
+ #certificateinfo .set-agent label {
   font-size: 3.9vw!important;
   /*12px*/
   color: #36bdaf;
   font-family: "微软雅黑";
 }
 
-.allow-agent {
+ #certificateinfo .allow-agent {
   text-align: center;
   font-family: "微软雅黑";
 
 }
 
-.agent-message {
+#certificateinfo .agent-message {
   text-align: left;
 }
 
-.agent-message p {
+ #certificateinfo .agent-message p {
   text-align: left;
   font-family: "微软雅黑";
 }
 
-.agent-unit {
+ #certificateinfo .agent-unit {
   font-family: "微软雅黑";
   text-align: right;
   margin-bottom: 42%
 }
 
-.agents-height {
+ #certificateinfo .agents-height {
   color: #fff;
   font-family: "微软雅黑";
   font-size: 3vw;
@@ -261,32 +282,41 @@ color: #fff;}
   margin: -3% auto 0 auto;
   position: relative;
 }
-.agents-height tr td{
+ #certificateinfo .agents-height tr td{
   line-height: normal;
       vertical-align: top;
 }
-.agents-height tr td:nth-child(1)   img {
-    width: 66%;
-    margin: auto;
+ #certificateinfo .agents-height tr td:nth-child(1)   img {
+   width: 42%;
+ margin-right: 10%;
     }
-.agents-height tr td:nth-child(2) img {
+#certificateinfo .agents-height tr td:nth-child(2) img {
     width:94%;
     margin: auto;
 }
-.agents-height tr td:nth-child(1)  p{
+ #certificateinfo .agents-height tr td:nth-child(1)  p{
   position: absolute;
   top: 37%;
 left: 2%;
 }
-.attention {
+ #certificateinfo .attention {
     text-align: center;
     line-height: initial;
     margin: 0;
     padding: 0;
 }
-.attention img {
+ #certificateinfo .attention img {
     width: 79%;
     margin: auto;
 }
-
+ #certificateinfo .freeze-icon{
+  position: absolute;
+  right: 6%;
+  width: 37%;
+  bottom: -12%;
+}
+ #certificateinfo .freeze-icon img{ width: 100%}
+  #certificateinfo  .weui_tab{
+       height: auto!important;
+ }
 </style>

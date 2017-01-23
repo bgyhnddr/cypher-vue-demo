@@ -52,6 +52,7 @@ var exec = {
     var agent_detail = require('../../db/models/agent_detail')
     var team = require('../../db/models/team')
     var team_agent = require('../../db/models/team_agent')
+    var frozen_agent = require('../../db/models/frozen_agent')
 
     employment.belongsTo(brand)
     employment.belongsTo(brand_role)
@@ -66,6 +67,7 @@ var exec = {
     agent.belongsTo(user)
     agent.hasOne(employment_term)
     agent.hasOne(team_agent)
+    agent.hasOne(frozen_agent)
     team_agent.belongsTo(team, {
       foreignKey: "team_code"
     })
@@ -79,7 +81,7 @@ var exec = {
       where: {
         user_account: account
       },
-      include: [agent_detail,
+      include: [agent_detail,frozen_agent,
         employment_term, {
           model: team_agent,
           include: team
@@ -317,7 +319,6 @@ var exec = {
             transaction: t
           }),
           employment.create({
-            guid: employmentData.guid,
             publish_employment_guid: employmentData.publishEmploymentInfo.guid,
             employer_user_account: employmentData.publishEmploymentInfo.employer_user_account,
             brand_role_code: employmentData.publishEmploymentInfo.brand_role_code,
@@ -328,41 +329,42 @@ var exec = {
             status: "未审核"
           }, {
             transaction: t
-          }),
-          employment_detail.bulkCreate([{
-            employment_guid: employmentData.guid,
-            key: 'headImg',
-            value: data['headImg']
-          }, {
-            employment_guid: employmentData.guid,
-            key: 'name',
-            value: data['name']
-          }, {
-            employment_guid: employmentData.guid,
-            key: 'wechat',
-            value: data['wechat']
-          }, {
-            employment_guid: employmentData.guid,
-            key: 'cellphone',
-            value: data['cellphone']
-          }, {
-            employment_guid: employmentData.guid,
-            key: 'IDType',
-            value: data['IDType']
-          }, {
-            employment_guid: employmentData.guid,
-            key: 'IDNumber',
-            value: data['IDNumber']
-          }, {
-            employment_guid: employmentData.guid,
-            key: 'address',
-            value: data['address']
-          }, {
-            employment_guid: employmentData.guid,
-            key: 'addressDetail',
-            value: data['addressDetail']
-          }], {
-            transaction: t
+          }).then(function(result){
+            employment_detail.bulkCreate([{
+              employment_guid: result.guid,
+              key: 'headImg',
+              value: data['headImg']
+            }, {
+              employment_guid: result.guid,
+              key: 'name',
+              value: data['name']
+            }, {
+              employment_guid: result.guid,
+              key: 'wechat',
+              value: data['wechat']
+            }, {
+              employment_guid: result.guid,
+              key: 'cellphone',
+              value: data['cellphone']
+            }, {
+              employment_guid: result.guid,
+              key: 'IDType',
+              value: data['IDType']
+            }, {
+              employment_guid: result.guid,
+              key: 'IDNumber',
+              value: data['IDNumber']
+            }, {
+              employment_guid: result.guid,
+              key: 'address',
+              value: data['address']
+            }, {
+              employment_guid: result.guid,
+              key: 'addressDetail',
+              value: data['addressDetail']
+            }], {
+              transaction: t
+            })
           })
         ]).then(function() {
           t.commit()

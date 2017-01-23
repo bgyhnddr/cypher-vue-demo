@@ -10,14 +10,16 @@ var exec = {
     var user_role = require('../../db/models/user_role')
     var role = require('../../db/models/role')
     var role_permission = require('../../db/models/role_permission')
+    var frozen_agent = require('../../db/models/frozen_agent')
 
+    agent.hasOne(frozen_agent)
     agent.belongsTo(user)
     agent.hasMany(agent_detail)
     user.hasMany(user_role)
     user_role.belongsTo(role)
     role.hasMany(role_permission)
     return agent.findOne({
-      include: [{
+      include: [frozen_agent,{
         model: agent_detail,
         where: {
           $or: [{
@@ -40,10 +42,12 @@ var exec = {
       }]
     }).then((result) => {
       if (result == null) {
-        return Promise.reject("账号不存在或密码错误")
+        return Promise.reject("账号不存在")
       } else {
         if (result.user.password != password) {
-          return Promise.reject("账号不存在或密码错误")
+          return Promise.reject("密码错误")
+        }else if(result.frozen_agent){
+          return Promise.reject("账号已被冻结")
         } else {
           var permissions = []
           var userInfo = {}
@@ -196,7 +200,7 @@ var exec = {
           key: 'cellphone',
           value: account
         }
-      },user]
+      }, user]
     }).then((o) => {
       if (o == null) {
         return Promise.reject("账户不存在")

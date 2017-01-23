@@ -120,6 +120,16 @@ export default {
           })
         }
       }, {
+        title: '我的货品',
+        link: '/productManagement',
+        iconhref: '/static/TestIMG/goods.png',
+        isShow: true
+      }, {
+        title: '我的团队',
+        link: '/teamManagement',
+        iconhref: '/static/TestIMG/team.png',
+        isShow: true
+      },{
         title: '订货管理',
         link: '',
         iconhref: '/static/TestIMG/order.png',
@@ -129,17 +139,7 @@ export default {
         link: '',
         iconhref: '/static/TestIMG/inventory.png',
         isShow: true
-      }, {
-        title: '我的团队',
-        link: '',
-        iconhref: '/static/TestIMG/team.png',
-        isShow: true
-      }, {
-        title: '我的货品',
-        link: '',
-        iconhref: '/static/TestIMG/goods.png',
-        isShow: true
-      }, {
+      },{
         title: '',
         link: '',
         iconhref: '/static/TestIMG/more.png',
@@ -347,14 +347,13 @@ table.platform-message p:nth-child(1) {
     border-bottom: 0;
 
 }
-.homepage-icon .vux-flexbox-item:nth-child(5) .flex-demo h4,
-.homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo h4,
+
+
 .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo h4,
 .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo h4 {
     color: gray;
 }
-.homepage-icon .vux-flexbox-item:nth-child(5) .flex-demo button img,
-.homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo button img,
+
 .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo button img,
 .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo button img {
     -webkit-filter: grayscale(1);
@@ -372,8 +371,7 @@ table.platform-message p:nth-child(1) {
 
     width: 61%!important;
 }
-.homepage-icon .vux-flexbox-item:nth-child(5) .flex-demo,
-.homepage-icon .vux-flexbox-item:nth-child(6) .flex-demo,
+
 .homepage-icon .vux-flexbox-item:nth-child(7) .flex-demo,
 .homepage-icon .vux-flexbox-item:nth-child(8) .flex-demo {
 

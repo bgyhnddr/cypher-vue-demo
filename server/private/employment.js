@@ -17,16 +17,16 @@ var getTeamNum = () => {
       id: 1
     }
   }).then((o) => {
-    return Promise.all([
-      team_num.update({
-        num: o.num + 1
-      }, {
-        where: {
-          id: 1
-        }
-      }),
-      mkcode(o.num + 1)
-    ])
+    var newNum = o.num + 1
+    return team_num.update({
+      num: newNum
+    }, {
+      where: {
+        id: 1
+      }
+    }).then(() => {
+      return mkcode(newNum)
+    })
   })
 }
 
@@ -42,15 +42,19 @@ var getTeamCode = (e) => {
     },
     include: team_agent
   }).then((o) => {
-    return Promise.all([
-        team_agent.count({
-          where: {
-            team_code: o.team_agent.team_code
-          }
-        }),
-        o.team_agent.team_code
-      ])
-      // return o.team_agent.team_code
+    var result = {}
+    var team_code = o.team_agent.team_code
+    return team_agent.count({
+      where: {
+        team_code: team_code
+      }
+    }).then((e) => {
+      var newNum = (e + 1)
+      var initNum = '0000'
+      result.team_code = team_code
+      result.countNum = initNum.substring(0, ((initNum.length) - (newNum.toString().length))) + newNum
+      return result
+    })
   })
 }
 var exec = {
@@ -212,14 +216,20 @@ var exec = {
     var user = require('../../db/models/user')
     var employment_detail = require('../../db/models/employment_detail')
     var brand = require('../../db/models/brand')
+    var brand_role = require('../../db/models/brand_role')
     var agent = require('../../db/models/agent')
     var agent_detail = require('../../db/models/agent_detail')
+    var brand_role_meta = require('../../db/models/brand_role_meta')
 
     employment.belongsTo(brand)
     employment.hasMany(employment_detail)
     employment.belongsTo(user, {
       foreignKey: "employer_user_account"
     })
+    employment.belongsTo(brand_role, {
+      foreignKey: "brand_role_code"
+    })
+    brand_role.hasMany(brand_role_meta)
     user.hasOne(agent)
     agent.hasMany(agent_detail)
 
@@ -227,7 +237,7 @@ var exec = {
       where: {
         guid: auditID
       },
-      include: [brand,
+      include: [brand, brand_role,
         employment_detail, {
           model: user,
           include: {
@@ -237,19 +247,46 @@ var exec = {
         }
       ]
     }).then((result) => {
-      var obj = result.toJSON()
-      obj.employment_detail = {}
-      obj.employment_details.forEach((d) => {
-        obj.employment_detail[d.key] = d.value
-      })
+      var currentEmployment = result
+      return employment.findAll({
+        where: {
+          employer_user_account: currentEmployment.employer_user_account,
+          status: '已审核',
+          audit_result: '已通过'
+        },
+        include: {
+          model: brand_role,
+          include: {
+            model: brand_role_meta
+          }
+        }
+      }).then((result) => {
+        var obj = currentEmployment.toJSON()
+        obj.employment_detail = {}
+        obj.employment_details.forEach((d) => {
+          obj.employment_detail[d.key] = d.value
+        })
 
-      obj.user.agent.agent_detail = {}
-      obj.user.agent.agent_details.forEach((d) => {
-        obj.user.agent.agent_detail[d.key] = d.value
+        obj.user.agent.agent_detail = {}
+        obj.user.agent.agent_details.forEach((d) => {
+          obj.user.agent.agent_detail[d.key] = d.value
+        })
+        delete obj.employment_details
+        delete obj.user.agent.agent_details
+
+        obj.brand_role_meta = {
+          totleInitialFee: 0
+        }
+        result.forEach((employeeEmploymentItem) => {
+          employeeEmploymentItem.brand_role.brand_role_meta.forEach((brandRoleMeta) => {
+            if (brandRoleMeta.key == "initialFee") {
+              obj.brand_role_meta.totleInitialFee += Number(brandRoleMeta.value)
+            }
+          })
+        })
+
+        return obj
       })
-      delete obj.employment_details
-      delete obj.user.agent.agent_details
-      return obj
     })
   },
   getBrandDetail(req, res, next) {
@@ -303,6 +340,7 @@ var exec = {
     var agent_detail = require('../../db/models/agent_detail')
     var team = require('../../db/models/team')
     var team_agent = require('../../db/models/team_agent')
+    var frozen_agent = require('../../db/models/frozen_agent')
 
     employment.belongsTo(brand)
     employment.belongsTo(brand_role)
@@ -317,6 +355,7 @@ var exec = {
     agent.belongsTo(user)
     agent.hasOne(employment_term)
     agent.hasOne(team_agent)
+    agent.hasOne(frozen_agent)
     team_agent.belongsTo(team, {
       foreignKey: "team_code"
     })
@@ -330,7 +369,7 @@ var exec = {
       where: {
         user_account: account
       },
-      include: [agent_detail,
+      include: [agent_detail, frozen_agent,
         employment_term, {
           model: team_agent,
           include: team
@@ -385,7 +424,6 @@ var exec = {
     var uuid = require('node-uuid')
     var guid = uuid.v1()
 
-    var createList
     var term
 
     var team
@@ -405,37 +443,24 @@ var exec = {
       var term = new Date()
       term.setMonth(term.getMonth() + parseInt(termNum))
 
-      for (var item in result.employment_details) {
-        createList = agent_detail.create({
-          //guid test
-          agent_guid: guid,
-          key: result.employment_details[item]['key'],
-          value: result.employment_details[item]['value']
-        })
-      }
-
       if (result.brand_role_code == 'brand_role2') {
         getTeamNum().then((o) => {
           team = team.create({
             brand: brand,
-            code: o[1]
+            code: o
           })
           team_agent = team_agent.create({
             agent_guid: guid,
-            team_code: o[1],
+            team_code: o,
             num: '0001'
           })
         })
       } else {
         getTeamCode(result.employer_user_account).then((o) => {
-          var num = (o[0] + 1)
-          var initNum = '0000'
-          var countNum = initNum.substring(0, ((initNum.length) - (num.toString().length))) + num
-
           team_agent = team_agent.create({
             agent_guid: guid,
-            team_code: o[1],
-            num: countNum
+            team_code: o.team_code,
+            num: o.countNum
           })
         })
       }
@@ -464,7 +489,13 @@ var exec = {
         }),
         team,
         team_agent,
-        createList,
+        agent_detail.bulkCreate(result.employment_details.map((o) => {
+          return {
+            agent_guid: guid,
+            key: o['key'],
+            value: o['value']
+          }
+        })),
         result.save()
       ])
     }).then(function() {
@@ -512,43 +543,42 @@ var exec = {
       })
     }
 
-
-    return employment.findAll().then((result) => {
-      var employeeList = []
-      addEmployment(userinfo.name, employeeList, result)
-      return employeeList
+    return employment.findAll({
+      where: {
+        audit_result: '已通过',
+        publish_employment_guid: {
+          $not: null
+        }
+      },
+      include: [{
+        model: employment_detail
+      }, {
+        model: brand_role
+      }]
     }).then((result) => {
-      var condition = {}
-      condition.status = '已审核'
-      condition.audit_result = '已通过'
-      if (result.length > 0) {
-        condition = {
-          employee_user_account: {
-            $in: result
-          },
-          status: '已审核',
-          audit_result: '已通过'
-        }
-        if (level && level != "all") {
-          condition.brand_role_code = level
-        }
-        if (date_from) {
-          condition.employer_time = {
-            $gt: date_from,
-            $lte: date_to
-          }
-        }
-        return employment.findAll({
-          where: condition,
-          include: [{
-            model: employment_detail
-          }, {
-            model: brand_role
-          }]
-        })
-      } else {
-        return []
+      var employeeList = []
+      var HistoryList = []
+      addEmployment(userinfo.name, employeeList, result)
+      employeeList.forEach((c) => {
+        HistoryList.push(result.filter(o => o.employee_user_account == c)[0])
+      })
+      if (level && level != "all") {
+        HistoryList = HistoryList.filter(p => p.brand_role_code == level)
       }
+      if (date_from) {
+        HistoryList = HistoryList.filter(p => p.employer_time >= date_from && p.employer_time <= date_to)
+      }
+      return HistoryList
+    }).then((result) => {
+      return result.map((a) => {
+        obj = a.toJSON()
+        obj.employment_detail = {}
+        obj.employment_details.forEach((d) => {
+          obj.employment_detail[d.key] = d.value
+        })
+        delete obj.employment_details
+        return obj
+      })
     })
   },
   getLevel(req, res, next) {
@@ -582,13 +612,9 @@ var exec = {
     var brandGuid = req.body.brandGuid
     var createTime = new Date().Format('yyyy-MM-dd hh:mm')
 
-    var uuid = require('node-uuid')
-    var guid = uuid.v1()
-
     var publish_employment = require('../../db/models/publish_employment')
 
     return publish_employment.create({
-      guid: guid,
       brand_guid: brandGuid,
       brand_role_code: roleCode,
       employer_user_account: employer,
@@ -598,7 +624,7 @@ var exec = {
       if (result == null) {
         return Promise.reject("创建招募失败")
       } else {
-        return guid
+        return result.guid
       }
     })
   },
@@ -659,8 +685,10 @@ var exec = {
       switch (selectMsg) {
         case "timeAsc":
           order = "publish_employment.created_at ASC" //时间由远到近
+          break
         case "timeDesc":
           order = "publish_employment.created_at DESC" //时间由近到远
+          break
         case "levelDesc":
           order = [
             [{
@@ -668,6 +696,7 @@ var exec = {
             }, 'level', 'DESC'],
             ['created_at', 'DESC']
           ]
+          break
         case "levelAsc":
           order = [
             [{
@@ -675,6 +704,7 @@ var exec = {
             }, 'level', 'ASC'],
             ['created_at', 'DESC']
           ]
+          break
       }
       return publish_employment.findAll({
         where: {
@@ -780,40 +810,6 @@ var exec = {
     })
 
   },
-  getEmploymentInfo(req, res, next) {
-    var user_account = req.session.userInfo.name
-
-    var employment = require('../../db/models/employment')
-    var agent = require('../../db/models/agent')
-    var employment_term = require('../../db/models/employment_term')
-
-    agent.hasOne(employment_term)
-
-    return Promise.all([
-      employment.findOne({
-        where: {
-          employee_user_account: user_account
-        }
-      }),
-      agent.findOne({
-        where: {
-          user_account: user_account
-        },
-        include: [{
-          model: employment_term,
-        }]
-
-      }),
-    ]).then(function(result) {
-      // return result[0]
-      if (result[0] == null || result[1] == null) {
-        return Promise.reject("读取招募信息读取出错")
-      } else {
-        return result
-      }
-    })
-
-  },
   getCurrentListLength(req, res, next) {
     var user_account = req.session.userInfo.name
 
@@ -838,12 +834,11 @@ var exec = {
 
 module.exports = (req, res, next) => {
   var action = req.params.action
-  Promise.resolve(action).then(function(result) {
+  return Promise.resolve(action).then(function(result) {
     return exec[result](req, res, next)
   }).then(function(result) {
-    res.send(result)
+    return res.send(result)
   }).catch(function(error) {
-    console.log(error)
-    res.status(500).send(error.toString())
+    return res.status(500).send(error.toString())
   })
 }

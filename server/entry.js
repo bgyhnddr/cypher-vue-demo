@@ -7,16 +7,6 @@ var getClientAddress = function(req) {
     req.connection.remoteAddress;
 }
 module.exports = (app) => {
-  app.use('/init', function(req, res, next) {
-    if (req.hostname === 'localhost' && req.ip){
-      var init = require('../db/init')
-      console.log(req.ip)
-      init(req, res, next)
-    } else {
-      console.log(req.ip)
-      res.send("error")
-    }
-  })
 
   app.use('/', express.static('mp'))
 
@@ -83,6 +73,16 @@ module.exports = (app) => {
       } else if (req.params.permission == "public") {
         require('./public/' + req.params.type)(req, res, next)
       }
+    } catch (e) {
+      console.log(e)
+      res.status(500).send(e.toString())
+    }
+  })
+
+  app.use('/pmp/:type/:action/:token', function(req, res, next) {
+    console.log(getClientAddress(req) + " request:" + req.originalUrl)
+    try {
+      require('./pmp/' + req.params.type)(req, res, next)
     } catch (e) {
       console.log(e)
       res.status(500).send(e.toString())

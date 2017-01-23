@@ -59,13 +59,6 @@ app.use(hotMiddleware)
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-app.use('/test', function(req) {
-    console.log(req.originalUrl); // '/admin/new'
-    console.log(req.baseUrl); // '/admin'
-    console.log(req.path); // '/new'
-    next();
-})
-
 module.exports = app.listen(port, function(err) {
     if (err) {
         console.log(err)
