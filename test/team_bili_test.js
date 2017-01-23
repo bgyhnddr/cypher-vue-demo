@@ -49,12 +49,12 @@ describe('team_bili_test', () => {
       }, {
         brand_role_code: "brand_role3",
         key: "initialFee",
-        value: "50.1",
+        value: "50",
         type: "float"
       }, {
         brand_role_code: "brand_role4",
         key: "initialFee",
-        value: "50.1",
+        value: "50",
         type: "float"
       }, {
         brand_role_code: "brand_role5",
@@ -397,7 +397,7 @@ describe('team_bili_test', () => {
             }
           }),
 
-          //添加二级代理 成员五，已发提拔申请，已确认
+          //添加特约销售员代理 成员五，已发提拔申请，已确认
           user.findOne({
             where: {
               account: guidMember1
@@ -406,7 +406,7 @@ describe('team_bili_test', () => {
             employment.create({
               publish_employment_guid: guidMember5,
               employer_user_account: "admin",
-              brand_role_code: "brand_role3",
+              brand_role_code: "brand_role4",
               brand_guid: "brand1",
               employee_user_account: guidMember5,
               employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
@@ -419,7 +419,7 @@ describe('team_bili_test', () => {
               guid: guidMember5,
               promoter_user_account: "admin",
               promotee_user_account: guidMember5,
-              brand_role_code: "brand_role2",
+              brand_role_code: "brand_role3",
               brand_guid: "brand1",
               status: true,
               create_time: new Date().Format('yyyy-MM-dd hh:mm'),
@@ -440,7 +440,7 @@ describe('team_bili_test', () => {
                 }),
                 agent_brand_role.create({
                   agent_guid: guidMember5,
-                  brand_role_code: "brand_role3"
+                  brand_role_code: "brand_role4"
                 }),
                 agent_detail.bulkCreate([{
                   agent_guid: guidMember5,
@@ -484,7 +484,7 @@ describe('team_bili_test', () => {
             }
           }),
 
-          //添加二级代理 成员六，已发提拔申请，已确认
+          //添加特约销售员代理 成员六，已发提拔申请，已确认
           user.findOne({
             where: {
               account: guidMember6
@@ -493,7 +493,7 @@ describe('team_bili_test', () => {
             employment.create({
               publish_employment_guid: guidMember6,
               employer_user_account: "admin",
-              brand_role_code: "brand_role3",
+              brand_role_code: "brand_role4",
               brand_guid: "brand1",
               employee_user_account: guidMember6,
               employer_time: new Date().Format('yyyy-MM-dd hh:mm'),
@@ -506,7 +506,7 @@ describe('team_bili_test', () => {
               guid: guidMember6,
               promoter_user_account: "admin",
               promotee_user_account: guidMember6,
-              brand_role_code: "brand_role2",
+              brand_role_code: "brand_role3",
               brand_guid: "brand1",
               status: true,
               create_time: new Date().Format('yyyy-MM-dd hh:mm'),
@@ -527,7 +527,7 @@ describe('team_bili_test', () => {
                 }),
                 agent_brand_role.create({
                   agent_guid: guidMember6,
-                  brand_role_code: "brand_role3"
+                  brand_role_code: "brand_role4"
                 }),
                 agent_detail.bulkCreate([{
                   agent_guid: guidMember6,
@@ -890,7 +890,7 @@ describe('team_bili_test', () => {
         auditID: guidMember4
       }).then((result) => {
         // console.log(JSON.stringify(result))
-        result.brand_role_meta.totleInitialFee.toFixed(1).should.be.equal('250.3')
+        result.brand_role_meta.totleInitialFee.toFixed(1).should.be.equal('250.0')
       })
     })
   })
