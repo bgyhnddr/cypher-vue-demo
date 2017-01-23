@@ -57,9 +57,7 @@ export default {
           that.alert.showCatchError = true
           that.alert.catchErrorMsg = "此成员目前暂无可提拔等级"
         } else {
-          that.promoteRoles = result.filter((item) => {
-            return item.brand_role.code != "brand_role3"
-          })
+          that.promoteRoles = result
         }
       }).catch(function(err) {
         that.alert.showCatchError = true

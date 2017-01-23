@@ -213,7 +213,7 @@ describe('team_bili_test', () => {
                 }),
                 agent_brand_role.create({
                   agent_guid: guidMember2,
-                  brand_role_code: "brand_role3"
+                  brand_role_code: "brand_role4"
                 }),
                 agent_detail.bulkCreate([{
                   agent_guid: guidMember2,
@@ -742,6 +742,15 @@ describe('team_bili_test', () => {
   })
 
   describe('getLevels', () => {
+    it('get staff can be promoted Levels，promotee is guidMember2特约销售员代理）', () => {
+      return promoteTestFunc("getLevels", {
+        promotee: guidMember2
+      }).then((result) => {
+        // console.log(JSON.stringify(result))
+        result.length.should.be.equal(1)
+      })
+    })
+
     it('get staff can be promoted Levels，promotee is guidMember3销售员代理）', () => {
       return promoteTestFunc("getLevels", {
         promotee: guidMember3
@@ -813,7 +822,7 @@ describe('team_bili_test', () => {
         result.status.should.be.equal("未审核")
       })
     })
-    
+
     it('testMember6 confirm Promotion', () => {
       return promoteTestFunc("confirmPromotion", {
         promotionGuid: guidMember6,
