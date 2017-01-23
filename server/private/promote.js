@@ -51,6 +51,11 @@ var exec = {
         return index != 0
       })
 
+      //特殊过滤  过滤二级代理
+      employableRules = employableRules.filter((employableRule) => {
+        return employableRule.employable_brand_role_code != "brand_role3"
+      })
+
       var addEmployment = (account, employeeList, list) => {
         var childList = list.filter(o => o.employer_user_account == account)
         Array.prototype.push.apply(employeeList, childList)
@@ -69,6 +74,7 @@ var exec = {
         addEmployment(user_account, employeeList, result)
         return employeeList
       }).then((result) => {
+
         return employableRules.map((employableRuleItem) => {
           return {
             brand_role_code: employableRuleItem.employable_brand_role_code,
@@ -77,6 +83,7 @@ var exec = {
               return employmentItem.brand_role_code == employableRuleItem.employable_brand_role_code
             }).length
           }
+
         })
       })
     })
@@ -170,14 +177,19 @@ var exec = {
       }).then((result) => {
         var filterResult = result
 
+        //特殊过滤 过滤二级代理
+        filterResult = filterResult.filter((employmentItem) => {
+          return employmentItem.brand_role_code != "brand_role3"
+        })
+
         if (level) {
-          filterResult = result.filter((employmentItem) => {
+          filterResult = filterResult.filter((employmentItem) => {
             return employmentItem.brand_role_code == level
           })
         }
 
         if (filterKey != "") {
-          filterResult = result.filter((employmentItem) => {
+          filterResult = filterResult.filter((employmentItem) => {
             employmentItem.user.password = "******"
 
             var hasFilterKeyDetailLists = employmentItem.user.agent.agent_details.filter((detailItem) => {
@@ -258,8 +270,14 @@ var exec = {
         }
       })
     ]).then(function(result) {
+
       var employableRules = result[0][0].employable_rules.filter((employableRule) => {
         return Number(employableRule.brand_role.level) < Number(result[1].level)
+      })
+
+        //特殊过滤  过滤二级代理
+      employableRules = employableRules.filter((employableRule) => {
+        return employableRule.brand_role.code != "brand_role2"
       })
 
       return employableRules
