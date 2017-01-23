@@ -106,7 +106,7 @@ export default {
         that.agentInfo.agent_detail = result.agent_detail
         that.agentInfo.brand = result.user.employment.brand.name
         that.agentInfo.brand_role = result.agent_brand_role.brand_role.name
-        that.agentInfo.agent_detail.IDNumber = '**************' + that.agentInfo.agent_detail.IDNumber.substr(14,4) 
+        that.agentInfo.agent_detail.IDNumber = '**************' + that.agentInfo.agent_detail.IDNumber.substr(a.length - 4, 4) 
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err
