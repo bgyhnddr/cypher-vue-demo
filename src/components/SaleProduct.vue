@@ -159,10 +159,10 @@ export default {
           that.soldProductInfo.status = "已出售"
           that.soldProductInfo.salerID = result.sold_by
           that.getSolderName(result.sold_by)
-          that.soldProductInfo.soldDate = new Date(result.sold_date).Format('yyyy-MM-dd hh:mm')
+          that.soldProductInfo.soldDate = new Date(result.sold_time).Format('yyyy-MM-dd hh:mm')
           that.soldProductInfo.scanNum = result.scan_num
           that.getBrandInfo()
-
+          console.log(result.sold_date)
           authAPI.getUser().then(function(result) {
             if (result.name != undefined) {
               //顶栏显示返回按钮
