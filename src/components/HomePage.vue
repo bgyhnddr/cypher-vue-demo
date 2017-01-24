@@ -444,4 +444,19 @@ table.platform-message p:nth-child(1) {
 .homePage-list .weui_dialog {
     width: 92%;
 }
+.weui_tab_bd{
+  padding-top: 46px
+}
+.vux-demo-header-box{
+  z-index: 1000000000;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0
+
+}
+.weui_tab{
+  position: inherit!important;
+  height: auto!important;
+}
 </style>

@@ -299,6 +299,7 @@ export default {
       }
     }
   }
+
 }
 </script>
 <style>
@@ -394,4 +395,5 @@ html {
     padding-bottom: 2%;
 
 }
+
 </style>
