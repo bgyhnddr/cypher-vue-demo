@@ -29,7 +29,7 @@
         <x-button type="default" class="certificate-view " v-link="{path: '/accountManagement/CertificateInfo/'+agentInfo.employer_user.account+'/promotion'+'/#'+'/#'+'/'+agentInfo.employee_user.agent.user_account}">查看授权证书</x-button>
       </cell>
       <cell>
-        <div slot="icon">招募人已用金额：
+        <div slot="icon">招募人已用额度：
           <span>￥{{agentInfo.brand_role_meta.totleInitialFee}}</span>
         </div>
       </cell>
