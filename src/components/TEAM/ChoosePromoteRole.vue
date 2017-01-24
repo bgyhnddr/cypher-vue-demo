@@ -97,8 +97,7 @@ export default {
 <style>
 #choosePromoteRole {
   background: #fff;
-  min-height: 568px;
-  height: 100%
+
 }
 
 .choosePromoteRole {
