@@ -13,7 +13,7 @@
       <tr v-for="item in BrandRole">
         <th>{{item.name}}</th>
         <th>
-          <x-input :value.sync="item.price" @on-change="onChange">元</x-input>
+          <x-input :value.sync="item.price" @on-change="onChange" @click="selectAll">元</x-input>
         </th>
       </tr>
     </table>
@@ -75,6 +75,10 @@ export default {
       if(this.InputValid){
         this.currentActive = "MainPage"
       }
+    },
+    selectAll(e){
+      var target = e.currentTarget.getElementsByTagName("input")
+      target[0].select()
     },
     ResetPrice() {
       this.BrandRole.forEach((o) => {

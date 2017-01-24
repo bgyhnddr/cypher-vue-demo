@@ -2,6 +2,8 @@ var getBoxCodes = (code) => {
   var pmp_server = require('../pmp_server')
   return pmp_server.packs_under_crate(code).then((result) => {
     return result.map(o => o.full_code)
+  }).catch(() => {
+    return [code]
   })
 }
 
@@ -215,7 +217,7 @@ var exec = {
       }
     }).spread((result) => {
       for (var col in obj) {
-        if (typeof (obj[col]) != "object") {
+        if (typeof(obj[col]) != "object") {
           result[col] = obj[col]
         }
       }
@@ -400,7 +402,7 @@ var exec = {
       }).then((result) => {
         return getBoxCodes(o.goods_code).then((codes) => {
           var i = 0
-          var updateInfo = function () {
+          var updateInfo = function() {
             if (i < codes.length) {
               var code = codes[i]
               return pmp_outcome_count.create({
@@ -434,13 +436,13 @@ var exec = {
 
 module.exports = (req, res, next) => {
   var action = req.params.action
-  return Promise.resolve(action).then(function (result) {
+  return Promise.resolve(action).then(function(result) {
     return getBrandId(req.params.token).then((id) => {
       return exec[result](req, res, id)
     })
-  }).then(function (result) {
+  }).then(function(result) {
     return res.send(result)
-  }).catch(function (error) {
+  }).catch(function(error) {
     console.log(error)
     return res.status(500).send(error.toString())
   })
