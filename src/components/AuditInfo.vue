@@ -32,7 +32,7 @@
             <x-button v-if="!Toggle" type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/history'+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
           </cell>
           <cell>
-            <div slot="icon">招募人已用金额：
+            <div slot="icon">招募人已用额度：
               <label>{{auditInfo.totleInitialFee}}</label>
             </div>
           </cell>
