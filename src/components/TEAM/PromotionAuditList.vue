@@ -90,6 +90,7 @@ export default {
   },
   ready() {
     this.getdata()
+    document.body.style.background = '#f2f2f2'
   }
 }
 </script>

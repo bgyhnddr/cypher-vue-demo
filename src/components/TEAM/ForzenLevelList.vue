@@ -81,6 +81,7 @@ export default {
   },
   ready() {
     this.loadFrozenLevels()
+      document.body.style.background = '#f2f2f2'
   }
 }
 </script>

@@ -201,6 +201,7 @@ export default {
     this.Pagefrom = this.$route.params.from
     this.getAgentInfo()
     this.getHeadImg()
+      document.body.style.background = '#f2f2f2'
 
   }
 }

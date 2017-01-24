@@ -112,7 +112,7 @@ export default {
               pmp_specification_id: that.$route.params.id,
               goods_code: e
             })
-            
+
             that.BoxList.push({
               code: e,
               box: o,
@@ -179,6 +179,7 @@ export default {
       that.showAlert = true
     })
     that.ScanQRCode()
+      document.body.style.background = '#f2f2f2'
   }
 }
 </script>

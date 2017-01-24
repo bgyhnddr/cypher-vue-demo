@@ -306,6 +306,9 @@ export default {
       that.BtnMsg = "加入"
       that.currentActive = "MainPage"
     }
+  },
+  ready(){
+      document.body.style.background = '#f2f2f2'
   }
 }
 </script>

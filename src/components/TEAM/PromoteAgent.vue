@@ -142,6 +142,7 @@ export default {
   ready() {
     this.getAgentInfo()
     this.getHeadImg()
+      document.body.style.background = '#f2f2f2'
   }
 }
 </script>

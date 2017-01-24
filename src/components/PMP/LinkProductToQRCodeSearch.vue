@@ -163,7 +163,11 @@ export default {
       this.$route.router.go("/productManagement/productSetting")
     }
   }
+  ,
+  ready() {
 
+      document.body.style.background = '#f2f2f2'
+  }
 }
 </script>
 <style>

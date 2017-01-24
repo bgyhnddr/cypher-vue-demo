@@ -68,6 +68,7 @@ export default {
     }
   },
   ready() {
+    document.body.style.background = '#f2f2f2'
 
   }
 }

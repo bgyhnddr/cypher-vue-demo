@@ -95,6 +95,7 @@ export default {
   },
   ready() {
     this.loadFrozenMembers()
+      document.body.style.background = '#f2f2f2'
   }
 }
 

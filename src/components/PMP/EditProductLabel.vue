@@ -273,6 +273,7 @@ export default {
   ready() {
     this.inputData.inputLabelItems = this.getLabels()
     this.getHistoryLabels(this.inputData.inputLabelItems)
+      document.body.style.background = '#f2f2f2'
   }
 }
 </script>

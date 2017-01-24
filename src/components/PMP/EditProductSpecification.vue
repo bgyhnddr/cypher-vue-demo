@@ -519,6 +519,7 @@ export default {
     }
 
     this.showModel.showEditSpecificationModel = true
+      document.body.style.background = '#f2f2f2'
   }
 }
 </script>

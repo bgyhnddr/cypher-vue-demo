@@ -134,6 +134,7 @@ export default {
       })
     })
     console.log(this.ProductInfo.pmp_product_prices)
+      document.body.style.background = '#f2f2f2'
   }
 }
 </script>

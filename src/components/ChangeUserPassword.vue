@@ -109,14 +109,12 @@ export default {
 	},
 	ready() {
 		//this.$els.pwd.focus()
+		  document.body.style.background = '#fff';
 	}
 }
 </script>
 <style>
-#ChangeUserPassword{
-	background: #fff;
-	height: 100%
-}
+
 .change-password .password-error{
 
 	width: 100%;

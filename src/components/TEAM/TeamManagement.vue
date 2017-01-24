@@ -105,13 +105,12 @@ export default {
   },
   ready() {
     this.CheckUserRole()
+    document.body.style.background = '#f2f2f2'
   }
 }
 </script>
 <style>
-body{
-  background: #f2f2f2!important
-}
+
 .weui_cell:before{
 border-top: 0
 

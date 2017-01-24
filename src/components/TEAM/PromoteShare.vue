@@ -132,10 +132,6 @@ export default {
 }
 </script>
 <style>
-#promoteShare{
-  background: #f2f2f2
-}
-#promoteShare .all-footer{
-  background: #f2f2f2!important
-}
+
+
 </style>

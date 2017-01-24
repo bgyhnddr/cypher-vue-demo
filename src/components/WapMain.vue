@@ -383,9 +383,7 @@ html {
 
 
 /*底栏信息*/
-body{
-  background: #f2f2f2!important
-}
+
 .all-footer {
   width: 100%;
   text-align: center;

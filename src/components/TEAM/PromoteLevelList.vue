@@ -96,7 +96,11 @@ export default {
     }
   },
   ready() {
-    this.loadPromoteLevels()
+    this.loadPromoteLevels();
+
+
+      document.body.style.background = '#f2f2f2'
+
   }
 }
 </script>

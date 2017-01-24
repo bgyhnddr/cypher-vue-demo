@@ -212,7 +212,12 @@ export default {
         this.loadPromoteMembers()
       }
     }
+  },
+  ready() {
+
+    document.body.style.background = '#f2f2f2'
   }
+
 }
 </script>
 <style>

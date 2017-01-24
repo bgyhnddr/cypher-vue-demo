@@ -108,7 +108,7 @@ export default {
         that.agentInfo.brand_role = result.agent_brand_role.brand_role.name
 
         var idLength = that.agentInfo.agent_detail.IDNumber.length
-        that.agentInfo.agent_detail.IDNumber = '**************' + that.agentInfo.agent_detail.IDNumber.substr(idLength - 4, 4) 
+        that.agentInfo.agent_detail.IDNumber = '**************' + that.agentInfo.agent_detail.IDNumber.substr(idLength - 4, 4)
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err
@@ -125,7 +125,7 @@ export default {
         that.agentInfo.brand_role = result.agent_brand_role.brand_role.name
 
         var idLength = that.agentInfo.agent_detail.IDNumber.length
-        that.agentInfo.agent_detail.IDNumber = '**************' + that.agentInfo.agent_detail.IDNumber.substr(idLength - 4, 4) 
+        that.agentInfo.agent_detail.IDNumber = '**************' + that.agentInfo.agent_detail.IDNumber.substr(idLength - 4, 4)
       }).catch(function(err) {
         console.log(err)
         that.serveMsg = err
@@ -141,14 +141,17 @@ export default {
       this.getAgentInfo()
       this.AdminFlag = true
     }
+    document.body.style.backgroundImage = 'url(/static/TestIMG/certificateinfo_bac.png)'
+    document.body.style.backgroundSize = 'contain'
+
   }
+
 }
 </script>
 <style>
 /*底部距离*/
 #certificateinfo{
-  background: url(/static/TestIMG/certificateinfo_bac.png) #fff;
-  background-size: cover;
+
     background-position: 0 -51px;
         height: 100%;
 
@@ -320,7 +323,5 @@ left: 2%;
   bottom: -12%;
 }
  #certificateinfo .freeze-icon img{ width: 100%}
-  #certificateinfo  .weui_tab{
-       height: auto!important;
- }
+
 </style>

@@ -159,6 +159,10 @@ export default {
   },
   ready() {
     this.getProducts()
+
+      this.getPersonalInfo()
+        document.body.style.background = '#f2f2f2'
+
   }
 }
 

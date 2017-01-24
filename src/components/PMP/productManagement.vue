@@ -74,6 +74,7 @@ export default {
   },
   ready() {
     this.getPersonalInfo()
+      document.body.style.background = '#f2f2f2'
   }
 }
 </script>

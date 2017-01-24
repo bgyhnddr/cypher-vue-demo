@@ -189,6 +189,7 @@ export default {
   },
   ready() {
     this.chooseTabItem()
+      document.body.style.background = '#f2f2f2'
   }
 }
 </script>
