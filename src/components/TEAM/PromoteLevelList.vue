@@ -14,7 +14,7 @@
     <div class="promoteLevelsList">
       <group v-for="level in promoteLevels">
         <div class="promoteLevelsList-li">
-          <cell @click="goToForzenMemberPage(level.brand_role_code)" is-link>
+          <cell @click="goToPromoteMemberPage(level.brand_role_code)" is-link>
             <span slot="icon">
               <label>{{getTitleLVText(level)}}</label>
               {{level.brand_role_name}}
