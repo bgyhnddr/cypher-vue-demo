@@ -162,7 +162,7 @@ export default {
           that.soldProductInfo.soldDate = new Date(result.sold_time).Format('yyyy-MM-dd hh:mm')
           that.soldProductInfo.scanNum = result.scan_num
           that.getBrandInfo()
-          console.log(result.sold_date)
+ 
           authAPI.getUser().then(function(result) {
             if (result.name != undefined) {
               //顶栏显示返回按钮
