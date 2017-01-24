@@ -104,27 +104,29 @@ export default {
     },
     SubmitRelate(e) {
       var that = this
-        pmpProductAPI.getBoxCodes({
-          code: e
-        }).then((o) => {
-          if (!that.CountList.some((v)=>{ return v.goods_code === e})){
-            that.CountList.push({
-              pmp_specification_id: that.$route.params.id,
-              goods_code: e
-            })
+      pmpProductAPI.getBoxCodes({
+        code: e
+      }).then((o) => {
+        if (!that.CountList.some((v) => {
+            return v.goods_code === e
+          })) {
+          that.CountList.push({
+            pmp_specification_id: that.$route.params.id,
+            goods_code: e
+          })
 
-            that.BoxList.push({
-              code: e,
-              box: o,
-              show: false
-            })
-          } else {
-            return Promise.reject('此标签已在列表中')
-          }
-        }).catch((err) => {
-          that.alertMsg = err
-          that.showAlert = true
-        })
+          that.BoxList.push({
+            code: e,
+            box: o,
+            show: false
+          })
+        } else {
+          return Promise.reject('此标签已在列表中')
+        }
+      }).catch((err) => {
+        that.alertMsg = err
+        that.showAlert = true
+      })
     },
     SubmitResult() {
       var that = this
@@ -148,8 +150,8 @@ export default {
     ScanQRCode() {
       //测试箱号
       var that = this
-        //  that.ScanResult = "B-55C-88-4716-0004"
-        //that.showConfirm = true
+      //  that.ScanResult = "B-55C-88-4716-0004"
+      //that.showConfirm = true
       window.wx.scanQRCode({
         needResult: 1,
         scanType: ["qrCode", "barCode"],
@@ -179,7 +181,7 @@ export default {
       that.showAlert = true
     })
     that.ScanQRCode()
-      document.body.style.background = '#f2f2f2'
+    document.body.style.background = '#f2f2f2'
   }
 }
 </script>

@@ -1,29 +1,28 @@
 <template>
-  <div id="PromoteMemberList">
-<div v-show="!showPromoteLevelListPage">
-  <div class="vux-demo-header-box wapmain-header" slot="header">
-    <x-header :left-options="{showBack: false}">{{headerTitle}}</x-header>
-    <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
-  </div>
-  <div class="PromoteMemberList-search">
-  <group>
-    <x-input class="weui_cell_primary" title='' placeholder="输入手机号码/代理姓名进行搜索" :value.sync="keyword" :show-clear=false :required="false"></x-input>
-    <button @click="search"></button>
-  </group>
-</div>
-  <div v-if="showModel.membersModel" class="PromoteMemberList">
-    <group v-for="member in memberData.getMembers.list">
-      <div class="PromoteMemberList-li">
-      <cell :title="getMemberName(member)" @click="goToPromoteAgentPage(member)" is-link></cell>
+<div id="PromoteMemberList">
+  <div v-show="!showPromoteLevelListPage">
+    <div class="vux-demo-header-box wapmain-header" slot="header">
+      <x-header :left-options="{showBack: false}">{{headerTitle}}</x-header>
+      <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
     </div>
-    </group>
-    <x-button v-show="showModel.loadMoreBtn" @click="loadMember" class="more">点击可加载更多内容</x-button>
+    <div class="PromoteMemberList-search">
+      <group>
+        <x-input class="weui_cell_primary" title='' placeholder="输入手机号码/代理姓名进行搜索" :value.sync="keyword" :show-clear=false :required="false"></x-input>
+        <button @click="search"></button>
+      </group>
+    </div>
+    <div v-if="showModel.membersModel" class="PromoteMemberList">
+      <group v-for="member in memberData.getMembers.list">
+        <div class="PromoteMemberList-li">
+          <cell :title="getMemberName(member)" @click="goToPromoteAgentPage(member)" is-link></cell>
+        </div>
+      </group>
+      <x-button v-show="showModel.loadMoreBtn" @click="loadMember" class="more">点击可加载更多内容</x-button>
+    </div>
   </div>
+  <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
+  <alert :show.sync="alert.showErrorNoHandled" button-text="确认">{{alert.errorMsgNoHandled}}</alert>
 </div>
-<alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
-<alert :show.sync="alert.showErrorNoHandled" button-text="确认">{{alert.errorMsgNoHandled}}</alert>
-</div>
-
 </template>
 
 <script>
@@ -69,9 +68,9 @@ export default {
           list: []
         }
       },
-      showModel:{
+      showModel: {
         membersModel: false,
-        loadMoreBtn : false
+        loadMoreBtn: false
       },
       chooseLevel: null,
 
@@ -120,7 +119,7 @@ export default {
     loadPromoteMembers() {
       var that = this
       var searchArgs = {
-        page:0
+        page: 0
       }
 
       if (this.chooseLevel) {
@@ -159,10 +158,10 @@ export default {
         that.catchErrorMsg = "加载可提拔团队成员异常，请稍后再试"
       })
     },
-    loadMember(){
+    loadMember() {
       var that = this
       var searchArgs = {
-        page:this.memberData.page
+        page: this.memberData.page
       }
 
       if (this.chooseLevel) {
@@ -214,61 +213,65 @@ export default {
     }
   },
   ready() {
-
     document.body.style.background = '#f2f2f2'
   }
 
 }
 </script>
 <style>
-#PromoteMemberList  .weui_cell_hd{
+#PromoteMemberList .weui_cell_hd {
   width: auto;
 }
+
 #PromoteMemberList .PromoteMemberList-search {
-    width: 95%;
-    margin: 51px auto 1% auto;
-    border: 1px solid #d3d1d1;
-    background: #fff;
-    position: relative;
+  width: 95%;
+  margin: 51px auto 1% auto;
+  border: 1px solid #d3d1d1;
+  background: #fff;
+  position: relative;
 }
+
 #PromoteMemberList .PromoteMemberList-search button {
-    position: absolute;
-    top: 11%;
-    right: -6%;
-    background: url(/static/TestIMG/search.png);
-    background-repeat: no-repeat;
-    border: 0;
-    background-size: 57%;
-    color: #fff;
-    width: 16%;
-    min-height: 30px;
-    z-index: 1000;
+  position: absolute;
+  top: 11%;
+  right: -6%;
+  background: url(/static/TestIMG/search.png);
+  background-repeat: no-repeat;
+  border: 0;
+  background-size: 57%;
+  color: #fff;
+  width: 16%;
+  min-height: 30px;
+  z-index: 1000;
 }
 
 #PromoteMemberList .PromoteMemberList-search .weui_input {
-    font-size: 4.5vw;
-    font-family: "微软雅黑";
-        line-height: 2.5em;
-    height: auto;
-    width: 100%;
-    padding-left: 2%;
+  font-size: 4.5vw;
+  font-family: "微软雅黑";
+  line-height: 2.5em;
+  height: auto;
+  width: 100%;
+  padding-left: 2%;
 }
-#PromoteMemberList .PromoteMemberList-search .weui_cell{
-      padding: 0;
-}
-#PromoteMemberList  .PromoteMemberList{
-    min-height: 438px;
-    margin-top: 5px;
-border-top: 1px solid #d3d1d1;
 
+#PromoteMemberList .PromoteMemberList-search .weui_cell {
+  padding: 0;
 }
-#PromoteMemberList .PromoteMemberList  .PromoteMemberList-li{
+
+#PromoteMemberList .PromoteMemberList {
+  min-height: 438px;
+  margin-top: 5px;
+  border-top: 1px solid #d3d1d1;
+}
+
+#PromoteMemberList .PromoteMemberList .PromoteMemberList-li {
   background: #fff;
   border-bottom: 1px solid #d3d1d1;
   font-size: 4.5vw;
   font-family: "微软雅黑";
 }
-#PromoteMemberList  .PromoteMemberList  .PromoteMemberList-li .weui_cell_ft.with_arrow span{
+
+#PromoteMemberList .PromoteMemberList .PromoteMemberList-li .weui_cell_ft.with_arrow span {
   font-size: 4.9vw!important;
   color: #9d9ea5
 }

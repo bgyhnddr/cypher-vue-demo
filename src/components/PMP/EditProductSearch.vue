@@ -5,23 +5,23 @@
 </div>
 <div id="editProductsearch">
   <div class="editProductsearch-search">
-<group>
-  <x-input class="weui_cell_primary" title='' placeholder="搜索商品名称" :value.sync="keyword" :show-clear=false :required="false"></x-input>
-  <button @click="search"></button>
-</group>
-</div>
-<div class="editProductsearch-list">
-<div v-if="showModel.showSearchProductModel" >
-  <div class="editProductsearch-list-li">
-  <group v-for="productItem in productsData.getProducts.list">
-    <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
-      <img slot="icon" width="50" :src="getProductImgHref(productItem)" width="50px" height="50px" alt="产品图片" />
-    </cell>
-  </group>
-</div>
-  <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct" class="more">点击可加载更多内容</x-button>
-</div>
-</div>
+    <group>
+      <x-input class="weui_cell_primary" title='' placeholder="搜索商品名称" :value.sync="keyword" :show-clear=false :required="false"></x-input>
+      <button @click="search"></button>
+    </group>
+  </div>
+  <div class="editProductsearch-list">
+    <div v-if="showModel.showSearchProductModel">
+      <div class="editProductsearch-list-li">
+        <group v-for="productItem in productsData.getProducts.list">
+          <cell :title="productItem.name" @click="goToEditProduct(productItem.id)">
+            <img slot="icon" width="50" :src="getProductImgHref(productItem)" width="50px" height="50px" alt="产品图片" />
+          </cell>
+        </group>
+      </div>
+      <x-button v-show="showModel.showLoadMoreBtn" @click="loadProduct" class="more">点击可加载更多内容</x-button>
+    </div>
+  </div>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 <div>
@@ -160,40 +160,43 @@ export default {
     errorHandled() {
       this.$route.router.go("/productManagement/productSetting")
     }
-  },ready(){
-      document.body.style.background = '#f2f2f2'
+  },
+  ready() {
+    document.body.style.background = '#f2f2f2'
   }
 }
 </script>
 <style>
-#editProductsearch{
-    min-height: 473px;
-    padding-top: 46px
+#editProductsearch {
+  min-height: 473px;
+  padding-top: 46px
 }
-#editProductsearch .editProductsearch-search{
+
+#editProductsearch .editProductsearch-search {
   width: 95%;
-      margin: 1% auto;
-        border: 1px solid #d3d1d1;
-          background: #fff;
-          position: relative;
+  margin: 1% auto;
+  border: 1px solid #d3d1d1;
+  background: #fff;
+  position: relative;
 }
-#editProductsearch .editProductsearch-search .weui_cell_hd{
+
+#editProductsearch .editProductsearch-search .weui_cell_hd {
   width: auto;
 }
-#editProductsearch .editProductsearch-search  .weui_cell.weui_cell_primary{
+
+#editProductsearch .editProductsearch-search .weui_cell.weui_cell_primary {
   padding: 0
 }
-#editProductsearch .editProductsearch-search .weui_input{
 
+#editProductsearch .editProductsearch-search .weui_input {
   font-size: 4.5vw;
-      font-family: "微软雅黑";
-
-          line-height: 2.5em;
-          height: auto;
-          width: 100%;
-          padding-left: 2%
-
+  font-family: "微软雅黑";
+  line-height: 2.5em;
+  height: auto;
+  width: 100%;
+  padding-left: 2%
 }
+
 #editProductsearch .editProductsearch-search button {
   position: absolute;
   top: 11%;
@@ -207,26 +210,31 @@ export default {
   min-height: 30px;
   z-index: 1000;
 }
-#editProductsearch .editProductsearch-list .editProductsearch-list-li>div{
-background: #fff;
-border-top: 1px solid #d3d1d1;
-border-bottom: 1px solid #d3d1d1;
-margin-bottom: 1%;
+
+#editProductsearch .editProductsearch-list .editProductsearch-list-li>div {
+  background: #fff;
+  border-top: 1px solid #d3d1d1;
+  border-bottom: 1px solid #d3d1d1;
+  margin-bottom: 1%;
 }
-#editProductsearch .editProductsearch-list .weui_cell_hd{
-    width: 21%;
+
+#editProductsearch .editProductsearch-list .weui_cell_hd {
+  width: 21%;
 }
+
 #editProductsearch .editProductsearch-list .editProductsearch-list-li>div img {
-    min-height: 62px;
-    width: 100%;
-    border: 1px solid #d3d1d1;
+  min-height: 62px;
+  width: 100%;
+  border: 1px solid #d3d1d1;
 }
+
 #editProductsearch .editProductsearch-list .weui_cell {
-    padding: 4px 7px;
+  padding: 4px 7px;
 }
+
 #editProductsearch .editProductsearch-list p {
-    width: 91%;
-    margin: auto;
-    font-size: 4.5vw;
+  width: 91%;
+  margin: auto;
+  font-size: 4.5vw;
 }
 </style>

@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       keyword: "",
-      searchResult:[],
+      searchResult: [],
       alert: {
         showCatchError: false,
         catchErrorMsg: null
@@ -50,11 +50,13 @@ export default {
     search() {
       var that = this
       var keyword = that.keyword
-      if(keyword==""){
+      if (keyword == "") {
         that.alert.showCatchError = true
         that.alert.catchErrorMsg = "请输入需要搜索的关键词"
-      }else{
-        FrozenAPI.getFrozenMembers({filterKey:keyword}).then((result)=>{
+      } else {
+        FrozenAPI.getFrozenMembers({
+          filterKey: keyword
+        }).then((result) => {
           that.searchResult = result
           that.showSearch = true
         }).catch(function(err) {
@@ -64,7 +66,7 @@ export default {
       }
     },
     goToForzenAgent(account) {
-      this.$route.router.go("/teamManagement/frozenAgent/"+account+"/Frozenlist")
+      this.$route.router.go("/teamManagement/frozenAgent/" + account + "/Frozenlist")
     }
   },
   ready() {

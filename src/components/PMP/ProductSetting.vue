@@ -4,9 +4,10 @@
   <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
   <div @click="openSearchComponent" class="productsetting-search">
 
-      <img alt="搜索按钮" src="/static/TestIMG/productSetting_search.png" />
+    <img alt="搜索按钮" src="/static/TestIMG/productSetting_search.png" />
 
-</div></div>
+  </div>
+</div>
 
 <div id="productsetting">
 
@@ -189,7 +190,7 @@ export default {
   },
   ready() {
     this.chooseTabItem()
-      document.body.style.background = '#f2f2f2'
+    document.body.style.background = '#f2f2f2'
   }
 }
 </script>
@@ -198,20 +199,22 @@ export default {
 div#productsetting {
     padding-top: 46px;
 }
-.vux-header .vux-header-title, .vux-header h1{
-        font-size: 4.5vw;
+.vux-header .vux-header-title,
+.vux-header h1 {
+    font-size: 4.5vw;
 }
-body{
-overflow-x: hidden;}
+body {
+    overflow-x: hidden;
+}
 .xs-plugin-pullup-container {
     text-align: center;
 }
- .productsetting-search {
+.productsetting-search {
     position: absolute;
     top: 10px;
     right: -8px;
 }
-.productsetting-search  img {
+.productsetting-search img {
     width: 53%;
 
 }
@@ -241,21 +244,21 @@ overflow-x: hidden;}
     background-color: #35495e!important;
 }
 #productsetting .productsetting-list img {
-  left: 0;
-top: 0;
-width: 100%;
-position: absolute;
-vertical-align: middle;
-min-height: 77px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    position: absolute;
+    vertical-align: middle;
+    min-height: 77px;
 }
 #productsetting .productsetting-list .weui_cell_hd {
-  float: left;
-width: 21%;
-padding-top: 21%;
-position: relative;
-display: block;
-overflow: hidden;
-border: 1px solid #d3d1d1;
+    float: left;
+    width: 21%;
+    padding-top: 21%;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border: 1px solid #d3d1d1;
 }
 #productsetting .productsetting-list p {
     width: 91%;
@@ -264,7 +267,7 @@ border: 1px solid #d3d1d1;
 }
 #productsetting .productsetting-li {
     margin-top: 2%;
-        margin-bottom: 15%;
+    margin-bottom: 15%;
 }
 #productsetting .productsetting-list {
     background-color: #fff;
@@ -297,14 +300,14 @@ button.weui_btn.more.weui_btn_default {
     font-family: "微软雅黑";
     font-size: 4.5vw;
     background: none;
-      margin-bottom: 37px;
-       color: #979797
+    margin-bottom: 37px;
+    color: #979797;
 }
- .weui_btn:after{
-   border: 0;
+.weui_btn:after {
+    border: 0;
 
- }
- .productsetting-none {
+}
+.productsetting-none {
     text-align: center;
     color: #a1a1a1;
     font-size: 5.3vw;

@@ -518,14 +518,14 @@ export default {
     }
 
     this.showModel.showEditSpecificationModel = true
-      document.body.style.background = '#f2f2f2'
+    document.body.style.background = '#f2f2f2'
   }
 }
 </script>
 
 <style lang="less">
-#EditProductSpecification{
-  padding-top: 46px
+#EditProductSpecification {
+    padding-top: 46px;
 }
 .checker-item {
     width: 100px;
@@ -583,7 +583,7 @@ export default {
     width: 30%;
     float: left;
     height: auto;
-        margin: 1% 1% 2% 1%;
+    margin: 1% 1% 2%;
 }
 #EditProductSpecification .ApplyFor-agent-header img {
     margin-top: 9%;
@@ -732,7 +732,7 @@ export default {
     width: 100%;
     position: absolute;
     vertical-align: middle;
-    height:auto
+    height: auto;
 }
 #EditProductSpecification .add-image .specifications-addimage .checker-item-selected {
 

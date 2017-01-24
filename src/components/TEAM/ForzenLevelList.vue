@@ -4,18 +4,20 @@
     <x-header :left-options="{showBack: false}">冻结团队成员</x-header>
     <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
   </div>
-  <div class="forzenLevelList-search"><search-frozen :show-search.sync="showSearch"></search-frozen></div>
+  <div class="forzenLevelList-search">
+    <search-frozen :show-search.sync="showSearch"></search-frozen>
+  </div>
   <div v-show="!showSearch" class="forzenLevelList">
     <group v-for="level in forzenLevels">
       <div class="forzenLevelList-li">
         <cell @click="goToForzenMemberPage(level.brand_role_code)" is-link>
-              <span slot="icon">
-                <label>{{getTitleLVText(level)}}</label>
-              {{level.brand_role_name}}
-              </span>
-              <span>{{level.number + "人"}}</span>
-            </cell>
-    </div>
+          <span slot="icon">
+            <label>{{getTitleLVText(level)}}</label>
+            {{level.brand_role_name}}
+          </span>
+          <span>{{level.number + "人"}}</span>
+        </cell>
+      </div>
     </group>
   </div>
 </div>
@@ -86,76 +88,84 @@ export default {
   },
   ready() {
     this.loadFrozenLevels()
-      document.body.style.background = '#f2f2f2'
+    document.body.style.background = '#f2f2f2'
   }
 }
 </script>
 <style>
-
-#forzenLevelList  .weui_cell_hd{
+#forzenLevelList .weui_cell_hd {
   width: auto;
 }
+
 #forzenLevelList .forzenLevelList-search {
-    width: 95%;
-    margin: 51px auto 1% auto;
-    border: 1px solid #d3d1d1;
-    background: #fff;
-    position: relative;
+  width: 95%;
+  margin: 51px auto 1% auto;
+  border: 1px solid #d3d1d1;
+  background: #fff;
+  position: relative;
 }
+
 #forzenLevelList .forzenLevelList-search button {
-    position: absolute;
-    top: 11%;
-    right: -6%;
-    background: url(/static/TestIMG/search.png);
-    background-repeat: no-repeat;
-    border: 0;
-    background-size: 57%;
-    color: #fff;
-    width: 16%;
-    min-height: 30px;
-    z-index: 1000;
+  position: absolute;
+  top: 11%;
+  right: -6%;
+  background: url(/static/TestIMG/search.png);
+  background-repeat: no-repeat;
+  border: 0;
+  background-size: 57%;
+  color: #fff;
+  width: 16%;
+  min-height: 30px;
+  z-index: 1000;
 }
 
 #forzenLevelList .forzenLevelList-search .weui_input {
-    font-size: 4.5vw;
-    font-family: "微软雅黑";
-        line-height: 2.5em;
-    height: auto;
-    width: 100%;
-    padding-left: 2%;
+  font-size: 4.5vw;
+  font-family: "微软雅黑";
+  line-height: 2.5em;
+  height: auto;
+  width: 100%;
+  padding-left: 2%;
 }
-#forzenLevelList .forzenLevelList-search .weui_cell{
-      padding: 0;
-}
-#forzenLevelList  .forzenLevelList{
-    min-height: 438px;
 
+#forzenLevelList .forzenLevelList-search .weui_cell {
+  padding: 0;
 }
-#forzenLevelList  .forzenLevelList  .forzenLevelList-li{
+
+#forzenLevelList .forzenLevelList {
+  min-height: 438px;
+}
+
+#forzenLevelList .forzenLevelList .forzenLevelList-li {
   background: #fff;
-    margin-top: 5px;
+  margin-top: 5px;
   font-size: 4.7vw;
   font-family: "微软雅黑";
 }
-#forzenLevelList  .forzenLevelList  .forzenLevelList-li .weui_cell_ft.with_arrow span{
+
+#forzenLevelList .forzenLevelList .forzenLevelList-li .weui_cell_ft.with_arrow span {
   font-size: 4.9vw!important;
   color: #9d9ea5
 }
-#forzenLevelList  .weui_dialog{
-    width: 92%;
+
+#forzenLevelList .weui_dialog {
+  width: 92%;
 }
-#forzenLevelList  .weui_dialog  .weui_dialog_ft{
+
+#forzenLevelList .weui_dialog .weui_dialog_ft {
   width: 89%;
-margin: 8% auto;
-background: #0bb20c;
-line-height: 35px;
-border-radius: 2px;
+  margin: 8% auto;
+  background: #0bb20c;
+  line-height: 35px;
+  border-radius: 2px;
 }
-#forzenLevelList  .weui_dialog .weui_btn_dialog.primary{
+
+#forzenLevelList .weui_dialog .weui_btn_dialog.primary {
   font-size: 4.9vw;
   color: #fff;
 }
+
 #forzenLevelList .forzenLevelList-li span label {
-    color: #35495e;
+  color: #35495e;
 }
 </style>

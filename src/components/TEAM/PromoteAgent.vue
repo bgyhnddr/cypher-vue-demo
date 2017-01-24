@@ -1,5 +1,5 @@
 <template>
-<div  id="promoteAgent">
+<div id="promoteAgent">
   <div>
     <div class="vux-demo-header-box wapmain-header" slot="header">
       <x-header :left-options="{showBack: false}">{{agentInfo.agent_detail.name}}</x-header>
@@ -142,16 +142,16 @@ export default {
   ready() {
     this.getAgentInfo()
     this.getHeadImg()
-      document.body.style.background = '#f2f2f2'
+    document.body.style.background = '#f2f2f2'
   }
 }
 </script>
 <style>
 #promoteAgent {
-height: 100%
+  height: 100%
 }
 
- #promoteAgent .certificate-header img {
+#promoteAgent .certificate-header img {
   border: 0;
   background-size: 100%;
   width: 25%;
@@ -159,36 +159,35 @@ height: 100%
 
 #promoteAgent .certificate-header {
   text-align: center;
-  padding-top:46px;
+  padding-top: 46px;
 }
 
- #promoteAgent .certificate-header button {
+#promoteAgent .certificate-header button {
   border: 0;
   background-size: 100%;
   width: 28%;
 }
 
- #promoteAgent .certificate-header button img {
+#promoteAgent .certificate-header button img {
   width: 100%;
   height: auto;
 }
 
- #promoteAgent .certificate-header p {
+#promoteAgent .certificate-header p {
   color: #595959;
   font-size: 4.5vw;
   /*14px*/
 }
 
-#promoteAgent .certificate-header .vux-center{
-
+#promoteAgent .certificate-header .vux-center {
   width: 23%;
-      padding-top: 31%;
-      position: relative;
-      display: block;
-      overflow: hidden;
-
+  padding-top: 31%;
+  position: relative;
+  display: block;
+  overflow: hidden;
 }
-#promoteAgent .certificate-header .vux-center img{
+
+#promoteAgent .certificate-header .vux-center img {
   left: -2%;
   top: 0%;
   width: 100%;
@@ -196,6 +195,7 @@ height: 100%
   vertical-align: middle;
   min-height: 95px;
 }
+
 #promoteAgent .certificate-messages {
   position: relative;
   width: 89%;
@@ -246,17 +246,18 @@ height: 100%
   font-family: "微软雅黑";
 }
 
- #promoteAgent .certificate-messages .weui_cell_hd label {
+#promoteAgent .certificate-messages .weui_cell_hd label {
   color: #595959;
 }
- .promoteAgent-button{
+
+.promoteAgent-button {
   position: fixed;
-      bottom: 0;
-      color: #fff;
-      background: #21c36d;
-      font-family: "微软雅黑";
-      border-radius: 0;
-      border: 0;
-      width: 100%;
+  bottom: 0;
+  color: #fff;
+  background: #21c36d;
+  font-family: "微软雅黑";
+  border-radius: 0;
+  border: 0;
+  width: 100%;
 }
 </style>

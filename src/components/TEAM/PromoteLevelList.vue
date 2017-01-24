@@ -15,12 +15,12 @@
       <group v-for="level in promoteLevels">
         <div class="promoteLevelsList-li">
           <cell @click="goToForzenMemberPage(level.brand_role_code)" is-link>
-          <span slot="icon">
-            <label>{{getTitleLVText(level)}}</label>
-          {{level.brand_role_name}}
-          </span>
-          <span>{{level.number + "人"}}</span>
-        </cell>
+            <span slot="icon">
+              <label>{{getTitleLVText(level)}}</label>
+              {{level.brand_role_name}}
+            </span>
+            <span>{{level.number + "人"}}</span>
+          </cell>
 
         </div>
       </group>
@@ -74,8 +74,8 @@ export default {
       this.$route.router.go("/teamManagement")
     },
     getTitleLVText(levelItem) {
-        return "【LV" + (Number(levelItem.brand_role_code.charAt(levelItem.brand_role_code.length - 1)) - 1) + "】"
-      },
+      return "【LV" + (Number(levelItem.brand_role_code.charAt(levelItem.brand_role_code.length - 1)) - 1) + "】"
+    },
 
 
     loadPromoteLevels() {
@@ -104,10 +104,7 @@ export default {
   },
   ready() {
     this.loadPromoteLevels();
-
-
     document.body.style.background = '#f2f2f2'
-
   }
 }
 </script>
@@ -183,7 +180,8 @@ export default {
   font-size: 4.9vw;
   color: #fff;
 }
+
 #promoteLevels .promoteLevelsList .promoteLevelsList-li span label {
-    color: #35495e;
+  color: #35495e;
 }
 </style>

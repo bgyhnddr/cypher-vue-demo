@@ -115,7 +115,7 @@ export default {
       showAlert: false,
       confirmThaw: false,
       confirmFroze: false,
-      showLoading:false,
+      showLoading: false,
       alertMsg: "",
       Pagefrom: ""
     }
@@ -201,11 +201,10 @@ export default {
     this.Pagefrom = this.$route.params.from
     this.getAgentInfo()
     this.getHeadImg()
-      document.body.style.background = '#f2f2f2'
+    document.body.style.background = '#f2f2f2'
 
   }
 }
-
 </script>
 <style>
 #frozenAgent {
@@ -220,7 +219,7 @@ export default {
 
 #frozenAgent .certificate-header {
   text-align: center;
-  padding-top:46px;
+  padding-top: 46px;
 }
 
 #frozenAgent .certificate-header button {
@@ -329,10 +328,11 @@ export default {
   border: 0;
   width: 100%
 }
-.frozenAgent-button button.weui_btn.weui_btn_primary{
-  width: 100%;
 
+.frozenAgent-button button.weui_btn.weui_btn_primary {
+  width: 100%;
 }
+
 .frozenAgent-button button.weui_btn.frozenAgent-button-first.weui_btn_primary {
   background: #fd5e5e;
 }

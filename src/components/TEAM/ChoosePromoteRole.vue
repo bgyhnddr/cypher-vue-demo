@@ -90,19 +90,17 @@ export default {
   },
   ready() {
     this.getPromoteRules()
-      document.body.style.background = '#f2f2f2'
+    document.body.style.background = '#f2f2f2'
   }
 }
 </script>
 <style>
 #choosePromoteRole {
   background: #fff;
-
 }
 
 .choosePromoteRole {
   background: #fff;
-
 }
 
 #choosePromoteRole .all-footer {

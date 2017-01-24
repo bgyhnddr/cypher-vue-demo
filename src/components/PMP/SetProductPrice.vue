@@ -5,7 +5,7 @@
     <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
   </div>
   <div>
-    <table border="0" width="100%" id="SetProductPrice" cellspacing="0" cellpadding="0" >
+    <table border="0" width="100%" id="SetProductPrice" cellspacing="0" cellpadding="0">
       <tr>
         <th>级别名称</th>
         <th>进货价</th>
@@ -19,15 +19,15 @@
     </table>
   </div>
   <div class="SetProductPrice-reset">
-  <flexbox>
-    <flexbox-item>
-      <x-button type="default" @click="SubmitPrice" class="SetProductPrice-reset-sure">确认</x-button>
-    </flexbox-item>
-    <flexbox-item>
-      <x-button type="default" @click="ResetPrice">重置</x-button>
-    </flexbox-item>
-  </flexbox>
-</div>
+    <flexbox>
+      <flexbox-item>
+        <x-button type="default" @click="SubmitPrice" class="SetProductPrice-reset-sure">确认</x-button>
+      </flexbox-item>
+      <flexbox-item>
+        <x-button type="default" @click="ResetPrice">重置</x-button>
+      </flexbox-item>
+    </flexbox>
+  </div>
 </div>
 <alert :show.sync="showAlert" button-Text="好的" @on-hide="Hide">请正确输入金额</alert>
 </template>
@@ -66,17 +66,17 @@ export default {
   data() {
     return {
       BrandRole: [],
-      InputValid:true,
-      showAlert:false
+      InputValid: true,
+      showAlert: false
     }
   },
   methods: {
     onClickBack() {
-      if(this.InputValid){
+      if (this.InputValid) {
         this.currentActive = "MainPage"
       }
     },
-    selectAll(e){
+    selectAll(e) {
       var target = e.currentTarget.getElementsByTagName("input")
       target[0].select()
     },
@@ -85,13 +85,13 @@ export default {
         o.price = "0.00"
       })
     },
-    Hide(){
+    Hide() {
       this.InputValid = true
     },
     SubmitPrice() {
       if (this.ProductInfo.pmp_product_prices.length == 0) {
         this.BrandRole.forEach((o) => {
-          if(isNaN(o.price)||o.price==""){
+          if (isNaN(o.price) || o.price == "") {
             this.showAlert = true
             this.InputValid = false
             o.price = "0.00"
@@ -100,16 +100,16 @@ export default {
             brand_role_name: o.name,
             brand_role_code: o.level,
             price: parseFloat(o.price).toFixed(2),
-            price_unit:"RMB"
+            price_unit: "RMB"
           })
         })
       } else {
         this.BrandRole.forEach((o) => {
-          if(isNaN(o.price)||o.price==""){
+          if (isNaN(o.price) || o.price == "") {
             this.showAlert = true
             this.InputValid = false
             o.price = "0.00"
-          }else{
+          } else {
             this.ProductInfo.pmp_product_prices.filter(i => i.brand_role_code == o.level).map((t) => {
               t.brand_role_name = o.name
               t.brand_role_code = o.level
@@ -120,8 +120,7 @@ export default {
       }
       this.onClickBack()
     },
-    onChange(val) {
-    }
+    onChange(val) {}
   },
   ready() {
     //获取代理信息
@@ -138,83 +137,95 @@ export default {
       })
     })
     console.log(this.ProductInfo.pmp_product_prices)
-      document.body.style.background = '#f2f2f2'
+    document.body.style.background = '#f2f2f2'
   }
 }
 </script>
 <style>
-#SetProductPrice{
- font-family: "微软雅黑",Arial!important;
- background: #fff;
-     padding-top: 46px;
-     margin-bottom: 55px;
+#SetProductPrice {
+  font-family: "微软雅黑", Arial!important;
+  background: #fff;
+  padding-top: 46px;
+  margin-bottom: 55px;
 }
-#SetProductPrice tr th{
-    border-bottom: 1px solid #d3d1d1;
+
+#SetProductPrice tr th {
+  border-bottom: 1px solid #d3d1d1;
   font-family: "微软雅黑";
   font-weight: normal;
   line-height: 2.8em;
   font-size: 4.5vw
 }
-#SetProductPrice tr th:first-child{
 
+#SetProductPrice tr th:first-child {
   border-right: 1px solid #d3d1d1;
-
-
 }
-#SetProductPrice tr th:first-child{
-  width: 50%}
-  #SetProductPrice   .weui_cell{
-    padding: 0
-  }
-    #SetProductPrice  .weui_cell_hd{
-        width: 7%;
-    }
-  #SetProductPrice  .weui_cell_ft{
-    margin: 0 7% 0 2%;
- color: #000
-    }
-  #SetProductPrice    .weui_cell_bd.weui_cell_primary {
-    border: 1px solid #d3d1d1;
-    line-height: 2.2em;}
-  #SetProductPrice     i.weui_icon.weui_icon_clear{
-    position: absolute;
-left: 69%;
-  }
-  #SetProductPrice   .weui_icon_warn:before{
-    position: absolute;
-left: 69%;
-top: 35%
-  }
-    #SetProductPrice   .weui_input{
-      text-align: center;
-    font-family: "微软雅黑",Arial;
-    font-weight: 600;
-      font-size: 4.5vw
 
-    }
-.SetProductPrice-reset{
-position: fixed;
-bottom:0;
-width: 100%
-  }
-.SetProductPrice-reset  .vux-flexbox-item{
-  margin-left:0!important;
-
+#SetProductPrice tr th:first-child {
+  width: 50%
 }
-.SetProductPrice-reset .weui_btn:after{
+
+#SetProductPrice .weui_cell {
+  padding: 0
+}
+
+#SetProductPrice .weui_cell_hd {
+  width: 7%;
+}
+
+#SetProductPrice .weui_cell_ft {
+  margin: 0 7% 0 2%;
+  color: #000
+}
+
+#SetProductPrice .weui_cell_bd.weui_cell_primary {
+  border: 1px solid #d3d1d1;
+  line-height: 2.2em;
+}
+
+#SetProductPrice i.weui_icon.weui_icon_clear {
+  position: absolute;
+  left: 69%;
+}
+
+#SetProductPrice .weui_icon_warn:before {
+  position: absolute;
+  left: 69%;
+  top: 35%
+}
+
+#SetProductPrice .weui_input {
+  text-align: center;
+  font-family: "微软雅黑", Arial;
+  font-weight: 600;
+  font-size: 4.5vw
+}
+
+.SetProductPrice-reset {
+  position: fixed;
+  bottom: 0;
+  width: 100%
+}
+
+.SetProductPrice-reset .vux-flexbox-item {
+  margin-left: 0!important;
+}
+
+.SetProductPrice-reset .weui_btn:after {
   border-radius: 0;
-  border:0
+  border: 0
 }
+
 .SetProductPrice-reset button.weui_btn.weui_btn_default {
-    background: #9b9b9b;
-    border-radius: 0;
-    font-family: "微软雅黑";
-        font-size: 5.2vw;
-    color: #fff;
-    line-height: 2.3em;
+  background: #9b9b9b;
+  border-radius: 0;
+  font-family: "微软雅黑";
+  font-size: 5.2vw;
+  color: #fff;
+  line-height: 2.3em;
 }
-.SetProductPrice-reset button.weui_btn.SetProductPrice-reset-sure.weui_btn_default{
+
+.SetProductPrice-reset button.weui_btn.SetProductPrice-reset-sure.weui_btn_default {
   background: #21c36d
 }
 </style>

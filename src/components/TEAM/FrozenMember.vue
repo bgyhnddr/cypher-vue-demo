@@ -5,24 +5,24 @@
 </div>
 <div id="frozenMember">
   <div class="frozenMember-search ">
-<group>
+    <group>
 
-  <x-input class="weui_cell_primary" title='' placeholder="输入手机号码/代理姓名进行搜索" :value.sync="keyword" :show-clear=false :required="false"></x-input>
-  <button @click="search"></button>
-</group>
-</div>
-<div class="frozenMember-list">
-  <group v-for="member in MemberList">
-    <div class="frozenMember-li">
-      <cell @click="goToForzenAgent(member.user_account)" is-link>
-        <span v-if="member.frozen_agent" style="color:red">已冻结</span>
-        <div slot="icon">
-          <span>{{member.agent_detail.name}}</span>
-        </div>
-      </cell>
-    </div>
-  </group>
-</div>
+      <x-input class="weui_cell_primary" title='' placeholder="输入手机号码/代理姓名进行搜索" :value.sync="keyword" :show-clear=false :required="false"></x-input>
+      <button @click="search"></button>
+    </group>
+  </div>
+  <div class="frozenMember-list">
+    <group v-for="member in MemberList">
+      <div class="frozenMember-li">
+        <cell @click="goToForzenAgent(member.user_account)" is-link>
+          <span v-if="member.frozen_agent" style="color:red">已冻结</span>
+          <div slot="icon">
+            <span>{{member.agent_detail.name}}</span>
+          </div>
+        </cell>
+      </div>
+    </group>
+  </div>
 
 </div>
 <div class="frozenMember-dialog">
@@ -65,10 +65,10 @@ export default {
     },
     search() {
       var that = this
-      if(that.keyword == ""){
+      if (that.keyword == "") {
         that.alert.showCatchError = true
         that.alert.catchErrorMsg = "请输入需要搜索的关键词"
-      }else{
+      } else {
         that.loadFrozenMembers(that.keyword)
       }
     },
@@ -95,10 +95,9 @@ export default {
   },
   ready() {
     this.loadFrozenMembers()
-      document.body.style.background = '#f2f2f2'
+    document.body.style.background = '#f2f2f2'
   }
 }
-
 </script>
 <style>
 #frozenMember .weui_cell_hd {
@@ -141,7 +140,7 @@ export default {
 }
 
 #frozenMember .frozenMember-list {
-    min-height: 436px;
+  min-height: 436px;
   margin-top: 5px;
   border-top: 1px solid #d3d1d1;
 }
@@ -156,19 +155,21 @@ export default {
 .weui_tab.frozenMember-list .weui_cell {
   padding: 11px 15px;
 }
-.frozenMember-dialog  .weui_dialog{
-    width: 92%;
+
+.frozenMember-dialog .weui_dialog {
+  width: 92%;
 }
-.frozenMember-dialog  .weui_dialog  .weui_dialog_ft{
+
+.frozenMember-dialog .weui_dialog .weui_dialog_ft {
   width: 89%;
-margin: 8% auto;
-background: #0bb20c;
-line-height: 35px;
-border-radius: 2px;
+  margin: 8% auto;
+  background: #0bb20c;
+  line-height: 35px;
+  border-radius: 2px;
 }
-.frozenMember-dialog  .weui_dialog .weui_btn_dialog.primary{
+
+.frozenMember-dialog .weui_dialog .weui_btn_dialog.primary {
   font-size: 4.9vw;
   color: #fff;
 }
-
 </style>
