@@ -96,6 +96,7 @@ export default {
 }
 </script>
 <style>
+
 .audit-list {
     min-height: 485px;
         padding-top: 46px;
@@ -146,7 +147,7 @@ export default {
 
 .audit-choose .weui_cells.vux-no-group-title {
   position: absolute;
-  z-index: 1000;
+    z-index: 1000000000;
   top: 12px;
   right: 16px;
 }

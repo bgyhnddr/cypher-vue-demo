@@ -298,7 +298,7 @@ export default {
 .EditProductLabel-complete{
   position: absolute;
     right: 6%;
-    z-index: 1000000000
+    z-index: 1000000000;
 color: #fff;
 top: 2%;
 font-size: 4.5vw}

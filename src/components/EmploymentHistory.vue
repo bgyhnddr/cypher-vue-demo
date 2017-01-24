@@ -175,10 +175,11 @@ export default {
 
 .history-button {
   position: absolute;
-  z-index: 1000;
+
   right: 5%;
   width: 22%;
   top: 11px;
+      z-index: 1000000000;
 }
 
 .history-button button.weui_btn,
