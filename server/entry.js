@@ -54,24 +54,18 @@ module.exports = (app) => {
       if (req.params.permission == "private") {
         var checkPermission = require('../permission/check-permission')
         var checkFrozen = require('../permission/check-frozen')
-        checkFrozen(req, res, next).then(function() {
+
+        checkFrozen(req).then(() => {
+          return checkPermission(req, res, next)
+        }).then(() => {
           require('./private/' + req.params.type)(req, res, next)
-        }, function(error) {
-          console.log(error)
-          if (error == "account_frozened") {
-            req.session.userInfo = undefined
-          }
-        })
-        checkPermission(req, res, next).then(function() {
-          require('./private/' + req.params.type)(req, res, next)
-        }, function(error) {
-          console.log(error)
-          if (error == "not_login") {
+        }).catch((err) => {
+          if (err == "not_login") {
             res.status(404).send({
               "code": "not_login",
               "msg": 'not login'
             })
-          } else if (error == "no_authorization") {
+          } else if (err == "no_authorization") {
             res.status(404).send({
               "code": "no_authorization",
               "msg": 'no authorization'
