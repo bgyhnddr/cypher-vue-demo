@@ -14,16 +14,14 @@
     <div class="promoteLevelsList">
       <group v-for="level in promoteLevels">
         <div class="promoteLevelsList-li">
-          <cell @click="goToPromoteMemberPage(level)" is-link>
-            <div slot="icon">
-            <span>
-              <label>{{getTitleLVText(level)}}</label>
-              {{level.brand_role_name}}</span></div>
-            <span class="promoteLevelsList-number">{{level.number + "人"}}</span>
+          <cell @click="goToForzenMemberPage(level.brand_role_code)" is-link>
+          <span slot="icon">
+            <label>{{getTitleLVText(level)}}</label>
+          {{level.brand_role_name}}
+          </span>
+          <span>{{level.number + "人"}}</span>
+        </cell>
 
-            <div slot="value">
-            </div>
-          </cell>
         </div>
       </group>
     </div>
@@ -76,8 +74,9 @@ export default {
       this.$route.router.go("/teamManagement")
     },
     getTitleLVText(levelItem) {
-      return "【LV" + (Number(levelItem.brand_role_code.charAt(levelItem.brand_role_code.length - 1)) - 1) + "】"
-    },
+        return "【LV" + (Number(levelItem.brand_role_code.charAt(levelItem.brand_role_code.length - 1)) - 1) + "】"
+      },
+
 
     loadPromoteLevels() {
       var that = this

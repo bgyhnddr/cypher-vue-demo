@@ -8,12 +8,13 @@
   <div v-show="!showSearch" class="forzenLevelList">
     <group v-for="level in forzenLevels">
       <div class="forzenLevelList-li">
-      <cell @click="goToForzenMemberPage(level.brand_role_code)" is-link>
-        <span>{{level.number}}人</span>
-        <div slot="icon">
-          <span><label>【LV{{($index + 1)+ '】'}}</label> {{level.brand_role_name}}</span>
-        </div>
-      </cell>
+        <cell @click="goToForzenMemberPage(level.brand_role_code)" is-link>
+              <span slot="icon">
+                <label>{{getTitleLVText(level)}}</label>
+              {{level.brand_role_name}}
+              </span>
+              <span>{{level.number + "人"}}</span>
+            </cell>
     </div>
     </group>
   </div>
@@ -56,6 +57,10 @@ export default {
     onClickBack() {
       this.$route.router.go("/teamManagement")
     },
+    getTitleLVText(levelItem) {
+      return "【LV" + (Number(levelItem.brand_role_code.charAt(levelItem.brand_role_code.length - 1)) - 1) + "】"
+    },
+
     loadFrozenLevels() {
       var that = this
       FrozenAPI.getFrozenLevels().then(function(result) {
