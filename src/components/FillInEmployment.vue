@@ -421,12 +421,19 @@ export default {
   width: 100%;
   background: none;
   border: 0;
+  padding-top: 109%;
+  position: relative;
+  display: block;
+  overflow: hidden;
 }
 
 .ApplyFor-agent-header img {
+  margin-top: 9%;
   width: 100%;
-  height: auto;
-  margin-top: 5%;
+  left: 0;
+  top: 0;
+  position: absolute;
+  vertical-align: middle;
 }
 
 .ApplyFor-agent-input .weui_cell {

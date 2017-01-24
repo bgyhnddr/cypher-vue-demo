@@ -583,7 +583,7 @@ export default {
     width: 30%;
     float: left;
     height: auto;
-    margin: 1%;
+        margin: 1% 1% 2% 1%;
 }
 #EditProductSpecification .ApplyFor-agent-header img {
     margin-top: 9%;
@@ -732,7 +732,7 @@ export default {
     width: 100%;
     position: absolute;
     vertical-align: middle;
-    min-height: 77px;
+    height:auto
 }
 #EditProductSpecification .add-image .specifications-addimage .checker-item-selected {
 
