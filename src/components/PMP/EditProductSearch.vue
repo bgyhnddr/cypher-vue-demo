@@ -91,7 +91,7 @@ export default {
 
       if (this.keyword == null || this.keyword.trim() == "") {
         this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "请输入需要搜索的关键字"
+        this.alert.errorMsgNoHandled = "请输入需要搜索的关键词"
       } else {
         pmpProductAPI.getProducts({
           filterKey: this.keyword.trim()

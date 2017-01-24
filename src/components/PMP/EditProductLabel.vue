@@ -1,7 +1,7 @@
 <template>
 <div>
   <div class="vux-demo-header-box wapmain-header" slot="header">
-    <x-header :left-options="leftOptions">添加关键字</x-header>
+    <x-header :left-options="leftOptions">添加关键词</x-header>
     <div slot="left" class="onclick-back" @click="headerGoBack">返回</div>
   </div>
   <div v-if="showModel.showStaticCheckerModel" @click="confirm" class="EditProductLabel-complete">完成</div>
@@ -12,7 +12,7 @@
     <div class="EditProductLabel-label ">
     <flexbox :gutter="0">
       <flexbox-item :span="1/2">
-        <x-input class="weui_cell_primary" title="" :value.sync="inputData.inputLabel" placeholder="请输入关键字" :show-clear=false :required="false"></x-input>
+        <x-input class="weui_cell_primary" title="" :value.sync="inputData.inputLabel" placeholder="请输入关键词" :show-clear=false :required="false"></x-input>
       </flexbox-item>
       <flexbox-item :span="1/4">
         <div>
@@ -44,20 +44,23 @@
     </flexbox>
   </div>
   <div v-if="showModel.showStaticCheckerModel"class="EditProductLabel-new ">
-    <p>新增关键字</p>
+    <p>已选关键词</p>
     <div v-for="productLabelItem in inputData.inputLabelItems">{{productLabelItem}}</div>
 
   </div>
     <div class="clean"></div>
+    <div style="height:10px"></div>
   <div v-if="!showModel.showStaticCheckerModel" class="EditProductLabel-new-editor">
-      <p>新增关键字</p>
+      <p>已选关键词</p>
     <checker :value.sync="inputData.chooseLabelItems" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
       <checker-item v-for="productLabelItem in inputData.inputLabelItems" :value="productLabelItem">{{productLabelItem}}</checker-item>
     </checker>
   </div>
     <div class="clean"></div>
+      <div style="height:10px"></div>
+
   <div v-if="showModel.showStaticCheckerModel" class="EditProductLabel-history ">
-    <p>可选关键字</p>
+    <p>可选关键词</p>
     <button v-for="labelItem in historyLabels" @click="chooseHistoryLabel(labelItem)">{{labelItem.name}}</button>
   </div>
 </div>
@@ -161,7 +164,7 @@ export default {
         that.historyLabels = result
       }).catch(function(err) {
         that.alert.showErrorNoHandled = true
-        that.alert.errorMsgNoHandled = "读取我的关键字异常"
+        that.alert.errorMsgNoHandled = "读取我的关键词异常"
       })
     },
     add() {
@@ -170,14 +173,14 @@ export default {
 
       if (this.inputData.inputLabel == null || this.inputData.inputLabel.trim() == "") {
         this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "请输入关键字"
+        this.alert.errorMsgNoHandled = "请输入关键词"
       } else if (this.inputData.inputLabel.trim().length > 15) {
         this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "您所输入的关键字超过15个字符"
+        this.alert.errorMsgNoHandled = "您所输入的关键词超过15个字符"
       } else {
         if (this.checkLabelItemLength()) {
           that.alert.showErrorNoHandled = true
-          that.alert.errorMsgNoHandled = "关键字最多可以设置5个"
+          that.alert.errorMsgNoHandled = "关键词最多可以设置5个"
         } else {
           var inputLabel = this.inputData.inputLabel.trim()
 
@@ -186,7 +189,7 @@ export default {
               that.inputData.inputLabel = null
 
               that.alert.showErrorNoHandled = true
-              that.alert.errorMsgNoHandled = "已添加此关键字"
+              that.alert.errorMsgNoHandled = "已添加此关键词"
 
               addOperationFlag = true
             }
@@ -203,7 +206,7 @@ export default {
       this.inputData.inputLabel = null
       if (this.inputData.inputLabelItems.length == 0) {
         this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "暂无可编辑关键字，请添加关键字"
+        this.alert.errorMsgNoHandled = "暂无可编辑关键词，请添加关键词"
       } else {
         this.showModel.showStaticCheckerModel = false
         this.showModel.showInputModel = false
@@ -249,14 +252,14 @@ export default {
 
       if (this.checkLabelItemLength()) {
         this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "关键字最多可以设置5个"
+        this.alert.errorMsgNoHandled = "关键词最多可以设置5个"
       } else {
         this.inputData.inputLabelItems.map((item) => {
           if (item == chooseHistoryLabel.name) {
             that.historyLabels.$remove(historyLabelItem)
 
             that.alert.showErrorNoHandled = true
-            that.alert.errorMsgNoHandled = "已添加此关键字"
+            that.alert.errorMsgNoHandled = "已添加此关键词"
 
             addOperationFlag = true
           }
@@ -346,14 +349,20 @@ font-family: "微软雅黑";
   #EditProductLabel .EditProductLabel-new > div,  #EditProductLabel .EditProductLabel-history button {
       float: left;
       margin: 2% 1%;
-      border: 1px solid #d3d1d1;
+
       background: #fff;
         padding: 1% 5%;
       font-size: 4.5vw;
       border-radius: 5px;
           font-family: "微软雅黑";
   }
-
+   #EditProductLabel .EditProductLabel-history button{
+        border: 1px solid #d3d1d1;
+   }
+   #EditProductLabel .EditProductLabel-new > div{
+           background: #ffffff url("/static/TestIMG/checker-active.png") no-repeat right bottom;
+           border:1px solid  #21c36d;
+   }
 #EditProductLabel   .EditProductLabel-new  p,#EditProductLabel .EditProductLabel-history p
 {
   font-size: 4.5vw;

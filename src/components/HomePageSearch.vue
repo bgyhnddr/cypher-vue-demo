@@ -107,11 +107,11 @@ export default {
       this.showResult = false
       if (this.keyword == null || this.keyword == '') {
         this.showErrorNoHandled = true
-        this.errorMsgNoHandled = "请输入需要搜索的关键字"
+        this.errorMsgNoHandled = "请输入需要搜索的关键词"
         this.$dispatch("backButton", this.showHomePageModel)
       } else if (!reg.test(this.keyword)) {
         this.showErrorNoHandled = true
-        this.errorMsgNoHandled = "请输入中文关键字"
+        this.errorMsgNoHandled = "请输入中文关键词"
         this.$dispatch("backButton", this.showHomePageModel)
       } else {
         var countShowItem = this.filter(this.keyword)
@@ -155,7 +155,7 @@ export default {
         })
       }
 
-      //根据搜索关键字选择显示功能
+      //根据搜索关键词选择显示功能
       this.funcList.map((o) => {
         if (o.name.match(keyword) == null) {
           o.isShow = false

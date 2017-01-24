@@ -107,7 +107,7 @@ export default {
       if (this.keyword == null || this.keyword.trim() == "") {
         this.keyword = null
         this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "请输入需要搜索的关键字"
+        this.alert.errorMsgNoHandled = "请输入需要搜索的关键词"
       } else if (nameReg.test(this.keyword.trim()) || phoneReg.test(this.keyword.trim())) {
         this.loadPromoteMembers()
       } else {

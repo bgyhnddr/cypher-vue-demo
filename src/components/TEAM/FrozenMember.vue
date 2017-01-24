@@ -67,7 +67,7 @@ export default {
       var that = this
       if(that.keyword == ""){
         that.alert.showCatchError = true
-        that.alert.catchErrorMsg = "请输入需要搜索的关键字"
+        that.alert.catchErrorMsg = "请输入需要搜索的关键词"
       }else{
         that.loadFrozenMembers(that.keyword)
       }
