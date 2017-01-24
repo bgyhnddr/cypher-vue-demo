@@ -113,9 +113,10 @@ export default {
     getLevel() {
       var that = this
       employAPI.getLevel().then(function(result) {
+        console.log(result)
         result.forEach((d) => {
-          that.radio.push(d.name)
-          that.radioValue.push({name:d.name,value:d.code})
+          that.radio.push(d.brand_role.name)
+          that.radioValue.push({name:d.brand_role.name,value:d.brand_role.code})
         })
       }).catch(function(err) {
         console.log(err)

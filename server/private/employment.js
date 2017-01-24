@@ -590,11 +590,18 @@ var exec = {
   },
   getLevel(req, res, next) {
     var userinfo = req.session.userInfo
+    var brand_role_code = req.body.brand_role_code
     var brand_role = require('../../db/models/brand_role')
     var agent = require('../../db/models/agent')
     var agent_brand_role = require('../../db/models/agent_brand_role')
+    var brand_role = require('../../db/models/brand_role')
+    var employable_rule = require('../../db/models/employable_rule')
     agent.hasOne(agent_brand_role)
     agent_brand_role.belongsTo(brand_role)
+    employable_rule.belongsTo(brand_role, {
+      foreignKey: 'employable_brand_role_code',
+      constraints: false
+    })
     return agent.findOne({
       where: {
         user_account: userinfo.name
@@ -604,12 +611,20 @@ var exec = {
         include: brand_role
       }
     }).then((o) => {
-      return brand_role.findAll({
+      return employable_rule.findAll({
         where: {
-          level: {
-            $gt: o.agent_brand_role.brand_role.level
-          }
-        }
+          employer_brand_role_code: o.agent_brand_role.brand_role_code,
+        },
+        include: [{
+          model: brand_role,
+        }],
+        order: [
+          [{
+            model: brand_role
+          }, 'level', 'ASC']
+        ]
+      }).then(function(result) {
+        return result
       })
     })
   },
