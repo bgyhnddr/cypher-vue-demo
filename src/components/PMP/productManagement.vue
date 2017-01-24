@@ -5,6 +5,7 @@
       <x-header :left-options="{showBack: false}">我的货品</x-header>
       <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
     </div>
+    <div style="padding-top:46px">
     <group>
       <!--货品管理-->
       <a class="weui_cell a-li a-li-first" v-link="{path: '/productManagement/productSetting'}">
@@ -36,6 +37,7 @@
       </a>
     </group>
   </div>
+</div>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>

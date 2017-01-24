@@ -182,6 +182,7 @@ export default {
 }
 #linkProductToQRCode{
     min-height: 478px;
+        padding-top: 46px;
 }
 #linkProductToQRCode .weui_cells.vux-no-group-title{
 

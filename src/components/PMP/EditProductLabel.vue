@@ -278,6 +278,9 @@ export default {
 }
 </script>
 <style lang="less">
+#EditProductLabel{
+  padding-top: 46px
+}
 .checker-item {
     width: 100px;
     height: 26px;

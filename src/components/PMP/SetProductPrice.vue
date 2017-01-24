@@ -141,7 +141,8 @@ export default {
 <style>
 #SetProductPrice{
  font-family: "微软雅黑",Arial!important;
- background: #fff
+ background: #fff;
+     padding-top: 46px;
 }
 #SetProductPrice tr th{
     border-bottom: 1px solid #d3d1d1;

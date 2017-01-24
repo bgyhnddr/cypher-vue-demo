@@ -132,6 +132,8 @@ export default {
 }
 </script>
 <style>
-
+#promoteShare .brandauthorization-list{
+  padding-top: 46px
+}
 
 </style>

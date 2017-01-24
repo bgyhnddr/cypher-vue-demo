@@ -98,6 +98,7 @@ export default {
 <style>
 .audit-list {
     min-height: 485px;
+        padding-top: 46px;
 }
 
 .audit-list .weui_btn {

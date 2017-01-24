@@ -159,7 +159,7 @@ height: 100%
 
 #promoteAgent .certificate-header {
   text-align: center;
-  padding-top: 2%;
+  padding-top:46px;
 }
 
  #promoteAgent .certificate-header button {

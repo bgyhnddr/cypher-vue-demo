@@ -220,7 +220,7 @@ export default {
 
 #frozenAgent .certificate-header {
   text-align: center;
-  padding-top: 2%;
+  padding-top:46px;
 }
 
 #frozenAgent .certificate-header button {

@@ -225,7 +225,7 @@ export default {
 }
 
 #productRelate .productRelate-title {
-  padding: 2%;
+  padding: 46px 2% 2% 2%;
   font-family: "微软雅黑";
 }
 

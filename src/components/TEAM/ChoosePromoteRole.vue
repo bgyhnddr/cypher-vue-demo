@@ -103,7 +103,7 @@ export default {
 
 .choosePromoteRole {
   background: #fff;
-  min-height: 528px;
+
 }
 
 #choosePromoteRole .all-footer {
@@ -122,5 +122,6 @@ export default {
 #choosePromoteRole .choosePromoteRole-list {
   margin-top: 7%;
   min-height: 460px;
+  padding-top: 46px
 }
 </style>

@@ -173,6 +173,7 @@ export default {
 <style>
 #linkProductToQRCodeSearch{
     min-height: 473px;
+    padding-top: 46px
 }
  #linkProductToQRCodeSearch .weui_cell{
   padding: 0

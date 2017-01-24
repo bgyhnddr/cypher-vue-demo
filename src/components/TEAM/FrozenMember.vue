@@ -107,7 +107,7 @@ export default {
 
 #frozenMember .frozenMember-search {
   width: 95%;
-  margin: 1% auto;
+  margin: 51px auto 1% auto;
   border: 1px solid #d3d1d1;
   background: #fff;
   position: relative;
@@ -141,7 +141,7 @@ export default {
 }
 
 #frozenMember .frozenMember-list {
-  min-height: 438px;
+    min-height: 436px;
   margin-top: 5px;
   border-top: 1px solid #d3d1d1;
 }

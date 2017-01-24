@@ -322,6 +322,7 @@ border: 0
     font-size: 4.5vw;
     border-bottom: 1px solid #d3d1d1;
         margin-bottom: 5px;
+            padding-top: 46px;
   }
     #editProduct .weui_textarea {
       font-family: "微软雅黑",Arial;

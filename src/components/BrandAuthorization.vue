@@ -134,6 +134,7 @@ export default {
 .brandauthorization-bac {
   min-height: 482px;
   background-size: 100%;
+  padding-top: 46px;
   width: 100%;
   margin: 0 auto;
 }

@@ -86,15 +86,13 @@ export default {
 }
 </script>
 <style>
-#forzenLevelList {
-      min-height: 528px;
-}
+
 #forzenLevelList  .weui_cell_hd{
   width: auto;
 }
 #forzenLevelList .forzenLevelList-search {
     width: 95%;
-    margin: 1% auto;
+    margin: 51px auto 1% auto;
     border: 1px solid #d3d1d1;
     background: #fff;
     position: relative;

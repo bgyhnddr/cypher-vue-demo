@@ -195,6 +195,9 @@ export default {
 </script>
 
 <style lang="less">
+div#productsetting {
+    padding-top: 46px;
+}
 .vux-header .vux-header-title, .vux-header h1{
         font-size: 4.5vw;
 }

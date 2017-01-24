@@ -11,7 +11,7 @@
 
     </group>
   </div>
-  <div class="audit-list">
+  <div class="audit-list" style="padding-top:46px">
     <group>
       <cell v-for="item in items">
         <div slot="icon">提拔人：{{item.user.agent.agent_detail.name}}</div>

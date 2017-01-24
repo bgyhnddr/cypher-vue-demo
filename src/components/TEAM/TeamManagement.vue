@@ -8,7 +8,7 @@
       <x-header :left-options="{showBack: false}">我的团队</x-header>
       <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
     </div>
-    <div style="min-height:471px">
+    <div style="min-height:471px;padding-top: 46px;">
       <group v-if="showModel.funcModel">
         <!--冻结团队成员-->
         <a class="weui_cell a-li a-li-first" v-if="showModel.forzen" v-link="{path: '/teamManagement/forzenLevelList'}">

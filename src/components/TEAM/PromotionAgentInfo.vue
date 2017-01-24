@@ -7,7 +7,7 @@
       <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
     </div>
   </div>
-  <div class="certificate-messages">
+  <div class="certificate-messages" style="padding-top:46px">
     <group>
       <h3>
       <cell>
@@ -305,7 +305,7 @@ min-height: 95px;
   position: relative;
       width: 100%;
       margin: 0;
-      padding: 0;
+    padding:0
 }
 
 #PromotionAgentinfo .certificate-messages .weui_cell:before {

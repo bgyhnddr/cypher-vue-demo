@@ -168,6 +168,7 @@ export default {
 <style>
 #editProductsearch{
     min-height: 473px;
+    padding-top: 46px
 }
 #editProductsearch .editProductsearch-search{
   width: 95%;

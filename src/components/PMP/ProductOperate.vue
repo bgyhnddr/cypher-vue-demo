@@ -134,6 +134,9 @@ export default {
 }
 </script>
 <style>
+#productoperate{
+  padding-top: 46px
+}
 #productoperate .goods-banner  .weui_cell{
  padding: 0
 }
