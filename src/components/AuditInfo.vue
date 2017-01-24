@@ -32,7 +32,7 @@
             <x-button v-if="!Toggle" type="default" class="auditinfo-views" v-link="{path: '/accountManagement/CertificateInfo/'+this.auditInfo.employer+'/history'+'/'+this.$route.params.employmentID+'/'+this.$route.params.brandID+'/'+this.auditInfo.account}">查看授权证书</x-button>
           </cell>
           <cell>
-            <div slot="icon">招募人已用金额：
+            <div v-if="showFee" slot="icon">招募人已用额度：
               <label>{{auditInfo.totleInitialFee}}</label>
             </div>
           </cell>
@@ -147,6 +147,7 @@ export default {
       showAlert: false,
       show: false,
       showLoading:false,
+      showFee:false,
       reason: "",
       termNum: 12,
       auditInfo: {
@@ -284,6 +285,7 @@ export default {
   ready() {
     if (this.$route.params.locate == 'audit') {
       this.Toggle = true
+      this.showFee = true
     }
     this.auditInfo.account = this.$route.params.account
     this.auditID = this.$route.params.employmentID

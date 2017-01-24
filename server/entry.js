@@ -53,6 +53,15 @@ module.exports = (app) => {
     try {
       if (req.params.permission == "private") {
         var checkPermission = require('../permission/check-permission')
+        var checkFrozen = require('../permission/check-frozen')
+        checkFrozen(req, res, next).then(function() {
+          require('./private/' + req.params.type)(req, res, next)
+        }, function(error) {
+          console.log(error)
+          if (error == "account_frozened") {
+            req.session.userInfo = undefined
+          }
+        })
         checkPermission(req, res, next).then(function() {
           require('./private/' + req.params.type)(req, res, next)
         }, function(error) {
