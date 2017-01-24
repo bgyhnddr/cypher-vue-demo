@@ -154,8 +154,8 @@ export default {
         packcode: this.$route.params.packcode
       }).then(function(result) {
         if (result.sold) { //判断是否出售
-          that.soldProductInfo.name = "幸运银内裤"
-          that.soldProductInfo.retailPrice = "￥" + "139.00"
+          that.soldProductInfo.name = result.product_name
+          that.soldProductInfo.retailPrice = result.retail_price
           that.soldProductInfo.status = "已出售"
           that.soldProductInfo.salerID = result.sold_by
           that.getSolderName(result.sold_by)
@@ -173,9 +173,9 @@ export default {
           that.showSoldModel = true
           that.showUnsoldModel = false
         } else {
-          that.unsoldProductInfo.name = "幸运银内裤"
+          that.unsoldProductInfo.name = result.product_name
           that.unsoldProductInfo.productID = that.getProductID(result.full_code)
-          that.unsoldProductInfo.retailPrice = "￥" + "139.00"
+          that.unsoldProductInfo.retailPrice = result.retail_price
           that.unsoldProductInfo.status = "未出售"
           var owner = result.owner_id
           that.getBrandInfo()

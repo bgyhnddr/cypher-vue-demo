@@ -4,7 +4,7 @@
 		<div>
 			<div class="vux-center login-header">
 				<img class="vux-x-img ximg-demo vux-center" alt="头像" src="/static/TestIMG/brand_logo_href.png" />
-				<p>Cara Cara</p>
+                <p>B.Leman &amp; CaraCara</p>
 			</div>
 			<div class="login-message">
 				<div class="user">
@@ -46,7 +46,7 @@
 
 	</div>
 </div>
-<div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
+<div class="all-footer">© 2016 ShareWin.me 粤ICP备<a href="http://www.miitbeian.gov.cn/">14056388</a>号</div>
 </template>
 
 <script>
@@ -157,7 +157,6 @@ export default {
 	/*18px*/
 }
 
-
 /*登录框*/
 
 .input-boder {
@@ -244,6 +243,11 @@ button.weui_btn.weui_btn_primary:active {
 .weui_icon_warn:before {
 	font-size: 18px;
 	color: #f43530;
+}
+
+.weui_icon_toast {
+    margin: 22px 0 0 27px;
+    display: block;
 }
 
 

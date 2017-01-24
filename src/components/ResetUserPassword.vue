@@ -4,11 +4,9 @@
 	<div>
 		<div class="resetuser-password">
 			<group>
-				<!--<x-input title="请输入6位数的支付密码" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
-				<x-input title="新密码" :value.sync="pwd.new_password" type="password" placeholder="请输入新密码" :required="false"></x-input>
+				<x-input title="新密码":value.sync="pwd.new_password" type="password" placeholder="请输入新密码" :required="false"></x-input>
 			</group>
 			<group>
-				<!--<x-input title="请输入新的6位数的支付密码" type="text" placeholder="" :value.sync="password" :min="6" :max="6" @on-change="change"></x-input>-->
 				<x-input title="确认密码" :value.sync="pwd.insure_password" type="password" placeholder="请再次输入新密码" :required="false"></x-input>
 			</group>
 		</div>
