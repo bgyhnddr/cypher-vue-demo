@@ -19,17 +19,13 @@
         <div v-if="showModel.showAddImageModel">
           <div class="add-image">
             <div class="upload-style">
-              <div v-for="image in inputDate.variantImages" class="specifications-img">
-                <img :src="getSpecificationImgHref(image)" track-by="$index" width="50px" height="50px" alt="款式图片" />
-              </div>
-              <div class="ApplyFor-agent-header">
-                <employment-headimg-upload :file-id.sync="inputDate.addImageFileId"></employment-headimg-upload>
+              <div v-for="image in inputDate.variantImages" track-by="$index">
+                <div v-if="image != null || (image == null && $index == 0 ) || (image == null && $index != 0 && inputDate.variantImages[$index - 1] != null)">
+                  <employment-headimg-upload class="ApplyFor-agent-header" :file-id.sync="image"></employment-headimg-upload>
+                </div>
               </div>
             </div>
             <div class="add-image-editor ">
-              <flexbox-item>
-                <x-button type="primary" @click="addImage">添加</x-button>
-              </flexbox-item>
               <flexbox-item>
                 <x-button type="primary" @click="editImage">编辑</x-button>
               </flexbox-item>
@@ -41,7 +37,7 @@
           <div class="specifications-addimage-m">
             <div class="specifications-addimage">
               <checker :value.sync="inputDate.chooseImages" type="checkbox" default-item-class="checker-item" selected-item-class="checker-item-selected">
-                <checker-item v-for="image in inputDate.variantImages" track-by="$index" :value="image">
+                <checker-item v-for="image in inputDate.editIamges" track-by="$index" :value="image">
                   <img :src="getSpecificationImgHref(image)" width="50px" height="50px" alt="款式图片" />
                   <img class="specifications-checker" src="/static/TestIMG/choose-active.png">
                 </checker-item>
@@ -163,6 +159,7 @@ export default {
         chooseSpecificationItems: [],
         variantImages: [],
         chooseImages: [],
+        editIamges: [],
         addImageFileId: null,
         closeComfirmFlag: null
       },
@@ -231,17 +228,22 @@ export default {
     },
     getProductImages() {
       var images = []
-      this.ProductInfo.pmp_variants.map((o) => {
+      this.ProductInfo.pmp_variants.forEach((o) => {
         if (o.name == this.chooseSpecification && o.pmp_variant_images.length != null) {
-          o.pmp_variant_images.map((productImageItem) => {
+          images = o.pmp_variant_images.map((productImageItem) => {
             if (productImageItem.attachment_id != null) {
-              images.push(productImageItem.attachment_id)
+              return productImageItem.attachment_id
             } else {
-              images.push(productImageItem)
+              return productImageItem
             }
           })
         }
       })
+
+      while (images.length < 5) {
+        images.push(null)
+      }
+
       return images
     },
     isOnSell() {
@@ -252,23 +254,6 @@ export default {
         }
       })
       return isOnSellFlag
-    },
-    addImage() {
-      if (this.inputDate.addImageFileId == null) {
-        this.inputDate.addImageFileId = null
-
-        this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "请选择图片"
-      } else if (this.inputDate.variantImages.length == 5) {
-        this.inputDate.addImageFileId = null
-
-        this.alert.showErrorNoHandled = true
-        this.alert.errorMsgNoHandled = "您已选择超过5张图片"
-      } else {
-        var addImageFileId = this.inputDate.addImageFileId
-        this.inputDate.addImageFileId = null
-        this.inputDate.variantImages.push(addImageFileId)
-      }
     },
     addClassOnChooseSpecificationOptions(specificationName) {
       var className = null
@@ -288,6 +273,10 @@ export default {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "暂无可编辑商品图片"
       } else {
+        this.inputDate.editIamges = this.inputDate.variantImages.filter((image) => {
+          return image != null
+        })
+
         this.showModel.showAddImageModel = false
         this.inputDate.addImageFileId = null
       }
@@ -307,6 +296,10 @@ export default {
       removeItems.map((removeItem) => {
         this.inputDate.variantImages.$remove(removeItem)
       })
+
+      while (this.inputDate.variantImages.length < 5) {
+        this.inputDate.variantImages.push(null)
+      }
 
       this.showModel.showAddImageModel = true
     },
@@ -338,7 +331,7 @@ export default {
       if (this.inputDate.variant == null || this.inputDate.variant.trim() == "") {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "请输入商品规格"
-      } else if (this.inputDate.variantImages.length == 0) {
+      } else if (this.inputDate.variantImages[0] == null) {
         this.alert.showErrorNoHandled = true
         this.alert.errorMsgNoHandled = "商品图片不能为空"
       } else if (this.inputDate.chooseSpecificationItems.length == 0) {
@@ -427,32 +420,37 @@ export default {
       var addImages = []
 
       if (this.inputDate.editPmpVariantsIndex == null) {
-        this.inputDate.variantImages.map((option) => {
-          addImages.push({
-            attachment_id: option
-          })
+        this.inputDate.variantImages.forEach((option) => {
+          if (option) {
+            addImages.push({
+              attachment_id: option
+            })
+          }
         })
       } else {
-        this.ProductInfo.pmp_variants.map((o, index) => {
+        this.ProductInfo.pmp_variants.forEach((o, index) => {
           if (index == this.inputDate.editPmpVariantsIndex) {
 
-            this.inputDate.variantImages.map((addItem) => {
-              o.pmp_variant_images.map((originalItem) => {
+            this.inputDate.variantImages.forEach((addItem) => {
+              o.pmp_variant_images.forEach((originalItem) => {
                 if (addItem == originalItem.attachment_id) {
                   addImages.push(originalItem)
                 }
               })
             })
 
-            addImages.map((o) => {
+            addImages.forEach((o) => {
               this.inputDate.variantImages.$remove(o.attachment_id)
             })
 
-            this.inputDate.variantImages.map((option) => {
-              addImages.push({
-                attachment_id: option
-              })
+            this.inputDate.variantImages.forEach((option) => {
+              if (option) {
+                addImages.push({
+                  attachment_id: option
+                })
+              }
             })
+
           }
         })
       }
@@ -501,6 +499,7 @@ export default {
 
     if (this.getProductVariantIndex() == null) {
       this.showModel.showAddButtonModel = true
+      this.inputDate.variantImages = this.getProductImages()
 
       this.loadAllSpecificationOptions()
     } else {
