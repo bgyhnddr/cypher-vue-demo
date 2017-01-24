@@ -52,7 +52,7 @@ export default {
       var keyword = that.keyword
       if(keyword==""){
         that.alert.showCatchError = true
-        that.alert.catchErrorMsg = "请输入需要搜索的关键字"
+        that.alert.catchErrorMsg = "请输入需要搜索的关键词"
       }else{
         FrozenAPI.getFrozenMembers({filterKey:keyword}).then((result)=>{
           that.searchResult = result

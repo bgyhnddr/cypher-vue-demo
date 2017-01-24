@@ -15,7 +15,7 @@
         <span v-if="ProductInfo.pmp_product_labels.length == 0">未添加</span>
         <span v-for="item in ProductInfo.pmp_product_labels">{{item}}</span>
         <div slot="icon">
-          <span>关键字</span>
+          <span>关键词</span>
         </div>
       </div>
       </cell>

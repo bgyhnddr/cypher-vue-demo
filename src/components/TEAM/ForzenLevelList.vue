@@ -11,7 +11,7 @@
       <cell @click="goToForzenMemberPage(level.brand_role_code)" is-link>
         <span>{{level.number}}人</span>
         <div slot="icon">
-          <span>{{($index + 1) + '.' + level.brand_role_name}}</span>
+          <span><label>【LV{{($index + 1)+ '】'}}</label> {{level.brand_role_name}}</span>
         </div>
       </cell>
     </div>
@@ -149,5 +149,8 @@ border-radius: 2px;
 #forzenLevelList  .weui_dialog .weui_btn_dialog.primary{
   font-size: 4.9vw;
   color: #fff;
+}
+#forzenLevelList .forzenLevelList-li span label {
+    color: #35495e;
 }
 </style>

@@ -1,34 +1,38 @@
 <template>
-  <div id="promoteLevels">
-<div v-show="showPromoteLevelListPage">
-  <div class="vux-demo-header-box wapmain-header" slot="header">
-    <x-header :left-options="{showBack: false}">提拔团队成员</x-header>
-    <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
+<div id="promoteLevels">
+  <div v-show="showPromoteLevelListPage">
+    <div class="vux-demo-header-box wapmain-header" slot="header">
+      <x-header :left-options="{showBack: false}">提拔团队成员</x-header>
+      <div slot="left" class="onclick-back" @click="onClickBack">返回</div>
+    </div>
+    <div class="promoteLevels-search">
+      <group>
+        <x-input class="weui_cell_primary" title='' placeholder="输入手机号码/代理姓名进行搜索" :value.sync="keyword" :show-clear=false :required="false"></x-input>
+        <button @click="search"></button>
+      </group>
+    </div>
+    <div class="promoteLevelsList">
+      <group v-for="level in promoteLevels">
+        <div class="promoteLevelsList-li">
+          <cell @click="goToPromoteMemberPage(level)" is-link>
+            <div slot="icon">
+            <span>
+              <label>{{getTitleLVText(level)}}</label>
+              {{level.brand_role_name}}</span></div>
+            <span class="promoteLevelsList-number">{{level.number + "人"}}</span>
+
+            <div slot="value">
+            </div>
+          </cell>
+        </div>
+      </group>
+    </div>
   </div>
-  <div class="promoteLevels-search">
-  <group>
-    <x-input class="weui_cell_primary" title='' placeholder="输入手机号码/代理姓名进行搜索" :value.sync="keyword" :show-clear=false :required="false"></x-input>
-    <button @click="search"></button>
-  </group>
-</div>
-<div class="promoteLevelsList">
-  <group v-for="level in promoteLevels">
-    <div class="promoteLevelsList-li">
-    <cell :title="($index + 1) + '.' + level.brand_role_name" @click="goToPromoteMemberPage(level)" is-link>
-        <span>{{level.number + "人"}}</span>
-      <div slot="value">
 
-      </div>
-    </cell>
-  </div>
-  </group>
-</div>
-</div>
+  <promote-member-list :show-promote-level-list-page.sync="showPromoteLevelListPage" :keyword.sync="keyword"></promote-member-list>
 
-<promote-member-list :show-promote-level-list-page.sync="showPromoteLevelListPage" :keyword.sync="keyword"></promote-member-list>
-
-<alert :show.sync="alert.showErrorNoHandled" button-text="确认">{{alert.errorMsgNoHandled}}</alert>
-<alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
+  <alert :show.sync="alert.showErrorNoHandled" button-text="确认">{{alert.errorMsgNoHandled}}</alert>
+  <alert :show.sync="alert.showCatchError" button-text="确认" @on-hide="errorHandled">{{alert.catchErrorMsg}}</alert>
 </div>
 <div class="all-footer">© 2016 ShareWin.me 粤ICP备14056388号</div>
 </template>
@@ -71,6 +75,10 @@ export default {
     onClickBack() {
       this.$route.router.go("/teamManagement")
     },
+    getTitleLVText(levelItem) {
+      return "【LV" + (Number(levelItem.brand_role_code.charAt(levelItem.brand_role_code.length - 1)) - 1) + "】"
+    },
+
     loadPromoteLevels() {
       var that = this
       promoteAPI.getPromotionOperableLevels().then(function(result) {
@@ -99,74 +107,84 @@ export default {
     this.loadPromoteLevels();
 
 
-      document.body.style.background = '#f2f2f2'
+    document.body.style.background = '#f2f2f2'
 
   }
 }
 </script>
 <style>
-#promoteLevels  .weui_cell_hd{
+#promoteLevels .weui_cell_hd {
   width: auto;
 }
+
 #promoteLevels .promoteLevels-search {
-    width: 95%;
-    margin: 51px auto 1% auto;
-    border: 1px solid #d3d1d1;
-    background: #fff;
-    position: relative;
+  width: 95%;
+  margin: 51px auto 1% auto;
+  border: 1px solid #d3d1d1;
+  background: #fff;
+  position: relative;
 }
+
 #promoteLevels .promoteLevels-search button {
-    position: absolute;
-    top: 11%;
-    right: -6%;
-    background: url(/static/TestIMG/search.png);
-    background-repeat: no-repeat;
-    border: 0;
-    background-size: 57%;
-    color: #fff;
-    width: 16%;
-    min-height: 30px;
-    z-index: 1000;
+  position: absolute;
+  top: 11%;
+  right: -6%;
+  background: url(/static/TestIMG/search.png);
+  background-repeat: no-repeat;
+  border: 0;
+  background-size: 57%;
+  color: #fff;
+  width: 16%;
+  min-height: 30px;
+  z-index: 1000;
 }
 
 #promoteLevels .promoteLevels-search .weui_input {
-    font-size: 4.5vw;
-    font-family: "微软雅黑";
-        line-height: 2.5em;
-    height: auto;
-    width: 100%;
-    padding-left: 2%;
+  font-size: 4.5vw;
+  font-family: "微软雅黑";
+  line-height: 2.5em;
+  height: auto;
+  width: 100%;
+  padding-left: 2%;
 }
-#promoteLevels .promoteLevels-search .weui_cell{
-      padding: 0;
-}
-#promoteLevels  .promoteLevelsList{
-    min-height: 438px;
 
+#promoteLevels .promoteLevels-search .weui_cell {
+  padding: 0;
 }
-#promoteLevels .promoteLevelsList  .promoteLevelsList-li{
+
+#promoteLevels .promoteLevelsList {
+  min-height: 438px;
+}
+
+#promoteLevels .promoteLevelsList .promoteLevelsList-li {
   background: #fff;
-    margin-top: 5px;
+  margin-top: 5px;
   font-size: 4.7vw;
   font-family: "微软雅黑";
 }
-#promoteLevels  .promoteLevelsList  .promoteLevelsList-li .weui_cell_ft.with_arrow span{
+
+#promoteLevels .promoteLevelsList .promoteLevelsList-li .weui_cell_ft.with_arrow span {
   font-size: 4.9vw!important;
   color: #9d9ea5
 }
 
-#promoteLevels   .weui_dialog{
-    width: 92%;
+#promoteLevels .weui_dialog {
+  width: 92%;
 }
-#promoteLevels  .weui_dialog  .weui_dialog_ft{
+
+#promoteLevels .weui_dialog .weui_dialog_ft {
   width: 89%;
-margin: 8% auto;
-background: #0bb20c;
-line-height: 35px;
-border-radius: 2px;
+  margin: 8% auto;
+  background: #0bb20c;
+  line-height: 35px;
+  border-radius: 2px;
 }
-#promoteLevels  .weui_dialog .weui_btn_dialog.primary{
+
+#promoteLevels .weui_dialog .weui_btn_dialog.primary {
   font-size: 4.9vw;
   color: #fff;
+}
+#promoteLevels .promoteLevelsList .promoteLevelsList-li span label {
+    color: #35495e;
 }
 </style>
