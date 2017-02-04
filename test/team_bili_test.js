@@ -30,9 +30,8 @@ var guidMember7 = "guidMember7"
 
 describe('team_bili_test', () => {
   // 初始化数据
+  //
   before(function() {
-    this.timeout(20000)
-
     return Promise.all([
       employment,
       agent_promotion,
@@ -709,7 +708,8 @@ describe('team_bili_test', () => {
     }
   }
 
-  describe('getPromotionOperableLevels', () => {
+  describe('getPromotionOperableLevels', function() {
+    this.timeout(10000)
     it('get all can be operable promotion levels', () => {
       return promoteTestFunc("getPromotionOperableLevels").then((result) => {
         // console.log(JSON.stringify(result))
@@ -720,7 +720,8 @@ describe('team_bili_test', () => {
     })
   })
 
-  describe('getPromotionOperableStaffs', () => {
+  describe('getPromotionOperableStaffs', function() {
+    this.timeout(10000)
     it('get not level , filterKey="成员"', () => {
       return promoteTestFunc("getPromotionOperableStaffs", {
         filterKey: "成员",
